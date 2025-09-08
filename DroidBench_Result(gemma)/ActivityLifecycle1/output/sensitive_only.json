@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "DeviceId obtained from TelephonyManager.",
+                "Source Method": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method calls `TelephonyManager` to get the device ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "DeviceId concatenated and used to update URL.",
+                "Source Method": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method concatenates the device ID with other values and updates the URL field.",
+                "Action": "Transmitted"
+            },
+            {
+                "Step": "URL with DeviceId used to establish HTTP connection.",
+                "Source Method": "Lde/ecspride/ActivityLifecycle1;->connect:()V",
+                "Reasoning": "The `connect` method uses the URL (containing the device ID) to establish an HTTP connection.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ActivityLifecycle1;->connect:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/ActivityLifecycle1;->connect:()V",
+                "Reasoning": "The `onCreate` method obtains the `DeviceId` from `TelephonyManager` and passes it to the `connect` method, which uses it to establish an HTTP connection."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

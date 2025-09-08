@@ -1,0 +1,23 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieved from TelephonyManager.",
+                "Source Method": "Lde/ecspride/Exceptions3;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method retrieves the device ID using TelephonyManager, indicating a sensitive source.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Exceptions3;->onCreate:(Landroid/os/Bundle;)V --> ... --> Sink Method(DeviceId)",
+                "Reasoning": "The `onCreate` method retrieves the device ID and passes it to a sink.  The summary indicates that the device ID retrieval is potentially problematic, suggesting a taint flow to the sink.  Since the summary doesn't state that the device ID was overwritten, it's considered a taint flow."
+            }
+        ],
+        "Label": "no leak"
+    }
+]

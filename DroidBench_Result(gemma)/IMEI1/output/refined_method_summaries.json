@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "device_id",
+            "phone_number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get Device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method directly calls `getDeviceId()`, which retrieves the device ID.",
+                "Action": "Store device_id"
+            },
+            {
+                "Step": "Send Text Message",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The device ID obtained from `getDeviceId()` is used as an argument to `sendTextMessage` via `SmsManager.sendTextMessage`.",
+                "Action": "Transmit phone_number"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)",
+            "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)",
+                "Reasoning": "The `device_id` obtained from `getDeviceId()` is directly passed as the first argument to `sendTextMessage`. This constitutes a sensitive data flow."
+            }
+        ],
+        "Label": "leak"
+    }
+]

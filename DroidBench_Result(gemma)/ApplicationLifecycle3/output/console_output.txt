@@ -1,0 +1,60 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ApplicationLifecycle3
+ Using methods file: D:\UBCBAPK_Methods\ApplicationLifecycle3\ApplicationLifecycle3_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/ContentProvider;->onCreate:()Z']
+[SUMMARY] Lde/ecspride/ContentProvider;->onCreate:()Z => {
+    "Summary": "The method retrieves the device ID from the TelephonyManager and stores it in the iMei field of the ApplicationLifecycle3 class. This operation involves accessing the device ID, which is a potential sink for sensitive data.",
+    "Next Methods": [
+        "Lde/ecspride/ApplicationLifecyle3;->onCreate:()V"
+    ]
+}
+[SUMMARY] Lde/ecspride/ApplicationLifecyle3;->onCreate:()V => {
+    "Summary": "The method attempts to send a text message with the value \"+49 1234\" using the SmsManager. This operation involves sending a potentially sensitive string, making it a data sink.",
+    "Next Methods": [
+        "Lde/ecspride/ApplicationLifecyle3;->someMethod(...)",
+        "Landroid/app/Application;->onCreate()V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ApplicationLifecycle3\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ApplicationLifecycle3\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ApplicationLifecycle3\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "SmsManager",
+            "TelephonyManager"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Lde/ecspride/ContentProvider;->onCreate:()Z",
+                "Reasoning": "The method retrieves the device ID from the TelephonyManager.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send SMS with Device ID",
+                "Source Method": "Lde/ecspride/ApplicationLifecyle3;->onCreate:()V",
+                "Reasoning": "The method attempts to send a text message with the value \"+49 1234\" using the SmsManager, which utilizes the Device ID.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ApplicationLifecyle3;->onCreate:()"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ContentProvider;->onCreate:()Z --> Lde/ecspride/ApplicationLifecyle3;->onCreate:()V",
+                "Reasoning": "The ContentProvider method retrieves the Device ID and stores it in the iMei field. This value is then used by the ApplicationLifecycle3 method to send a text message."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ApplicationLifecycle3\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\ApplicationLifecycle3\output\sensitive_only.json
+Total time for folder: 10.54 seconds

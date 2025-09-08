@@ -1,0 +1,41 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\StaticInitialization2
+Using methods file: D:\withoutcallgraphResult\TestAcessess\StaticInitialization2\StaticInitialization2_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V
+Processed summary for Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V: {
+    "Summary": "The method `Lde/ecspride/MainActivity$StaticInitClass1;.<clinit>()V` first retrieves the `Context` using `sget-object v0, Lde/ecspride/MainActivity;->c Landroid/content/Context;`. This `Context` is then used to call `getDeviceId()`, which returns a `String`. This `String` is then stored in the static field `MainActivity.im` via `sput-object v0, Class;->f:Type`.  The `getDeviceId()` call is a sensitive API, and the returned value is directly used as the argument to `sput-object`. Therefore, a leak is identified: [`getDeviceId() \u279d v0 \u279d MainActivity.im`]",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\StaticInitialization2\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\StaticInitialization2\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\StaticInitialization2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Lde/ecspride/MainActivity$StaticInitClass1;.<clinit>:()V",
+                "Reasoning": "The `getDeviceId()` method is called, returning a String representing the device ID.",
+                "Action": "String returned"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sput-object:Type, v0"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity$StaticInitClass1;.<clinit>:()V --> getDeviceId() --> sget-object v0, Lde/ecspride/MainActivity;->c Landroid/content/Context; --> sput-object v0, Class;->f:Type",
+                "Reasoning": "The `getDeviceId()` method is called, returning a String representing the device ID. This String is then stored in the static field `MainActivity.im` via `sput-object`. The exact argument is passed to `sput-object`."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\StaticInitialization2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\StaticInitialization2\output\sensitive_only.json
+Total summary time: 110.48874926567078 seconds

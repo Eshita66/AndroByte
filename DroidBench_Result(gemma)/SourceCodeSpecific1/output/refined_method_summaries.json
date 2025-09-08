@@ -1,0 +1,25 @@
+[
+    {
+        "Data Types Collected": [
+            "TelephonyManager.deviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain device ID using TelephonyManager.",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method calls `getSystemService` to get a `TelephonyManager` instance, which then calls `getDeviceId()`.",
+                "Action": "Store device ID in a variable."
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendSMS:(Ljava/util/Set; Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->getDeviceId() --> Lde/ecspride/MainActivity;->sendSMS:(Ljava/util/Set; Ljava/lang/String;)V",
+                "Reasoning": "The `getDeviceId` instruction returns a string. This string is then passed as the second argument to the `sendSMS` method."
+            }
+        ],
+        "Label": "leak"
+    }
+]

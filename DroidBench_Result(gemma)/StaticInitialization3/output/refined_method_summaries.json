@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "device ID",
+            "DroidBench"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID obtained via TelephonyManager.",
+                "Source Method": "Ledu/mit/clinit/Test;-><clinit>:()V",
+                "Reasoning": "The `Test` class's `<clinit>` method obtains the device ID using `getDeviceId()` from a `TelephonyManager` and stores it in the `s` member variable of `MainActivity`. This represents the origin of potentially sensitive data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "MainActivity initialized, `s` set to \"\", and `Test` instance created.",
+                "Source Method": "Ledu/mit/clinit/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `MainActivity`'s `onCreate` method initializes the object, setting the content view and creating an instance of `Test`.",
+                "Action": "Created"
+            },
+            {
+                "Step": "String 'DroidBench' logged.",
+                "Source Method": "Ledu/mit/clinit/MainActivity;->setContentView(I)V",
+                "Reasoning": "The `setContentView` method, after initializing the `MainActivity`, logs the string 'DroidBench'.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/clinit/MainActivity;->setContentView(I)V",
+            "Ledu/mit/clinit/MainActivity;->Log.i(...)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/clinit/Test;-><clinit>:()V --> Ledu/mit/clinit/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/clinit/MainActivity;->setContentView(I)V --> Ledu/mit/clinit/MainActivity;->Log.i(...)",
+                "Reasoning": "The device ID is initially obtained from the TelephonyManager and stored in `MainActivity`. The `onCreate` method then sets up the UI and creates an instance of `Test`. Finally, the `setContentView` method logs the string 'DroidBench', which is a direct sink for the potentially tainted device ID."
+            }
+        ],
+        "Label": "leak"
+    }
+]

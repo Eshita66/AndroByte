@@ -1,0 +1,23 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "DeviceId obtained from getDeviceId.",
+                "Source Method": "Lde/ecspride/LocationLeak1$MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "The method summary states that it receives a Location object and converts its latitude and longitude into strings. It then calls two private methods, access$0 and access$1, of the LocationLeak1 class with these strings. This implies the `DeviceId` (latitude and longitude) is initially present in the Location object.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/LocationLeak1$MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V --> access$0 and access$1",
+                "Reasoning": "The method summary indicates that the latitude and longitude are converted to strings and passed to private methods, access$0 and access$1.  There is no information about the data being overwritten or a sink being called."
+            }
+        ],
+        "Label": "no leak"
+    }
+]

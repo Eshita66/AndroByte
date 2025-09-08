@@ -1,0 +1,43 @@
+Processing folder: D:\withoutcallgraphResult\testagain\PublicAPIField2
+Using methods file: D:\withoutcallgraphResult\testagain\PublicAPIField2\PublicAPIField2_bytecode_instructions.json
+Sensitive method found: Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method first invokes the superclass constructor. Then, it calls `setContentView` with an integer constant (2130903040). Next, it attempts to get a `TelephonyManager` using `getSystemService` with the string \"phone\". Finally, it calls `getDeviceId()` on the `TelephonyManager` and logs the result using `Log.i`. The `getDeviceId()` call is the sink. The register `v1` holds the device ID from `getDeviceId()`.  This register is then passed to the sink `Log.i`.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\testagain\PublicAPIField2\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\testagain\PublicAPIField2\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\testagain\PublicAPIField2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "device_id"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID",
+                "Source Method": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `getDeviceId()` method call retrieves the device ID from the TelephonyManager.",
+                "Action": "Store device_id in register v1"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/icc_intent_class_modeling/MainActivity;->Log.i:(Ljava/lang/String;Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/icc_intent_class_modeling/MainActivity;->getDeviceId:(Landroid/telephony/TelephonyManager;)J --> Ledu/mit/icc_intent_class_modeling/MainActivity;->Log.i:(Ljava/lang/String;Ljava/lang/String;)V",
+                "Reasoning": "The `onCreate` method calls `getDeviceId()` on the `TelephonyManager`, which returns the device ID. This device ID is then stored in register v1, and subsequently passed as the first argument to `Log.i`.  The `Log.i` method then logs the device ID."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\testagain\PublicAPIField2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\testagain\PublicAPIField2\output\sensitive_only.json
+Total summary time: 26.550240993499756 seconds

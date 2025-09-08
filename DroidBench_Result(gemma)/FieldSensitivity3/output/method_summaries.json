@@ -1,0 +1,5 @@
+[
+    {
+        "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V": "The method `onCreate` first calls `invoke-super`, which is a standard activity lifecycle method and does not introduce any sensitive data. Then, `setContentView` is called, which is a standard activity method. Next, `Datacontainer` objects are created and populated. `getSimSerialNumber` is called, retrieving the device's SIM serial number. This is a sensitive API call. The `SmsManager.sendTextMessage` is then invoked, passing the SIM serial number (`v1`) as the destination phone number (`vDest`), the SIM serial number as the message body (`vText`), and the default `SmsManager` instance.  This constitutes a clear flow from a sensitive API (`getSimSerialNumber`) to a sensitive sink (`sendTextMessage`). Specifically, instruction `invoke-virtual/range {v0, vDest, vSC, vText, vSent, vDel}` maps `vText` to the SIM serial number, establishing a traceable flow. The SIM serial number is directly used in the `sendTextMessage` sink."
+    }
+]

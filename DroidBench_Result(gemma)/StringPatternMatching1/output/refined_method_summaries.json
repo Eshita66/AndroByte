@@ -1,0 +1,26 @@
+[
+    {
+        "Data Types Collected": [
+            "deviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method calls `getSystemService` to obtain a `TelephonyManager` instance, which then calls `getDeviceId()` to retrieve the device ID as a String.",
+                "Action": "String retrieval"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/pattern_matcher/MainActivity;->Log.i:(Ljava/lang/String;Ljava/lang/String;)",
+            "Ledu/mit/pattern_matcher/MainActivity;->Log.i:(Ljava/lang/String;)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/pattern_matcher/MainActivity;->getSystemService:(String) --> Ledu/mit/pattern_matcher/MainActivity;->getDeviceId() --> Ledu/mit/pattern_matcher/MainActivity;->Log.i:(String, String)",
+                "Reasoning": "The `onCreate` method initiates the flow by obtaining the device ID.  The `getSystemService` call returns a `TelephonyManager` instance, which then calls `getDeviceId()`.  The returned device ID (String) is then used as an argument to the `Log.i` method, resulting in the logging of 'DroidBench' along with the device ID."
+            }
+        ],
+        "Label": "leak"
+    }
+]

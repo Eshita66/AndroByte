@@ -1,0 +1,46 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity1\ObjectSensitivity1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method first calls `getSystemService` with the string \"phone\", retrieving a `TelephonyManager` instance. Then, `getSimSerialNumber()` is invoked on this `TelephonyManager` instance, retrieving the SIM serial number as a string. This string is added to a `LinkedList`. Subsequently, the string \"123\" is added to the same `LinkedList`. Finally, `SmsManager.sendTextMessage` is called with the string \"+49 1234\" as the destination address, \"123\" as the SMSC address, and the SIM serial number (obtained from `getSimSerialNumber()`) as the message body. The sink `sendTextMessage` is triggered because the message body is the tainted SIM serial number. The register `v1` holds the SIM serial number, which is passed as an argument to `sendTextMessage`. The `v1` register is overwritten with the SIM serial number, so it is no longer tainted.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "TelephonyManager",
+            "SIM serial number",
+            "LinkedList",
+            "SmsManager",
+            "sendTextMessage"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve SIM serial number",
+                "Source Method": "Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method calls `getSimSerialNumber()` on a `TelephonyManager` instance, retrieving the SIM serial number.",
+                "Action": "SIM serial number is retrieved and stored in v1."
+            }
+        ],
+        "All Sinks": [
+            "sendTextMessage"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "SIM serial number",
+                "Reasoning": "The SIM serial number is used as the message body in `sendTextMessage`."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity1\output\refined_method_summaries.json
+Saved 0 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity1\output\sensitive_only.json
+Total summary time: 7.783141613006592 seconds

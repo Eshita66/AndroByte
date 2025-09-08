@@ -1,0 +1,47 @@
+Processing folder: D:\withoutcallgraphResult\testagain\UnreachableCode
+Using methods file: D:\withoutcallgraphResult\testagain\UnreachableCode\UnreachableCode_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/UnreachableCode;->unrechable:()V
+Processed summary for Lde/ecspride/UnreachableCode;->unrechable:()V: {
+    "Summary": "The method `Lde/ecspride/UnreachableCode;->unrechable:()V` does not contain any sensitive API calls or data flows. It is an unreachable code block and does not interact with any external resources or data. The `invoke-virtual` instruction to `getBaseContext()` and subsequent calls to `getSystemService` and `getDeviceId` are not executed due to the unreachable code. Therefore, no data leakage is detected. The `Log.i` sink is never triggered because `getDeviceId` does not produce a tainted value.",
+    "Next Methods": []
+}
+Method summaries saved to D:\withoutcallgraphResult\testagain\UnreachableCode\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\testagain\UnreachableCode\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\testagain\UnreachableCode\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "deviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Invoke `getBaseContext()`",
+                "Source Method": "Lde/ecspride/UnreachableCode;->unrechable:()V",
+                "Reasoning": "The `invoke-virtual` instruction to `getBaseContext()` is executed.",
+                "Action": "Obtain `Context` object"
+            },
+            {
+                "Step": "Attempt to retrieve device ID",
+                "Source Method": "Lde/ecspride/UnreachableCode;->unrechable:()V",
+                "Reasoning": "The method `unrechable` contains a call to `getDeviceId` which is never executed due to the unreachable code.",
+                "Action": "Attempt to obtain device ID"
+            }
+        ],
+        "All Sinks": [
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/UnreachableCode;->unrechable:()V --> Attempt to obtain device ID --> null",
+                "Reasoning": "The method `unrechable` contains a call to `getDeviceId` which is never executed due to the unreachable code. Therefore, no data flow or sink is present."
+            }
+        ],
+        "Label": [
+            "no leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\testagain\UnreachableCode\output\refined_method_summaries.json
+Saved 0 'sensitive' subgraphs to: D:\withoutcallgraphResult\testagain\UnreachableCode\output\sensitive_only.json
+Total summary time: 7.743553876876831 seconds

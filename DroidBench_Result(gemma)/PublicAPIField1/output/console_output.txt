@@ -1,0 +1,42 @@
+Processing folder: D:\withoutcallgraphResult\testagain\PublicAPIField1
+Using methods file: D:\withoutcallgraphResult\testagain\PublicAPIField1\PublicAPIField1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method of `MainActivity` first calls `invoke-super`, which is a standard activity lifecycle method and does not involve any sensitive data. Then, `getSystemService` is called with the string \"phone\", which is a standard system service call and does not involve sensitive data. Subsequently, `getDeviceId()` is invoked, which is a sensitive API that retrieves the device ID. The result of `getDeviceId()` is then used to extract a substring and convert it to a float. Finally, the float is used to construct a string, which is then logged using `Log.i`. The flow is traceable: `getDeviceId()` -> `substring()` -> `Float.valueOf()` -> `floatValue()` -> `StringBuilder` -> `Log.i`. This constitutes a clear flow of sensitive data from the `getDeviceId` API to the logging sink.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\testagain\PublicAPIField1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\testagain\PublicAPIField1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\testagain\PublicAPIField1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "device_id"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID",
+                "Source Method": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `getDeviceId()` API call is explicitly identified as a sensitive API.",
+                "Action": "Store device ID"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/public_api_field/MainActivity;->Log.i(TAG, \"Device ID: \" + deviceId)",
+            "Ledu/mit/public_api_field/MainActivity;->Log.i(TAG, \"Device ID: \" + deviceId)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/public_api_field/MainActivity;->Log.i(TAG, \"Device ID: \" + deviceId)",
+                "Reasoning": "The `getDeviceId()` API call is invoked. The returned device ID is then used to construct a string, which is subsequently logged using `Log.i`. The device ID is directly passed as an argument to the logging sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\testagain\PublicAPIField1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\testagain\PublicAPIField1\output\sensitive_only.json
+Total summary time: 8.115286827087402 seconds

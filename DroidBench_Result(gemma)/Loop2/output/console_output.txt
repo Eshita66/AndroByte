@@ -1,0 +1,47 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\Loop2
+Using methods file: D:\withoutcallgraphResult\TestAcessess\Loop2\Loop2_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method `onCreate` first invokes `getSystemService` to obtain a `TelephonyManager` instance. This triggers the `getDeviceId()` method, which returns a string containing the device ID. This string is then used as an argument to `sendTextMessage` via `SmsManager`. The `sendTextMessage` method uses the `vText` argument, which is the `deviceID` string, to send an SMS message.  Specifically, instruction `invoke-virtual v12, v1, Lde/ecspride/LoopExample2;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;` initiates the flow. The `getDeviceId()` call (instruction `invoke-virtual v9, Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;`) is the source of the sensitive data. The `sendTextMessage` call (instruction `invoke-virtual/range v0 ... v5, Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V`) is the sink. The `vText` argument to `sendTextMessage` is directly derived from the `deviceID` obtained from `getDeviceId`.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\Loop2\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\Loop2\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\Loop2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "deviceID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain device ID",
+                "Source Method": "Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method starts with a call to `getSystemService` to get a `TelephonyManager` instance, which then calls `getDeviceId()` to retrieve the device ID.",
+                "Action": "Data Retrieval"
+            },
+            {
+                "Step": "Send SMS with device ID",
+                "Source Method": "Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The retrieved device ID is used as an argument to `sendTextMessage` via `SmsManager`.",
+                "Action": "Data Transmission"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V --> Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)",
+                "Reasoning": "The `getDeviceId()` method returns the `deviceID` string. This string is then directly used as the first argument (`vText`) to the `sendTextMessage` method. This constitutes a direct data flow from the sensitive source to the sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\Loop2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\Loop2\output\sensitive_only.json
+Total summary time: 71.66550755500793 seconds

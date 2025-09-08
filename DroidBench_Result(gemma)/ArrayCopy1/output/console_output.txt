@@ -1,0 +1,58 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\ArrayCopy1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\ArrayCopy1\ArrayCopy1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method of `MainActivity` first calls `invoke-super` to initialize the Activity. Then, it sets the content view using `setContentView`. Subsequently, it obtains the device ID using `getDeviceId` from a `TelephonyManager` instance. This `getDeviceId` call is a sensitive API source. The device ID (String) is then copied into a new array using `arraycopy`, and finally logged using `Log.i`. The flow is: `[getDeviceId -> TelephonyManager -> deviceID -> array -> Log.i]`. The `Log.i` sink is triggered by the device ID.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\ArrayCopy1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\ArrayCopy1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\ArrayCopy1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Activity initialization via `invoke-super`.",
+                "Source Method": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Standard Activity lifecycle method.",
+                "Action": "Initialization"
+            },
+            {
+                "Step": "Retrieval of device ID from TelephonyManager.",
+                "Source Method": "Ledu/mit/array_copy/MainActivity;->getDeviceId",
+                "Reasoning": "Direct call to `getDeviceId` from `TelephonyManager`.",
+                "Action": "Data Extraction"
+            },
+            {
+                "Step": "Copying device ID into an array.",
+                "Source Method": "Ledu/mit/array_copy/MainActivity;->arraycopy",
+                "Reasoning": "Using `arraycopy` to transfer the device ID.",
+                "Action": "Data Storage"
+            },
+            {
+                "Step": "Logging of the device ID.",
+                "Source Method": "Ledu/mit/array_copy/MainActivity;->Log.i",
+                "Reasoning": "The `Log.i` method is triggered by the device ID.",
+                "Action": "Data Transmission"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/array_copy/MainActivity;->Log.i"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/array_copy/MainActivity;->getDeviceId --> Ledu/mit/array_copy/MainActivity;->arraycopy --> Ledu/mit/array_copy/MainActivity;->Log.i"
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\ArrayCopy1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\ArrayCopy1\output\sensitive_only.json
+Total summary time: 18.923768520355225 seconds

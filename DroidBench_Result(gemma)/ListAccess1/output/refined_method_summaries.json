@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "phone number",
+            "neutral text"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Initialization of `listData` with \"phone\" and \"neutral text\".",
+                "Source Method": "Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method initializes a `LinkedList` named `listData` and populates it with the strings \"phone\" and \"neutral text\".",
+                "Action": "Storage"
+            },
+            {
+                "Step": "Obtaining `SmsManager` instance.",
+                "Source Method": "Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method uses `SmsManager.getDefault()` to obtain an instance of `SmsManager` via `getSystemService`.",
+                "Action": "Network Call"
+            },
+            {
+                "Step": "Sending SMS message with tainted phone number.",
+                "Source Method": "Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `SmsManager.sendTextMessage` method is called with the phone number \"+49 1234\" as the destination address (`destAddr`) and the content of `listData` (\"neutral text\") as the message body.",
+                "Action": "Network Call"
+            }
+        ],
+        "All Sinks": [
+            "android.telephony.SmsManager.sendTextMessage(String, String)",
+            "android.telephony.SmsManager.sendTextMessage(String, String)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V --> android.telephony.SmsManager.sendTextMessage(String, String)",
+                "Reasoning": "The `listData` object, initialized with \"phone\" and \"neutral text\", is used to populate the message body for `sendTextMessage`. The destination address is the phone number \"+49 1234\", which is derived from the initial content of `listData`."
+            }
+        ],
+        "Label": "leak"
+    }
+]

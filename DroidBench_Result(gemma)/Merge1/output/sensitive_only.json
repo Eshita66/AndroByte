@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "PhoneNumber"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain Device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "The `getDeviceId()` method is explicitly identified as a sensitive API.",
+                "Action": "Store Device ID"
+            },
+            {
+                "Step": "Instantiate Objects and Send SMS",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "The Device ID is used to create objects and then used to send an SMS message.",
+                "Action": "Transmit SMS"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->aliasFlowTest:()V --> Lde/ecspride/MainActivity;->getDeviceId:()V --> Lde/ecspride/MainActivity;->sendTextMessage:()V",
+                "Reasoning": "The Device ID obtained from `getDeviceId()` is directly used as the message body in `sendTextMessage`. This constitutes a clear flow from a sensitive API to a sensitive sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]

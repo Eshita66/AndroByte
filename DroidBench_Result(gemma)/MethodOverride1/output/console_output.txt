@@ -1,0 +1,42 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\MethodOverride1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\MethodOverride1\MethodOverride1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MethodOverride1;->attachBaseContext:(Landroid/content/Context;)V
+Processed summary for Lde/ecspride/MethodOverride1;->attachBaseContext:(Landroid/content/Context;)V: {
+    "Summary": "The method `attachBaseContext` calls `getSystemService` which uses `getDeviceId`. The `getDeviceId` method is invoked, and the returned string is then passed as the first argument to `Log.d`. The `Log.d` sink is triggered. The `getDeviceId` method is a sensitive API. The flow is: `[getDeviceId -> String -> Log.d]`. Specifically, instruction `invoke-virtual v0, Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;` produces the `String` value, which is then passed to `Log.d`.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\MethodOverride1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\MethodOverride1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\MethodOverride1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "deviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Call to `attachBaseContext` invokes `getSystemService`.",
+                "Source Method": "Lde/ecspride/MethodOverride1;->attachBaseContext:(Landroid/content/Context;)V",
+                "Reasoning": "The `attachBaseContext` method initiates a call to `getSystemService`.",
+                "Action": "Call to `getSystemService`"
+            }
+        ],
+        "All Sinks": [
+            "android/content/ContextImpl/Log.d",
+            "android/content/ContextImpl/Log.d"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MethodOverride1;->attachBaseContext:(Landroid/content/Context;)V --> android/content/ContextImpl/Log.d",
+                "Reasoning": "The `attachBaseContext` method calls `getSystemService` which uses `getDeviceId`. The `getDeviceId` method is invoked, and the returned string is then passed as the first argument to `Log.d`. The `Log.d` sink is triggered."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\MethodOverride1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\MethodOverride1\output\sensitive_only.json
+Total summary time: 83.18965148925781 seconds

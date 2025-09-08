@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain Device ID",
+                "Source Method": "Lde/ecspride/HashMapAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method obtains the device ID using `getDeviceId()` from `TelephonyManager`.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/HashMapAccess1;->sendSMS:(Ljava/lang/String;Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/HashMapAccess1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/HashMapAccess1;->sendSMS:(+49 1234, \"untainted\")",
+                "Reasoning": "The device ID obtained from `getDeviceId()` is stored in a HashMap and then directly transmitted via `sendSMS`."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

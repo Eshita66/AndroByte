@@ -1,0 +1,28 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "Configuration"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Lde/ecspride/MyApplication$1;->onLowMemory:()V",
+                "Reasoning": "The summary states that this method retrieves the device ID from TelephonyManager and stores it in `imei`.",
+                "Action": "Store"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MyApplication$1;->onLowMemory:()V --> DeviceId --> Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V",
+                "Reasoning": "The `onLowMemory` method retrieves the DeviceId and passes it to `onConfigurationChanged`. The DeviceId was not overwritten."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

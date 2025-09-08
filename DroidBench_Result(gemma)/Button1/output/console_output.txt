@@ -1,0 +1,50 @@
+
+ Processing folder: D:\UBCBAPK_Methods\Button1
+ Using methods file: D:\UBCBAPK_Methods\Button1\Button1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "The activity's `onCreate` method is being executed. It calls the superclass's `onCreate` method, sets the content view, retrieves the device ID using TelephonyManager, and stores it in a field named `imei`.",
+    "Next Methods": [
+        "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V => {
+    "Summary": "The method sends an SMS message using the device's IMEI. It constructs the message with the prefix \"+49\" and sends it via the default SmsManager.",
+    "Next Methods": [
+        "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\Button1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\Button1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\Button1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "android.os.Bundle"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method retrieves the device ID using TelephonyManager and stores it in the `imei` field.",
+                "Action": "Store"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The `onCreate` method retrieves the `DeviceId` (IMEI) and passes it to the `sendMessage` method."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\Button1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\Button1\output\sensitive_only.json
+Total time for folder: 10.01 seconds

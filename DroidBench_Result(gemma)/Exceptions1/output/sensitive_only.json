@@ -1,0 +1,37 @@
+[
+    {
+        "Data Types Collected": [
+            "device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Activity initialization via `invoke-super`.",
+                "Source Method": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Standard Android Activity lifecycle method.",
+                "Action": "Initialization"
+            },
+            {
+                "Step": "Obtain device ID from TelephonyManager.",
+                "Source Method": "Lde/ecspride/Exceptions1;->getDeviceId()V",
+                "Reasoning": "The method explicitly retrieves the device ID using `TelephonyManager`.",
+                "Action": "Data Extraction"
+            },
+            {
+                "Step": "Send device ID as SMS message.",
+                "Source Method": "Lde/ecspride/Exceptions1;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+                "Reasoning": "The `sendTextMessage` method uses the device ID as the message body (`vDest`).",
+                "Action": "Transmission"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Exceptions1;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Exceptions1;->getDeviceId()V --> Lde/ecspride/Exceptions1;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)",
+                "Reasoning": "The device ID is obtained from `TelephonyManager` and then directly passed as the `vDest` argument to the `sendTextMessage` method, resulting in a data leak."
+            }
+        ],
+        "Label": "leak"
+    }
+]

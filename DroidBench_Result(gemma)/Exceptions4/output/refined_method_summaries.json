@@ -1,0 +1,31 @@
+[
+    {
+        "Data Types Collected": [
+            "phone number",
+            "device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID",
+                "Source Method": "Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The method calls `getSystemService` with the string \"phone\", which invokes `android.telephony.TelephonyManager->getDeviceId()`.",
+                "Action": "Store"
+            },
+            {
+                "Step": "Construct SMS message",
+                "Source Method": "Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The retrieved device ID is used to construct a `RuntimeException` and subsequently used in `SmsManager.sendTextMessage`.",
+                "Action": "Construct"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Exceptions4;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Exceptions4;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;)"
+            }
+        ],
+        "Label": "leak"
+    }
+]

@@ -1,0 +1,51 @@
+
+ Processing folder: D:\UBCBAPK_Methods\AsynchronousEventOrdering1
+ Using methods file: D:\UBCBAPK_Methods\AsynchronousEventOrdering1\AsynchronousEventOrdering1_bytecode_instructions.json
+Sensitive root methods: ['Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V']
+[SUMMARY] Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V => {
+    "Summary": "The method obtains the device ID from the TelephonyManager and stores it in the `imei` field of the `MainActivity` instance.",
+    "Next Methods": [
+        "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V"
+    ]
+}
+[SUMMARY] Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V => {
+    "Summary": "The method logs a message to the logcat using the string 'DroidBench'.",
+    "Next Methods": [
+        "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onCreate:()V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain Device ID",
+                "Source Method": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V",
+                "Reasoning": "The `onResume` method obtains the device ID from the TelephonyManager and stores it in the `imei` field.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V --> Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V",
+                "Reasoning": "The `onResume` method obtains the DeviceId and passes it to the `onStop` method. The `onStop` method logs a message. The DeviceId was not overwritten."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\sensitive_only.json
+Total time for folder: 10.02 seconds

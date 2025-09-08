@@ -1,0 +1,70 @@
+
+ Processing folder: D:\UBCBAPK_Methods\FragmentLifecycle1
+ Using methods file: D:\UBCBAPK_Methods\FragmentLifecycle1\FragmentLifecycle1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "The `MainActivity` is initializing. It calls the super class `onCreate` method, sets the content view, retrieves the device ID from the TelephonyManager, instantiates and adds an `ExampleFragment` to the activity.",
+    "Next Methods": [
+        "Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V => {
+    "Summary": "The `onAttach` method is called, invoking the superclass's `onAttach` method. Then, the device ID (imei) is retrieved from the `MainActivity` and assigned to the `ExampleFragment`'s `imei` field. Finally, the method returns.",
+    "Next Methods": [
+        "Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V => {
+    "Summary": "The `onActivityCreated` method is called, invoking the superclass's `onActivityCreated` method. Then, it attempts to send a text message using the `SmsManager` with the `imei` field. This likely indicates a potential data flow from a tainted source (imei) to a sink (sending SMS).",
+    "Next Methods": [
+        "Lde/ecspride/ExampleFragment;->sendTextMessage(Landroid/telephony/SmsManager; Ljava/lang/String; ...)"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\FragmentLifecycle1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\FragmentLifecycle1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\FragmentLifecycle1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "imei"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "MainActivity initializes and retrieves DeviceId.",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method retrieves the device ID from the TelephonyManager.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "ExampleFragment retrieves DeviceId from MainActivity.",
+                "Source Method": "Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V",
+                "Reasoning": "The `onAttach` method retrieves the device ID (imei) from the `MainActivity` and assigns it to the `ExampleFragment`'s `imei` field.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "ExampleFragment attempts to send SMS with DeviceId.",
+                "Source Method": "Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onActivityCreated` method attempts to send a text message using the `SmsManager` with the `imei` field, indicating a potential data flow from a tainted source to a sink.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V --> Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V",
+                "Reasoning": "The DeviceId is initially retrieved from the MainActivity's onCreate method and then passed to the ExampleFragment's onAttach method. Finally, the ExampleFragment's onActivityCreated method attempts to send an SMS using the DeviceId."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\FragmentLifecycle1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\FragmentLifecycle1\output\sensitive_only.json
+Total time for folder: 57.65 seconds

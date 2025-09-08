@@ -1,0 +1,25 @@
+[
+    {
+        "Data Types Collected": [
+            "String"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain device ID.",
+                "Source Method": "Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method calls `getSystemService` with the string \"phone\", which returns a `TelephonyManager` instance, subsequently invoking `getDeviceId()` to retrieve the device ID as a String.",
+                "Action": "String retrieval"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/parcel/MainActivity;->writeParcel:(Landroid/os/Parcel;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/parcel/MainActivity;->writeParcel:(Landroid/os/Parcel;)V",
+                "Reasoning": "The `getDeviceId()` method returns a String, which is then directly passed as an argument to the `writeParcel` method. This constitutes a sensitive data leak."
+            }
+        ],
+        "Label": "leak"
+    }
+]

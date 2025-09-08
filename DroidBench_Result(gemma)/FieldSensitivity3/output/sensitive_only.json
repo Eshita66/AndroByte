@@ -1,0 +1,34 @@
+[
+    {
+        "Data Types Collected": [
+            "SIM serial number",
+            "phone number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve SIM serial number",
+                "Source Method": "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle)",
+                "Reasoning": "The `getSimSerialNumber` method is called, directly retrieving the device's SIM serial number.",
+                "Action": "Data retrieval"
+            },
+            {
+                "Step": "Send SMS with SIM serial number",
+                "Source Method": "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle)",
+                "Reasoning": "The retrieved SIM serial number is used as the destination phone number and message body in the `sendTextMessage` method.",
+                "Action": "Data transmission"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/FieldSensitivity3;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Landroid/app/SmsManager;)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle) --> Lde/ecspride/FieldSensitivity3;->getSimSerialNumber:( ) --> Lde/ecspride/FieldSensitivity3;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Landroid/app/SmsManager;)",
+                "Reasoning": "The SIM serial number is initially retrieved via `getSimSerialNumber`. This value is then directly used as the destination phone number and message body within the `sendTextMessage` method.  The `vText` argument in `sendTextMessage` is mapped to the SIM serial number."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

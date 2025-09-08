@@ -1,0 +1,40 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieved and obfuscated.",
+                "Source Method": "Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method retrieves the device ID and calls `obfuscateIMEI`.",
+                "Action": "Obfuscation"
+            },
+            {
+                "Step": "Obfuscated IMEI written to log.",
+                "Source Method": "Lde/ecspride/ImplicitFlow1;->obfuscateIMEI(Ljava/lang/String;)Ljava/lang/String;",
+                "Reasoning": "The `obfuscateIMEI` method obfuscates the IMEI string.",
+                "Action": "Logging"
+            },
+            {
+                "Step": "Log entry containing obfuscated IMEI.",
+                "Source Method": "Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V",
+                "Reasoning": "The `writeToLog` method writes the obfuscated IMEI to the log.",
+                "Action": "Logging"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/ImplicitFlow1;->obfuscateIMEI(Ljava/lang/String;)Ljava/lang/String; --> Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V",
+                "Reasoning": "The `onCreate` method calls `obfuscateIMEI`, which then writes the obfuscated IMEI to the log. The `writeToLog` method is a sink. The IMEI was not overwritten."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

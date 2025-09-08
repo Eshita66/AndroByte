@@ -1,0 +1,49 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "TelephonyManager",
+            "SmsManager",
+            "android.app.Activity"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieved via TelephonyManager.",
+                "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V",
+                "Reasoning": "The summary states this method retrieves the device ID using TelephonyManager.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID used to construct SMS message.",
+                "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V",
+                "Reasoning": "The summary indicates the device ID is used to construct the SMS message.",
+                "Action": "Transmitted"
+            },
+            {
+                "Step": "Device ID used to construct SMS message.",
+                "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V",
+                "Reasoning": "The summary indicates the device ID is used to construct the SMS message.",
+                "Action": "Transmitted"
+            },
+            {
+                "Step": "Device ID used to construct SMS message.",
+                "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityResumed:(Landroid/app/Activity;)V",
+                "Reasoning": "The summary indicates the device ID is used to construct the SMS message.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V",
+            "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityResumed:(Landroid/app/Activity;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V --> Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V",
+                "Reasoning": "The device ID, initially retrieved from TelephonyManager, is used to construct the SMS message and is passed to onActivityPaused and onActivityResumed."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

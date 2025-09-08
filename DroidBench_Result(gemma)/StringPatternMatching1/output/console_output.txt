@@ -1,0 +1,42 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\StringPatternMatching1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\StringPatternMatching1\StringPatternMatching1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method first invokes the superclass constructor. Then, it calls `getSystemService` with \"phone\", retrieving a `TelephonyManager` instance. Subsequently, it calls `getDeviceId()`, which returns a `String`. This `String` is then used as an argument to a regex match, and finally logged with the message \"DroidBench\". The flow is traceable: `getDeviceId()` -> `String` -> `Log.i` (with message \"DroidBench\"). The `getSystemService` call is a sensitive API. The `getDeviceId()` call is a sensitive API. The `Log.i` sink is triggered by the `getDeviceId()` call.  The regex match and `Log.i` are not leaks.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\StringPatternMatching1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\StringPatternMatching1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\StringPatternMatching1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "deviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method calls `getSystemService` to obtain a `TelephonyManager` instance, which then calls `getDeviceId()` to retrieve the device ID as a String.",
+                "Action": "String retrieval"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/pattern_matcher/MainActivity;->Log.i:(Ljava/lang/String;Ljava/lang/String;)",
+            "Ledu/mit/pattern_matcher/MainActivity;->Log.i:(Ljava/lang/String;)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/pattern_matcher/MainActivity;->getSystemService:(String) --> Ledu/mit/pattern_matcher/MainActivity;->getDeviceId() --> Ledu/mit/pattern_matcher/MainActivity;->Log.i:(String, String)",
+                "Reasoning": "The `onCreate` method initiates the flow by obtaining the device ID.  The `getSystemService` call returns a `TelephonyManager` instance, which then calls `getDeviceId()`.  The returned device ID (String) is then used as an argument to the `Log.i` method, resulting in the logging of 'DroidBench' along with the device ID."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\StringPatternMatching1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\StringPatternMatching1\output\sensitive_only.json
+Total summary time: 135.37681460380554 seconds

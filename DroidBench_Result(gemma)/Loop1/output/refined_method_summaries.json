@@ -1,0 +1,31 @@
+[
+    {
+        "Data Types Collected": [
+            "deviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain device ID",
+                "Source Method": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The method calls `getDeviceId` to retrieve the device ID.",
+                "Action": "Retrieve"
+            },
+            {
+                "Step": "Send SMS with device ID",
+                "Source Method": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The retrieved device ID is used as the message body in `sendTextMessage`.",
+                "Action": "Transmit"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/LoopExample1;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/LoopExample1;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)",
+                "Reasoning": "The `getDeviceId` method retrieves the device ID. This ID is then used as the message body (`vText`) in `sendTextMessage`. The `sendTextMessage` method is a sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]

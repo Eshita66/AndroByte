@@ -1,0 +1,26 @@
+[
+    {
+        "Data Types Collected": [
+            "device_id"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID",
+                "Source Method": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `getDeviceId()` API call is explicitly identified as a sensitive API.",
+                "Action": "Store device ID"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/public_api_field/MainActivity;->Log.i(TAG, \"Device ID: \" + deviceId)",
+            "Ledu/mit/public_api_field/MainActivity;->Log.i(TAG, \"Device ID: \" + deviceId)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/public_api_field/MainActivity;->Log.i(TAG, \"Device ID: \" + deviceId)",
+                "Reasoning": "The `getDeviceId()` API call is invoked. The returned device ID is then used to construct a string, which is subsequently logged using `Log.i`. The device ID is directly passed as an argument to the logging sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]

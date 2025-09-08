@@ -1,0 +1,41 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\StartProcessWithSecret1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\StartProcessWithSecret1\StartProcessWithSecret1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method first invokes the superclass constructor. Then, it calls `setContentView` with a constant integer value (2130903040). Subsequently, it obtains the device ID using `getDeviceId()` from the `TelephonyManager`. This is a critical flow. The `getDeviceId()` call is a sensitive API. The device ID is then used to instantiate a `ProcessBuilder` which is a potential sink. The `ProcessBuilder` instantiation and subsequent execution is a sink. The `getDeviceId()` call is the source of the sensitive data, and it is passed as an argument to the `ProcessBuilder`. The `ProcessBuilder` instantiation and execution constitutes a sink. The `getDeviceId()` call is the source of the sensitive data, and it is passed as an argument to the `ProcessBuilder`. The `ProcessBuilder` instantiation and execution constitutes a sink.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\StartProcessWithSecret1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\StartProcessWithSecret1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\StartProcessWithSecret1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "device_id"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain device ID",
+                "Source Method": "Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method calls `getDeviceId()` to retrieve the device ID.",
+                "Action": "Store device ID"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/non_sink_argument_flow/MainActivity;->ProcessBuilder:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/non_sink_argument_flow/MainActivity;->ProcessBuilder:(Ljava/lang/String;)V",
+                "Reasoning": "The `getDeviceId()` call in `onCreate` produces the `device_id`. This `device_id` is then passed as the argument to the `ProcessBuilder` instantiation. The `ProcessBuilder` instantiation and subsequent execution is a sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\StartProcessWithSecret1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\StartProcessWithSecret1\output\sensitive_only.json
+Total summary time: 95.67330551147461 seconds

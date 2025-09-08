@@ -1,0 +1,58 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ApplicationLifecycle1
+ Using methods file: D:\UBCBAPK_Methods\ApplicationLifecycle1\ApplicationLifecycle1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/ApplicationLifecyle1;->onCreate:()V']
+[SUMMARY] Lde/ecspride/ApplicationLifecyle1;->onCreate:()V => {
+    "Summary": "The method initializes the IMEI by retrieving the device ID from the TelephonyManager. This is likely part of an application initialization process.",
+    "Next Methods": [
+        "Lde/ecspride/MainActivity;->onResume:()V"
+    ]
+}
+[SUMMARY] Lde/ecspride/MainActivity;->onResume:()V => {
+    "Summary": "The method calls sendTextMessage on SmsManager with a hardcoded string, likely for testing or demonstration purposes. It initializes the IMEI.",
+    "Next Methods": [
+        "Lde/ecspride/MainActivity;->onResume"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ApplicationLifecycle1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ApplicationLifecycle1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ApplicationLifecycle1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "abc"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Lde/ecspride/ApplicationLifecyle1;->onCreate:()V",
+                "Reasoning": "The onCreate method retrieves the DeviceId from TelephonyManager.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send Text Message with Hardcoded String",
+                "Source Method": "Lde/ecspride/MainActivity;->onResume:()V",
+                "Reasoning": "The onResume method calls sendTextMessage with a hardcoded string, likely using the DeviceId.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ApplicationLifecyle1;->onCreate:()V --> Lde/ecspride/MainActivity;->onResume:()V",
+                "Reasoning": "The DeviceId is initially retrieved from TelephonyManager in onCreate. This value is then passed as an argument to sendTextMessage in onResume."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ApplicationLifecycle1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\ApplicationLifecycle1\output\sensitive_only.json
+Total time for folder: 648.71 seconds

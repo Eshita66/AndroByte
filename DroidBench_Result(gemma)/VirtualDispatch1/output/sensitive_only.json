@@ -1,0 +1,25 @@
+[
+    {
+        "Data Types Collected": [
+            "deviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID",
+                "Source Method": "Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The method calls `getSystemService` with the string \"phone\", triggering the `getDeviceId` method of the `TelephonyManager`.",
+                "Action": "Store"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/VirtualDispatch1;->onSaveInstanceState:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/VirtualDispatch1;->onSaveInstanceState:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `deviceId` obtained from `getDeviceId` is stored in the `imei` field of the `VirtualDispatch1` object. This is then saved during `onSaveInstanceState`."
+            }
+        ],
+        "Label": "leak"
+    }
+]

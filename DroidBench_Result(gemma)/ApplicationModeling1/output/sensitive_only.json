@@ -1,0 +1,26 @@
+[
+    {
+        "Data Types Collected": [
+            "device ID",
+            "imei"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain device ID from TelephonyManager",
+                "Source Method": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method calls `getSystemService` to retrieve a `TelephonyManager` object, and then calls `getDeviceId()` on this object to obtain the device ID.",
+                "Action": "Retrieve"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/application_modeling/MainActivity;->saveImei:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/application_modeling/MainActivity;->saveImei:(Ljava/lang/String;)V",
+                "Reasoning": "The `onCreate` method obtains the device ID from the `TelephonyManager` and stores it in the `imei` field of the `MyApplication` instance. This constitutes a direct flow of the device ID."
+            }
+        ],
+        "Label": "leak"
+    }
+]

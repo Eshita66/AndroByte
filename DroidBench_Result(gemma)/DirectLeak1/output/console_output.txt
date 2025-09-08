@@ -1,0 +1,45 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\DirectLeak1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\DirectLeak1\DirectLeak1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method of `MainActivity` first calls `invoke-super`, which is a standard activity lifecycle method and does not involve sensitive data. Then, `const-string v1, \"phone\"` creates a string literal. Subsequently, `invoke-virtual v6, Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;` calls the `getDeviceId` method, which is a sensitive API. The result is stored in `v6` and then used as an argument to `SmsManager.sendTextMessage`. This demonstrates a flow from `getDeviceId` to `sendTextMessage`. Specifically, the `vText` argument to `sendTextMessage` is tainted with the device ID. The `const/4 v5, 2` instruction sets the value of `v5` to 2, and the subsequent `move-object v3, v5` instruction moves the value of `v5` to `v3`. The `iget-object v4, vInstance, LFoo;->bar:Ljava/lang/String;` instruction retrieves the value of `v3` and assigns it to `v4`. The `aget-object vT, vArr, vIdx` instruction retrieves the value of `v4` and assigns it to `vT` when `vIdx` is 2.  This confirms that `vT` holds the device ID. Finally, the `sendTextMessage` method is called with the tainted device ID as the message body, completing the flow.",
+    "Next Methods": []
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\DirectLeak1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\DirectLeak1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\DirectLeak1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID Retrieval",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method calls `getDeviceId` via `TelephonyManager`.",
+                "Action": "Device ID stored in register `v6`."
+            },
+            {
+                "Step": "Message Construction",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID (from `v6`) is used as the message body for `sendTextMessage`.",
+                "Action": "Message constructed with device ID."
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;[Ljava/lang/String;I)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->getDeviceId()Ljava/lang/String; --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;[Ljava/lang/String;I)V",
+                "Reasoning": "The `getDeviceId` method retrieves the device ID. This ID is then stored in register `v6`. Subsequently, this value is used as the `vText` argument to the `sendTextMessage` method."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\DirectLeak1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\DirectLeak1\output\sensitive_only.json
+Total summary time: 18.821523189544678 seconds

@@ -1,0 +1,49 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\PlayStore1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\PlayStore1\PlayStore1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method of `MainActivity` performs several actions. First, it calls `super.onCreate(Bundle)`, followed by `setContentView(R.layout.main)`. Then, it creates a `FragmentTransaction` to add a placeholder fragment. Critically, it obtains the device ID using `TelephonyManager.getDeviceId()`, and then uses this ID to send an SMS message to the number '+49 1234' using `SmsManager.sendTextMessage`. The message body is the device ID itself. This constitutes a clear flow: `TelephonyManager.getDeviceId()` -> `SmsManager.sendTextMessage` with the device ID as the message body. Therefore, this is a leak.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\PlayStore1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\PlayStore1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\PlayStore1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "device_id",
+            "phone_number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain Device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle)",
+                "Reasoning": "The `onCreate` method calls `TelephonyManager.getDeviceId()` to retrieve the device ID.",
+                "Action": "Store"
+            },
+            {
+                "Step": "Send SMS with Device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle)",
+                "Reasoning": "The retrieved device ID is used as the message body in an SMS transmission.",
+                "Action": "Transmit"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)"
+           
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle) --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)",
+                "Reasoning": "The device ID obtained from `TelephonyManager.getDeviceId()` is directly used as the message body in `SmsManager.sendTextMessage`. This constitutes a clear data flow."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\PlayStore1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\PlayStore1\output\sensitive_only.json
+Total summary time: 37.58706831932068 seconds
