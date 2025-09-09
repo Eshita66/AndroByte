@@ -5,8 +5,7 @@
 Python 3.10–3.12
 ~8 GB RAM recommended
 (Optional) Graphviz for graph images
-Ollama
- for local LLMs (e.g., gemma3)
+Ollama for local LLMs (e.g., gemma3)
 
 ### Step1: Clone the Repository
      git clone https://github.com/<anonymous-or-real-link>/AndroByte.git
@@ -46,39 +45,47 @@ To exit, using command:
       cd AndroByte
 #### Install Dependencies:
 **For Linux/macOS:**
-  # Make install script executable and remove any old environment
+  ##### Make install script executable and remove any old environment
   ```bash
       chmod +x install.sh
       rm -rf venv
    ```
-  # Create and activate a new virtual environment
+  ##### Create and activate a new virtual environment
+    ```bash
       python3 -m venv venv
       source venv/bin/activate
-
-  # Install dependencies
+    ```
+  ##### Install dependencies
+    ```bash
      ./install.sh
+    ```
 
 **For Windows (PowerShell):**
 #### Allow script execution and remove any old environment if it exists
+ ```bash
   Set-ExecutionPolicy -Scope Process Bypass -Force
   Remove-Item -Recurse -Force venv -ErrorAction SilentlyContinue
+ ```
 
 ####  Create and activate a new virtual environment
+  ```bash
       python -m venv venv
       .\venv\Scripts\Activate.ps1
-
+  ```
 ####  Install dependencies
+      ```bash
        .\install.ps1
-
-
-#### Step 4: Run pipeline on a sample APK (per-APK mode)
+      ```
+### Step 4: Run pipeline on a sample APK (per-APK mode)
 We provide a small demo APK (ArrayAccess1.apk) in the APKs/ folder.
 Run the pipeline as follows:
+
   python run_pipeline.py  --config configs/settings.json --apk_name <apk_filename_without_extension>
-
+ 
 Excample Command:
+ ```bash
       python run_pipeline.py --config configs/settings.json --apk_name ArrayAccess1
-
+ ```
 #### Step 5. Verify outputs
 After running the pipeline, results will be created under:
 outputs/ArrayAccess1/output
@@ -95,9 +102,9 @@ cat outputs/ArrayAccess1/output/sensitive_only.json
 
 #### Step 5. (Optional) Run batch mode
 You can analyze multiple APKs at once using batch mode.
-
-python run_pipeline.py --config configs/settings.json --all
-
+ ```bash
+ python run_pipeline.py --config configs/settings.json --all
+ ```
 Results for each APK will be stored separately under outputs/<apk_name>/output/.
 
 ---
