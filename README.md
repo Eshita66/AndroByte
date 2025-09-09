@@ -1,12 +1,18 @@
 # AndroByteTool: Android Privacy Analysis Framework
 
 **AndroByteTool** is a static analysis tool designed to extract sensitive API call paths and summarize user data flow from Android APKs using bytecode-level analysis combined with LLM-based reasoning.
-
+Requirements:
+Python 3.10–3.12
+~8 GB RAM recommended
+(Optional) Graphviz for graph images
+Ollama
+ for local LLMs (e.g., gemma3)
 Step1:
 ##  Clone the Repository
 ```bash
 git clone https://github.com/<anonymous-or-real-link>/AndroByte.git
 cd AndroByte
+## **Step 2: Ollama Installation (Required)**
 
 Step2:
 ##  Ollama Installation (Required)
