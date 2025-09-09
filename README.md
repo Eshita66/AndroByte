@@ -10,7 +10,6 @@ cd AndroByte
 
 Step2:
 ##  Ollama Installation (Required)
-```bash
 This artifact uses [Ollama](https://ollama.com/download) to run local LLMs.
 Please install Ollama for your platform before running AndroByte.
 
