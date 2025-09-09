@@ -27,18 +27,18 @@ Please install Ollama for your platform before running AndroByte.
   [Download Ollama for Windows](https://ollama.com/download)
   .After installation, ensure ollama is on your PATH:
 Check that Ollama is installed correctly using the command:
-  ollama --version
+     ollama --version
 
 Next, pull the required local Large Language Model (e.g., gemma3).
 You can browse available models here:(https://ollama.com/search)
 
 Run the following command to download and start the gemma3 model:
-  ollama run gemma3
+     ollama run gemma3
 
 Finally, verify that the model is installed on your system:
-  ollama list 
+    ollama list 
 To exit, using command:
-  /exit
+    /exit
 
 ### Step3: Return to AndroByte folder
       cd AndroByte
