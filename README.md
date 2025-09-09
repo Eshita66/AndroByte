@@ -53,8 +53,8 @@ To exit, using command:
    ```
   ##### Create and activate a new virtual environment
    
-           python3 -m venv venv
-           source venv/bin/activate
+          python3 -m venv venv
+          source venv/bin/activate
   
   ##### Install dependencies
 
@@ -64,8 +64,8 @@ To exit, using command:
 **For Windows (PowerShell):**
 #### Allow script execution and remove any old environment if it exists
  ```bash
-  Set-ExecutionPolicy -Scope Process Bypass -Force
-  Remove-Item -Recurse -Force venv -ErrorAction SilentlyContinue
+   Set-ExecutionPolicy -Scope Process Bypass -Force
+   Remove-Item -Recurse -Force venv -ErrorAction SilentlyContinue
  ```
 
 ####  Create and activate a new virtual environment
@@ -85,7 +85,7 @@ Run the pipeline as follows:
  
 Excample Command:
  ```bash
-      python run_pipeline.py --config configs/settings.json --apk_name ArrayAccess1
+       python run_pipeline.py --config configs/settings.json --apk_name ArrayAccess1
  ```
 #### Step 5. Verify outputs
 After running the pipeline, results will be created under:
