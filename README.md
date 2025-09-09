@@ -13,7 +13,8 @@ Ollama
 git clone https://github.com/<anonymous-or-real-link>/AndroByte.git
 cd AndroByte
 
-## Step2:Ollama Installation (Required)
+## **Step 2: Ollama Installation (Required)**
+
 This artifact uses [Ollama](https://ollama.com/download) to run local LLMs.
 Please install Ollama for your platform before running AndroByte.
 
