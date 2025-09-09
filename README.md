@@ -14,17 +14,15 @@ Ollama
 ### Step 2: Ollama Installation (Required)
 This artifact uses [Ollama](https://ollama.com/download) to run local LLMs. Please install Ollama for your platform before running AndroByte.
 
-##### For macOS (Bash/zsh in Terminal):**  
-Download and install the macOS package from the official Ollama site:  
-[Download Ollama for macOS](https://ollama.com/download)
+#### For macOS (Bash/zsh in Terminal):  
+Download and install the macOS package from the official Ollama site: [Download Ollama for macOS](https://ollama.com/download)
 
-**For Linux(run in Bash/zsh shell):**
-  curl -fsSL https://ollama.com/install.sh | sh
-
-**For Windows (PowerShell):**
-  Download and run the installer from Ollama for Windows
-  [Download Ollama for Windows](https://ollama.com/download)
-  .After installation, ensure ollama is on your PATH:
+#### For Linux(run in Bash/zsh shell):
+      curl -fsSL https://ollama.com/install.sh | sh
+      
+#### For Windows (PowerShell):
+Download and run the installer from Ollama for Windows. [Download Ollama for Windows](https://ollama.com/download)
+After installation, ensure ollama is on your PATH.
 Check that Ollama is installed correctly using the command:
      ollama --version
 
