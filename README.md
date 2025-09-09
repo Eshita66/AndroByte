@@ -45,38 +45,38 @@ To exit, using command:
 #### Install Dependencies:
 **For Linux/macOS:**
   # Make install script executable and remove any old environment
-  chmod +x install.sh
-  rm -rf venv
+      chmod +x install.sh
+      rm -rf venv
 
   # Create and activate a new virtual environment
-  python3 -m venv venv
-  source venv/bin/activate
+      python3 -m venv venv
+      source venv/bin/activate
 
   # Install dependencies
-  ./install.sh
+     ./install.sh
 
 **For Windows (PowerShell):**
- # Allow script execution and remove any old environment if it exists
+#### Allow script execution and remove any old environment if it exists
   Set-ExecutionPolicy -Scope Process Bypass -Force
   Remove-Item -Recurse -Force venv -ErrorAction SilentlyContinue
 
-# Create and activate a new virtual environment
-  python -m venv venv
-  .\venv\Scripts\Activate.ps1
+####  Create and activate a new virtual environment
+      python -m venv venv
+      .\venv\Scripts\Activate.ps1
 
-# Install dependencies
-  .\install.ps1
+####  Install dependencies
+       .\install.ps1
 
 
-### Step 4: Run pipeline on a sample APK (per-APK mode)
+#### Step 4: Run pipeline on a sample APK (per-APK mode)
 We provide a small demo APK (ArrayAccess1.apk) in the APKs/ folder.
 Run the pipeline as follows:
   python run_pipeline.py  --config configs/settings.json --apk_name <apk_filename_without_extension>
 
 Excample Command:
-  python run_pipeline.py --config configs/settings.json --apk_name ArrayAccess1
+      python run_pipeline.py --config configs/settings.json --apk_name ArrayAccess1
 
-### Step 5. Verify outputs
+#### Step 5. Verify outputs
 After running the pipeline, results will be created under:
 outputs/ArrayAccess1/output
   ├─ ArrayAccess1_bytecode_instructions.json
@@ -90,7 +90,7 @@ outputs/ArrayAccess1/output
 For Quick output validation using command:
 cat outputs/ArrayAccess1/output/sensitive_only.json
 
-### Step 5. (Optional) Run batch mode
+#### Step 5. (Optional) Run batch mode
 You can analyze multiple APKs at once using batch mode.
 
 python run_pipeline.py --config configs/settings.json --all
@@ -98,7 +98,7 @@ python run_pipeline.py --config configs/settings.json --all
 Results for each APK will be stored separately under outputs/<apk_name>/output/.
 
 ---
-### Outputs
+#### Outputs
 Each APK folder under `outputs/` will contain:
 
 - `method_summaries.json` — summaries of each method 
@@ -112,20 +112,10 @@ Each APK folder under `outputs/` will contain:
 - Supports large context windows via chunked instruction summarization.
 
 ---
+Note: Since this tool uses LLMs, outputs may vary slightly between runs, though core detection of sensitive API flows remains consistent.
 
 #### Contact
 For issues or feature requests, please reach out to the tool maintainer or contribute via GitHub.
 
-Note: Since this tool uses LLMs, outputs may vary slightly between runs, though core detection of sensitive API flows remains consistent.
 
-Step 2: Ollama Installation (Required)
 
-This artifact uses Ollama
- to run local LLMs.
-Please install Ollama for your platform before running AndroByte.
-
-For macOS (Bash/zsh in Terminal):
-Download and install the macOS package from the official Ollama site:
-Download Ollama for macOS
-
-For Linux (run in Bash/zsh shell):
