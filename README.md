@@ -117,3 +117,15 @@ Each APK folder under `outputs/` will contain:
 For issues or feature requests, please reach out to the tool maintainer or contribute via GitHub.
 
 Note: Since this tool uses LLMs, outputs may vary slightly between runs, though core detection of sensitive API flows remains consistent.
+
+Step 2: Ollama Installation (Required)
+
+This artifact uses Ollama
+ to run local LLMs.
+Please install Ollama for your platform before running AndroByte.
+
+For macOS (Bash/zsh in Terminal):
+Download and install the macOS package from the official Ollama site:
+Download Ollama for macOS
+
+For Linux (run in Bash/zsh shell):
