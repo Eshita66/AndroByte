@@ -85,12 +85,12 @@ Run the pipeline as follows:
  
 Excample Command:
  ```bash
-       python run_pipeline.py --config configs/settings.json --apk_name ArrayAccess1
+       python run_pipeline.py --config configs/settings.json --apk_name Clone1
  ```
 ### Step 5. Verify outputs
 After running the pipeline, results will be created under:
  ```text
-outputs/ArrayAccess1/output
+outputs/Clone1/output
   ├─ ArrayAccess1_bytecode_instructions.json
   └─ output/
        ├─ method_summaries.json
@@ -100,7 +100,7 @@ outputs/ArrayAccess1/output
        ├─ visited_graph.png
   ```    
 For Quick output validation using command:
-cat outputs/ArrayAccess1/output/sensitive_only.json
+cat outputs/Clone1/output/sensitive_only.json
 
 ### Step 6. (Optional) Run batch mode
 You can analyze multiple APKs at once using batch mode.
