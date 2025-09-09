@@ -1,7 +1,7 @@
 # AndroByteTool: Android Privacy Analysis Framework
 
 **AndroByteTool** is a static analysis tool designed to extract sensitive API call paths and summarize user data flow from Android APKs using bytecode-level analysis combined with LLM-based reasoning.
-Requirements:
+#### Requirements:
 Python 3.10–3.12
 ~8 GB RAM recommended
 (Optional) Graphviz for graph images
@@ -31,21 +31,26 @@ Next, pull the required local Large Language Model (e.g., gemma3).
 You can browse available models here:(https://ollama.com/search)
 
 Run the following command to download and start the gemma3 model:
-     ollama run gemma3
-
+```bash
+ollama run gemma3
+```
 Finally, verify that the model is installed on your system:
-    ollama list 
+```bash
+    ollama list
+``` 
 To exit, using command:
+```bash
     /exit
-
+```
 ### Step3: Return to AndroByte folder
       cd AndroByte
 #### Install Dependencies:
 **For Linux/macOS:**
   # Make install script executable and remove any old environment
+  ```bash
       chmod +x install.sh
       rm -rf venv
-
+   ```
   # Create and activate a new virtual environment
       python3 -m venv venv
       source venv/bin/activate
