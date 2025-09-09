@@ -100,7 +100,9 @@ outputs/Clone1/output
        ├─ visited_graph.png
   ```    
 For Quick output validation using command:
-cat outputs/Clone1/output/sensitive_only.json
+```bash
+  cat outputs/Clone1/output/sensitive_only.json
+  ``` 
 
 ### Step 6. (Optional) Run batch mode
 You can analyze multiple APKs at once using batch mode.
