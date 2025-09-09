@@ -9,11 +9,9 @@ Ollama
  for local LLMs (e.g., gemma3)
 
 ### Step1: Clone the Repository
-
 git clone https://github.com/<anonymous-or-real-link>/AndroByte.git
 cd AndroByte
-
-##Step 2: Ollama Installation (Required)
+### Step 2: Ollama Installation (Required)
 This artifact uses [Ollama](https://ollama.com/download) to run local LLMs.
 Please install Ollama for your platform before running AndroByte.
 
@@ -42,10 +40,9 @@ Finally, verify that the model is installed on your system:
 To exit, using command:
   /exit
 
-Step3: Return to AndroByte folder
+### Step3: Return to AndroByte folder
       cd AndroByte
-
-Install Dependencies:
+#### Install Dependencies:
 **For Linux/macOS:**
   # Make install script executable and remove any old environment
   chmod +x install.sh
@@ -71,7 +68,7 @@ Install Dependencies:
   .\install.ps1
 
 
-Step 4: Run pipeline on a sample APK (per-APK mode)
+### Step 4: Run pipeline on a sample APK (per-APK mode)
 We provide a small demo APK (ArrayAccess1.apk) in the APKs/ folder.
 Run the pipeline as follows:
   python run_pipeline.py  --config configs/settings.json --apk_name <apk_filename_without_extension>
@@ -79,7 +76,7 @@ Run the pipeline as follows:
 Excample Command:
   python run_pipeline.py --config configs/settings.json --apk_name ArrayAccess1
 
-Step 4. Verify outputs
+### Step 5. Verify outputs
 After running the pipeline, results will be created under:
 outputs/ArrayAccess1/output
   ├─ ArrayAccess1_bytecode_instructions.json
@@ -93,7 +90,7 @@ outputs/ArrayAccess1/output
 For Quick output validation using command:
 cat outputs/ArrayAccess1/output/sensitive_only.json
 
-Step 5. (Optional) Run batch mode
+### Step 5. (Optional) Run batch mode
 You can analyze multiple APKs at once using batch mode.
 
 python run_pipeline.py --config configs/settings.json --all
@@ -101,7 +98,7 @@ python run_pipeline.py --config configs/settings.json --all
 Results for each APK will be stored separately under outputs/<apk_name>/output/.
 
 ---
-## Outputs
+### Outputs
 Each APK folder under `outputs/` will contain:
 
 - `method_summaries.json` — summaries of each method 
@@ -111,12 +108,12 @@ Each APK folder under `outputs/` will contain:
 
 ---
 
-## Notes
+#### Notes
 - Supports large context windows via chunked instruction summarization.
 
 ---
 
-## Contact
+#### Contact
 For issues or feature requests, please reach out to the tool maintainer or contribute via GitHub.
 
 Note: Since this tool uses LLMs, outputs may vary slightly between runs, though core detection of sensitive API flows remains consistent.
