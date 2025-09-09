@@ -24,8 +24,9 @@ Download and install the macOS package from the official Ollama site: [Download 
 Download and run the installer from Ollama for Windows. [Download Ollama for Windows](https://ollama.com/download)
 After installation, ensure ollama is on your PATH.
 Check that Ollama is installed correctly using the command:
-```markdown
+```bash
 ollama --version
+```  
 Next, pull the required local Large Language Model (e.g., gemma3).
 You can browse available models here:(https://ollama.com/search)
 
