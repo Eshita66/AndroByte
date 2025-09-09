@@ -7,14 +7,14 @@ Python 3.10–3.12
 (Optional) Graphviz for graph images
 Ollama
  for local LLMs (e.g., gemma3)
-Step1:
-##  Clone the Repository
+
+## Step1: Clone the Repository
 ```bash
 git clone https://github.com/<anonymous-or-real-link>/AndroByte.git
 cd AndroByte
 
 Step2:
-##  Ollama Installation (Required)
+## Ollama Installation (Required)
 This artifact uses [Ollama](https://ollama.com/download) to run local LLMs.
 Please install Ollama for your platform before running AndroByte.
 
