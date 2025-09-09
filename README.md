@@ -2,11 +2,12 @@
 
 **AndroByteTool** is a static analysis tool designed to extract sensitive API call paths and summarize user data flow from Android APKs using bytecode-level analysis combined with LLM-based reasoning.
 #### Requirements:
+ ```text
 Python 3.10–3.12
 ~8 GB RAM recommended
 (Optional) Graphviz for graph images
 Ollama for local LLMs (e.g., gemma3)
-
+ ```
 ### Step1: Clone the Repository
      git clone https://github.com/<anonymous-or-real-link>/AndroByte.git
      cd AndroByte
@@ -51,14 +52,14 @@ To exit, using command:
       rm -rf venv
    ```
   ##### Create and activate a new virtual environment
-    ```bash
+   
            python3 -m venv venv
            source venv/bin/activate
-     ```
+  
   ##### Install dependencies
-    ```bash
+
         ./install.sh
-    ```
+   
 
 **For Windows (PowerShell):**
 #### Allow script execution and remove any old environment if it exists
@@ -73,9 +74,9 @@ To exit, using command:
       .\venv\Scripts\Activate.ps1
   ```
 ####  Install dependencies
-      ```bash
+   
           .\install.ps1
-      ```
+     
 ### Step 4: Run pipeline on a sample APK (per-APK mode)
 We provide a small demo APK (ArrayAccess1.apk) in the APKs/ folder.
 Run the pipeline as follows:
