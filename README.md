@@ -25,8 +25,6 @@ Download and run the installer from Ollama for Windows. [Download Ollama for Win
 After installation, ensure ollama is on your PATH.
 Check that Ollama is installed correctly using the command:
 ```markdown
-Check Ollama installation:
-```bash
 ollama --version
 Next, pull the required local Large Language Model (e.g., gemma3).
 You can browse available models here:(https://ollama.com/search)
