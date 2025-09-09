@@ -103,4 +103,4 @@ Write-Host "Activate the environment in this shell with:" -ForegroundColor Green
 Write-Host "  .\venv\Scripts\Activate.ps1" -ForegroundColor Green
 Write-Host ""
 Write-Host "Run a quick test:" -ForegroundColor Green
-Write-Host "  python run_pipeline.py --config configs\settings.json --apk_name ArrayAccess1" -ForegroundColor Green
+Write-Host "  python run_pipeline.py --config configs\settings.json --apk_name Clone1" -ForegroundColor Green
