@@ -78,7 +78,7 @@ To exit, using command:
           .\install.ps1
      
 ### Step 4: Run pipeline on a sample APK (per-APK mode)
-We provide a small demo APK (ArrayAccess1.apk) in the APKs/ folder.
+We provide a small demo APK (Clone1.apk) in the APKs/ folder.
 Run the pipeline as follows:
 
   python run_pipeline.py  --config configs/settings.json --apk_name <apk_filename_without_extension>
@@ -91,7 +91,7 @@ Excample Command:
 After running the pipeline, results will be created under:
  ```text
 outputs/Clone1/output
-  ├─ ArrayAccess1_bytecode_instructions.json
+  ├─ Clone1_bytecode_instructions.json
   └─ output/
        ├─ method_summaries.json
        ├─ refined_method_summaries.json
