@@ -12,7 +12,6 @@ Step1:
 ```bash
 git clone https://github.com/<anonymous-or-real-link>/AndroByte.git
 cd AndroByte
-## **Step 2: Ollama Installation (Required)**
 
 Step2:
 ##  Ollama Installation (Required)
