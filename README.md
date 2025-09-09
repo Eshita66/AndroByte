@@ -9,7 +9,7 @@ Ollama
  for local LLMs (e.g., gemma3)
 
 ### Step1: Clone the Repository
-```bash
+
 git clone https://github.com/<anonymous-or-real-link>/AndroByte.git
 cd AndroByte
 
