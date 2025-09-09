@@ -42,9 +42,9 @@ To exit, using command:
 ```bash
     /exit
 ```
-### Step3: Return to AndroByte folder
+### Step3: Install Dependencies:
+#### Return to AndroByte folder
       cd AndroByte
-#### Install Dependencies:
 **For Linux/macOS:**
   ##### Make install script executable and remove any old environment
   ```bash
