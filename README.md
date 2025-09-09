@@ -52,12 +52,12 @@ To exit, using command:
    ```
   ##### Create and activate a new virtual environment
     ```bash
-      python3 -m venv venv
-      source venv/bin/activate
-    ```
+           python3 -m venv venv
+           source venv/bin/activate
+     ```
   ##### Install dependencies
     ```bash
-     ./install.sh
+          ./install.sh
     ```
 
 **For Windows (PowerShell):**
@@ -74,7 +74,7 @@ To exit, using command:
   ```
 ####  Install dependencies
       ```bash
-       .\install.ps1
+            .\install.ps1
       ```
 ### Step 4: Run pipeline on a sample APK (per-APK mode)
 We provide a small demo APK (ArrayAccess1.apk) in the APKs/ folder.
@@ -88,6 +88,7 @@ Excample Command:
  ```
 #### Step 5. Verify outputs
 After running the pipeline, results will be created under:
+ ```text
 outputs/ArrayAccess1/output
   ├─ ArrayAccess1_bytecode_instructions.json
   └─ output/
@@ -96,7 +97,7 @@ outputs/ArrayAccess1/output
        ├─ sensitive_calls.json
        ├─ sensitive_only.json
        ├─ visited_graph.png
-       
+  ```    
 For Quick output validation using command:
 cat outputs/ArrayAccess1/output/sensitive_only.json
 
