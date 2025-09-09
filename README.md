@@ -12,10 +12,10 @@ Ollama
      git clone https://github.com/<anonymous-or-real-link>/AndroByte.git
      cd AndroByte
 ### Step 2: Ollama Installation (Required)
-      This artifact uses [Ollama](https://ollama.com/download) to run local LLMs.
-      Please install Ollama for your platform before running AndroByte.
+    This artifact uses [Ollama](https://ollama.com/download) to run local LLMs.
+    Please install Ollama for your platform before running AndroByte.
 
-  **For macOS (Bash/zsh in Terminal):**  
+##### For macOS (Bash/zsh in Terminal):**  
       Download and install the macOS package from the official Ollama site:  
       [Download Ollama for macOS](https://ollama.com/download)
 
