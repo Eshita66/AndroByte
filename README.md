@@ -2,73 +2,82 @@
 
 **AndroByteTool** is a static analysis tool designed to extract sensitive API call paths and summarize user data flow from Android APKs using bytecode-level analysis combined with LLM-based reasoning.
 
-## Project Structure
-```text
-AndroByteTool/
-├── run_pipeline.py              # Main entry point
-├── parser/
-│   └── apk_parser.py            # APK parsing and extracts bytecode instructions
-├── summarizer/
-│   └── llm_summarizer.py        # Summarization module + Ollama API + helper functions
-├── resources/
-│   └── API.json                 # JSON list of sensitive API signatures
-├── outputs/
-│   └── <apk_name>/              # Output per APK
+Step1:
+##  Clone the Repository
+```bash
+git clone https://github.com/<anonymous-or-real-link>/AndroByte.git
+cd AndroByte
 
-
-## ⚠️ Ollama Installation (Required)
-
+Step2:
+##  Ollama Installation (Required)
 This artifact uses [Ollama](https://ollama.com/download) to run local LLMs.
+Please install Ollama for your platform before running AndroByte.
 
-Please install Ollama for your platform.
-**Run the following commands in your system terminal (Terminal on macOS/Linux, PowerShell on Windows).**
+**For macOS (Bash/zsh in Terminal):**  
+  Download and install the macOS package from the official Ollama site:  
+  [Download Ollama for macOS](https://ollama.com/download)
 
-For macOS:  
-Download and run the installer from Ollama for MacOS
+**For Linux(run in Bash/zsh shell):**
+  curl -fsSL https://ollama.com/install.sh | sh
 
+**For Windows (PowerShell):**
+  Download and run the installer from Ollama for Windows
+  [Download Ollama for Windows](https://ollama.com/download)
+  .After installation, ensure ollama is on your PATH:
+Check that Ollama is installed correctly using the command:
+  ollama --version
 
-For Linux:
-curl -fsSL https://ollama.com/install.sh | sh
+Next, pull the required local Large Language Model (e.g., gemma3).
+You can browse available models here:(https://ollama.com/search)
 
-For Windows:
-Download and run the installer from Ollama for Windows
-.After installation, ensure ollama is on your PATH:
+Run the following command to download and start the gemma3 model:
+  ollama run gemma3
 
-ollama --version
+Finally, verify that the model is installed on your system:
+  ollama list 
+To exit, using command:
+  /exit
 
-Finally pull the required model
+Step3: Return to AndroByte folder
+      cd AndroByte
 
-ollama run gemma3
-
-check the model is installed in your system
-
-ollama list 
-
-
-Step1: Open a terminal in the project root (bash/zsh on Linux/macOS, PowerShell on Windows)
-make scripts executable & clean env
-For Linux/macOS
+Install Dependencies:
+**For Linux/macOS:**
+  # Make install script executable and remove any old environment
   chmod +x install.sh
   rm -rf venv
 
-Step 2: Create new Virtual Environment and activate
+  # Create and activate a new virtual environment
   python3 -m venv venv
   source venv/bin/activate
 
-Step3: Install dependencies 
+  # Install dependencies
   ./install.sh
 
-Step 3. Run pipeline on a sample APK (per-APK mode, primary)
+**For Windows (PowerShell):**
+ # Allow script execution and remove any old environment if it exists
+  Set-ExecutionPolicy -Scope Process Bypass -Force
+  Remove-Item -Recurse -Force venv -ErrorAction SilentlyContinue
+
+# Create and activate a new virtual environment
+  python -m venv venv
+  .\venv\Scripts\Activate.ps1
+
+# Install dependencies
+  .\install.ps1
+
+
+Step 4: Run pipeline on a sample APK (per-APK mode)
 We provide a small demo APK (ArrayAccess1.apk) in the APKs/ folder.
+Run the pipeline as follows:
+  python run_pipeline.py  --config configs/settings.json --apk_name <apk_filename_without_extension>
 
-python run_pipeline.py  --config configs/settings.json --apk_name <apk_filename_without_extension>
-
-Excample:
+Excample Command:
   python run_pipeline.py --config configs/settings.json --apk_name ArrayAccess1
 
 Step 4. Verify outputs
-
-outputs/ArrayAccess1/
+After running the pipeline, results will be created under:
+outputs/ArrayAccess1/output
   ├─ ArrayAccess1_bytecode_instructions.json
   └─ output/
        ├─ method_summaries.json
@@ -76,18 +85,18 @@ outputs/ArrayAccess1/
        ├─ sensitive_calls.json
        ├─ sensitive_only.json
        ├─ visited_graph.png
-       └─ console_output.txt
-
-
-For Quick validation:
-
+       
+For Quick output validation using command:
 cat outputs/ArrayAccess1/output/sensitive_only.json
+
 Step 5. (Optional) Run batch mode
+You can analyze multiple APKs at once using batch mode.
 
 python run_pipeline.py --config configs/settings.json --all
 
----
+Results for each APK will be stored separately under outputs/<apk_name>/output/.
 
+---
 ## Outputs
 Each APK folder under `outputs/` will contain:
 
@@ -95,7 +104,6 @@ Each APK folder under `outputs/` will contain:
 - `refined_method_summaries.json` — summaries of each subgraph
 - `sensitive_only.json` — subgraphs labeled as leak
 - `visited_graph.png` — graph of analyzed paths
-- `console_output.txt` — logs for debugging
 
 ---
 
