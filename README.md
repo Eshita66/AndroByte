@@ -57,7 +57,7 @@ To exit, using command:
      ```
   ##### Install dependencies
     ```bash
-          ./install.sh
+        ./install.sh
     ```
 
 **For Windows (PowerShell):**
@@ -74,7 +74,7 @@ To exit, using command:
   ```
 ####  Install dependencies
       ```bash
-            .\install.ps1
+          .\install.ps1
       ```
 ### Step 4: Run pipeline on a sample APK (per-APK mode)
 We provide a small demo APK (ArrayAccess1.apk) in the APKs/ folder.
