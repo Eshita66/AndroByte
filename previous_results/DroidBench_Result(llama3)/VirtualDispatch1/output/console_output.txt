@@ -1,0 +1,59 @@
+
+ Processing folder: D:\UBCBAPK_Methods\VirtualDispatch1
+ Using methods file: D:\UBCBAPK_Methods\VirtualDispatch1\VirtualDispatch1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "Potential field-based leak detected: imei field written by this method may be read by Lde/ecspride/VirtualDispatch1;->clickButton:(Landroid/view/View;)V",
+    "Next Methods": [
+        "Lcom/example/MyClass;->someMethod(...)",
+        "Lde/ecspride/VirtualDispatch1;->clickButton(Landroid/view/View;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/VirtualDispatch1;->clickButton(Landroid/view/View;)V => {
+    "Summary": "Potential field-based leak detected: imei field written by this method may be read by Lde/ecspride/VirtualDispatch1;->clickButton:(Landroid/view/View;)V",
+    "Next Methods": [
+        "Lde/ecspride/DataLeak;",
+        "Lde/ecspride/NoDataLeak;"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\VirtualDispatch1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\VirtualDispatch1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\VirtualDispatch1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "imei field written by onCreate() method",
+                "Source Method": "Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Potential field-based leak detected: imei field written by this method may be read by Lde/ecspride/VirtualDispatch1;->clickButton:(Landroid/view/View;)V",
+                "Action": "Stored"
+            },
+            {
+                "Step": "imei field overwritten with no sensitive value in clickButton() method",
+                "Source Method": "Lde/ecspride/VirtualDispatch1;->clickButton(Landroid/view/View;)V",
+                "Reasoning": "Potential field-based leak detected: imei field written by this method may be read by Lde/ecspride/VirtualDispatch1;->clickButton:(Landroid/view/View;)V",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/VirtualDispatch1;->clickButton(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V --> imei field written by this method may be read by Lde/ecspride/VirtualDispatch1;->clickButton:(Landroid/view/View;)V --> Lde/ecspride/VirtualDispatch1;->clickButton(Landroid/view/View;)V",
+                "Reasoning": "The imei field is written by the onCreate() method and may be read by the clickButton() method, which then logs it."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\VirtualDispatch1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\VirtualDispatch1\output\sensitive_only.json
+Total time for folder: 13.11 seconds

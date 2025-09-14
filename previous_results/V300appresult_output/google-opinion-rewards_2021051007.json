@@ -1,0 +1,43 @@
+[
+  {
+    "Data Types Collected": [
+      "SSID",
+      "WiFi connection information",
+      "Phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get SSID from WifiInfo",
+        "Source Method": "Lorg/chromium/net/aj;->a:()Ljava/lang/String;",
+        "Reasoning": "The method originates sensitive user personal data through the invocation of `getSSID()` from `android/net/wifi/WifiInfo`.",
+        "Action": "Stored in register v1 and passed to other methods via method invocations."
+      },
+      {
+        "Step": "Get WiFi connection information",
+        "Source Method": "Lorg/chromium/net/aj;->c:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The method originates user personal data by calling the getConnectionInfo method of WifiManager to retrieve the current WiFi connection information.",
+        "Action": "Stored in register v0 and passed back as a return object."
+      },
+      {
+        "Step": "Get phone number through PackageManager",
+        "Source Method": "Lorg/chromium/net/aj;->b:()Z",
+        "Reasoning": "The method originates user personal data through the getPackageManager() and getPackageName() API calls.",
+        "Action": "Stored in registers v0 and v1."
+      }
+    ],
+    "All Sinks": [
+      "Lorg/chromium/net/aj;->a:()Ljava/lang/String;",
+      "Lorg/chromium/net/aj;->c:()Landroid/net/wifi/WifiInfo;",
+      "Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/chromium/net/aj;->a:()Ljava/lang/String; --> Lorg/chromium/net/aj;->c:()Landroid/net/wifi/WifiInfo; --> Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The SSID is first retrieved from WifiInfo, then WiFi connection information is obtained and used to get the SSID. Finally, the SSID is returned."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

@@ -1,0 +1,43 @@
+Processing folder: D:\UBCBAPK_Methods\Exceptions3
+Using methods file: D:\UBCBAPK_Methods\Exceptions3\Exceptions3_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/Exceptions3;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/Exceptions3;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "In the method onCreate of class de/ecspride/Exceptions3, no sensitive personal data operations were observed in this method related to its own originations. However, it uses the TelephonyManager API to retrieve the device ID which is then used for sending an SMS message with a predefined text.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\Exceptions3\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Exceptions3\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Exceptions3\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/Exceptions3;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID using TelephonyManager, which is a sensitive operation.",
+                "Action": "Retrieved"
+            },
+            {
+                "Step": "Use device ID to send SMS with predefined text",
+                "Source Method": "Lde/ecspride/Exceptions3;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The retrieved device ID is used in a subsequent operation that sends an SMS, which involves sensitive data.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Exceptions3;->onCreate:(Landroid/os/Bundle;)V --> Retrieve device ID from TelephonyManager --> Use device ID to send SMS with predefined text",
+                "Reasoning": "The method starts by retrieving the device ID, which is then used in a subsequent operation that sends an SMS. This constitutes a data flow where sensitive information is involved."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Exceptions3\output\refined_method_summaries.json
+Saved 0 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Exceptions3\output\sensitive_only.json
+Total summary time: 227.76925134658813 seconds

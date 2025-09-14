@@ -1,0 +1,40 @@
+
+Processing folder: D:\UBCBAPK_Methods\ObjectSensitivity1
+Using methods file: D:\UBCBAPK_Methods\ObjectSensitivity1\ObjectSensitivity1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the SIM serial number and sends it as part of an SMS message, potentially exposing user personal data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "SIM serial number"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval of SIM serial number",
+            "Source Method": "Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method retrieves the SIM serial number from the device and prepares to send it as part of an SMS message.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+    
+        "Log.i(...)",
+        "Toast.makeText(...)"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V --> ... --> Sink Method: Lde/ecspride/ObjectSensitivity1;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;]",
+            "Reasoning": "The SIM serial number is retrieved and prepared for transmission. The getSystemService method could potentially log the data, but without further action by the developer (like setting a specific permission or handling), it remains unlogged."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ObjectSensitivity1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ObjectSensitivity1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ObjectSensitivity1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ObjectSensitivity1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ObjectSensitivity1\output\sensitive_only.json
+Total time for folder: 583.89 seconds

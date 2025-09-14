@@ -1,0 +1,39 @@
+Processing folder: D:\UBCBAPK_Methods\ReflctionOverloaded
+Using methods file: D:\UBCBAPK_Methods\ReflctionOverloaded\ReflctionOverloaded_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "This method originates user data by obtaining the device ID using the `getDeviceId()` method of the `TelephonyManager`. Specifically, it uses the `android.telephony.TelephonyManager` to retrieve the device ID, which is then stored in the `v2` register. The device ID is a string 'junbin.ubc.MainActivity'. The method then uses reflection to invoke a custom method named 'leak' with the device ID as an argument.  No sinks are identified in this method.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ReflctionOverloaded\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ReflctionOverloaded\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ReflctionOverloaded\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain Device ID",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method obtains the device ID using `getDeviceId()` and stores it in the `v2` register.",
+                "Action": "Store"
+            }
+        ],
+        "All Sinks": [
+            "Ljunbin/ubc/MainActivity;->leak:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljunbin/ubc/MainActivity;->leak:(Ljava/lang/String;)V",
+                "Reasoning": "The `onCreate` method obtains the DeviceId and passes it as an argument to the `leak` method."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ReflctionOverloaded\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ReflctionOverloaded\output\sensitive_only.json
+Total summary time: 7.329085350036621 seconds

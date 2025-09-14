@@ -1,0 +1,51 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Read MAC address from /sys/class/net/<interface>/address",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by reading the MAC address from a file.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass MAC address to BufferedReader",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method passes the read MAC address to a BufferedReader.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Return MAC address as result",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method returns the MAC address as its result.",
+        "Action": "Returned"
+      },
+      {
+        "Step": "Read MAC address from WiFi connection",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data from the MAC address of the device's WiFi connection.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass MAC address to loadAddress",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method passes the read MAC address to loadAddress.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> null",
+        "Reasoning": "The MAC address is read from the WiFi connection, passed to loadAddress, but no sink points are reached."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  }
+]

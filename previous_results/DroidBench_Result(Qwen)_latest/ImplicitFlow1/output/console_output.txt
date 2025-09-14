@@ -1,0 +1,56 @@
+
+Processing folder: D:\UBCBAPK_Methods\ImplicitFlow1
+Using methods file: D:\UBCBAPK_Methods\ImplicitFlow1\ImplicitFlow1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the device IMEI via TelephonyManager.getDeviceId(), obfuscates it, copies it, and writes both to logs via writeToLog(). The IMEI is passed to a real sink (writeToLog) which logs sensitive data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID (IMEI)"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve device IMEI",
+            "Source Method": "Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method directly calls TelephonyManager.getDeviceId() to obtain the device IMEI.",
+            "Action": "Collected"
+        },
+        {
+            "Step": "Obfuscate IMEI",
+            "Source Method": "Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The IMEI is passed to obfuscateIMEI() for transformation.",
+            "Action": "Transformed"
+        },
+        {
+            "Step": "Copy IMEI",
+            "Source Method": "Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The IMEI is copied via copyIMEI() method.",
+            "Action": "Copied"
+        },
+        {
+            "Step": "Log IMEI and obfuscated value",
+            "Source Method": "Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "Both original and obfuscated IMEI are written to logs via writeToLog() method.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V",
+            "Reasoning": "The IMEI is retrieved via TelephonyManager.getDeviceId(), obfuscated, copied, and both values are passed to writeToLog(), which logs sensitive data to a real sink."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ImplicitFlow1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ImplicitFlow1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ImplicitFlow1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ImplicitFlow1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ImplicitFlow1\output\sensitive_only.json
+Total time for folder: 21.33 seconds

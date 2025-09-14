@@ -1,0 +1,40 @@
+
+Processing folder: D:\UBCBAPK_Methods\EventOrderingTest
+Using methods file: D:\UBCBAPK_Methods\EventOrderingTest\EventOrderingTest_bytecode_instructions.json
+Source methods with sensitive calls: ['Llina/ubc/eventorderingtest/ActivityWithFlow;->assignSensitivityInfo:()V']
+[SUMMARY] Llina/ubc/eventorderingtest/ActivityWithFlow;->assignSensitivityInfo:()V => This method retrieves the device ID from the TelephonyManager system service, which can be considered sensitive information as it uniquely identifies the mobile device. The retrieved device ID is then stored in a class variable named 'deviceId'.
+[SUMMARY] Llina/ubc/eventorderingtest/ActivityWithFlow;->onCreate:(Landroid/os/Bundle;)V => The method does not originate or store user personal data. It retrieves and logs the device ID which might be considered sensitive, but since it's just being logged without any further processing or passing to other methods, there is no direct risk of leaking this information.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval and Storage",
+            "Source Method": "Llina/ubc/eventorderingtest/ActivityWithFlow;->assignSensitivityInfo:()V",
+            "Reasoning": "The method retrieves device ID from TelephonyManager and stores it in a class variable 'deviceId'.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+        "Llina/ubc/eventorderingtest/ActivityWithFlow;->onCreate:(Landroid/os/Bundle;)V",
+        "Log.i(...) is considered a real sink if it logs tainted data."
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Llina/ubc/eventorderingtest/ActivityWithFlow;->assignSensitivityInfo:()V --> deviceId stored in class variable",
+            "Reasoning": "The method retrieves the device ID from TelephonyManager and stores it directly in a class variable, which is then potentially logged in onCreate()."
+        }
+    ],
+    "Label": "no leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\EventOrderingTest\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\EventOrderingTest\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\EventOrderingTest\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\EventOrderingTest\output\visited_graph
+Saved 0 'leak' subgraphs to: D:\UBCBAPK_Methods\EventOrderingTest\output\sensitive_only.json
+Total time for folder: 86.99 seconds

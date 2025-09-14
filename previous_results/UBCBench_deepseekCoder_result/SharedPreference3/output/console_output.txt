@@ -1,0 +1,53 @@
+
+Processing folder: D:\UBCBAPK_Methods\SharedPreference3
+Using methods file: D:\UBCBAPK_Methods\SharedPreference3\SharedPreference3_bytecode_instructions.json
+Source methods with sensitive calls: ['Llina/ubc/sharedpreference3/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Llina/ubc/sharedpreference3/MainActivity;->onCreate:(Landroid/os/Bundle;)V => In the given method, sensitive data such as the device ID obtained from TelephonyManager and user-defined string values are handled within the MainActivity. The device ID is stored in a global variable (globalImei) and shared preferences under specific keys. User-defined strings are saved in the SharedPreferences of the application.
+[SUMMARY] Llina/ubc/sharedpreference3/MainActivity;->access$000:(Llina/ubc/sharedpreference3/MainActivity;)Ljava/lang/String; => The method retrieves the value of 'globalImei' field from an instance of 'MainActivity'. This field holds user-specific information, potentially including personally identifiable information (PII). The method then returns this string.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID (TelephonyManager)",
+        "User-defined strings"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Device ID retrieval and storage",
+            "Source Method": "Llina/ubc/sharedpreference3/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "TelephonyManager is used to retrieve the device ID, which is stored in a global variable (globalImei) and SharedPreferences.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "User-defined strings storage",
+            "Source Method": "Llina/ubc/sharedpreference3/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "User-defined strings are saved in the SharedPreferences of the application.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Sensitive data retrieval and use",
+            "Source Method": "Llina/ubc/sharedpreference3/MainActivity;->access$000:(Llina/ubc/sharedpreference3/MainActivity;)Ljava/lang/String;",
+            "Reasoning": "The method retrieves the value of 'globalImei' field which contains potentially sensitive information.",
+            "Action": "Retrieved"
+        }
+    ],
+    "All Sinks": [
+        "Llina/ubc/sharedpreference3/MainActivity;->access$000:(Llina/ubc/sharedpreference3/MainActivity;)Ljava/lang/String;",
+        "Llina/ubc/sharedpreference3/MainActivity;->setContentView(I)"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Llina/ubc/sharedpreference3/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Store device ID and strings in SharedPreferences --> Source Method: Llina/ubc/sharedpreference3/MainActivity;->access$000:(Llina/ubc/sharedpreference3/MainActivity;)Ljava/lang/String;]",
+            "Reasoning": "The device ID and user-defined strings are initially stored during app creation, and later accessed via the global variable which contains this information."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\SharedPreference3\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\SharedPreference3\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\SharedPreference3\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\SharedPreference3\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\SharedPreference3\output\sensitive_only.json
+Total time for folder: 235.08 seconds

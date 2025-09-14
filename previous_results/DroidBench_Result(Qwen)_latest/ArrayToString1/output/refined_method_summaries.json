@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval",
+                "Source Method": "Ledu/mit/to_string/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID using TelephonyManager.getDeviceId()",
+                "Action": "Stored"
+            },
+            {
+                "Step": "String conversion",
+                "Source Method": "Ledu/mit/to_string/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is stored in a String array and converted to a String via Arrays.toString",
+                "Action": "Converted"
+            },
+            {
+                "Step": "Logging",
+                "Source Method": "Ledu/mit/to_string/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The converted String is passed to android.util.Log.i",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/to_string/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The device ID is retrieved, converted to a String, and passed to the logging sink without being overwritten by a safe constant"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

@@ -1,0 +1,163 @@
+[
+  {
+    "Data Types Collected": [
+      "java.lang.String",
+      "android.location.Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get last known location from LocationManager API",
+        "Source Method": "Lx0/b/k/r;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method uses the LocationManager API to get the last known location.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "API call to AppsFlyerProperties instance methods",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u02ce:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Sensitive user personal data originates from API calls",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "API call to AppsFlyerProperties instance methods",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties;",
+        "Reasoning": "The method originates data by calling a sensitive API (getInstance)",
+        "Action": "Stored in 'v0' register"
+      },
+      {
+        "Step": "API call to PackageManager",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->isPreInstalledApp:(Landroid/content/Context;)Z",
+        "Reasoning": "The current method uses the PackageManager to check if the app is pre-installed",
+        "Action": "Checked for specific flag in ApplicationInfo"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AppsFlyerLibCore;->logEvent:(Ljava/lang/String;)V",
+      "Lcom/appsflyer/AppsFlyerLibCore;->sendEvent:(Lcom/appsflyer/AFEvent;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties; --> Lcom/appsflyer/AppsFlyerLibCore;->\u02ce:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; --> Lcom/appsflyer/AppsFlyerLibCore;->sendEvent:(Lcom/appsflyer/AFEvent;)V",
+        "Reasoning": "Data is propagated through method invocations and reaches sinks such as logging, network transmission, or storage."
+      },
+      {
+        "dataflow 2": " Lcom/appsflyer/AppsFlyerLibCore;->isPreInstalledApp:(Landroid/content/Context;)Z --> Lcom/appsflyer/AppsFlyerLibCore;->logEvent:(Ljava/lang/String;)V",
+        "Reasoning": "If an exception occurs, it logs the error using AFLogger."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "java.lang.Integer",
+      "android.os.Bundle",
+      "java.util.List",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from input parameters: Bundle and String.",
+        "Source Method": "Lf/i/b/b/d/o/m/b;->a:(Landroid/os/Bundle; Ljava/lang/String; Ljava/util/List;)V",
+        "Reasoning": "The method originates user personal data from the input parameters.",
+        "Action": "Stored in registers v0 (ArrayList) and v1 (Bundle)"
+      },
+      {
+        "Step": "Populates ArrayList with elements from Collection v3.",
+        "Source Method": "Lf/i/b/b/d/o/m/b;->a:(Landroid/os/Bundle; Ljava/lang/String; Ljava/util/List;)V",
+        "Reasoning": "The data is populated in the ArrayList.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Passes data to another method via putStringArrayList() invocation.",
+        "Source Method": "Lf/i/b/b/d/o/m/b;->a:(Landroid/os/Bundle; Ljava/lang/String; Ljava/util/List;)V",
+        "Reasoning": "The data is passed to another method.",
+        "Action": "Passed to another method"
+      },
+      {
+        "Step": "Originates sensitive user personal data using the `intValue()` call on an `Integer` object.",
+        "Source Method": "Lf/i/b/b/d/o/m/b;->a:(Landroid/os/Bundle; Ljava/lang/String; Ljava/lang/Integer; Z)V",
+        "Reasoning": "The method originates sensitive user personal data using the `intValue()` call.",
+        "Action": "Stored in register v2"
+      },
+      {
+        "Step": "Passes data to another method via a method invocation on `Landroid/os/Bundle;->putInt(Ljava/lang/String; I)V`.",
+        "Source Method": "Lf/i/b/b/d/o/m/b;->a:(Landroid/os/Bundle; Ljava/lang/String; Ljava/lang/Integer; Z)V",
+        "Reasoning": "The data is passed to another method.",
+        "Action": "Passed to another method"
+      }
+    ],
+    "All Sinks": [
+      "Lf/i/b/b/d/o/m/b;->a:(Landroid/os/Bundle; Ljava/lang/String; Ljava/util/List;)V",
+      "Lf/i/b/b/d/o/m/b;->a:(Landroid/os/Bundle; Ljava/lang/String; Ljava/lang/Integer; Z)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lf/i/b/b/d/o/m/b;->a:(Landroid/os/Bundle; Ljava/lang/String; Ljava/util/List;)V --> Lf/i/b/b/d/o/m/b;->a:(Landroid/os/Bundle; Ljava/lang/String; Ljava/util/List;)V",
+        "Reasoning": "The data is passed to another method via putStringArrayList() invocation."
+      },
+      {
+        "dataflow 2": "Lf/i/b/b/d/o/m/b;->a:(Landroid/os/Bundle; Ljava/lang/String; Ljava/lang/Integer; Z)V --> Lf/i/b/b/d/o/m/b;->a:(Landroid/os/Bundle; Ljava/lang/String; Ljava/lang/Integer; Z)V",
+        "Reasoning": "The data is passed to another method via a method invocation on `Landroid/os/Bundle;->putInt(Ljava/lang/String; I)V`."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access device location and camera parameters",
+        "Source Method": "Lf/j/a/a/a/b;->b:(Landroid/hardware/Camera$Parameters;)Z",
+        "Reasoning": "The method originates user personal data by accessing the device's location and camera parameters.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Pass location to Camera$Parameters",
+        "Source Method": "Lf/j/a/a/a/b;->b:(Landroid/hardware/Camera$Parameters;)Z",
+        "Reasoning": "The data is stored in registers and variables within the method and passed to other methods via method invocations.",
+        "Action": "Passed to Camera$Parameters"
+      },
+      {
+        "Step": "Set GPS latitude, longitude, altitude, timestamp, and processing method in Camera$Parameters",
+        "Source Method": "Lf/j/a/a/a/b;->b:(Landroid/hardware/Camera$Parameters;)Z",
+        "Reasoning": "The data reaches a sink point through setting GPS latitude, longitude, altitude, timestamp, and processing method in the Camera$Parameters.",
+        "Action": "Set in Camera$Parameters"
+      }
+    ],
+    "All Sinks": [
+      "Lf/j/a/a/a/b;->b:(Landroid/hardware/Camera$Parameters;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lf/j/a/a/a/b;->b:(Landroid/hardware/Camera$Parameters;)Z --> Lf/j/a/a/a/b;->b:(Landroid/hardware/Camera$Parameters;)Z",
+        "Reasoning": "The method originates user personal data by accessing the device's location and camera parameters, then passes it to Camera$Parameters where GPS latitude, longitude, altitude, timestamp, and processing method are set."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

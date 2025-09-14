@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\ReturnConstructor
+Using methods file: D:\UBCBAPK_Methods\ReturnConstructor\ReturnConstructor_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V
+Processed summary for Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V: {
+    "Summary": "The method originates the device ID via the TelephonyManager's getDeviceId() API. The sensitive data (device ID) is stored in register v2 and passed to the Log.v sink for logging. No further propagation occurs as the data is directly logged.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ReturnConstructor\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ReturnConstructor\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ReturnConstructor\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval and logging",
+                "Source Method": "Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V",
+                "Reasoning": "The method uses TelephonyManager's getDeviceId() to obtain a sensitive DeviceId, which is stored in register v2 and directly passed to the Log.v sink without overwriting or taint removal.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V --> Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The DeviceId is retrieved via getDeviceId(), stored in register v2, and directly passed to Log.v without overwriting or taint removal, resulting in a tainted argument to the sink."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ReturnConstructor\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ReturnConstructor\output\sensitive_only.json
+Total summary time: 19.052191019058228 seconds

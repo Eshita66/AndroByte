@@ -1,0 +1,49 @@
+Processing folder: D:\UBCBAPK_Methods\StringToOutputStream1
+Using methods file: D:\UBCBAPK_Methods\StringToOutputStream1\StringToOutputStream1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive data originated from device ID obtained through TelephonyManager. This data was converted to bytes, written to ByteArrayOutputStream, and logged using Landroid/util/Log;->i.",
+    "Next Methods": [
+        "Landroid/app/Activity;->onCreate(Landroid/os/Bundle;)V",
+        "Ledu/mit/outputstream/MainActivity;->setContentView(I)V",
+        "Ledu/mit/outputstream/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+        "Ljava/lang/String;->getBytes()[B",
+        "Ljava/io/ByteArrayOutputStream;<init>()V",
+        "Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I"
+    ]
+}
+Method summaries saved to D:\UBCBAPK_Methods\StringToOutputStream1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\StringToOutputStream1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\StringToOutputStream1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from device ID obtained through TelephonyManager.",
+                "Source Method": "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The sensitive data was converted to bytes, written to ByteArrayOutputStream, and logged using Landroid/util/Log;i.",
+                "Action": "logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i(Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->i(Ljava/lang/String;)I",
+                "Reasoning": "Sensitive data from device ID was obtained, converted to bytes, written to ByteArrayOutputStream, and logged using Landroid/util/Log;i."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\StringToOutputStream1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\StringToOutputStream1\output\sensitive_only.json
+Total summary time: 98.32624077796936 seconds

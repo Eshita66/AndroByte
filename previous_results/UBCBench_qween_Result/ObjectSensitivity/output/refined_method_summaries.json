@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data retrieval and logging",
+                "Source Method": "Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method calls getDeviceId() to retrieve the device ID, stores it in a LinkedList, and passes it to the android.util.Log.i sink for logging.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log;i:(Ljava/lang/String;Ljava/lang/Object;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V --> android.util.Log;i:(Ljava/lang/String;Ljava/lang/Object;)V",
+                "Reasoning": "The device ID is retrieved via getDeviceId(), stored in a LinkedList, and directly passed to the logging sink without being overwritten by a non-sensitive value."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

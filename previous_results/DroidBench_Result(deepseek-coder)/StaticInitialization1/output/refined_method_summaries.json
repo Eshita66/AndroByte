@@ -1,0 +1,38 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID",
+            "Phone Number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data (Device ID) is originated and stored in a static field.",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is retrieved from TelephonyManager and stored in a static field, MainActivity instance.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sensitive data (Phone Number) is processed during class initialization.",
+                "Source Method": "Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V",
+                "Reasoning": "The phone number is used to send an SMS, which involves handling sensitive user information.",
+                "Action": "Processed"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Lde/ecspride/MainActivity;->setContentView(I)V",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Stored in static field 'im' --> Potential sink not identified directly]",
+                "Reasoning": "The device ID is stored but no immediate action to log or transmit it is seen. Future actions might involve logging which could lead to leakage."
+            },
+            {
+                "dataflow 1": "[Source Method: Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V --> Uses phone number for SMS --> Potential sink not identified directly]",
+                "Reasoning": "The phone number is used to send an SMS, but no immediate action to log or transmit it is seen. Future actions might involve logging which could lead to leakage."
+            }
+        ],
+        "Label": "no leak"
+    }
+]

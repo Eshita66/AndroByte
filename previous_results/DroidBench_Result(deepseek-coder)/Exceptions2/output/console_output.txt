@@ -1,0 +1,57 @@
+
+Processing folder: D:\UBCBAPK_Methods\Exceptions2
+Using methods file: D:\UBCBAPK_Methods\Exceptions2\Exceptions2_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V => The method Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V involves retrieving the device ID from the TelephonyManager, which represents user personal data. This data is used to construct a message and send it via SMS using the SmsManager.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieving the device ID from TelephonyManager",
+            "Source Method": "Lde/ecspride/Exceptions2;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The method getSystemService is called with 'telephone' argument to retrieve the TelephonyManager service, which provides access to device-specific information including the device ID.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Constructing a message using the retrieved device ID",
+            "Source Method": "Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The device ID is used to construct a message in the onCreate method, which handles UI creation and initialization logic.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Sending the constructed message via SMS using SmsManager",
+            "Source Method": "Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The message, now containing sensitive information (device ID), is sent through the SmsManager, which facilitates sending SMS messages.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+      
+        "Log.i(...)"
+     
+    ],
+    "Complete Data Flow": [
+  
+        {
+            "dataflow 1": "Lde/ecspride/Exceptions2;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V --> Log.i(...)",
+            "Reasoning": "This path involves retrieving the device ID and using it to log an informational message, indicating a potential leak."
+        },
+        {
+            "dataflow 1": "Lde/ecspride/Exceptions2;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V --> Toast.makeText(...)",
+            "Reasoning": "This path involves retrieving the device ID and using it to show a toast message, which is not considered a sensitive sink."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Exceptions2\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Exceptions2\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Exceptions2\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Exceptions2\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\Exceptions2\output\sensitive_only.json
+Total time for folder: 318.51 seconds

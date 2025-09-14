@@ -1,0 +1,51 @@
+
+Processing folder: D:\UBCBAPK_Methods\FieldSensitivity1
+Using methods file: D:\UBCBAPK_Methods\FieldSensitivity1\FieldSensitivity1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;']
+[SUMMARY] Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer; => In this method, user personal data (specifically the SIM serial number) is originated and stored within a custom object of type Lde/ecspride/Datacontainer. The method retrieves the SIM serial number from the TelephonyManager service using the 'phone' system service identifier. This sensitive information is then set as part of the same custom object, ensuring that it remains tainted throughout its lifecycle in this object.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "SIM serial number"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval of SIM serial number from TelephonyManager",
+            "Source Method": "Lde/ecspride/FieldSensitivity1;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The method retrieves the SIM serial number which is personal data.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Setting taint in Datacontainer",
+            "Source Method": "Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer);",
+            "Reasoning": "The SIM serial number is set as part of the custom object, ensuring it remains tainted.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Attempt to log taint through Log.i(...) (assumed sink)",
+            "Source Method": "Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer);",
+            "Reasoning": "The method attempts to log the tainted data, which could be considered a potential leak.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/Datacontainer;->setSecret(Ljava/lang/String;)V",
+        null
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Lde/ecspride/FieldSensitivity1;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Source Method: Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer); --> Sink Method: Lde/ecspride/Datacontainer;->setSecret(Ljava/lang/String;)V]",
+            "Reasoning": "The SIM serial number is retrieved from the TelephonyManager, set as taint in Datacontainer, and then attempted to be logged through Log.i(...) which could be considered a sink."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\FieldSensitivity1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\FieldSensitivity1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\FieldSensitivity1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\FieldSensitivity1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\FieldSensitivity1\output\sensitive_only.json
+Total time for folder: 359.08 seconds

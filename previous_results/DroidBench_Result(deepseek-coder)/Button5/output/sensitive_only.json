@@ -1,0 +1,37 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID",
+            "Button Hint"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieval and Storage of Device ID",
+                "Source Method": "Ledu/mit/button_object_allocation/Button1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is retrieved from the TelephonyManager and stored in a static variable within the class, representing user-specific information.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging of Button Hint",
+                "Source Method": "Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The button's hint, which could contain user-specific information, is retrieved and logged via Log.i(), potentially exposing this information to logs.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V",
+            "Log.i()"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[getDeviceId() --> onCreate() --> stored in static variable]",
+                "Reasoning": "The device ID is retrieved from the TelephonyManager and directly stored in a static variable within the class during the onCreate method."
+            },
+            {
+                "dataflow 2": "[retrieve hint from Button --> sendMessage() --> Log.i()]",
+                "Reasoning": "The button's hint, which could contain user-specific information, is retrieved and logged via Log.i() during the sendMessage method."
+            }
+        ],
+        "Label": "leak"
+    }
+]

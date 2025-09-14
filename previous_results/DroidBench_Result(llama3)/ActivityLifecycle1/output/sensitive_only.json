@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get device ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive value retrieved from TelephonyManager",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Concatenate device ID with URL",
+                "Source Method": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive value concatenated with non-sensitive value",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ActivityLifecycle1;->connect:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V(...) --> Lde/ecspride/ActivityLifecycle1;->connect:()V(...) ",
+                "Reasoning": "Sensitive value retrieved from TelephonyManager, concatenated with URL, and passed to connect method"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

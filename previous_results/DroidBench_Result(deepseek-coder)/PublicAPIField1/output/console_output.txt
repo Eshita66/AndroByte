@@ -1,0 +1,59 @@
+
+Processing folder: D:\UBCBAPK_Methods\PublicAPIField1
+Using methods file: D:\UBCBAPK_Methods\PublicAPIField1\PublicAPIField1_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the device ID from TelephonyManager and converts parts of it to float values, which are then used to create a new instance of Android's PointF class. The IMEI (using part of the device ID) is logged via Log.i(), potentially exposing sensitive information.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "TelephonyManager",
+        "Device ID",
+        "IMEI",
+        "PointF"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieving Device ID from TelephonyManager",
+            "Source Method": "Ledu/mit/public_api_field/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "This method retrieves the TelephonyManager service, which is used to get the device ID.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Converting parts of Device ID to float values",
+            "Source Method": "Not explicitly shown; inferred from subsequent steps",
+            "Reasoning": "The device ID is manipulated to extract specific segments which are then converted to float.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Creating a new instance of PointF with float values",
+            "Source Method": "Not explicitly shown; inferred from final step",
+            "Reasoning": "The float values are used to initialize an instance of PointF.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Logging IMEI via Log.i()",
+            "Source Method": "Not explicitly shown; inferred from summary",
+            "Reasoning": "The processed device ID (IMEI) is logged using Log.i().",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Ledu/mit/public_api_field/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Extract device ID --> Convert parts to float --> Create instance of PointF --> Log via Log.i()",
+            "Reasoning": "The flow starts by retrieving the TelephonyManager service, extracting the device ID, converting specific segments to float values, and finally using these float values to create an instance of PointF, which is then logged potentially exposing sensitive information."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\PublicAPIField1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\PublicAPIField1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\PublicAPIField1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\PublicAPIField1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\PublicAPIField1\output\sensitive_only.json
+Total time for folder: 651.58 seconds

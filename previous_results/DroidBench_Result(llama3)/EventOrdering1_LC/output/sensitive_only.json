@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "getDeviceId() is called and stored in imei",
+                "Source Method": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V",
+                "Reasoning": "The method onLowMemory() calls the sensitive API getDeviceId()",
+                "Action": "Stored"
+            },
+            {
+                "Step": "imei is passed to Log.i() as an argument",
+                "Source Method": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V",
+                "Reasoning": "The device ID is then passed as an argument to Log.i(), which is a leak.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId() (MainActivity.onLowMemory()) --> imei (MainActivity.onLowMemory()) --> Log.i()",
+                "Reasoning": "The method onLowMemory() calls the sensitive API getDeviceId(), stores it in imei, and then passes it to Log.i()."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

@@ -1,0 +1,315 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC addresses"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Load MAC address from Android system's /sys/class/net/ directory",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers and variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Load MAC address from various sources",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers (v0, v1) and propagated through method invocations to loadAddress methods.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Read MAC address from file",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated to other methods via method invocations.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The MAC address is loaded from the Android system's /sys/class/net/ directory, stored in registers and variables within the method, and then read from a file."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "MAC address",
+      "Input string parameter",
+      "URL-encoded string"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get MAC address from WifiManager",
+        "Source Method": "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data by getting the MAC address of the device through the WifiManager.",
+        "Action": "Stored in 'sha1_mac' field"
+      },
+      {
+        "Step": "Get input string parameter",
+        "Source Method": "Lcom/amazon/device/ads/DtbCommonUtils;->getURLEncodedString:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data from the input string parameter.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Generate SHA-1 hash of input string",
+        "Source Method": "Lcom/amazon/device/ads/DtbDeviceData;->generateSha1Hash:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method generates a SHA-1 hash of the input string.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Check if input string is null or empty",
+        "Source Method": "Lcom/amazon/device/ads/DtbCommonUtils;->isNullOrEmpty:(Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data by calling the sensitive API java.lang.String.equals(Ljava/lang/Object;)Z.",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "URL encode input string",
+        "Source Method": "Lcom/amazon/device/ads/DtbCommonUtils;->getURLEncodedString:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers and variables within the method.",
+        "Action": "Logged as error message when URL encoding fails"
+      },
+      {
+        "Step": "Log MAC address",
+        "Source Method": "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V",
+        "Reasoning": "The data reaches a sink point, which is logging, through the DtbLog.info() method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/device/ads/DtbCommonUtils;->getURLEncodedString:(Ljava/lang/String;)Ljava/lang/String;",
+      "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/DtbCommonUtils;->getURLEncodedString(Ljava/lang/String;)Ljava/lang/String) --> Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress(Landroid/content/Context)V --> Lcom/amazon/device/ads/DtbLog;->info()V",
+        "Reasoning": "The data flows from the getURLEncodedString method to the getMacAddress method, which logs the MAC address."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getLocation() API call",
+        "Source Method": "Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers and variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data propagation through registers",
+        "Source Method": "Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String;",
+        "Reasoning": "The data is propagated through registers and passed to other methods via method invocations.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Return statement with processed location parameters as a string",
+        "Source Method": "Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point, which is the return statement that passes the processed location parameters as a string.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String;(--> location --> Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String;) ",
+        "Reasoning": "The data flows from the getLocation() API call, stored in registers and variables within the method, propagated through registers, and passed to other methods via method invocations. Finally, it reaches a sink point at the return statement that passes the processed location parameters as a string."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location permissions",
+      "device location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from location permissions and device location.",
+        "Source Method": "Lio/didomi/sdk/CountryHelper;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method uses location permissions and device location to originate sensitive user personal data.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Propagates through method invocations to other methods for further processing.",
+        "Source Method": "Lio/didomi/sdk/CountryHelper;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated through method invocations to other methods for further processing.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Reaches a sink point, which is logging of an error message when unable to get the user country code.",
+        "Source Method": "Lio/didomi/sdk/CountryHelper;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point via the logging of an error message when unable to get the user country code.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Originate sensitive user personal data using Lkotlin/jvm/internal/Intrinsics class",
+        "Source Method": "Lio/didomi/sdk/Log;->h:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The current method uses the `Lkotlin/jvm/internal/Intrinsics` class to originate sensitive user personal data.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Propagates through registers v2, v3",
+        "Source Method": "Lio/didomi/sdk/Log;->h:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data is propagated through registers v2, v3.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Reaches a sink point via the android/util/Log.i() function",
+        "Source Method": "Lio/didomi/sdk/Log;->h:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data reaches a sink point via the `android/util/Log.i()` function.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Originate user personal data via sensitive API call to Log.g()",
+        "Source Method": "Lio/didomi/sdk/Log;->g:(Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data via a sensitive API call to `Log.g()`.",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "Propagates through method invocations",
+        "Source Method": "Lio/didomi/sdk/Log;->g:(Ljava/lang/String;)V",
+        "Reasoning": "The data is propagated through method invocations.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Reaches a sink point for logging",
+        "Source Method": "Lio/didomi/sdk/Log;->g:(Ljava/lang/String;)V",
+        "Reasoning": "The data reaches a sink point for logging.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Originate user personal data from v2 register through sensitive API call",
+        "Source Method": "Lio/didomi/sdk/Log;->i:(Ljava/lang/String; Ljava/lang/Throwable; I Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data from the `v2` register through a sensitive API call.",
+        "Action": "Stored in registers and variables within this method"
+      },
+      {
+        "Step": "Propagates to invoke-static instruction, which calls another method",
+        "Source Method": "Lio/didomi/sdk/Log;->i:(Ljava/lang/String; Ljava/lang/Throwable; I Ljava/lang/Object;)V",
+        "Reasoning": "The data is then propagated to the `invoke-static` instruction, which calls another method.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Reaches a sink point through invoke-static instruction, which logs the data",
+        "Source Method": "Lio/didomi/sdk/Log;->i:(Ljava/lang/String; Ljava/lang/Throwable; I Ljava/lang/Object;)V",
+        "Reasoning": "The data reaches a sink point through the `invoke-static` instruction, which logs the data.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lio/didomi/sdk/CountryHelper;->a:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lio/didomi/sdk/Log;->h:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+      "Lio/didomi/sdk/Log;->g:(Ljava/lang/String;)V",
+      "Lio/didomi/sdk/Log;->i:(Ljava/lang/String; Ljava/lang/Throwable; I Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lio/didomi/sdk/CountryHelper;->a:(Landroid/content/Context;)Ljava/lang/String; --> Lio/didomi/sdk/Log;->h:(Ljava/lang/String; Ljava/lang/Throwable;)V --> android/util/Log.i()",
+        "Reasoning": "The data originates from location permissions and device location, propagates through method invocations to `Lio/didomi/sdk/Log;->h:(Ljava/lang/String; Ljava/lang/Throwable;)V`, and reaches a sink point via the `android/util/Log.i()` function."
+      },
+      {
+        "dataflow 2": "Lio/didomi/sdk/Log;->g:(Ljava/lang/String;)V --> Lio/didomi/sdk/Log;->i:(Ljava/lang/String; Ljava/lang/Throwable; I Ljava/lang/Object;)V --> invoke-static instruction",
+        "Reasoning": "The data originates from `Lio/didomi/sdk/Log;->g:(Ljava/lang/String;)V`, propagates through method invocations to `Lio/didomi/sdk/Log;->i:(Ljava/lang/String; Ljava/lang/Throwable; I Ljava/lang/Object;)V`, and reaches a sink point through the `invoke-static` instruction."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number",
+      "MoPub Identifier",
+      "Advertising Info",
+      "Personal Information",
+      "GDPR Applicability",
+      "Do Not Track Status"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check if personal information can be collected",
+        "Source Method": "Lcom/mopub/common/MoPub;->canCollectPersonalInformation:()Z",
+        "Reasoning": "Determines if personal info can be collected based on GDPR applicability",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get last known location using LocationService",
+        "Source Method": "Lcom/mopub/common/LocationService;->getLastKnownLocation:(Landroid/content/Context;)Landroid/location/Location;",
+        "Reasoning": "Retrieves the last known location from LocationService",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "Append location details to URL string using BaseUrlGenerator",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->D:()V",
+        "Reasoning": "Appends location details to a URL string using BaseUrlGenerator",
+        "Action": "Stored in a URL string"
+      },
+      {
+        "Step": "Get MoPub Identifier",
+        "Source Method": "Lcom/mopub/common/ClientMetadata;->getMoPubIdentifier:()Lcom/mopub/common/privacy/MoPubIdentifier;",
+        "Reasoning": "Retrieves the MoPub identifier from ClientMetadata",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get Advertising Info",
+        "Source Method": "Lcom/mopub/common/privacy/MoPubIdentifier;->getAdvertisingInfo:()Lcom/mopub/common/privacy/AdvertisingId;",
+        "Reasoning": "Retrieves the advertising info from MoPub identifier",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Check GDPR applicability",
+        "Source Method": "Lcom/mopub/common/privacy/PersonalInfoManager;->gdprApplies:()Ljava/lang/Boolean;",
+        "Reasoning": "Checks if GDPR applies based on PersonalInfoData",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get Do Not Track status",
+        "Source Method": "Lcom/mopub/common/privacy/MoPubIdentifier;->isDoNotTrack:()Z",
+        "Reasoning": "Retrieves the do not track status from MoPub identifier",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mopub/common/LocationService;->c:(Landroid/content/Context; Lcom/mopub/common/LocationService$ValidLocationProvider;)Landroid/location/Location;",
+      "Lcom/mopub/common/logging/MoPubLog;->b:(Landroidx/core/util/Pair; Ljava/lang/String; Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V",
+      "Lcom/mopub/common/privacy/MoPubIdentifier;->e:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/mopub/common/MoPub;->canCollectPersonalInformation:()Z --> Lcom/mopub/common/LocationService;->getLastKnownLocation:(Landroid/content/Context;)Landroid/location/Location; --> Lcom/mopub/common/AdUrlGenerator;->D:()V",
+        "Reasoning": "Data is propagated from MoPub to LocationService and then to AdUrlGenerator"
+      },
+      {
+        "dataflow 2": "Lcom/mopub/common/ClientMetadata;->getMoPubIdentifier:()Lcom/mopub/common/privacy/MoPubIdentifier; --> Lcom/mopub/common/privacy/MoPubIdentifier;->getAdvertisingInfo:()Lcom/mopub/common/privacy/AdvertisingId;",
+        "Reasoning": "Data is propagated from ClientMetadata to MoPub identifier and then to Advertising info"
+      },
+      {
+        "dataflow 3": "Lcom/mopub/common/privacy/PersonalInfoManager;->gdprApplies:()Ljava/lang/Boolean; --> Lcom/mopub/common/ClientMetadata;->getInstance:(Landroid/content/Context;)Lcom/mopub/common/ClientMetadata;",
+        "Reasoning": "Data is propagated from PersonalInfoManager to ClientMetadata"
+      },
+      {
+        "dataflow 4": "Lcom/mopub/common/privacy/MoPubIdentifier;->isDoNotTrack:()Z --> Lcom/mopub/common/LocationService$ValidLocationProvider;->a:(Lcom/mopub/common/LocationService$ValidLocationProvider; Landroid/content/Context;)Z",
+        "Reasoning": "Data is propagated from MoPub identifier to LocationService"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

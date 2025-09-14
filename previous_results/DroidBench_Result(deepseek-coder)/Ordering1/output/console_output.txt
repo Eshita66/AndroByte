@@ -1,0 +1,46 @@
+
+Processing folder: D:\UBCBAPK_Methods\Ordering1
+Using methods file: D:\UBCBAPK_Methods\Ordering1\Ordering1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity$1;->onLocationChanged:(Landroid/location/Location;)V']
+[SUMMARY] Lde/ecspride/MainActivity$1;->onLocationChanged:(Landroid/location/Location;)V => The method extracts the latitude and longitude from a location object using methods getLatitude() and getLongitude(), both returning double values. These values are then converted to strings, which are stored in instance variables of the MainActivity class named 'latitude' and 'longtitude'. The data is derived directly from user-generated content (location data), and there is no indication that this data is passed or logged elsewhere within the method.
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method 'onCreate' in class Lde/ecspride/MainActivity; involves user personal data such as latitude and longitude, which are retrieved from the instance variables 'latitude' and 'longtitude'. These values are then logged using Log.d(), potentially exposing sensitive information.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "latitude",
+        "longitude"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Extracting latitude and longitude from location object",
+            "Source Method": "Lde/ecspride/MainActivity$1;->onLocationChanged:(Landroid/location/Location;)V",
+            "Reasoning": "The method extracts latitude and longitude from a Location object using getLatitude() and getLongitude(), which are user-generated content.",
+            "Action": "Stored in instance variables of MainActivity"
+        },
+        {
+            "Step": "Logging latitude and longitude to logcat",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method retrieves the stored latitude and longitude from instance variables and logs them using Log.d(), potentially exposing sensitive information.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Lde/ecspride/MainActivity$1;->onLocationChanged:(Landroid/location/Location;)V --> Stored in instance variables of MainActivity --> Logged to Logcat using Log.d() in onCreate method]",
+            "Reasoning": "The latitude and longitude values are extracted from the location object within onLocationChanged, stored in instance variables of MainActivity, and then logged using Log.d() during the onCreate method."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Ordering1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Ordering1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Ordering1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Ordering1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\Ordering1\output\sensitive_only.json
+Total time for folder: 71.72 seconds

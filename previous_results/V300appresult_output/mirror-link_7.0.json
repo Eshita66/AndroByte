@@ -1,0 +1,53 @@
+[
+  {
+    "Data Types Collected": [
+      "location permissions",
+      "network transmission"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from location permissions and network transmission.",
+        "Source Method": "Lb/b/k/k$h;->c:()I",
+        "Reasoning": "The method originates user personal data from location permissions and network transmission.",
+        "Action": "Propagated through registers and variables within the method."
+      },
+      {
+        "Step": "Originates user personal data from sensitive API calls to `android/os/Process` and `android/content/Context`.",
+        "Source Method": "La/a/b/a/a;->j:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data from sensitive API calls to `android/os/Process` and `android/content/Context`.",
+        "Action": "Stored in registers `v0`, `v1`, and `v2`. Propagated through method invocations."
+      },
+      {
+        "Step": "Originates user personal data using sensitive API calls.",
+        "Source Method": "Lb/b/k/t;->a:(J D D)V",
+        "Reasoning": "The current method is using sensitive API calls to originate user personal data.",
+        "Action": "Passed to other methods via method invocations."
+      },
+      {
+        "Step": "Data reaches sink points like logging, network transmission, or storage.",
+        "Source Method": "Lb/b/k/t;->a:(J D D)V",
+        "Reasoning": "The current method is using sensitive API calls to originate user personal data. The data is stored in registers and variables within the method. It is then passed to other methods via method invocations. The data reaches sink points like logging, network transmission, or storage.",
+        "Action": "Logged, transmitted, or stored."
+      }
+    ],
+    "All Sinks": [
+      "Lb/b/k/t;->a:(J D D)V",
+      "La/a/b/a/a;->j:(Landroid/content/Context; Ljava/lang/String;)I",
+      "Lb/b/k/k$h;->c:()I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lb/b/k/t;->a:(J D D)V --> Lb/b/k/k$h;->c:()I --> Lb/b/k/k$h;->c:()I] ",
+        "Reasoning": "The data from the current method is passed to other methods via method invocations and reaches sink points like logging, network transmission, or storage."
+      },
+      {
+        "dataflow 2": "[La/a/b/a/a;->j:(Landroid/content/Context; Ljava/lang/String;)I --> noteProxyOpNoThrow] ",
+        "Reasoning": "The data from the method is stored in registers `v0`, `v1`, and `v2`. It is then propagated through method invocations to check permissions, get package names, and note proxy operations. The sinks are `noteProxyOpNoThrow` for logging and potential network transmission."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {}
+]

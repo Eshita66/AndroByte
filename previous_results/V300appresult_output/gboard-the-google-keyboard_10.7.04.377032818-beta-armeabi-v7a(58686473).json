@@ -1,0 +1,130 @@
+[
+  {
+    "Data Types Collected": [
+      "account names",
+      "string"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access account names from AccountManager",
+        "Source Method": "Lcns;->a:(Landroid/content/Context;)Ljava/util/List;",
+        "Reasoning": "The method originates sensitive user personal data by accessing account names.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check if string is empty using TextUtils.isEmpty",
+        "Source Method": "Lcns;->b:(Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data by calling the `isEmpty` method from `android/text/TextUtils` to check if a string is empty.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Match email pattern using Patterns.EMAIL_ADDRESS",
+        "Source Method": "Lcns;->b:(Ljava/lang/String;)Z",
+        "Reasoning": "The data is then passed to the `EMAIL_ADDRESS` regular expression pattern from `android/util/Patterns` and used in a `matcher` call.",
+        "Action": "Matched"
+      },
+      {
+        "Step": "Return List of Strings as result",
+        "Source Method": "Lcns;->a:(Landroid/content/Context;)Ljava/util/List;",
+        "Reasoning": "The data reaches a sink point as it is returned as a List of Strings.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lcns;->a:(Landroid/content/Context;)Ljava/util/List;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcns;->a:(Landroid/content/Context;)Ljava/util/List; --> List of Strings --> Lcns;->a:(Landroid/content/Context;)Ljava/util/List;",
+        "Reasoning": "The data originates from accessing account names, is stored in a list and propagated through registers, and reaches the sink point as it is returned as a List of Strings."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WiFi information",
+      "Cell network information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WiFi and cell network information",
+        "Source Method": "Lifk;->a:()V",
+        "Reasoning": "The method originates sensitive user personal data through API calls.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Pass data to other methods",
+        "Source Method": "Lifk;->a:()V",
+        "Reasoning": "The data is then passed to other methods via method invocations.",
+        "Action": "Passed via method invocation"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "LocationManager",
+      "UiModeManager"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get application context and system services",
+        "Source Method": "Lju;->E:(Landroid/content/Context; I)I",
+        "Reasoning": "The method uses getApplicationContext() and getSystemService() methods from android.content.Context to originate user personal data.",
+        "Action": "Stored in registers or variables"
+      },
+      {
+        "Step": "Obtain LocationManager through system services",
+        "Source Method": "Lju;->S:(Landroid/content/Context;)Ljp;",
+        "Reasoning": "The method originates sensitive user personal data through the use of the getSystemService() API to obtain a LocationManager.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Call sensitive APIs within methods",
+        "Source Method": "Ljq;-><init>:(Lju; Lka;)V",
+        "Reasoning": "The method originates user personal data using sensitive API calls to get the 'b' and 'a' fields of an object.",
+        "Action": "Stored in registers (v0) and variables within the method"
+      },
+      {
+        "Step": "Get application context and system services",
+        "Source Method": "Ljn;-><init>:(Lju; Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data through the getApplicationContext() and getSystemService(String) methods.",
+        "Action": "Stored in registers (v1) and variables (b, a)"
+      },
+      {
+        "Step": "Invoke sensitive APIs within constructors",
+        "Source Method": "Ljp;-><init>:(Lju;)V",
+        "Reasoning": "The current method originates user personal data through the invocation of a sensitive API call to `Lju;` within its constructor.",
+        "Action": "Stored in register `v1` and then passed to another method via method invocation"
+      },
+      {
+        "Step": "Network transmission",
+        "Source Method": "Lju;->E:(Landroid/content/Context; I)I",
+        "Reasoning": "The data reaches a sink point in the form of network transmission.",
+        "Action": "Transmitted over network"
+      }
+    ],
+    "All Sinks": [
+      "Lju;->E:(Landroid/content/Context; I)I",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Ljq;-><init>:(Lju; Lka;)V --> Ljp;-><init>:(Lju;)V --> Ljn;-><init>:(Lju; Landroid/content/Context;)V]",
+        "Reasoning": "The data is propagated from the `Ljq;-><init>:(Lju; Lka;)V` method to the `Ljp;-><init>:(Lju;)V` method and then to the `Ljn;-><init>:(Lju; Landroid/content/Context;)V` method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is obtained from Location API",
+        "Source Method": "Lcfk;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data from the Location API.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is passed to other methods via method invocations",
+        "Source Method": "Lcfk;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The data is stored in registers and variables, then passed to other methods.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Data reaches sinks such as logging and display",
+        "Source Method": "null",
+        "Reasoning": "The data reaches sinks such as logging and display.",
+        "Action": "Logged/Displayed"
+      }
+    ],
+    "All Sinks": [
+      "Lcfk;->log:(Ljava/lang/String;)V",
+      "Lcfk;->display:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcfk;->a:(Landroid/location/Location;)V --> Lcfk;->b(...) --> Lcfk;->log:(Ljava/lang/String;)V ",
+        "Reasoning": "User location is obtained from Location API, then passed to other methods via method invocations and finally logged."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "UiModeManager",
+      "LocationManager",
+      "PowerManager",
+      "Context",
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get night mode from UiModeManager",
+        "Source Method": "Llv;->I:(Landroid/content/Context; I)I",
+        "Reasoning": "The method uses sensitive APIs to originate user personal data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check time difference and update location if necessary",
+        "Source Method": "Llv;->I:(Landroid/content/Context; I)I",
+        "Reasoning": "If the time difference is greater than 24 hours, it updates the stored time and location.",
+        "Action": "Updated"
+      },
+      {
+        "Step": "Get LocationManager instance from Context",
+        "Source Method": "Lmi;-><init>:(Landroid/content/Context; Landroid/location/LocationManager;)V",
+        "Reasoning": "The data is stored in instance fields b (Landroid/content/Context) and d (Landroid/location/LocationManager).",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get PowerManager instance from Context",
+        "Source Method": "Lln;-><init>:(Llv; Landroid/content/Context;)V",
+        "Reasoning": "The data is stored in the object reference `v1`, which is then cast to an `android/os/PowerManager`.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lmi;-><init>:(Landroid/content/Context; Landroid/location/LocationManager;)V",
+      "Llp;-><init>:(Llv;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Llv;->I:(Landroid/content/Context; I)I --> Lmi;-><init>:(Landroid/content/Context; Landroid/location/LocationManager;)V --> Llp;-><init>:(Llv;)V",
+        "Reasoning": "The method originates user personal data from the constructor of class mh and stores it in instance fields b (Landroid/content/Context) and d (Landroid/location/LocationManager). The data is propagated to other methods via instance field access."
+      },
+      {
+        "dataflow 2": "Llv;->I:(Landroid/content/Context; I)I --> Lln;-><init>:(Llv; Landroid/content/Context;)V --> Llp;-><init>:(Llv;)V",
+        "Reasoning": "The method originates user personal data using the sensitive API call 'Llv' in the '<init>' constructor. The data is stored in register 'v0' and passed to other methods via method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

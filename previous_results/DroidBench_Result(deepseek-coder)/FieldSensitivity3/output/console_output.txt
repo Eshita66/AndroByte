@@ -1,0 +1,38 @@
+
+Processing folder: D:\UBCBAPK_Methods\FieldSensitivity3
+Using methods file: D:\UBCBAPK_Methods\FieldSensitivity3\FieldSensitivity3_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V => The method Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V involves the creation and manipulation of user personal data, specifically through the use of TelephonyManager to retrieve the SIM serial number and then using it in a SmsManager call to send an SMS message. The SIM serial number is considered sensitive as it can be used to identify the physical SIM card and may contain user-specific information.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "SIM serial number"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval of SIM serial number",
+            "Source Method": "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method retrieves the SIM serial number using TelephonyManager for potential use in sending an SMS.",
+            "Action": "Stored and potentially used"
+        }
+    ],
+    "All Sinks": [
+        null
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V --> TelephonyManager.getSimSerialNumber() --> (Potential use in sending SMS) --> No sink reached",
+            "Reasoning": "The SIM serial number is retrieved and potentially used for an action without being handled or logged at a typical data sink."
+        }
+    ],
+    "Label": "no leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\FieldSensitivity3\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\FieldSensitivity3\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\FieldSensitivity3\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\FieldSensitivity3\output\visited_graph
+Saved 0 'leak' subgraphs to: D:\UBCBAPK_Methods\FieldSensitivity3\output\sensitive_only.json
+Total time for folder: 379.39 seconds

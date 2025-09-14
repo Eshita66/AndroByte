@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Accessed device information via TelephonyManager",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId:()I",
+                "Reasoning": "Sensitive data originated from accessing device information",
+                "Action": "Stored in v2"
+            },
+            {
+                "Step": "Passed to getDeviceId method of TelephonyManager",
+                "Source Method": "Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V",
+                "Reasoning": "The device ID is then passed to the getDeviceId method",
+                "Action": "Logged using Log with \"TAG\" as an argument"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Ljunbin/ubc/MyClass;<init>(...) --> Landroid/telephony/TelephonyManager;getDeviceId(...) --> Landroid/util/Log;i(...) ",
+                "Reasoning": "Sensitive data originated from accessing device information via TelephonyManager, passed to getDeviceId method of TelephonyManager and logged using Log with \"TAG\" as an argument."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

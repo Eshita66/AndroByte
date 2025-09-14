@@ -1,0 +1,61 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieval of device ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/MyContentProvider;->onCreate:()Z",
+                "Reasoning": "The method retrieves the device ID which can be used to uniquely identify a mobile device.",
+                "Action": "Stored in non-public field 'isEmulator'"
+            },
+            {
+                "Step": "Check for containment of '0000' in device ID",
+                "Source Method": "Lde/ecspride/MyContentProvider;->onCreate:()Z",
+                "Reasoning": "The retrieved device ID is checked for the presence of '0000', which could be considered as a form of validation or authorization check.",
+                "Action": "Validation process"
+            },
+            {
+                "Step": "Setting boolean flag based on containment result",
+                "Source Method": "Lde/ecspride/MyContentProvider;->onCreate:()Z",
+                "Reasoning": "If the device ID contains '0000', a sensitive operation is performed by setting the non-public field 'isEmulator'.",
+                "Action": "Sensitive operation"
+            }
+        ],
+        "All Sinks": [
+            "Log.i(...)",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MyContentProvider;->onCreate:()Z --> Retrieves device ID --> Check for '0000' --> Set boolean flag",
+                "Reasoning": "The method retrieves the device ID from TelephonyManager, checks if it contains '0000', and potentially logs or stores this information which could be considered sensitive."
+            }
+        ],
+        "Label": "leak"
+    },
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieval and Logging of Device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID from TelephonyManager and logs it using Log.v(...) for debugging purposes.",
+                "Action": "Stored, logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->Log.v:((Ljava/lang/String;)V)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Log.v(...)",
+                "Reasoning": "The device ID is directly retrieved and passed to the logging method without any intermediate transformations."
+            }
+        ],
+        "Label": "leak"
+    }
+]

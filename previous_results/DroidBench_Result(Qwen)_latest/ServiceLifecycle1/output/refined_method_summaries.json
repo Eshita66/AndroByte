@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "SIM serial number is retrieved and stored in 'secret' field",
+                "Source Method": "Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)I",
+                "Reasoning": "Method explicitly retrieves SIM serial number via TelephonyManager and stores it in a field",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Stored SIM serial number is used in SMS send operation",
+                "Source Method": "Lde/ecspride/MainService;->onLowMemory:()V",
+                "Reasoning": "Method uses 'secret' field (containing SIM serial number) as argument for SMS send",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainService;->onLowMemory:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)I --> Lde/ecspride/MainService;->onLowMemory:()V",
+                "Reasoning": "SIM serial number is stored in 'secret' field by onStartCommand, then used as argument in SMS send operation by onLowMemory without indication of taint removal"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

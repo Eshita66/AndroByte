@@ -1,0 +1,51 @@
+
+Processing folder: D:\UBCBAPK_Methods\Reflection1
+Using methods file: D:\UBCBAPK_Methods\Reflection1\Reflection1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method onCreate in MainActivity retrieves the device ID from the TelephonyManager and assigns it to an instance of BaseClass, which then passes this information to send a text message via SmsManager. The device ID is considered sensitive personal data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval of Device ID from TelephonyManager",
+            "Source Method": "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The method retrieves the TelephonyManager service, which is used to access device-specific information including the ID.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Passing Device ID to BaseClass",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The retrieved device ID is passed to an instance of BaseClass.",
+            "Action": "Transmitted"
+        },
+        {
+            "Step": "Sending Text Message using SmsManager",
+            "Source Method": "BaseClass->send(SmsMessage)",
+            "Reasoning": "The BaseClass, potentially after processing the device ID, uses it to send a text message via SmsManager.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "BaseClass->send(SmsMessage)"
+ 
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Source Method: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Sink Method: BaseClass->send(SmsMessage)]",
+            "Reasoning": "The device ID is retrieved from TelephonyManager and passed to the onCreate method, which then passes it to BaseClass for sending a text message without any intermediate storage or logging."
+        }
+    ],
+    "Label": "no leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Reflection1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Reflection1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Reflection1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Reflection1\output\visited_graph
+Saved 0 'leak' subgraphs to: D:\UBCBAPK_Methods\Reflection1\output\sensitive_only.json
+Total time for folder: 673.05 seconds

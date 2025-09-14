@@ -1,0 +1,51 @@
+
+Processing folder: D:\UBCBAPK_Methods\Reflection3
+Using methods file: D:\UBCBAPK_Methods\Reflection3\Reflection3_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => This method originates and potentially passes user data. Initially, it retrieves the device ID using `getDeviceId()`, which is a sensitive piece of information. Subsequently, it attempts to call a method named `setImei` and `getImei` using reflection, suggesting an attempt to manipulate IMEI values. Finally, it uses `SmsManager` to send a text message with the number "+49 1234", which is a real sink, potentially transmitting sensitive data. The `sendTextMessage` call is a direct data leak.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "device ID",
+        "IMEI"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Device ID retrieved using `getDeviceId()`",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method `onCreate` initiates the flow by retrieving the device ID using `getDeviceId()`. This is a sensitive piece of information.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Attempt to manipulate IMEI values via reflection.",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method attempts to call `setImei` and `getImei` using reflection, suggesting an attempt to modify or retrieve the IMEI.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Text message sent with the number \"+49 1234\".",
+            "Source Method": "Lde/ecspride/MainActivity;->sendTextMessage(String)",
+            "Reasoning": "The `sendTextMessage` call, triggered by the initial flow, directly transmits the device ID (and potentially the IMEI) via SMS. This is a critical data leak.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->sendTextMessage(String)"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->sendTextMessage(String)",
+            "Reasoning": "The `onCreate` method retrieves the device ID. This data is then used to trigger the `sendTextMessage` method, which transmits the device ID (and potentially IMEI) via SMS. This constitutes a direct data leak."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Reflection3\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Reflection3\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Reflection3\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Reflection3\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\Reflection3\output\sensitive_only.json
+Total time for folder: 8.82 seconds

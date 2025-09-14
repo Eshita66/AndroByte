@@ -1,0 +1,29 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "SIM serial number",
+            "SMS content"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve SIM serial number",
+                "Source Method": "Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)",
+                "Reasoning": "The method retrieves the SIM serial number using TelephonyManager.",
+                "Action": "Stored in 'secret' field"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainService;->onLowMemory:()"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I) --> Lde/ecspride/MainService;->onLowMemory:()V",
+                "Reasoning": "The SIM serial number is retrieved from the TelephonyManager and passed to onLowMemory. The summary indicates that the SIM serial number is stored in 'secret' field, and the 'secret' field is used as an argument to the sink method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

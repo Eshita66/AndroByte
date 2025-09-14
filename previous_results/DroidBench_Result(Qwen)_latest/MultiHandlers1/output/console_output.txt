@@ -1,0 +1,50 @@
+
+Processing folder: D:\UBCBAPK_Methods\MultiHandlers1
+Using methods file: D:\UBCBAPK_Methods\MultiHandlers1\MultiHandlers1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V']
+[SUMMARY] Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V => The method retrieves longitude and latitude from the Location object, constructs a string with these coordinates, and passes it to the setData method of IDataProvider. This data is sensitive (geolocation) and is transmitted to a potential sink via IDataProvider's setData method.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "geolocation coordinates (longitude, latitude)"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve sensitive geolocation data from Location object",
+            "Source Method": "Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V",
+            "Reasoning": "The method directly accesses longitude and latitude from the Location object, which are personal data types.",
+            "Action": "Retrieved"
+        },
+        {
+            "Step": "Construct string representation of coordinates",
+            "Source Method": "Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V",
+            "Reasoning": "The method uses StringBuilder to append coordinates into a string, preparing data for transmission.",
+            "Action": "Processed"
+        },
+        {
+            "Step": "Transmit data to potential sink",
+            "Source Method": "Lde/ecspride/IDataProvider;->setData(Ljava/lang/String;)V",
+            "Reasoning": "The constructed string is passed to IDataProvider's setData method, which is explicitly identified as a sink in the summary.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/IDataProvider;->setData(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V --> Lde/ecspride/IDataProvider;->setData(Ljava/lang/String;)V",
+            "Reasoning": "The method onLocationChanged retrieves geolocation coordinates, constructs them into a string via StringBuilder, and passes the string to IDataProvider's setData method, which is identified as a sink for sensitive data."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\MultiHandlers1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\MultiHandlers1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\MultiHandlers1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\MultiHandlers1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\MultiHandlers1\output\sensitive_only.json
+Total time for folder: 36.97 seconds

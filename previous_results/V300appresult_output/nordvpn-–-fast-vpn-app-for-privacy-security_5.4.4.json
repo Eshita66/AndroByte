@@ -1,0 +1,41 @@
+[
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "AppsFlyerProperties getInstance()",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties;",
+        "Reasoning": "The data originates from the static get-value-of method of AppsFlyerProperties class.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "AppsFlyerProperties getString()",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getString:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the `getString` method on `AppsFlyerProperties`, which is likely to retrieve a sensitive string value.",
+        "Action": "Stored in register v0 and propagated through register v2"
+      },
+      {
+        "Step": "AppsFlyerLibCore valueOf()",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Collecting and processing user personal data for AppsFlyer analytics.",
+        "Action": "Stored in register v2"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "AppsFlyerProperties getInstance() --> AppsFlyerProperties getString() --> AppsFlyerLibCore valueOf()",
+        "Reasoning": "The data originates from the static get-value-of method of AppsFlyerProperties class, then retrieved by the `getString` method on `AppsFlyerProperties`, and finally collected and processed for AppsFlyer analytics."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

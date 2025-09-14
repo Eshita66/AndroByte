@@ -1,0 +1,38 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain IMEI from TelephonyManager",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID using getDeviceId() which is a way to obtain IMEI.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Store IMEI in instance variable",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The retrieved IMEI is stored as an instance variable of the MainActivity class.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Log IMEI using Log.v()",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The logged data is considered a form of storage since it is recorded for future reference with a tag 'TAG'.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ljunbin/ubc/MainActivity;->Log.v(Ljava/lang/String; Ljava/lang/String;)V",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Stored in instance variable --> Logged using Log.v() --> Sink Method: Ljunbin/ubc/MainActivity;->Log.v(Ljava/lang/String; Ljava/lang/String;)V]",
+                "Reasoning": "The IMEI is first obtained from the TelephonyManager, stored as an instance variable of the MainActivity class, and then logged using Log.v(). This sequence constitutes a data flow that ends at the logging sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]

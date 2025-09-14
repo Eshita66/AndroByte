@@ -1,0 +1,185 @@
+[
+  {
+    "Data Types Collected": [
+      "User location data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected from GPS.",
+        "Source Method": "Lcom/nielsen/app/sdk/AppConfig;->run:()V",
+        "Reasoning": "Method summary indicates location data origin.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User location data is passed to AppLocationManager.",
+        "Source Method": "Lcom/nielsen/app/sdk/AppConfig;->run:()V",
+        "Reasoning": "Method summary indicates data transfer.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/nielsen/app/sdk/AppLocationManager;->handleLocationData:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/nielsen/app/sdk/AppConfig;->run:()V --> Lcom/nielsen/app/sdk/AppLocationManager;->handleLocationData:()V",
+        "Reasoning": "Overall data flow summarizes the data transfer between methods."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Location Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user location data is originated in `getLastKnownLocation()` method.",
+        "Source Method": "Lcom/nielsen/app/sdk/AppLocationManager;->getLastKnownLocation()Ljava/lang/String;",
+        "Reasoning": "Method signature matches the summary.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is passed through `AppLocationUpdatesThread`.",
+        "Source Method": "Lcom/nielsen/app/sdk/AppLocationUpdatesThread;->run()V",
+        "Reasoning": "Method is called in `getLastKnownLocation()`.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is potentially logged in `AppLocationManager.f` if an exception occurs.",
+        "Source Method": "Lcom/nielsen/app/sdk/AppLocationManager;->\u02cf()Z",
+        "Reasoning": "Method signature matches the summary.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/nielsen/app/sdk/AppLocationManager;->\u02cf()Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/nielsen/app/sdk/AppLocationManager;->getLastKnownLocation()Ljava/lang/String; --> Lcom/nielsen/app/sdk/AppLocationUpdatesThread;->run()V --> Lcom/nielsen/app/sdk/AppLocationManager;->\u02cf()Z",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location data",
+        "Source Method": "Lcom/hulu/providers/LocationProvider;->\u02cb:()Z",
+        "Reasoning": "getLastKnownLocation() method retrieves location data",
+        "Action": "Stored in v11 variable"
+      },
+      {
+        "Step": "Log location data",
+        "Source Method": "Lcom/hulu/providers/LocationProvider;->\u02cb:()Z",
+        "Reasoning": "Logger is used to log the data",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/hulu/providers/LocationProvider;->\u02cb:()Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/hulu/providers/LocationProvider;->\u02cb:()Z --> Lcom/hulu/providers/LocationProvider;->\u02cb:()Z",
+        "Reasoning": "Location data is retrieved and then logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "view size",
+      "view position",
+      "view visibility"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is originated in method `Lcom/moat/analytics/mobile/hul/u;->\u02cb:(Ljava/lang/String; Landroid/view/View;)V`.",
+        "Source Method": "Lcom/moat/analytics/mobile/hul/u;->\u02cb:(Ljava/lang/String; Landroid/view/View;)V",
+        "Reasoning": "Method receives user personal data as an argument.",
+        "Action": "Stored in JSON object"
+      },
+      {
+        "Step": "Data is analyzed and stored in a JSON object.",
+        "Source Method": "Lcom/moat/analytics/mobile/hul/u;->\u02cb:(Ljava/lang/String; Landroid/view/View;)V",
+        "Reasoning": "Method analyzes the user personal data.",
+        "Action": "Stored in JSON object"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/moat/analytics/mobile/hul/u;->u$c(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/moat/analytics/mobile/hul/u;->\u02cb:(Ljava/lang/String; Landroid/view/View;)V --> Lcom/moat/analytics/mobile/hul/u;->u$c(Ljava/lang/String;)V",
+        "Reasoning": "User personal data is passed to method `Lcom/moat/analytics/mobile/hul/u;->u$c(Ljava/lang/String;)V` where it is analyzed and stored in a JSON object."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive user data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user data is passed between methods through registers and then stored in a JSONObject.",
+        "Source Method": "Lcom/mparticle/internal/g;-><init>:(Lcom/mparticle/internal/g$a;)V",
+        "Reasoning": "Method summary",
+        "Action": "Stored in JSONObject"
+      },
+      {
+        "Step": "JSONObject is sent to logging sink.",
+        "Source Method": "Lcom/mparticle/internal/g;-><init>:(Lcom/mparticle/internal/g$a;)V",
+        "Reasoning": "Method summary",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mparticle/internal/g;-><init>:(Lcom/mparticle/internal/g$a;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mparticle/internal/g;-><init>:(Lcom/mparticle/internal/g$a;)V --> Lcom/mparticle/internal/g;-><init>:(Lcom/mparticle/internal/g$a;)V",
+        "Reasoning": "Method call"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract latitude and longitude from Location object",
+        "Source Method": "Lcom/mparticle/kits/AppsFlyerKit;->setLocation:(Landroid/location/Location;)V",
+        "Reasoning": "Method receives a Location object as input",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass latitude and longitude to AppsFlyerLib.trackLocation()",
+        "Source Method": "Lcom/mparticle/kits/AppsFlyerKit;->setLocation:(Landroid/location/Location;)V",
+        "Reasoning": "Method calls AppsFlyerLib.trackLocation() with extracted data",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mparticle/kits/AppsFlyerLib;->trackLocation(Ljava/lang/String;Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mparticle/kits/AppsFlyerKit;->setLocation(...) --> Lcom/mparticle/kits/AppsFlyerLib;->trackLocation(...)",
+        "Reasoning": "Location data is extracted and passed to AppsFlyerLib.trackLocation()"
+      }
+    ],
+    "Label": "leak"
+  }
+]

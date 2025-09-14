@@ -1,0 +1,76 @@
+
+Processing folder: D:\UBCBAPK_Methods\ContextSensitivity
+Using methods file: D:\UBCBAPK_Methods\ContextSensitivity\ContextSensitivity_bytecode_instructions.json
+Source methods with sensitive calls: ['Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V', 'Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V']
+[SUMMARY] Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V => The method retrieves the device ID from the TelephonyManager using the 'getDeviceId()' method, which can be used to uniquely identify the user's phone. This device ID string is then logged via Log.e(), potentially exposing sensitive information.
+[SUMMARY] Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V => The method retrieves the SIM serial number using TelephonyManager and then logs it to the logcat with tag 'ContextSensitivity2'. The SIM serial number contains user personal data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval of Device ID",
+            "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V",
+            "Reasoning": "The method retrieves device ID from TelephonyManager to uniquely identify the user's phone.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Logging of Device ID",
+            "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V",
+            "Reasoning": "The retrieved device ID is logged via Log.e(), potentially exposing sensitive information.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Llina/ubc/contextsensitivity/ContextSensitivity;->Log.e()"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()) --> Log.e() (Sink)]",
+            "Reasoning": "The method fun1 retrieves the device ID and directly logs it using Log.e(), which is a real sink for logging sensitive information."
+        }
+    ],
+    "Label": "leak"
+}
+
+[REFINED SUBGRAPH #2]:
+{
+    "Data Types Collected": [
+        "SIM serial number"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval of SIM serial number from TelephonyManager",
+            "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V",
+            "Reasoning": "The method retrieves the SIM serial number which contains user personal data.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Logging of SIM serial number to logcat with tag 'ContextSensitivity2'",
+            "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V",
+            "Reasoning": "The retrieved SIM serial number is logged using Log.i(...) which can be considered a sink for sensitive information.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Llina/ubc/contextsensitivity/ContextSensitivity;->log(String, int)"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V --> TelephonyManager retrieval of SIM serial number --> Logging to logcat with tag 'ContextSensitivity2']",
+            "Reasoning": "The method retrieves the SIM serial number, which is considered personal data, and logs it using Log.i(...) that can be seen as a sink for sensitive information."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ContextSensitivity\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ContextSensitivity\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ContextSensitivity\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ContextSensitivity\output\visited_graph
+Saved 2 'leak' subgraphs to: D:\UBCBAPK_Methods\ContextSensitivity\output\sensitive_only.json
+Total time for folder: 75.15 seconds

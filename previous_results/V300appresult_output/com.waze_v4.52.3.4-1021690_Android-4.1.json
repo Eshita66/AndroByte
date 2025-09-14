@@ -1,0 +1,299 @@
+[
+  {
+    "Data Types Collected": [
+      "longitude",
+      "latitude",
+      "altitude",
+      "accuracy",
+      "speed",
+      "bearing",
+      "time",
+      "time elapsed",
+      "provider",
+      "vertical accuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected in the `NativeManager` class.",
+        "Source Method": "Lcom/waze/NativeManager;->SendGpsWarningStat:(Z)V",
+        "Reasoning": "Method summary provides details about the data collected.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to the `a()` method of the `b` class.",
+        "Source Method": "Lcom/waze/NativeManager;->SendGpsWarningStat:(Z)V",
+        "Reasoning": "Method summary provides the destination of the data.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is logged to the server.",
+        "Source Method": "Lcom/waze/b;->a(Ljava/lang/String;)V",
+        "Reasoning": "Method signature matches the logging method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/waze/b;->a(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/waze/NativeManager;->SendGpsWarningStat:(Z)V --> Lcom/waze/b;->a(Ljava/lang/String;)V",
+        "Reasoning": "Overall data flow combines the steps of data collection, passing, and logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected in `sendOfflineLocation()` method.",
+        "Source Method": "Lcom/waze/OfflineNativeManager;->sendOfflineLocation:()V",
+        "Reasoning": "Method summary indicates data origin.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Location is formatted in `formatLocationCommandNTV()` method.",
+        "Source Method": "Lcom/waze/OfflineNativeManager;->formatLocationCommandNTV:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Method name implies location formatting.",
+        "Action": "Formatted"
+      },
+      {
+        "Step": "Formatted location is sent to the server in `c.c()` method.",
+        "Source Method": "Lcom/waze/OfflineNativeManager;->c:(Ljava/lang/String;)V",
+        "Reasoning": "Method name suggests server communication.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/waze/OfflineNativeManager;->c:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/waze/OfflineNativeManager;->sendOfflineLocation:()V --> Lcom/waze/OfflineNativeManager;->formatLocationCommandNTV:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/waze/OfflineNativeManager;->c:(Ljava/lang/String;)V",
+        "Reasoning": "Stepwise analysis of data flow."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is collected in the `NativeManager` class.",
+        "Source Method": "Lcom/waze/NativeManager;->a()V",
+        "Reasoning": "Method signature matches the provided summary.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is passed through `OfflineNativeManager` to `PushCommands` class.",
+        "Source Method": "Lcom/waze/OfflineNativeManager;->a(Ljava/lang/String;)V",
+        "Reasoning": "Method signature matches the provided summary.",
+        "Action": "Passed through"
+      },
+      {
+        "Step": "Data is sent to `WazeGcmListenerService` for further processing.",
+        "Source Method": "Lcom/waze/PushCommands;->a(...)V",
+        "Reasoning": "Method signature matches the provided summary.",
+        "Action": "Sent"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/waze/WazeGcmListenerService;->onMessageReceived(...)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/waze/NativeManager;->a()V --> Lcom/waze/OfflineNativeManager;->a(Ljava/lang/String;)V --> Lcom/waze/PushCommands;->a(...)V --> Lcom/waze/WazeGcmListenerService;->onMessageReceived(...)V",
+        "Reasoning": "Each step in the data flow is described in the 'Overall Data Flow' section."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Personal Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is collected in `Lcom/waze/autocomplete/b;->processJSONResults()`",
+        "Source Method": "Lcom/waze/autocomplete/b;->processJSONResults()",
+        "Reasoning": "Data is stored in `mTitle`, `mReference`, `mSecondaryTitle`, and `mVenueId`",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is added to an ArrayList in `Lcom/waze/autocomplete/b;->handleResults()`",
+        "Source Method": "Lcom/waze/autocomplete/b;->handleResults()",
+        "Reasoning": "Data is passed as an argument to `Lcom/waze/autocomplete/b;->handleResults()`",
+        "Action": "Passed as Argument"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/waze/autocomplete/b;->handleResults()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/waze/autocomplete/b;->processJSONResults() --> Lcom/waze/autocomplete/b;->handleResults() --> Lcom/waze/autocomplete/b;->handleResults()",
+        "Reasoning": "Data is passed from `Lcom/waze/autocomplete/b;->processJSONResults()` to `Lcom/waze/autocomplete/b;->handleResults()` and then passed again to `Lcom/waze/autocomplete/b;->handleResults()`"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected from getLastLocation() method.",
+        "Source Method": "Lcom/waze/map/ParkingUpdateLocationActivity$3;->onClick:(Landroid/view/View;)V",
+        "Reasoning": "Method signature and summary indicate user location is collected.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "User location is passed to locationPickerCanvasSet() method.",
+        "Source Method": "Lcom/waze/map/ParkingUpdateLocationActivity$3;->onClick:(Landroid/view/View;)V",
+        "Reasoning": "Method signature and summary indicate user location is passed.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": null,
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "Lcom/waze/navigate/AddressItem;->getCurLocAddressItem:(Landroid/content/Context;)Lcom/waze/navigate/AddressItem;",
+        "Reasoning": "Method signature indicates location retrieval",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/waze/navigate/AddressItem;->getCurLocAddressItem:(Landroid/content/Context;)Lcom/waze/navigate/AddressItem; --> Stored",
+        "Reasoning": "Location is stored in an AddressItem object"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location retrieved from getLastKnownLocation() method",
+        "Source Method": "Lcom/waze/GeoFencingService;->getLastKnownLocation()V",
+        "Reasoning": "Sensitive user personal data is originated in the getLastKnownLocation() method of the LocationManager class.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location passed to a() method with GPS_DEFAULT string argument",
+        "Source Method": "Lcom/waze/GeoFencingService;->a(I I)V",
+        "Reasoning": "The data is passed to the a() method with the GPS_DEFAULT string argument.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location logged using log() method of OfflineNativeManager class",
+        "Source Method": "Lcom/waze/OfflineNativeManager;->log(Ljava/lang/String;)V",
+        "Reasoning": "The data is finally logged using the log() method of the OfflineNativeManager class.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/waze/OfflineNativeManager;->log(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/waze/GeoFencingService;->getLastKnownLocation()V --> Lcom/waze/GeoFencingService;->a(I I)V --> Lcom/waze/OfflineNativeManager;->log(Ljava/lang/String;)V",
+        "Reasoning": "Location retrieved from getLastKnownLocation() method is passed to a() method with GPS_DEFAULT string argument and finally logged using log() method of OfflineNativeManager class."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data (location) is collected in GetNativeLocation method.",
+        "Source Method": "Lcom/waze/LocationSensorListener;->GetNativeLocation:(Landroid/location/Location;)Lcom/waze/s;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in object of type s."
+      }
+    ],
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is collected",
+        "Source Method": "Lcom/waze/LocationSensorListener;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method logs location information",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/waze/LocationSensorListener;->onLocationChanged:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/waze/LocationSensorListener;->onLocationChanged:(Landroid/location/Location;)V --> Lcom/waze/LocationSensorListener;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Location is logged in the same method where it is collected"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user account information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user account information from Google People API",
+        "Source Method": "Lcom/waze/phone/b;->a:(Z Ljava/lang/String;)V",
+        "Reasoning": "ContentResolver.requestSync() method",
+        "Action": "Stored in m field of b object"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  }
+]

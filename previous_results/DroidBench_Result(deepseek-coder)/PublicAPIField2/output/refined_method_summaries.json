@@ -1,0 +1,37 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID from TelephonyManager",
+                "Source Method": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is retrieved using TelephonyManager's getDeviceId method within the onCreate lifecycle method of MainActivity.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Set Intent Action with Device ID",
+                "Source Method": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "After retrieving the device ID, it is set as an action in an Intent which is used to start another activity or carry data between components.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Log Device ID using Log.i()",
+                "Source Method": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is logged using Log.i(), making it accessible through the app's logs.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/icc_intent_class_modeling/MainActivity;->Log.i(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/icc_intent_class_modeling/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Ledu/mit/icc_intent_class_modeling/MainActivity;->Log.i(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The device ID is retrieved from TelephonyManager and set as an action in the Intent, which ultimately leads to logging via Log.i() using the sensitive information."
+            }
+        ],
+        "Label": "leak"
+    }
+]

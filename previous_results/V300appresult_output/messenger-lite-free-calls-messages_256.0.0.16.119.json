@@ -1,0 +1,198 @@
+[
+  {},
+  {
+    "Data Types Collected": [
+      "phone numbers",
+      "email addresses"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive API calls to originate user personal data",
+        "Source Method": "LX/0cH;->A01:(I)V",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data, specifically phone numbers and email addresses.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Data stored in register v1 and variable v0",
+        "Source Method": "LX/0RE;->A06:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "Sensitive API call: sget-object to originate user personal data.",
+        "Action": "Stored in register v1 and variable v0"
+      },
+      {
+        "Step": "Data propagated through method invocations",
+        "Source Method": "Lcom/facebook/common/stringformat/StringFormatUtil;->A06:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; [Ljava/lang/Object; I)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data through the invocation of a sensitive API call.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Data reaches sink point through return statement",
+        "Source Method": "Lcom/facebook/common/stringformat/StringFormatUtil;->A06:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; [Ljava/lang/Object; I)Ljava/lang/String;",
+        "Reasoning": "The data is passed to other methods via method invocations, ultimately reaching sinks such as logging or transmission.",
+        "Action": "Reached sink point through return statement"
+      },
+      {
+        "Step": "Data stored in registers and variables within the method",
+        "Source Method": "Lcom/facebook/common/stringformat/StringFormatUtil;->A00:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I)I",
+        "Reasoning": "The method originates sensitive user personal data through API calls to StringFormatUtil.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Data propagates through method invocations, reaching sinks like logging and storage",
+        "Source Method": "Lcom/facebook/common/stringformat/StringFormatUtil;->A00:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I)I",
+        "Reasoning": "The data is stored in registers and variables within the method. It propagates through method invocations, reaching sinks like logging and storage.",
+        "Action": "Reached sink point through network transmission"
+      },
+      {
+        "Step": "Data stored in registers or variables within the method",
+        "Source Method": "Lcom/facebook/common/stringformat/StringFormatUtil;->A01:(Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I Z)I",
+        "Reasoning": "This method appears to be handling string formatting and error checking.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Data reaches sink point at the end of the method",
+        "Source Method": "Lcom/facebook/common/stringformat/StringFormatUtil;->A01:(Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I Z)I",
+        "Reasoning": "The data is stored in registers or variables within the method. It reaches a sink point at the end of the method, where it is either returned as an integer or thrown as an AssertionError.",
+        "Action": "Reached sink point at the end of the method"
+      },
+      {
+        "Step": "Data stored in registers v2, v0",
+        "Source Method": "Lcom/facebook/common/stringformat/StringFormatUtil;->A03:(Ljava/lang/String; Ljava/lang/StringBuilder; I I Z)I",
+        "Reasoning": "The current method StringFormatUtil.A03() originates user personal data by accessing the length and characters of a string.",
+        "Action": "Stored in registers v2, v0"
+      },
+      {
+        "Step": "Data passed to methods like append() and return statements",
+        "Source Method": "Lcom/facebook/common/stringformat/StringFormatUtil;->A03:(Ljava/lang/String; Ljava/lang/StringBuilder; I I Z)I",
+        "Reasoning": "The data is stored in registers v2, v0. It is passed to methods like append() and return statements.",
+        "Action": "Passed to methods like append() and return statements"
+      },
+      {
+        "Step": "Data checked for specific characters (37, 115, 100)",
+        "Source Method": "Lcom/facebook/common/stringformat/StringFormatUtil;->A02:(Ljava/lang/String; I)I",
+        "Reasoning": "The current method uses the `length()` and `charAt(I)` methods of the `String` class to iterate over a string.",
+        "Action": "Checked for specific characters (37, 115, 100)"
+      },
+      {
+        "Step": "Data returned as an integer value",
+        "Source Method": "Lcom/facebook/common/stringformat/StringFormatUtil;->A02:(Ljava/lang/String; I)I",
+        "Reasoning": "The method returns an integer value based on these checks.",
+        "Action": "Returned as an integer value"
+      }
+    ],
+    "All Sinks": [
+      "LX/0cH;->A01:(I)V",
+      "Lcom/facebook/common/stringformat/StringFormatUtil;->A06:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; [Ljava/lang/Object; I)Ljava/lang/String;",
+      "Lcom/facebook/common/stringformat/StringFormatUtil;->A00:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I)I",
+      "Lcom/facebook/common/stringformat/StringFormatUtil;->A01:(Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I Z)I",
+      "Lcom/facebook/common/stringformat/StringFormatUtil;->A03:(Ljava/lang/String; Ljava/lang/StringBuilder; I I Z)I",
+      "Lcom/facebook/common/stringformat/StringFormatUtil;->A02:(Ljava/lang/String; I)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[LX/0cH;->A01:(I)V --> Lcom/facebook/common/stringformat/StringFormatUtil;->A06:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; [Ljava/lang/Object; I)Ljava/lang/String;]",
+        "Reasoning": "The method LX/0cH;->A01:(I)V uses sensitive API calls to originate user personal data, specifically phone numbers and email addresses. The data is stored in registers and variables within the method. It propagates through method invocations, reaching sinks like logging or transmission."
+      },
+      {
+        "dataflow 2": "[LX/0RE;->A06:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/String;)V --> Lcom/facebook/common/stringformat/StringFormatUtil;->A00:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I)I]",
+        "Reasoning": "The method LX/0RE;->A06:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/String;)V uses sensitive API calls to originate user personal data. The data is stored in register v1 and variable v0. It propagates through method invocations, reaching sinks like logging or storage."
+      },
+      {
+        "dataflow 3": "[Lcom/facebook/common/stringformat/StringFormatUtil;->A06:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; [Ljava/lang/Object; I)Ljava/lang/String; --> Lcom/facebook/common/stringformat/StringFormatUtil;->A00:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I)I]",
+        "Reasoning": "The method Lcom/facebook/common/stringformat/StringFormatUtil;->A06:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; [Ljava/lang/Object; I)Ljava/lang/String; originates user personal data through the invocation of a sensitive API call. The data is stored in registers and variables within the method. It propagates through method invocations, reaching sinks like logging or storage."
+      },
+      {
+        "dataflow 4": "[Lcom/facebook/common/stringformat/StringFormatUtil;->A00:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I)I --> Lcom/facebook/common/stringformat/StringFormatUtil;->A01:(Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I Z)I]",
+        "Reasoning": "The method Lcom/facebook/common/stringformat/StringFormatUtil;->A00:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I)I originates sensitive user personal data through API calls to StringFormatUtil. The data is stored in registers and variables within the method. It propagates through method invocations, reaching sinks like logging or storage."
+      },
+      {
+        "dataflow 5": "[Lcom/facebook/common/stringformat/StringFormatUtil;->A01:(Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I Z)I --> Lcom/facebook/common/stringformat/StringFormatUtil;->A03:(Ljava/lang/String; Ljava/lang/StringBuilder; I I Z)I]",
+        "Reasoning": "The method Lcom/facebook/common/stringformat/StringFormatUtil;->A01:(Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I Z)I appears to be handling string formatting and error checking. The data is stored in registers or variables within the method. It propagates through method invocations, reaching sinks like logging or storage."
+      },
+      {
+        "dataflow 6": "[Lcom/facebook/common/stringformat/StringFormatUtil;->A03:(Ljava/lang/String; Ljava/lang/StringBuilder; I I Z)I --> Lcom/facebook/common/stringformat/StringFormatUtil;->A02:(Ljava/lang/String; I)I]",
+        "Reasoning": "The method Lcom/facebook/common/stringformat/StringFormatUtil;->A03:(Ljava/lang/String; Ljava/lang/StringBuilder; I I Z)I originates user personal data by accessing the length and characters of a string. The data is stored in registers v2, v0. It propagates through method invocations, reaching sinks like logging or storage."
+      },
+      {
+        "dataflow 7": "[Lcom/facebook/common/stringformat/StringFormatUtil;->A02:(Ljava/lang/String; I)I --> Lcom/facebook/common/stringformat/StringFormatUtil;->A01:(Ljava/lang/Object; Ljava/lang/String; Ljava/lang/StringBuilder; I Z)I]",
+        "Reasoning": "The method Lcom/facebook/common/stringformat/StringFormatUtil;->A02:(Ljava/lang/String; I)I uses the `length()` and `charAt(I)` methods of the `String` class to iterate over a string. The data is checked for specific characters (37, 115, 100). It propagates through method invocations, reaching sinks like logging or storage."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.telephony.TelephonyManager.getDeviceId",
+      "android.location.Location.getLatitude",
+      "android.location.Location.getLongitude",
+      "java.lang.String.getPhoneNumber"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device ID",
+        "Source Method": "android.telephony.TelephonyManager.getDeviceId()",
+        "Reasoning": "Retrieves the unique device identifier",
+        "Action": "Stored in TelephonyManager object"
+      },
+      {
+        "Step": "Get location",
+        "Source Method": "android.location.Location.getLatitude() and android.location.Location.getLongitude()",
+        "Reasoning": "Retrieves the current location coordinates",
+        "Action": "Stored in Location object"
+      },
+      {
+        "Step": "Get phone number",
+        "Source Method": "java.lang.String.getPhoneNumber()",
+        "Reasoning": "Retrieves the device's phone number",
+        "Action": "Stored in String object"
+      }
+    ],
+    "All Sinks": [
+      "android.util.Log.d(String, String)",
+      "com.example.MyApplication.sendDataToServer(String)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "android.telephony.TelephonyManager.getDeviceId() --> Stored in TelephonyManager object --> android.util.Log.d(String, String)",
+        "Reasoning": "The device ID is retrieved and stored in the TelephonyManager object. It is then logged using Log.d."
+      },
+      {
+        "dataflow 2": "android.location.Location.getLatitude() and android.location.Location.getLongitude() --> Stored in Location object --> com.example.MyApplication.sendDataToServer(String)",
+        "Reasoning": "The location coordinates are retrieved and stored in the Location object. It is then transmitted to a server using sendDataToServer method."
+      },
+      {
+        "dataflow 3": "java.lang.String.getPhoneNumber() --> Stored in String object --> android.util.Log.d(String, String)",
+        "Reasoning": "The phone number is retrieved and stored in the String object. It is then logged using Log.d."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wifi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Register broadcast receiver for STATE_CHANGE intent",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "Parsing wifiInfo parcelable extra to extract Wifi SSID",
+        "Action": "Stored in register v0 as a string"
+      },
+      {
+        "Step": "Parse wifiInfo parcelable extra",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "Extract Wifi SSID from intent extras",
+        "Action": "Propagated through method until returned"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by registering a broadcast receiver for STATE_CHANGE intent and parsing the wifiInfo parcelable extra. The data is stored in register v0 as a string and propagated through the method until it is returned."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

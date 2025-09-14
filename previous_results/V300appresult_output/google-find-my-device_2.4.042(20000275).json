@@ -1,0 +1,127 @@
+[
+  {
+    "Data Types Collected": [
+      "location",
+      "latitude",
+      "longitude",
+      "accuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access location information",
+        "Source Method": "Lazo;->run:()V",
+        "Reasoning": "The method originates sensitive user personal data by accessing location, latitude, longitude, accuracy, and other location-related information.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Invoke A() method with dfm and dfm parameters",
+        "Source Method": "Lakt;->z:(Ldfm; Laoh; Laog;)Z",
+        "Reasoning": "The current method z() in class akt originates sensitive user personal data by invoking the A() method from the same class with parameters dfm and dfm.",
+        "Action": "Passed through the c() method of aoh"
+      },
+      {
+        "Step": "Invoke `f` method of an instance of `Laoh`",
+        "Source Method": "Lakt;->n:(Laoh; Laof; Laog;)V",
+        "Reasoning": "The method originates sensitive user personal data by invoking the `f` method of an instance of `Laoh`, which is then checked and used to invoke another method.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Call getClass() API on an object",
+        "Source Method": "Laoh;->c:(Laog;)Ldfm;",
+        "Reasoning": "The method originates user personal data by calling the sensitive API 'getClass()' from 'Ljava/lang/Object;' and stores it in register v2.",
+        "Action": "Propagated to other methods via method invocations"
+      },
+      {
+        "Step": "Check if a specific key exists in a map",
+        "Source Method": "Laoh;->f:(Laog;)Z",
+        "Reasoning": "This method originates sensitive user personal data by calling the getClass() API on an object (v1) and then checks if a specific key exists in a map.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      "Lazo;->run:()V",
+      "Lakt;->z:(Ldfm; Laoh; Laog;)Z",
+      "Lakt;->n:(Laoh; Laof; Laog;)V",
+      "Laoh;->c:(Laog;)Ldfm;",
+      "Laoh;->f:(Laog;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lazo;->run:()V --> ... --> Lakt;->n:(Laoh; Laof; Laog;)V",
+        "Reasoning": "Location data is accessed in run() method of class Lazo and then propagated through other methods until it reaches the n() method of class Lakt, where it is transmitted over the network via execute() method."
+      },
+      {
+        "dataflow 2": "Lakt;->z:(Ldfm; Laoh; Laog;)Z --> ... --> Lakt;->A:(Ldfm; Ldfm;)Z",
+        "Reasoning": "Data from z() method of class Lakt is propagated to A() method of the same class, where it is compared and then used in another method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "Landroid/content/Context;",
+      "Ljh;",
+      "Ljf;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from Context object",
+        "Source Method": "Ljf;-><init>:(Ljm; Landroid/content/Context;)V",
+        "Reasoning": "getApplicationContext() and getSystemService() calls",
+        "Action": "Stored in registers v0 and v1"
+      },
+      {
+        "Step": "Passes PowerManager instance to current object",
+        "Source Method": "Ljf;-><init>:(Ljm; Landroid/content/Context;)V",
+        "Reasoning": "iput-object instructions",
+        "Action": "Stored in registers v0 and v1"
+      },
+      {
+        "Step": "Originates user personal data using sensitive API call to get a Context object",
+        "Source Method": "Ljm;->P:(Landroid/content/Context;)Ljh;",
+        "Reasoning": "iget-object v0, v1, Ljm;->X Ljh;",
+        "Action": "Stored in register v0 and passed to another instance of Ljf"
+      },
+      {
+        "Step": "Passed to another instance of Ljf",
+        "Source Method": "Ljm;->P:(Landroid/content/Context;)Ljh;",
+        "Reasoning": "Method invocation",
+        "Action": "Stored in register v0 and passed to another instance of Ljf"
+      },
+      {
+        "Step": "Passed to current object via iput-object instructions",
+        "Source Method": "Ljm;->P:(Landroid/content/Context;)Ljh;",
+        "Reasoning": "iput-object instructions",
+        "Action": "Stored in registers v0 and v1"
+      },
+      {
+        "Step": "Passed to another instance of Ljf via method invocation",
+        "Source Method": "Ljm;->P:(Landroid/content/Context;)Ljh;",
+        "Reasoning": "Method invocation",
+        "Action": "Stored in register v0 and passed to another instance of Ljf"
+      },
+      {
+        "Step": "Returned from method",
+        "Source Method": "Ljm;->P:(Landroid/content/Context;)Ljh;",
+        "Reasoning": "Return statement",
+        "Action": "Logged or transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Ljm;->r:(Landroid/content/Context; I)I",
+      "Ljm;->P:(Landroid/content/Context;)Ljh;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Ljf;-><init>:(Ljm; Landroid/content/Context;)V --> Ljm;->P:(Landroid/content/Context;)Ljh; --> Ljm;->r:(Landroid/content/Context; I)I",
+        "Reasoning": "The data flows from the Context object in Ljf to the sensitive API call in Ljm, then to the return statement in Ljm."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

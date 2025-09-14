@@ -1,0 +1,310 @@
+[
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "Ljava/lang/String;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is passed to method Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data through the `location` parameter.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User search text is passed to method Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The data is potentially propagated through the `searchText` parameter.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Input string 'v0' is passed to method Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z",
+        "Source Method": "Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data from the input parameter 'v0' of type String.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/internal/Utility;->logException(Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z --> Lcom/facebook/internal/Utility;->logException(Ljava/lang/Throwable;)V ",
+        "Reasoning": "The data is propagated from the `newPlacesSearchRequest` method to the `isNullOrEmpty` method and then potentially logged through the `logException` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "os.arch",
+      "ro.build.display.id",
+      "location services",
+      "device sensor data",
+      "string value from SystemProperties API",
+      "getApplicationContext() and getSystemService() methods",
+      "device's display metrics and screen layout",
+      "network information",
+      "SharedPreferences instance"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get system information (os.arch, ro.build.display.id)",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "API calls to get system information",
+        "Action": "Stored in HashMap 'deviceData'"
+      },
+      {
+        "Step": "Get location services and device sensor data",
+        "Source Method": "Lcom/appsflyer/AFSensorManager;->$$b:(Landroid/content/Context;)Lcom/appsflyer/AFSensorManager;",
+        "Reasoning": "Use of sensitive APIs (getSystemService())",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Access device's display metrics and screen layout",
+        "Source Method": "Lcom/appsflyer/internal/s;->values:(Landroid/content/Context;)Ljava/util/Map;",
+        "Reasoning": "API calls to access device's display metrics and screen layout",
+        "Action": "Stored in HashMap"
+      },
+      {
+        "Step": "Collect network information",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->collectIntentsFromActivities:(Landroid/content/Context;)Z",
+        "Reasoning": "API calls to collect network information",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Retrieve SharedPreferences instance",
+        "Source Method": "Lcom/appsflyer/internal/Exlytics;->increment:()V",
+        "Reasoning": "API call to retrieve SharedPreferences instance",
+        "Action": "Increment exception number stored in it"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AFLogger;->afErrorLog:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+      "Lcom/appsflyer/AppsFlyerLibCore;->collectIntentsFromActivities:(Landroid/content/Context;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; --> Lcom/appsflyer/AFSensorManager;->$$b:(Landroid/content/Context;)Lcom/appsflyer/AFSensorManager; --> Lcom/appsflyer/AppsFlyerLibCore;->collectIntentsFromActivities:(Landroid/content/Context;)Z",
+        "Reasoning": "Data is propagated from AppsFlyerLibCore to AFSensorManager, then to AppsFlyerLibCore again"
+      },
+      {
+        "dataflow 2": "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; --> Lcom/appsflyer/internal/s;->values:(Landroid/content/Context;)Ljava/util/Map;",
+        "Reasoning": "Data is propagated from AppsFlyerLibCore to internal/s class"
+      },
+      {
+        "dataflow 3": "Lcom/appsflyer/AppsFlyerLibCore;->collectIntentsFromActivities:(Landroid/content/Context;)Z --> Lcom/appsflyer/AFLogger;->afErrorLog:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "Data is propagated from AppsFlyerLibCore to AFLogger class"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "connection type",
+      "cellular generation",
+      "telephony manager details",
+      "WiFi information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access network-related information",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createConnectivityEventMap:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "This method originates user personal data by accessing various network-related information such as connection type, cellular generation, telephony manager details, and WiFi information.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Reverse byte array",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/NetInfoUtils;->reverseByteArray:([B)V",
+        "Reasoning": "The method originates user personal data by reversing a byte array.",
+        "Action": "Stored in registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createConnectivityEventMap:()Lcom/facebook/react/bridge/WritableMap; --> Lcom/reactnativecommunity/netinfo/NetInfoUtils;->reverseByteArray:([B)V --> null",
+        "Reasoning": "The data from createConnectivityEventMap is passed to reverseByteArray, but there are no sinks found for this data flow."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID (phone number)",
+      "Context",
+      "String",
+      "Boolean",
+      "Integer"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "The method originates user personal data by calling the sensitive API `Lcom/huawei/a/a/b/k/b;a(Landroid/content/Context;Ljava/lang/String;)Z` to check for READ_PHONE_STATE permission.",
+        "Source Method": "Lcom/huawei/a/a/c/b/c;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method calls the sensitive API `a()` in `Lcom/huawei/a/a/b/k/b` with Context and String as parameters.",
+        "Action": "Stored in register v2"
+      },
+      {
+        "Step": "The data is propagated through registers and variables within the method, then passed to other methods via method invocations.",
+        "Source Method": "Lcom/huawei/a/a/c/b/c;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in register v2 and propagated to other methods via method invocations.",
+        "Action": "Passed through registers"
+      },
+      {
+        "Step": "The method originates user personal data by invoking the sensitive API call to `d()` in `Lcom/huawei/a/a/b/e/a`.",
+        "Source Method": "Lcom/huawei/a/a/b/e/a;->d:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method invokes the sensitive API `d()` with String as parameters.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "If the SDK version is less than 23, a toast message is displayed with the HMS SDK name and a warning message.",
+        "Source Method": "Lcom/huawei/a/a/b/k/b;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method calls the sensitive API `a()` in `Lcom/huawei/a/a/b/k/b` with Context and String as parameters.",
+        "Action": "Displayed on screen"
+      },
+      {
+        "Step": "The data is stored in register v0 and propagated to other methods via method invocations.",
+        "Source Method": "Lcom/huawei/a/a/b/e/a;->c:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method stores the data in register v0 and propagates it to other methods via method invocations.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "The method originates user personal data through the invocation of a sensitive API call to get an object (sget-object v0, Lcom/huawei/a/a/b/e/a;->a Lcom/huawei/a/a/b/e/b;) and then uses this data in another method invocation.",
+        "Source Method": "Lcom/huawei/a/a/b/e/a;->c:()Z",
+        "Reasoning": "The method invokes the sensitive API `c()` with no parameters, which returns a boolean value.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "The data is stored in registers (v0, v1) and variables (Lcom/huawei/a/a/b/e/b;->a Z, Lcom/huawei/a/a/b/e/b;->b I).",
+        "Source Method": "Lcom/huawei/a/a/b/e/b;->a:(I)Z",
+        "Reasoning": "The method invokes the sensitive API `a()` with an integer parameter.",
+        "Action": "Stored in registers and variables"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/a/a/b/k/b;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+      "Lcom/huawei/a/a/b/e/a;->d:(Ljava/lang/String; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/huawei/a/a/c/b/c;->e(Landroid/content/Context;)Ljava/lang/String --> Lcom/huawei/a/a/b/k/b;a(Landroid/content/Context;Ljava/lang/String;)Z --> Displayed on screen",
+        "Reasoning": "The method originates user personal data by calling the sensitive API `a()` in `Lcom/huawei/a/a/b/k/b` with Context and String as parameters."
+      },
+      {
+        "dataflow 2": " Lcom/huawei/a/a/c/b/c;->e(Landroid/content/Context;)Ljava/lang/String --> Lcom/huawei/a/a/b/e/a;d(Ljava/lang/String;Ljava/lang/String;)V --> Logged",
+        "Reasoning": "The method originates user personal data by invoking the sensitive API call to `d()` in `Lcom/huawei/a/a/b/e/a`."
+      },
+      {
+        "dataflow 3": " Lcom/huawei/a/a/c/b/c;->e(Landroid/content/Context;)Ljava/lang/String --> Lcom/huawei/a/a/b/k/b;a(Landroid/content/Context;Ljava/lang/String;)Z --> Displayed on screen",
+        "Reasoning": "The method originates user personal data by calling the sensitive API `a()` in `Lcom/huawei/a/a/b/k/b` with Context and String as parameters."
+      },
+      {
+        "dataflow 4": " Lcom/huawei/a/a/c/b/c;->e(Landroid/content/Context;)Ljava/lang/String --> Lcom/huawei/a/a/b/e/a;c(Ljava/lang/String;Ljava/lang/String;)V --> Passed through registers",
+        "Reasoning": "The method originates user personal data by invoking the sensitive API call to `c()` in `Lcom/huawei/a/a/b/e/a`."
+      },
+      {
+        "dataflow 5": " Lcom/huawei/a/a/c/b/c;->e(Landroid/content/Context;)Ljava/lang/String --> Lcom/huawei/a/a/b/e/a;c()Z --> Stored in register v0",
+        "Reasoning": "The method originates user personal data through the invocation of a sensitive API call to get an object (sget-object v0, Lcom/huawei/a/a/b/e/a;->a Lcom/huawei/a/a/b/e/b;) and then uses this data in another method invocation."
+      },
+      {
+        "dataflow 6": " Lcom/huawei/a/a/c/b/c;->e(Landroid/content/Context;)Ljava/lang/String --> Lcom/huawei/a/a/b/e/b;a(I)Z --> Stored in registers and variables",
+        "Reasoning": "The method originates user personal data by invoking sensitive API calls to get boolean and integer values from the object."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.os.Build",
+      "java.util.Locale",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access device information from Build class",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->generateConstants:()Ljava/util/Map;",
+        "Reasoning": "The data is stored in a HashMap and propagated through registers.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get current country",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getCurrentCountry:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in register v0 and passed between methods via invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get current language",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getCurrentLanguage:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers (v1) and passed through variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get preferred locales",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPreferredLocales:()Ljava/util/ArrayList;",
+        "Reasoning": "The data is stored in a list of Locale objects and then extracted to store only the language code.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/react/bridge/ReactContextBaseJavaModule;->getReactApplicationContext:()Lcom/facebook/react/bridge/ReactApplicationContext;",
+      "Lcom/facebook/infer/annotation/Assertions;->assertNotNull:(Ljava/lang/Object; Ljava/lang/String;)Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->generateConstants:()Ljava/util/Map; --> Lcom/facebook/react/bridge/ReactContextBaseJavaModule;->getReactApplicationContext:()Lcom/facebook/react/bridge/ReactApplicationContext;",
+        "Reasoning": "The data is propagated through registers and method invocations."
+      },
+      {
+        "dataflow 2": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getCurrentCountry:()Ljava/lang/String; --> Lcom/facebook/infer/annotation/Assertions;->assertNotNull:(Ljava/lang/Object; Ljava/lang/String;)Ljava/lang/Object;",
+        "Reasoning": "The data is passed between methods via invocations."
+      },
+      {
+        "dataflow 3": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getCurrentLanguage:()Ljava/lang/String; --> Lcom/facebook/react/bridge/ReactContextBaseJavaModule;->getReactApplicationContext:()Lcom/facebook/react/bridge/ReactApplicationContext;",
+        "Reasoning": "The data is passed through variables within the method and method invocations."
+      },
+      {
+        "dataflow 4": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPreferredLocales:()Ljava/util/ArrayList; --> Lcom/facebook/react/bridge/ReactContextBaseJavaModule;->getReactApplicationContext:()Lcom/facebook/react/bridge/ReactApplicationContext;",
+        "Reasoning": "The data is stored in a list of Locale objects and then extracted to store only the language code."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address",
+      "WiFi information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get MAC address and WiFi information from sensitive APIs",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddress:(Lcom/facebook/react/bridge/Promise;)V",
+        "Reasoning": "The method calls sensitive APIs to get the MAC address and WiFi information.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Pass data between methods via method invocations",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddress:(Lcom/facebook/react/bridge/Promise;)V",
+        "Reasoning": "The data is passed between methods via method invocations.",
+        "Action": "Passed between methods"
+      },
+      {
+        "Step": "Data reaches a sink point (resolve() method of the Promise object)",
+        "Source Method": "Lcom/facebook/react/bridge/Promise;->resolve:(Ljava/lang/Object;)V",
+        "Reasoning": "The data is passed to the resolve() method of the Promise object.",
+        "Action": "Passed to the resolve() method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/react/bridge/Promise;->resolve:(Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddress:(Lcom/facebook/react/bridge/Promise;)V --> Lcom/facebook/react/bridge/Promise;->resolve:(Ljava/lang/Object;)V",
+        "Reasoning": "The MAC address and WiFi information are passed from the getMacAddress() method to the resolve() method of the Promise object."
+      }
+    ],
+    "Label": "leak"
+  }
+]

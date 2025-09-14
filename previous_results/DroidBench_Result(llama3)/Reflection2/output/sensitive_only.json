@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve IMEI from TelephonyManager",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method creates an instance of de.ecspride.BaseClass, retrieves the IMEI using TelephonyManager.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send SMS message with tainted IMEI",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method sends a SMS message with the retrieved IMEI.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendSMS:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->sendSMS:(Ljava/lang/String;)V",
+                "Reasoning": "The tainted IMEI is passed from the onCreate method to the sendSMS method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

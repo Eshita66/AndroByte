@@ -1,0 +1,143 @@
+[
+  {
+    "Data Types Collected": [
+      "Location Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method c() collects location data",
+        "Source Method": "Lcom/amazon/device/ads/d0;->c:()Ljava/lang/String;",
+        "Reasoning": "Method c() returns a string based on location data",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/d0;->c() --> NULL",
+        "Reasoning": "Location data is collected but not stored, logged, or transmitted."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address",
+        "Source Method": "Lcom/amazon/device/ads/z;->i:(Landroid/content/Context;)V",
+        "Reasoning": "Method description mentions retrieving MAC address",
+        "Action": "Stored in f field"
+      },
+      {
+        "Step": "Set e field",
+        "Source Method": "Lcom/amazon/device/ads/z;->i:(Landroid/content/Context;)V",
+        "Reasoning": "Method description mentions setting e field based on MAC address retrieval",
+        "Action": "Set to true"
+      },
+      {
+        "Step": "Log error message",
+        "Source Method": "Lcom/amazon/device/ads/z;->i:(Landroid/content/Context;)V",
+        "Reasoning": "Method description mentions logging error if unsuccessful",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/device/ads/z;->i:(Landroid/content/Context;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/z;->i:(Landroid/content/Context;)V --> Lcom/amazon/device/ads/z;->i:(Landroid/content/Context;)V --> Lcom/amazon/device/ads/z;->i:(Landroid/content/Context;)V",
+        "Reasoning": "MAC address is retrieved, stored, and logged in case of failure"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data",
+        "Source Method": "Lcom/moat/analytics/mobile/mpub/c0;->r:(Landroid/location/Location;)Ljava/util/Map;",
+        "Reasoning": "Method r() extracts location data from the input Location object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Location --> Stored",
+        "Reasoning": "Location is extracted and stored in a HashMap."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is extracted from GPS and network providers.",
+        "Source Method": "Lcom/moat/analytics/mobile/mpub/q;->n:()Landroid/location/Location;",
+        "Reasoning": "Method summary",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/moat/analytics/mobile/mpub/q;->n:()Landroid/location/Location; --> Stored",
+        "Reasoning": "Location is stored in a Location object."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "User ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected.",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->D:()V",
+        "Reasoning": "Method summary.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Sensitive user data is appended to StringBuilder.",
+        "Source Method": "Lcom/mopub/common/BaseUrlGenerator;->b:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "Method summary.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is encoded and appended to StringBuilder.",
+        "Source Method": "Lcom/mopub/common/BaseUrlGenerator;->b:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "Method summary.",
+        "Action": "Encoded and appended"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mopub/common/AdUrlGenerator;->D:()V --> Lcom/mopub/common/BaseUrlGenerator;->b:(Ljava/lang/String; Ljava/lang/String;)V --> null",
+        "Reasoning": "Data flows from AdUrlGenerator to BaseUrlGenerator but no sink is identified."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

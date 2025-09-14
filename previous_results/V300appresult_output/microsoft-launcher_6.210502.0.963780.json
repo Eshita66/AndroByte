@@ -1,0 +1,685 @@
+[
+  {
+    "Data Types Collected": [
+      "java.lang.String",
+      "android.location.Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get last known location from LocationManager",
+        "Source Method": "Li/b/k/r;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method calls `getLastKnownLocation` method from the `LocationManager`.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Check if provider is enabled",
+        "Source Method": "Li/b/k/r;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method calls `isProviderEnabled` method from the `LocationManager`.",
+        "Action": "Logged in the method's local variables"
+      }
+    ],
+    "All Sinks": [
+      "Li/b/k/r;->a:(Ljava/lang/String;)Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Li/b/k/r;->a:(Ljava/lang/String;)Landroid/location/Location; --> android.location.Location --> Li/b/k/r;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The last known location is propagated to the return of the method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "accuracy",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location service from system service",
+        "Source Method": "Lj/g/c/h/b/e/o/f;->doInBackground:([Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "The current method originates user personal data by calling the getSystemService method to retrieve the location service.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Get last known location from LocationManager",
+        "Source Method": "Lj/g/c/e/c/g;->a:(Landroid/content/Context; Landroid/location/LocationManager; Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by calling the getLastKnownLocation() method of LocationManager.",
+        "Action": "Stored in register v3 and passed to Log.e() function"
+      },
+      {
+        "Step": "Get device ID from Android framework",
+        "Source Method": "Li/i/k/a;->a:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data by calling the myPid() and myUid() methods from the Android framework.",
+        "Action": "Stored in registers v0 and v1"
+      },
+      {
+        "Step": "Get phone number from device",
+        "Source Method": "Li/i/k/a;->a:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data by calling the myPid() and myUid() methods from the Android framework.",
+        "Action": "Stored in registers v0 and v1"
+      }
+    ],
+    "All Sinks": [
+      "Lj/g/c/e/c/g;->a:(Landroid/content/Context; Landroid/location/LocationManager; Ljava/lang/String;)Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lj/g/c/h/b/e/o/f;->doInBackground:([Ljava/lang/Object;)Ljava/lang/Object--> Lj/g/c/e/c/g;->a:(Landroid/content/Context; Landroid/location/LocationManager; Ljava/lang/String;)Landroid/location/Location --> Log.e() function",
+        "Reasoning": "The location is retrieved from the system service, then passed to LocationManager to get the last known location, and finally logged using Log.e() function."
+      },
+      {
+        "dataflow 2": " Li/i/k/a;->a:(Landroid/content/Context; Ljava/lang/String;)I --> ... --> ALL Sinks",
+        "Reasoning": "The device ID is retrieved from the Android framework, then stored in registers v0 and v1. The data flow continues to other methods via method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data originates from sensitive API calls to android.content.Context.",
+        "Source Method": "Lj/g/g/a/e;-><init>:(Lj/g/g/a/t; Ljava/lang/String; Landroid/content/Context; Lj/g/g/a/i;)V",
+        "Reasoning": "The method initiates user personal data collection from sensitive API calls to android.content.Context.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is stored in registers or variables within the method, specifically in v8 (android/content/ContentResolver) and v7 (Lj/g/g/a/e).",
+        "Source Method": "Lj/g/g/a/e;-><init>:(Lj/g/g/a/t; Ljava/lang/String; Landroid/content/Context; Lj/g/g/a/i;)V",
+        "Reasoning": "The data is stored in registers or variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to other methods via method invocations, such as Lj/g/g/a/z;-><init>(Lj/g/g/a/t; Ljava/lang/String; Lj/g/g/a/i;)V.",
+        "Source Method": "Lj/g/g/a/e;-><init>:(Lj/g/g/a/t; Ljava/lang/String; Landroid/content/Context; Lj/g/g/a/i;)V",
+        "Reasoning": "The data is then passed to other methods via method invocations.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data ultimately reaches sinks like logging and storage.",
+        "Source Method": "Lj/g/g/a/e;-><init>:(Lj/g/g/a/t; Ljava/lang/String; Landroid/content/Context; Lj/g/g/a/i;)V",
+        "Reasoning": "The data ultimately reaches sinks like logging and storage.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lj/g/g/a/z;-><init>(Lj/g/g/a/t; Ljava/lang/String; Lj/g/g/a/i;)V",
+      "Lj/g/g/a/e;->log(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lj/g/g/a/e;-><init>:(Lj/g/g/a/t; Ljava/lang/String; Landroid/content/Context; Lj/g/g/a/i;)V --> Stored in v8 (android/content/ContentResolver) and v7 (Lj/g/g/a/e) --> Passed to Lj/g/g/a/z;-><init>(Lj/g/g/a/t; Ljava/lang/String; Lj/g/g/a/i;)V --> Logged by Lj/g/g/a/e;->log(Ljava/lang/String;)V",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "country code",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates location and country code from sensitive API calls",
+        "Source Method": "Lj/g/k/k2/p;->d:()Ljava/lang/String;",
+        "Reasoning": "Based on the method summary, it originates user personal data from sensitive API calls to get the location and country code.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Assigns attributes of a WeatherLocation object",
+        "Source Method": "Lcom/microsoft/launcher/weather/model/WeatherLocation;->assign:(Lcom/microsoft/launcher/weather/model/WeatherLocation;)V",
+        "Reasoning": "Based on the method summary, it assigns various attributes of a WeatherLocation object from another instance.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Initializes WeatherLocation with sensitive data",
+        "Source Method": "Lcom/microsoft/launcher/weather/model/WeatherLocation;-><init>:(Lcom/microsoft/launcher/weather/model/WeatherLocation;)V",
+        "Reasoning": "Based on the method summary, it originates user personal data by calling sensitive APIs to set country code, location name, full name, and provider.",
+        "Action": "Stored in object's fields"
+      },
+      {
+        "Step": "Passes WeatherLocation instance with sensitive data",
+        "Source Method": "Lj/g/k/h4/l/f;->a:()Lcom/microsoft/launcher/weather/model/WeatherLocation;",
+        "Reasoning": "Based on the method summary, it originates sensitive user personal data by calling the 'b' field of the WeatherLocation class.",
+        "Action": "Passed to a new instance of WeatherLocation"
+      }
+    ],
+    "All Sinks": [
+      "Lj/g/k/h4/l/f;->a:()Lcom/microsoft/launcher/weather/model/WeatherLocation;",
+      "Lj/g/k/k2/p;->d:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lj/g/k/k2/p;->d:()Ljava/lang/String; --> Lcom/microsoft/launcher/weather/model/WeatherLocation;->assign:(Lcom/microsoft/launcher/weather/model/WeatherLocation;)V --> Lcom/microsoft/launcher/weather/model/WeatherLocation;-><init>:(Lcom/microsoft/launcher/weather/model/WeatherLocation;)V",
+        "Reasoning": "The location and country code are stored in registers and variables within the method, then assigned to a WeatherLocation object, which is initialized with sensitive data."
+      },
+      {
+        "dataflow 2": " Lj/g/k/h4/l/f;->a:()Lcom/microsoft/launcher/weather/model/WeatherLocation; --> Lcom/microsoft/launcher/weather/model/WeatherLocation;->assign:(Lcom/microsoft/launcher/weather/model/WeatherLocation;)V",
+        "Reasoning": "The WeatherLocation instance with sensitive data is passed to the assign method, which assigns attributes of a WeatherLocation object."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location provider",
+      "latitude",
+      "longitude",
+      "time",
+      "elapsed real-time nanoseconds",
+      "location name",
+      "full name",
+      "last known flag",
+      "provider value",
+      "user-set flag",
+      "current flag",
+      "country code",
+      "timezone name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from the `location` field of the `WeatherLocation` object.",
+        "Source Method": "Lcom/microsoft/launcher/weather/model/WeatherLocation;->writeObject:(Ljava/io/ObjectOutputStream;)V",
+        "Reasoning": "The method originates user personal data from the `location` field of the `WeatherLocation` object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Propagates through registers and passed to the `ObjectOutputStream` for writing.",
+        "Source Method": "Lcom/microsoft/launcher/weather/model/WeatherLocation;->writeObject:(Ljava/io/ObjectOutputStream;)V",
+        "Reasoning": "The data is then propagated through registers and passed to the `ObjectOutputStream` for writing.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/microsoft/launcher/weather/model/WeatherLocation;->writeObject:(Ljava/io/ObjectOutputStream;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/microsoft/launcher/weather/model/WeatherLocation;->writeObject:(Ljava/io/ObjectOutputStream;)V --> [Propagates through registers and passed to the `ObjectOutputStream` for writing.]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method invocation",
+        "Source Method": "Lcom/microsoft/launcher/weather/model/WeatherLocation;->equals:(Ljava/lang/Object;)Z",
+        "Reasoning": "User personal data from the 'location' field of the WeatherLocation object is stored in registers and variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Method invocation",
+        "Source Method": "Lcom/microsoft/launcher/weather/model/WeatherLocation;->equals:(Ljava/lang/Object;)Z",
+        "Reasoning": "The data is passed to other methods via method invocations.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "hashCode()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/microsoft/launcher/weather/model/WeatherLocation;->equals:(Ljava/lang/Object;)Z --> ... --> hashCode()",
+        "Reasoning": "The user personal data from the 'location' field of the WeatherLocation object is passed to other methods via method invocations and eventually reaches the sink point, which is the hashCode() method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location's latitude and longitude",
+        "Source Method": "Lcom/microsoft/launcher/weather/model/WeatherLocation;->getLatitude:()D",
+        "Reasoning": "Accessing the location's latitude through the `getLatitude()` method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get location's longitude",
+        "Source Method": "Lcom/microsoft/launcher/weather/model/WeatherLocation;->getLongitude:()D",
+        "Reasoning": "Accessing the location's longitude through the `getLongitude()` method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Hash latitude and longitude values",
+        "Source Method": "Ljava/lang/Double;->hashCode:()I",
+        "Reasoning": "Passing the latitude and longitude values to the `hashCode()` method of the Double class for hashing.",
+        "Action": "Transformed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/microsoft/launcher/weather/model/WeatherLocation;->hashCode:()I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/microsoft/launcher/weather/model/WeatherLocation;->getLatitude:()D --> Ljava/lang/Double;->hashCode:()I --> Stored hashed latitude value ",
+        "Reasoning": "The method originates sensitive user personal data by accessing the location's latitude and longitude through the `getLatitude()` and `getLongitude()` methods. The data is then passed to the `hashCode()` method of the Double class for hashing."
+      },
+      {
+        "dataflow 2": " Lcom/microsoft/launcher/weather/model/WeatherLocation;->getLongitude:()D --> Ljava/lang/Double;->hashCode:()I --> Stored hashed longitude value ",
+        "Reasoning": "The method originates sensitive user personal data by accessing the location's latitude and longitude through the `getLatitude()` and `getLongitude()` methods. The data is then passed to the `hashCode()` method of the Double class for hashing."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "full name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Accessing WeatherLocation object's location and name",
+        "Source Method": "Lj/g/k/h4/j/v;->run:()V",
+        "Reasoning": "The method originates user personal data by accessing the WeatherLocation object's location and name.",
+        "Action": "Propagated through registers and variables"
+      },
+      {
+        "Step": "Invoking o() method on FluentProgressBar instance",
+        "Source Method": "Lcom/microsoft/launcher/weather/activity/WeatherLocationSearchActivity;->W:()V",
+        "Reasoning": "The method originates user personal data by invoking the `o()` method on an instance of `FluentProgressBar`.",
+        "Action": "Stored in register v0 and passed to other methods"
+      }
+    ],
+    "All Sinks": [
+      "Lj/g/k/h4/j/v;->run:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/microsoft/launcher/weather/activity/WeatherLocationSearchActivity;->W:(()) --> Lj/g/k/h4/j/v;->run:()V --> Lj/g/k/h4/j/v;->run:()V",
+        "Reasoning": "The data is propagated from WeatherLocationSearchActivity to run method in WeatherLocation, where it is logged using the format string."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number",
+      "Locale (language, script, country)",
+      "WeatherLocationProvider enum"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get last known location using LocationManager",
+        "Source Method": "Lj/g/k/h4/l/g;->a:(Z)V",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Check if location is accurate enough",
+        "Source Method": "Lj/g/k/h4/l/g;->a:(Z)V",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Get a more accurate location using LocationManager",
+        "Source Method": "Lj/g/k/h4/l/g;->a:(Z)V",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Get locale using sensitive API `b()`",
+        "Source Method": "Lj/g/k/h4/l/j;->a:()Ljava/lang/String;",
+        "Reasoning": "The current method originates user personal data by calling sensitive API.",
+        "Action": "Stored in registers `v2` and `v1`"
+      },
+      {
+        "Step": "Create an instance of LocationProvider-revokeCurrentLocation using a sensitive API call",
+        "Source Method": "Lj/g/k/h4/l/f;->c:()V",
+        "Reasoning": "The method originates user personal data by creating an instance of LocationProvider-revokeCurrentLocation.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Invoke the run() method of a Runnable object",
+        "Source Method": "Lcom/microsoft/launcher/util/threadpool/ThreadPool;->b:(Ljava/lang/Runnable;)V",
+        "Reasoning": "The method originates user personal data by invoking the run() method of a Runnable object.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get WeatherLocationProvider enum using sensitive API calls",
+        "Source Method": "Lj/g/k/h4/l/g;->a:(Lcom/microsoft/launcher/weather/model/WeatherLocationProvider;)V",
+        "Reasoning": "The method originates user personal data by using the ProviderState and WeatherErrorStatus classes.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Get Phone Number using sensitive API calls",
+        "Source Method": "Lj/g/k/h4/l/g;->a:(Lcom/microsoft/launcher/weather/model/WeatherLocationProvider; Lcom/microsoft/launcher/weather/service/ProviderState; Lcom/microsoft/launcher/weather/service/WeatherErrorStatus;)V",
+        "Reasoning": "The method originates user personal data from the `WeatherLocationProvider` enum.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Get Device ID using sensitive API calls",
+        "Source Method": "Lj/g/k/h4/l/g;->a:(Lcom/microsoft/launcher/weather/model/WeatherLocationProvider; Lcom/microsoft/launcher/weather/service/ProviderState;)V",
+        "Reasoning": "The method originates user personal data by using the `iput-object` instructions.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Get Locale (language, script, country) using sensitive API calls",
+        "Source Method": "Lj/g/k/h4/l/j;->a:()Ljava/lang/String;",
+        "Reasoning": "The current method originates user personal data by calling sensitive API.",
+        "Action": "Stored in registers `v2` and `v1`"
+      },
+      {
+        "Step": "Assign WeatherLocation object using various getter methods",
+        "Source Method": "Lcom/microsoft/launcher/weather/model/WeatherLocation;->assign:(Lcom/microsoft/launcher/weather/model/WeatherLocation;)V",
+        "Reasoning": "The method originates user personal data from the `WeatherLocation` object.",
+        "Action": "Stored in instance variables of the same class"
+      }
+    ],
+    "All Sinks": [
+      "Lj/g/k/h4/l/f;->a:()Lcom/microsoft/launcher/weather/model/WeatherLocation;",
+      "Lcom/microsoft/launcher/util/threadpool/ThreadPool;->b:(Ljava/lang/Runnable;)V",
+      "Lj/g/k/h4/l/j;->a:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lj/g/k/h4/l/g;->a:(Z)V --> Lj/g/k/h4/l/f;->c:()V --> Lcom/microsoft/launcher/util/threadpool/ThreadPool;->b:(Ljava/lang/Runnable;)V]",
+        "Reasoning": "The data is propagated from the LocationManager to the ThreadPool's b() method for execution."
+      },
+      {
+        "dataflow 2": "[Lj/g/k/h4/l/f;->c:()V --> Lcom/microsoft/launcher/util/threadpool/ThreadPool;->b:(Ljava/lang/Runnable;)V]",
+        "Reasoning": "The data is stored in register v0 and passed to the ThreadPool's b() method for execution."
+      },
+      {
+        "dataflow 3": "[Lj/g/k/h4/l/j;->a:()Ljava/lang/String --> Lj/g/k/h4/l/f;->a:()Lcom/microsoft/launcher/weather/model/WeatherLocation]",
+        "Reasoning": "The locale is extracted and used to create a WeatherLocation object."
+      },
+      {
+        "dataflow 4": "[Lj/g/k/h4/l/j;->a:()Ljava/lang/String --> Lj/g/k/h4/l/f;->c:()V]",
+        "Reasoning": "The locale is used to create an instance of LocationProvider-revokeCurrentLocation."
+      },
+      {
+        "dataflow 5": "[Lcom/microsoft/launcher/util/threadpool/ThreadPool;->b:(Ljava/lang/Runnable;)V --> Lj/g/k/h4/l/f;->c:()V]",
+        "Reasoning": "The data is executed by the ThreadPool's b() method."
+      },
+      {
+        "dataflow 6": "[Lj/g/k/h4/l/j;->a:()Ljava/lang/String --> Lj/g/k/h4/l/f;->a:()Lcom/microsoft/launcher/weather/model/WeatherLocation]",
+        "Reasoning": "The locale is used to create a WeatherLocation object."
+      },
+      {
+        "dataflow 7": "[Lj/g/k/h4/l/j;->a:()Ljava/lang/String --> Lj/g/k/h4/l/f;->c:()V]",
+        "Reasoning": "The locale is used to create an instance of LocationProvider-revokeCurrentLocation."
+      },
+      {
+        "dataflow 8": "[Lcom/microsoft/launcher/util/threadpool/ThreadPool;->b:(Ljava/lang/Runnable;)V --> Lj/g/k/h4/l/f;->c:()V]",
+        "Reasoning": "The data is executed by the ThreadPool's b() method."
+      },
+      {
+        "dataflow 9": "[Lcom/microsoft/launcher/util/threadpool/ThreadPool;->b:(Ljava/lang/Runnable;)V --> Lj/g/k/h4/l/f;->a:()Lcom/microsoft/launcher/weather/model/WeatherLocation]",
+        "Reasoning": "The data is used to create a WeatherLocation object."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WeatherLocation",
+      "Locale"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected from the WeatherLocation object and its location field.",
+        "Source Method": "Lj/g/k/h4/l/y;->a:(Lcom/microsoft/launcher/weather/model/WeatherLocation; I I)V",
+        "Reasoning": "[The method originates user personal data from the WeatherLocation object and its location field.]",
+        "Action": "Stored in registers v2 and v4"
+      },
+      {
+        "Step": "User personal data is propagated to other methods via method invocations.",
+        "Source Method": "Lj/g/k/h4/l/y;->a:(Lcom/microsoft/launcher/weather/model/WeatherLocation; I I)V",
+        "Reasoning": "[The data is then passed to other methods via method invocations, including Lj/g/k/h4/l/j;->a()Ljava/lang/String; and Ljava/util/Locale;->getCountry()Ljava/lang/String;. ]",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "User personal data is used in the getLocale() and getLanguage() methods of the Locale class.",
+        "Source Method": "Lj/g/k/h4/l/j;->a:()Ljava/lang/String;",
+        "Reasoning": "[This method originates user personal data by using the `getLocale()` and `getLanguage()` methods of the Locale class.]",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "User personal data is logged or displayed.",
+        "Source Method": "Lj/g/k/h4/l/j;->a:()Ljava/lang/String;",
+        "Reasoning": "[The data reaches a sink point as it is being logged or displayed.]",
+        "Action": "Logged or displayed"
+      }
+    ],
+    "All Sinks": [
+      "Lj/g/k/h4/l/y;->a:(Lcom/microsoft/launcher/weather/model/WeatherLocation; I I)V",
+      "Lj/g/k/h4/l/j;->a:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lj/g/k/h4/l/y;->a:(Lcom/microsoft/launcher/weather/model/WeatherLocation; I I)V --> Lj/g/k/h4/l/j;->a()Ljava/lang/String; --> Ljava/util/Locale;->getCountry()Ljava/lang/String;]",
+        "Reasoning": "[The data is propagated from the WeatherLocation object to other methods, including getLocale() and getLanguage(), which are then used in a method that logs or displays it.]"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WeatherLocation",
+      "Locale",
+      "String",
+      "android.content.Context",
+      "java.util.Locale",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device location and weather configuration",
+        "Source Method": "Lj/g/k/h4/l/y;->b:(Lcom/microsoft/launcher/weather/model/WeatherLocation; I I)V",
+        "Reasoning": "Using sensitive API calls to get the device's location and weather configuration.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get default locale",
+        "Source Method": "Lj/g/k/h4/l/j;->b:()Ljava/util/Locale;",
+        "Reasoning": "Invoking the `getDefault()` method of `Locale` class.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get string data",
+        "Source Method": "Lj/g/k/h4/l/j;->a:()Ljava/lang/String;",
+        "Reasoning": "Invoking the `b()` static call in the `j/g/k/h4/l/j` class.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get response body",
+        "Source Method": "Lq/f0;->a:(Lq/l;)V",
+        "Reasoning": "Using sensitive API `response.body().close()` to originate user personal data.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get device context and string data",
+        "Source Method": "Lj/g/k/b4/o;->a:(Landroid/content/Context; Ljava/lang/String; Z)Z",
+        "Reasoning": "Using sensitive API calls to get device context and string data.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get SDK_INT API call",
+        "Source Method": "Lj/g/k/y1/h;->b:()Ljava/util/Locale;",
+        "Reasoning": "Using SDK_INT API call to originate user personal data.",
+        "Action": "Stored in register v0 and variable g"
+      },
+      {
+        "Step": "Get e field of v4 object",
+        "Source Method": "Lq/t;->a:(Lq/f0$b;)V",
+        "Reasoning": "Accessing the `e` field of the `v4` object.",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "Get sget-object for logging purposes",
+        "Source Method": "Lq/p0/l/e;->a:(Ljava/lang/String;)Ljava/lang/Object;",
+        "Reasoning": "Using sensitive API call to `sget-object` for logging purposes.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get device context, string data, and boolean values",
+        "Source Method": "Lj/g/k/b4/o;->a:(Landroid/content/Context; Ljava/lang/String; Ljava/lang/String; Z Z)Z",
+        "Reasoning": "Using sensitive API calls to get device context, string data, and boolean values.",
+        "Action": "Stored in registers or variables"
+      },
+      {
+        "Step": "Get deque sizes",
+        "Source Method": "Lq/t;->d:()I",
+        "Reasoning": "Accessing sensitive API calls (iget-object) to retrieve deque sizes.",
+        "Action": "Stored in registers (v0, v1)"
+      },
+      {
+        "Step": "Invoke ExecutorService's execute method",
+        "Source Method": "Lq/f0$b;->a:(Ljava/util/concurrent/ExecutorService;)V",
+        "Reasoning": "Invoking the ExecutorService's execute method with a Runnable.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Access iget-object instruction",
+        "Source Method": "Lq/t;->b:(Lq/f0$b;)V",
+        "Reasoning": "Accessing `iget-object` instruction accessing `Lq/f0$b;->g Ljava/util/concurrent/atomic/AtomicInteger`.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Remove method of Deque interface",
+        "Source Method": "Lq/t;->a:(Ljava/util/Deque; Ljava/lang/Object;)V",
+        "Reasoning": "Invoking the remove method of a Deque interface.",
+        "Action": "Stored in registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      "Lj/g/k/h4/l/y;->b:(Lcom/microsoft/launcher/weather/model/WeatherLocation; I I)V",
+      "Lq/f0;->a:(Lq/l;)V",
+      "Lq/t;->c:()Z",
+      "Lq/p0/l/e;->a:(Ljava/lang/String;)Ljava/lang/Object;",
+      "Lj/g/k/b4/o;->b:(Landroid/content/Context; Ljava/lang/String; I)Landroid/content/SharedPreferences;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lj/g/k/h4/l/y;->b:(Lcom/microsoft/launcher/weather/model/WeatherLocation; I I)V --> Lq/f0;->a:(Lq/l;)V --> null",
+        "Reasoning": "The data flows from the method that gets device location and weather configuration to a sink point."
+      },
+      {
+        "dataflow 2": "Lj/g/k/h4/l/j;->b:()Ljava/util/Locale --> Lq/t;->a:(Lq/f0$b;)V --> null",
+        "Reasoning": "The data flows from the method that gets default locale to a sink point."
+      },
+      {
+        "dataflow 3": "Lj/g/k/h4/l/j;->a:()Ljava/lang/String --> Lq/t;->c:()Z --> null",
+        "Reasoning": "The data flows from the method that gets string data to a sink point."
+      },
+      {
+        "dataflow 4": "Lq/f0;->a:(Lq/l;)V --> Lj/g/k/b4/o;->b:(Landroid/content/Context; Ljava/lang/String; I)Landroid/content/SharedPreferences; --> null",
+        "Reasoning": "The data flows from the method that gets response body to a sink point."
+      },
+      {
+        "dataflow 5": "Lj/g/k/b4/o;->a:(Landroid/content/Context; Ljava/lang/String; Z)Z --> Lq/t;->d:()I --> null",
+        "Reasoning": "The data flows from the method that gets device context and string data to a sink point."
+      },
+      {
+        "dataflow 6": "Lj/g/k/y1/h;->b:()Ljava/util/Locale --> Lq/t;->a:(Ljava/util/Deque; Ljava/lang/Object;)V --> null",
+        "Reasoning": "The data flows from the method that gets SDK_INT API call to a sink point."
+      },
+      {
+        "dataflow 7": "Lq/t;->a:(Lq/f0$b;)V --> Lj/g/k/b4/o;->b:(Landroid/content/Context; Ljava/lang/String; I)Landroid/content/SharedPreferences; --> null",
+        "Reasoning": "The data flows from the method that gets e field of v4 object to a sink point."
+      },
+      {
+        "dataflow 8": "Lq/p0/l/e;->a:(Ljava/lang/String;)Ljava/lang/Object --> Lj/g/k/b4/o;->b:(Landroid/content/Context; Ljava/lang/String; I)Landroid/content/SharedPreferences; --> null",
+        "Reasoning": "The data flows from the method that gets sget-object for logging purposes to a sink point."
+      },
+      {
+        "dataflow 9": "Lj/g/k/b4/o;->a:(Landroid/content/Context; Ljava/lang/String; Ljava/lang/String; Z Z)Z --> Lq/t;->d:()I --> null",
+        "Reasoning": "The data flows from the method that gets device context, string data, and boolean values to a sink point."
+      },
+      {
+        "dataflow 10": "Lq/t;->d:()I --> Lj/g/k/b4/o;->b:(Landroid/content/Context; Ljava/lang/String; I)Landroid/content/SharedPreferences; --> null",
+        "Reasoning": "The data flows from the method that gets deque sizes to a sink point."
+      },
+      {
+        "dataflow 11": "Lq/f0$b;->a:(Ljava/util/concurrent/ExecutorService;)V --> Lj/g/k/b4/o;->b:(Landroid/content/Context; Ljava/lang/String; I)Landroid/content/SharedPreferences; --> null",
+        "Reasoning": "The data flows from the method that invokes ExecutorService's execute method to a sink point."
+      },
+      {
+        "dataflow 12": "Lq/t;->b:(Lq/f0$b;)V --> Lj/g/k/b4/o;->b:(Landroid/content/Context; Ljava/lang/String; I)Landroid/content/SharedPreferences; --> null",
+        "Reasoning": "The data flows from the method that accesses iget-object instruction to a sink point."
+      },
+      {
+        "dataflow 13": "Lq/t;->a:(Ljava/util/Deque; Ljava/lang/Object;)V --> Lj/g/k/b4/o;->b:(Landroid/content/Context; Ljava/lang/String; I)Landroid/content/SharedPreferences; --> null",
+        "Reasoning": "The data flows from the method that removes method of Deque interface to a sink point."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from WeatherLocationProvider class.",
+        "Source Method": "Lcom/microsoft/launcher/weather/model/WeatherLocationProvider;->getValue:()I",
+        "Reasoning": "The method uses the `getValue()` method to originate user personal data from a field named 'value' in the WeatherLocationProvider class.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass sensitive data to other methods via method invocations.",
+        "Source Method": "Lj/g/k/h4/n/b/k;->a:()Landroid/content/Intent;",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data. The data is stored in registers and variables within the method.",
+        "Action": "Logged, Network Transmission"
+      }
+    ],
+    "All Sinks": [
+      "Lj/g/k/h4/n/b/k;->a:()Landroid/content/Intent;",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/microsoft/launcher/weather/model/WeatherLocationProvider;->getValue:()I --> Lj/g/k/h4/n/b/k;->a:()Landroid/content/Intent; --> Sink Method(...)",
+        "Reasoning": "The data is propagated from WeatherLocationProvider class to the other method via method invocations. The data reaches sink points like logging, network transmission, or storage."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

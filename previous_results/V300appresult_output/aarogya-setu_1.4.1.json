@@ -1,0 +1,171 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Scan result data is received",
+        "Source Method": "Lnic/goi/aarogyasetu/background/BluetoothScanningService$d;->onScanResult:(I Landroid/bluetooth/le/ScanResult;)V",
+        "Reasoning": "Method signature matches the input data",
+        "Action": "Stored in a list"
+      },
+      {
+        "Step": "Data is sent to a server",
+        "Source Method": "Lnic/goi/aarogyasetu/background/BluetoothScanningService$d;->onScanResult:(I Landroid/bluetooth/le/ScanResult;)V",
+        "Reasoning": "Asynchronous server communication",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lnic/goi/aarogyasetu/background/BluetoothScanningService$a;->a(Ljava/util/List;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lnic/goi/aarogyasetu/background/BluetoothScanningService$d;->onScanResult:(I Landroid/bluetooth/le/ScanResult;)V --> Lnic/goi/aarogyasetu/background/BluetoothScanningService$a;->a(Ljava/util/List;)V",
+        "Reasoning": "Data is stored in a list and then sent to the server"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User input is collected",
+        "Source Method": "Lnic/goi/aarogyasetu/models/network/RegistrationData;-><init>:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "Method initializes with user input parameters",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is retrieved",
+        "Source Method": "Lnic/goi/aarogyasetu/CoronaApplication;->c:()Landroid/location/Location;",
+        "Reasoning": "Method retrieves location using getLastKnownLocation",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lnic/goi/aarogyasetu/models/network/RegistrationData;-><init>:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V --> Lnic/goi/aarogyasetu/CoronaApplication;->c:()Landroid/location/Location;",
+        "Reasoning": "User input is stored in RegistrationData object and location is retrieved and stored in CoronaApplication"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is originated in the `getHeaders()` method.",
+        "Source Method": "Lnic/goi/aarogyasetu/views/HomeActivity$d;->getHeaders:()Ljava/lang/String;",
+        "Reasoning": "Method signature and summary provide the source of sensitive data.",
+        "Action": "Stored in a map"
+      },
+      {
+        "Step": "The data is then passed to the `c()` method.",
+        "Source Method": "Lnic/goi/aarogyasetu/views/HomeActivity$d;->c:(Ljava/util/Map;)V",
+        "Reasoning": "Method signature and summary provide the data flow.",
+        "Action": "Passed as an argument"
+      },
+      {
+        "Step": "The data is sent to the server using the `gsonObject.toJson()` method.",
+        "Source Method": "Lnic/goi/aarogyasetu/views/HomeActivity$d;->c:(Ljava/util/Map;)V",
+        "Reasoning": "Method signature and summary provide the data flow.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lnic/goi/aarogyasetu/views/HomeActivity$d;->c:(Ljava/util/Map;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lnic/goi/aarogyasetu/views/HomeActivity$d;->getHeaders:()Ljava/lang/String; --> Lnic/goi/aarogyasetu/views/HomeActivity$d;->c:(Ljava/util/Map;)V --> Lnic/goi/aarogyasetu/views/HomeActivity$d;->c:(Ljava/util/Map;)V",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Receive LocationResult",
+        "Source Method": "Le/a/a/l/a$a;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "Method receives LocationResult object",
+        "Action": "Store in BluetoothData object"
+      },
+      {
+        "Step": "Extract Location Information",
+        "Source Method": "Le/a/a/l/a$a;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "BluetoothData object created from LocationResult",
+        "Action": "Extract location information"
+      },
+      {
+        "Step": "Log Location Details",
+        "Source Method": "Le/a/a/l/a$a;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "Location information extracted",
+        "Action": "Log location details"
+      }
+    ],
+    "All Sinks": [
+      "Le/a/a/l/a$a;->a:(Lcom/google/android/gms/location/LocationResult;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Le/a/a/l/a$a;->a:(Lcom/google/android/gms/location/LocationResult;)V --> Le/a/a/l/a$a;->a:(Lcom/google/android/gms/location/LocationResult;)V --> Le/a/a/l/a$a;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "LocationResult object is passed through the method and logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Origination",
+        "Source Method": "Lq/b/k/k$h;->c:()I",
+        "Reasoning": "Sensitive user personal data is originated in this method.",
+        "Action": "Stored in v2 register"
+      },
+      {
+        "Step": "Data Transformation",
+        "Source Method": "Lq/b/k/t;->a(J D D)V",
+        "Reasoning": "Data is processed and stored in v6 register.",
+        "Action": "Processed and stored in v6 register"
+      },
+      {
+        "Step": "Logging",
+        "Source Method": "Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "Data is logged using invoke-static instruction.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lq/b/k/k$h;->c:()I --> Lq/b/k/t;->a(J D D)V --> Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "Data is passed between these methods and logged in the final step."
+      }
+    ],
+    "Label": "leak"
+  }
+]

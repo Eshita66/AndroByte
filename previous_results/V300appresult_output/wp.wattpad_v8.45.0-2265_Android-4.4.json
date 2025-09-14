@@ -1,0 +1,438 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User data is collected in the constructor.",
+        "Source Method": "Lcom/amazon/device/ads/novel;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "HashMap `k` is initialized with user data.",
+        "Action": "Stored in HashMap `k`"
+      },
+      {
+        "Step": "Data is passed to the `onNext()` method.",
+        "Source Method": "Lcom/amazon/device/ads/novel;->onNext:(Ljava/util/HashMap;)V",
+        "Reasoning": "HashMap `k` is passed as an argument.",
+        "Action": "Passed as an argument"
+      },
+      {
+        "Step": "Data is stored in the HashMap `k`.",
+        "Source Method": "Lcom/amazon/device/ads/novel;->onNext:(Ljava/util/HashMap;)V",
+        "Reasoning": "HashMap `k` is updated with new data.",
+        "Action": "Stored in HashMap `k`"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/device/ads/novel;->onNext:(Ljava/util/HashMap;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/novel;-><init>:(Landroid/content/Context;)V --> Lcom/amazon/device/ads/novel;->onNext:(Ljava/util/HashMap;)V",
+        "Reasoning": "User data is collected in the constructor and stored in the HashMap `k`, which is then passed to the `onNext()` method and stored in the HashMap `k` again."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "accuracy",
+      "timestamp"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data",
+        "Source Method": "Lcom/inmobi/media/gu;->b:(Landroid/location/Location;)Ljava/lang/String;",
+        "Reasoning": "Method extracts latitude, longitude, accuracy, and timestamp from Location object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data",
+        "Source Method": "Lcom/inmobi/media/hh;->a:(Landroid/location/Location;)Ljava/lang/String;",
+        "Reasoning": "Method extracts latitude, longitude, and accuracy from Location object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Convert to string",
+        "Source Method": "Lcom/inmobi/media/hh;->a:(Landroid/location/Location;)Ljava/lang/String;",
+        "Reasoning": "Method converts location data to a string.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/inmobi/media/hh;->a:(Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/inmobi/media/hh;->a:(Landroid/location/Location;)Ljava/lang/String; --> Lcom/inmobi/media/hh;->a:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Location data is extracted, converted to a string, and then transmitted."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is retrieved using `getBestProvider()` and `getLastKnownLocation()`",
+        "Source Method": "Lcom/inmobi/media/hh;->i:()Landroid/location/Location;",
+        "Reasoning": "Sensitive API call to `getBestProvider()` originates user location data",
+        "Action": "Stored in `v0`"
+      },
+      {
+        "Step": "User location data is passed to `getLastKnownLocation()`",
+        "Source Method": "Lcom/inmobi/media/hh;->i:()Landroid/location/Location;",
+        "Reasoning": "User location data is stored in `v0`",
+        "Action": "Passed to `getLastKnownLocation()`"
+      },
+      {
+        "Step": "User location data is returned as the result",
+        "Source Method": "Lcom/inmobi/media/hh;->i:()Landroid/location/Location;",
+        "Reasoning": "User location data is passed to `getLastKnownLocation()`",
+        "Action": "Returned as result"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/inmobi/media/hh;->i:()Landroid/location/Location; --> getLastKnownLocation() --> null",
+        "Reasoning": "User location data is retrieved using `getBestProvider()` and `getLastKnownLocation()` but no sink is mentioned in the summaries"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is received in `onLocationChanged`.",
+        "Source Method": "Lcom/inmobi/media/hh;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature matches the source method.",
+        "Action": "Stored in registers."
+      },
+      {
+        "Step": "Location data is passed to `c()`.",
+        "Source Method": "Lcom/inmobi/media/hh;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Register contents are passed to `c()`.",
+        "Action": "Passed to `c()` method."
+      },
+      {
+        "Step": "Location data is logged.",
+        "Source Method": "Lcom/inmobi/media/hh;->c(Ljava/lang/String;)V",
+        "Reasoning": "Method signature matches the sink method.",
+        "Action": "Logged."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/inmobi/media/hh;->c(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "onLocationChanged --> c --> log",
+        "Reasoning": "Data flows from source method to sink method through `c()` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiInfo"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting WifiInfo",
+        "Source Method": "Lcom/inmobi/media/ho;->a:(Z Z)Lcom/inmobi/media/hn;",
+        "Reasoning": "Method `a` collects WifiInfo object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/inmobi/media/ho;->a:(Z Z)Lcom/inmobi/media/hn; --> hn",
+        "Reasoning": "Collected WifiInfo is stored in hn object."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user data is collected from the `val$location` field.",
+        "Source Method": "Lcom/leanplum/internal/LeanplumInternal$7$1;->doInBackground:([Ljava/lang/Void;)Ljava/lang/Void;",
+        "Reasoning": "Method summary indicates data originates from `val$location`.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to the `setUserAttributes` method.",
+        "Source Method": "Lcom/leanplum/internal/LeanplumInternal$7$1;->doInBackground:([Ljava/lang/Void;)Ljava/lang/Void;",
+        "Reasoning": "Method summary indicates data is passed to `setUserAttributes`.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Data is sent to the Leanplum server for logging.",
+        "Source Method": "Lcom/leanplum/internal/LeanplumInternal$7$1;->doInBackground:([Ljava/lang/Void;)Ljava/lang/Void;",
+        "Reasoning": "Method summary indicates data is sent to Leanplum server.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Leanplum server"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/leanplum/internal/LeanplumInternal$7$1;->doInBackground:([Ljava/lang/Void;)Ljava/lang/Void; --> Leanplum server",
+        "Reasoning": "Overall data flow summary describes the data flow from source method to sink."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiMacAddress"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve WifiMacAddress",
+        "Source Method": "Lcom/leanplum/internal/Util;->getWifiMacAddressHash:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `getWifiMacAddressHash` explicitly retrieves WifiMacAddress",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Hash WifiMacAddress",
+        "Source Method": "Lcom/leanplum/internal/Util;->getWifiMacAddressHash:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `getWifiMacAddressHash` uses MD5 algorithm to hash WifiMacAddress",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/leanplum/internal/Util;->getWifiMacAddressHash:(Landroid/content/Context;)Ljava/lang/String; --> Transmitted",
+        "Reasoning": "WifiMacAddress is first stored and then transmitted"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain location data",
+        "Source Method": "Lcom/moat/analytics/mobile/inm/o;->f:()Landroid/location/Location;",
+        "Reasoning": "Method signature matches the description",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Combine location data",
+        "Source Method": "Lcom/moat/analytics/mobile/inm/o;->f:()Landroid/location/Location;",
+        "Reasoning": "Method description mentions combining data from different providers",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Method signature of logging or network call method"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/moat/analytics/mobile/inm/o;->f:()Landroid/location/Location; --> Method signature of logging or network call method",
+        "Reasoning": "Data is stored and then transmitted to a sink point"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "timestamp",
+      "horizontal_accuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data",
+        "Source Method": "Lcom/moat/analytics/mobile/inm/z;->b:(Landroid/location/Location;)Ljava/util/Map;",
+        "Reasoning": "Method extracts latitude, longitude, timestamp, and horizontal accuracy from Location object.",
+        "Action": "Stored in HashMap"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/moat/analytics/mobile/inm/z;->b:(Landroid/location/Location;)Ljava/util/Map; --> Stored in HashMap",
+        "Reasoning": "Location data is extracted and stored in a HashMap."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location from GPS or network provider",
+        "Source Method": "Lcom/moat/analytics/mobile/mpub/o;->f:()Landroid/location/Location;",
+        "Reasoning": "Method returns Location object",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "timestamp",
+      "horizontal accuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data",
+        "Source Method": "Lcom/moat/analytics/mobile/mpub/z;->b:(Landroid/location/Location;)Ljava/util/Map;",
+        "Reasoning": "Method b() extracts latitude, longitude, timestamp, and horizontal accuracy from a Location object.",
+        "Action": "Stored in HashMap"
+      }
+    ],
+    "All Sinks": [
+      "Method signature of logging or network call method"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Location object --> HashMap --> Logging or Network call method",
+        "Reasoning": "Location data is extracted from the Location object, stored in a HashMap, and then sent to a logging or network call method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Location data",
+        "Source Method": "Lcom/smaato/sdk/core/datacollector/narrative;->a:()Lcom/smaato/sdk/core/report;",
+        "Reasoning": "Method `a` retrieves Location data",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Create Report object",
+        "Source Method": "Lcom/smaato/sdk/core/datacollector/narrative;->a:()Lcom/smaato/sdk/core/report;",
+        "Reasoning": "Location data is used to create a Report object",
+        "Action": "Created"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/smaato/sdk/core/report;->b:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/smaato/sdk/core/datacollector/narrative;->a:()Lcom/smaato/sdk/core/report; --> Lcom/smaato/sdk/core/report;->b:()V",
+        "Reasoning": "Location data is retrieved in `a` and used to create a report in `b`"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is collected from the user's device.",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method argument",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Location is passed to the BaseUrlGenerator class.",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method invocation",
+        "Action": "Passed as argument"
+      },
+      {
+        "Step": "Location is used to generate an ad URL.",
+        "Source Method": "Lcom/mopub/common/BaseUrlGenerator;->a:(Landroid/location/Location;)Ljava/lang/String;",
+        "Reasoning": "Method argument",
+        "Action": "Used as input"
+      },
+      {
+        "Step": "Ad URL is returned by the method.",
+        "Source Method": "Lcom/mopub/common/BaseUrlGenerator;->a:(Landroid/location/Location;)Ljava/lang/String;",
+        "Reasoning": "Method return value",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mopub/common/AdUrlGenerator;->a:(Landroid/location/Location;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/mopub/common/AdUrlGenerator;->a:(Landroid/location/Location;)V --> Lcom/mopub/common/BaseUrlGenerator;->a:(Landroid/location/Location;)Ljava/lang/String; --> Lcom/mopub/common/AdUrlGenerator;->a:(Landroid/location/Location;)Ljava/lang/String;",
+        "Reasoning": "Location is collected, transformed into an ad URL, and returned."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Accessing user location data",
+        "Source Method": "Lcom/smaato/sdk/core/datacollector/narrative$anecdote;->b:()V",
+        "Reasoning": "getLastKnownLocation() and requestLocationUpdates() methods are called",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      "Logging"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/smaato/sdk/core/datacollector/narrative$anecdote;->b:()V --> Logging",
+        "Reasoning": "Collected location data is logged"
+      }
+    ],
+    "Label": "leak"
+  }
+]

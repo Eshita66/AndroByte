@@ -1,0 +1,193 @@
+[
+  {
+    "Data Types Collected": [
+      "String",
+      "JSONObject",
+      "Long",
+      "boolean",
+      "wide values"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from iget-boolean and iget-object instructions.",
+        "Source Method": "Lzw;->k:(Ljava/lang/String; Lorg/json/JSONObject; Lorg/json/JSONObject; Lorg/json/JSONObject; Lorg/json/JSONObject; Lorg/json/JSONObject; J Z)J",
+        "Reasoning": "The data is stored in registers and variables within the method, then passed to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate sensitive user personal data using iget-wide instruction.",
+        "Source Method": "Lzw;->j:(J)Z",
+        "Reasoning": "The data is stored in registers and then propagated through comparisons.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data through sensitive API calls to get and put wide values.",
+        "Source Method": "Lzw;->t:(J)V",
+        "Reasoning": "The data is stored in registers and variables within the method. The data propagation analysis reveals that the method invokes other methods to perform operations on the data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by invoking getWritableDatabase() method of SQLiteOpenHelper.",
+        "Source Method": "Lhx;->l:(Ljava/lang/String; Ljava/lang/String;)J",
+        "Reasoning": "The data is stored in register v2 and propagated to other methods via method invocations. A sink point (logging) is identified.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Originate user personal data by calling the put method on a ContentValues object with sensitive keys 'key' and 'value'.",
+        "Source Method": "Lhx;->C1:(Landroid/database/sqlite/SQLiteDatabase; Ljava/lang/String; Ljava/lang/String; Ljava/lang/Object;)J",
+        "Reasoning": "The data is then passed to the insertWithOnConflict method of a SQLiteDatabase instance. If the insertion fails, it logs an exception using the s Lgx; field.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Originate sensitive user personal data through the use of the SQLite database.",
+        "Source Method": "Lhx;->g:()V",
+        "Reasoning": "The data is stored in registers and variables within the method, including the 'v' field of the 'Lhx;' object and the 'u' boolean field of the same object. The data is propagated to other methods via method invocations.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lhx;->l:(Ljava/lang/String; Ljava/lang/String;)J",
+      "Lhx;->C1:(Landroid/database/sqlite/SQLiteDatabase; Ljava/lang/String; Ljava/lang/String; Ljava/lang/Object;)J",
+      "Lhx;->g:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lzw;->k(...) --> Lzw;->j(...) --> Lhx;->l(...)]",
+        "Reasoning": "The data originates from the iget-boolean and iget-object instructions within method k() of class zw, then stored in registers. The data is propagated through comparisons within method j() of class zw and finally logged within method l() of class hx."
+      },
+      {
+        "dataflow 2": " [Lzw;->t(...) --> Lhx;->C1(...)]",
+        "Reasoning": "The data originates from sensitive API calls to get and put wide values within method t() of class zw, then stored in registers. The data is passed to method C1() of class hx where it is logged upon insertion failure."
+      },
+      {
+        "dataflow 3": " [Lhx;->g(...) --> Lhx;->l(...)]",
+        "Reasoning": "The data originates from the use of the SQLite database within method g() of class hx, then stored in registers. The data is propagated to method l() of class hx where it is logged."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "java.util.Map",
+      "com.appsflyer/internal/d$e$d",
+      "Boolean"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from the method's current context.",
+        "Source Method": "Lcom/appsflyer/internal/ae;->values:(Lcom/appsflyer/internal/g;)Ljava/util/Map;",
+        "Reasoning": "Sensitive user personal data originates from the method's current context and is propagated through registers. The data is stored in variables within the method and passed to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data through the sensitive API call to AFKeystoreWrapper.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties;",
+        "Reasoning": "The method originates user personal data through the sensitive API call to AFKeystoreWrapper. The data is stored in register v0 and propagated to the return statement.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Uses sensitive API calls to originate user personal data.",
+        "Source Method": "Lcom/appsflyer/internal/ab;->valueOf:(Landroid/content/Context; Ljava/util/Map;)Lcom/appsflyer/internal/d$e$d;",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data. The data is stored in registers and variables within the method, and it is passed to other methods via method invocations. The data reaches a sink point (logging) through explicit calls to logging.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Origins user personal data by using the sensitive API sget-object to retrieve a Boolean value.",
+        "Source Method": "Lcom/appsflyer/internal/ab;->AFKeystoreWrapper:()Z",
+        "Reasoning": "The method AFKeystoreWrapper() in class com/appsflyer/internal/ab originates user personal data by using the sensitive API sget-object to retrieve a Boolean value. The data is stored in register v0 and propagated through registers. However, there are no explicit sinks such as logging, network transmission, or storage.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates sensitive user personal data through an API call to AFKeystoreWrapper.",
+        "Source Method": "Lcom/appsflyer/AFLogger;->AFInAppEventType:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The method AFLogger::AFInAppEventType originates sensitive user personal data through an API call to AFKeystoreWrapper. The data is stored in registers v0 and v1, then passed to the next method via a static invocation.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data through the sensitive API call to AFInAppEventType.",
+        "Source Method": "Lcom/appsflyer/AFLogger;->AFKeystoreWrapper:(Ljava/lang/String; Ljava/lang/Throwable; Z Z)V",
+        "Reasoning": "The current method AFLogger.AFKeystoreWrapper originates user personal data through the sensitive API call to AFInAppEventType. The data is stored in registers and variables within the method, including the exception message and stack trace. The data is passed to other methods via method invocations, such as AFInAppEventParameterName and values. A sink point has been identified: data logging.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Originates user personal data by calling AppsFlyerProperties::getInstance and getting the log level.",
+        "Source Method": "Lcom/appsflyer/AFLogger;->AFInAppEventParameterName:(Ljava/lang/String; Z)Ljava/lang/String;",
+        "Reasoning": "This method AFLogger::AFInAppEventParameterName originates user personal data by calling AppsFlyerProperties::getInstance and getting the log level. The data is then stored in registers or variables within the method. The data propagation analysis shows that the data is passed to other methods via method invocations, specifically to Ljava/lang/StringBuilder;->append.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data through the `valueOf` static field of class `Lcom/appsflyer/internal/aj;`.",
+        "Source Method": "Lcom/appsflyer/internal/aj;->valueOf:()Lcom/appsflyer/internal/aj;",
+        "Reasoning": "The method originates user personal data through the `valueOf` static field of class `Lcom/appsflyer/internal/aj;`. The data is stored in register `v0` and propagated to other methods. However, there are no explicit sink points like logging, network transmission, or storage.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data by using the sensitive API call to getBoolean() from AppsFlyerProperties.",
+        "Source Method": "Lcom/appsflyer/internal/aj;-><init>:()V",
+        "Reasoning": "The current method originates user personal data by using the sensitive API call to getBoolean() from AppsFlyerProperties. The data is stored in registers and variables within the method, including AFInAppEventType, AFVersionDeclaration, AppsFlyer2dXConversionCallback, init, and AFLogger$LogLevel. The data propagation analysis shows that the data is passed to other methods via method invocations, specifically getInstance() from AppsFlyerProperties.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AFLogger;->AFInAppEventType:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+      "Lcom/appsflyer/AFLogger;->AFKeystoreWrapper:(Ljava/lang/String; Ljava/lang/Throwable; Z Z)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/internal/ae;->values:(Lcom/appsflyer/internal/g;)Ljava/util/Map; --> Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties; --> Lcom/appsflyer/AFLogger;->AFInAppEventType:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data originates from the method's current context and is propagated through registers. The data is stored in variables within the method and passed to other methods via method invocations, specifically AFKeystoreWrapper() from AppsFlyerProperties and AFInAppEventType() from AFLogger."
+      },
+      {
+        "dataflow 2": " Lcom/appsflyer/internal/ab;->AFKeystoreWrapper:()Z --> Lcom/appsflyer/AFLogger;->AFInAppEventParameterName:(Ljava/lang/String; Z)Ljava/lang/String;",
+        "Reasoning": "The data originates from the method AFKeystoreWrapper() in class com/appsflyer/internal/ab and is propagated through registers. The data is stored in register v0 and passed to other methods via method invocations, specifically AFInAppEventParameterName() from AFLogger."
+      },
+      {
+        "dataflow 3": " Lcom/appsflyer/AFLogger;->AFKeystoreWrapper:(Ljava/lang/String; Ljava/lang/Throwable; Z Z)V --> Lcom/appsflyer/AFLogger;->AFInAppEventParameterName:(Ljava/lang/String; Z)Ljava/lang/String;",
+        "Reasoning": "The data originates from the method AFLogger.AFKeystoreWrapper and is propagated through registers. The data is stored in registers and variables within the method, including the exception message and stack trace. The data is passed to other methods via method invocations, specifically AFInAppEventParameterName() from AFLogger."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access location information from Android API",
+        "Source Method": "Lr1$g;->c:()I",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to access location information.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Call `myPid()` and `myUid()` from Android API",
+        "Source Method": "Li8;->g:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data by calling `myPid()` and `myUid()` from the Android API.",
+        "Action": "stored"
+      }
+    ],
+    "All Sinks": [
+      "Lr1$g;->c:()I",
+      "Li8;->g:(Landroid/content/Context; Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lr1$g;->c:()I --> Ly1 object --> Li8;->g:(Landroid/content/Context; Ljava/lang/String;)I --> getSystemService() --> network transmission",
+        "Reasoning": "The data is stored in the 'Ly1' object and propagated through various registers. The data reaches a sink point when it is transmitted over the network."
+      },
+      {
+        "dataflow 2": "Li8;->g:(Landroid/content/Context; Ljava/lang/String;)I --> checkPermission() --> permissionToOp() --> logging",
+        "Reasoning": "The data is propagated to other methods via method invocations, including `checkPermission()`, `permissionToOp()`, and `getSystemService()`. The data reaches a sink point through explicit calls to logging and network transmission."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

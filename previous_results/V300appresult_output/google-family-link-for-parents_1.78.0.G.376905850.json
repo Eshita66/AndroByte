@@ -1,0 +1,73 @@
+[
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data origin and storage",
+        "Source Method": "Lozp;->c:()Lozm;",
+        "Reasoning": "The method c() in class Lozp accesses location data.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Device ID data origin and storage",
+        "Source Method": "Lozp;->c:()Lozm;",
+        "Reasoning": "The method c() in class Lozp accesses device ID data.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Phone number data origin and storage",
+        "Source Method": "Lorg/chromium/base/ApplicationStatus;->getStateForApplication:()I",
+        "Reasoning": "The method getStateForApplication() in class ApplicationStatus accesses phone number data.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      "Lozp;->c:()Lozm;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lozp;->c:()Lozm; --> Lozp;->d:(Lozm;)V --> Lozp;",
+        "Reasoning": "Location data is accessed by method c(), stored in register v0, and then passed to method d(). Device ID data follows the same flow. Phone number data is accessed by getStateForApplication() and stored in register v0."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get current night mode and location from Context",
+        "Source Method": "Lnw;->u:(Landroid/content/Context; I)I",
+        "Reasoning": "The method originates user personal data through sensitive API calls.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Propagate location to update power save mode",
+        "Source Method": "Lnw;->u:(Landroid/content/Context; I)I",
+        "Reasoning": "The data reaches a sink point when it is used to update the power save mode.",
+        "Action": "Used to update power save mode"
+      }
+    ],
+    "All Sinks": [
+      "Lnw;->u:(Landroid/content/Context; I)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lnw;->u:(Landroid/content/Context; I)I --> Lnw;->u:(Landroid/content/Context; I)I",
+        "Reasoning": "The method originates user personal data through sensitive API calls to get the current night mode and location. The data is stored in registers and variables, and propagated through method invocations. The data reaches a sink point when it is used to update the power save mode."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

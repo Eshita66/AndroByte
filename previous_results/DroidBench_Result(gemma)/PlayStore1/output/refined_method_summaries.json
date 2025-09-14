@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "device_id",
+            "phone_number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain Device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle)",
+                "Reasoning": "The `onCreate` method calls `TelephonyManager.getDeviceId()` to retrieve the device ID.",
+                "Action": "Store"
+            },
+            {
+                "Step": "Send SMS with Device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle)",
+                "Reasoning": "The retrieved device ID is used as the message body in an SMS transmission.",
+                "Action": "Transmit"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)",
+            "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle) --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)",
+                "Reasoning": "The device ID obtained from `TelephonyManager.getDeviceId()` is directly used as the message body in `SmsManager.sendTextMessage`. This constitutes a clear data flow."
+            }
+        ],
+        "Label": "leak"
+    }
+]

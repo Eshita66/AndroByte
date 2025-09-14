@@ -1,0 +1,46 @@
+
+Processing folder: D:\UBCBAPK_Methods\RegisterGlobal1
+Using methods file: D:\UBCBAPK_Methods\RegisterGlobal1\RegisterGlobal1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V']
+[SUMMARY] Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V => The method retrieves the device ID (IMEI) from the TelephonyManager using the getDeviceId() method, which can be used to identify the user's mobile device. This information is stored in a field of the same class.
+[SUMMARY] Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V => The method sends a text message containing the IMEI of the device to a predefined phone number using the SMS manager, potentially exposing user personal data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "IMEI"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval of IMEI from TelephonyManager",
+            "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V",
+            "Reasoning": "The method retrieves the device ID (IMEI) which is personal data and stored in a class field.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Potential exposure of IMEI via SMS",
+            "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V",
+            "Reasoning": "The method sends the stored IMEI to a predefined phone number using SMS, potentially exposing user personal data.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V",
+        "Potential Log Sink (indirect evidence)"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V --> Stored in class field --> Potential Log Sink (indirect evidence) --> Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V]",
+            "Reasoning": "The IMEI is retrieved and potentially logged, which indirectly leads to its transmission via SMS when the activity pauses."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\RegisterGlobal1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\RegisterGlobal1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\RegisterGlobal1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\RegisterGlobal1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\RegisterGlobal1\output\sensitive_only.json
+Total time for folder: 105.00 seconds

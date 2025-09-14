@@ -1,0 +1,174 @@
+[
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "altitude",
+      "accuracy",
+      "bearing",
+      "speed"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "LocationUtils.locationToMap() originates user personal data from the location object's properties.",
+        "Source Method": "Lcom/agontuk/RNFusedLocation/LocationUtils;->locationToMap:(Landroid/location/Location;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "Data is propagated to WritableMap.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Arguments.createMap() originates data from a sensitive API call.",
+        "Source Method": "Lcom/facebook/react/bridge/Arguments;->createMap:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "Data is stored in register v0 and passed as the return value of this method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "WritableNativeMap's constructor originates data from a sensitive API call.",
+        "Source Method": "Lcom/facebook/react/bridge/WritableNativeMap;-><init>:()V",
+        "Reasoning": "Data is stored in register v0 and then passed to the ReadableNativeMap constructor.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "ReadableNativeMap's constructor originates user personal data from the 'ReadableNativeMap' class.",
+        "Source Method": "Lcom/facebook/react/bridge/ReadableNativeMap;-><init>:(Lcom/facebook/jni/HybridData;)V",
+        "Reasoning": "No sinks identified.",
+        "Action": "None"
+      },
+      {
+        "Step": "NativeMap's constructor originates user personal data by calling the HybridData constructor.",
+        "Source Method": "Lcom/facebook/react/bridge/NativeMap;-><init>:(Lcom/facebook/jni/HybridData;)V",
+        "Reasoning": "Data is stored in the mHybridData register and variable within the NativeMap object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "LocationUtils.locationToMap() --> Arguments.createMap() --> WritableNativeMap's constructor",
+        "Reasoning": "Data is propagated from LocationUtils to Arguments and then stored in WritableNativeMap."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi and cellular network information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Calling sensitive APIs to retrieve WiFi and cellular network information",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createDetailsMap:(Ljava/lang/String;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Creating a WritableNativeMap instance",
+        "Source Method": "Lcom/facebook/react/bridge/Arguments;->createMap:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The current method originates user personal data by creating a WritableNativeMap instance.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Invoking the <init> method of NativeMap class",
+        "Source Method": "Lcom/facebook/react/bridge/NativeMap;-><init>:(Lcom/facebook/jni/HybridData;)V",
+        "Reasoning": "The method originates user personal data by invoking the <init> method of NativeMap class.",
+        "Action": "Stored in the mHybridData field of the NativeMap object"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/react/bridge/WritableNativeMap;->log:()V",
+      "Lcom/facebook/react/bridge/NativeMap;->log:()V",
+      "Lcom/facebook/react/bridge/ReadableNativeMap;->log:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createDetailsMap:(Ljava/lang/String;)Lcom/facebook/react/bridge/WritableMap; --> Lcom/facebook/react/bridge/WritableNativeMap;-><init>:()V --> Lcom/facebook/react/bridge/NativeMap;-><init>:(Lcom/facebook/jni/HybridData;)V",
+        "Reasoning": "The data is propagated from the ConnectivityReceiver method to the WritableNativeMap constructor and then stored in the NativeMap object."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address",
+      "WiFi information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get MAC Address and WiFi Info",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to get the MAC address and WiFi information.",
+        "Action": "Stored in registers (v0, v1) and variables within the method"
+      },
+      {
+        "Step": "Pass MAC Address",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers (v0, v1) and variables within the method.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Get WiFi Info",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The method originates sensitive user personal data by calling getWifiInfo(), which retrieves the WiFi information.",
+        "Action": "Stored in register v2"
+      },
+      {
+        "Step": "Pass WiFi Info",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The data is stored in register v2 and then passed to other methods via method invocations.",
+        "Action": "Passed to other methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String; --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The MAC address is passed to getWifiInfo(), which retrieves the WiFi information. The data is then stored in register v2 and passed to other methods via method invocations."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check necessary permissions",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "Permissions check is required to access user personal data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get phone number using TelephonyManager",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The method uses the TelephonyManager to get the phone number.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass phone number to other methods",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The method passes the phone number to other methods via method invocations.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Log phone number",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "A sink point (logging) is identified.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->log(Ljava/lang/String;)V;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String; --> Stored in register v0 --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->log(Ljava/lang/String;)V;",
+        "Reasoning": "The phone number is stored in the register v0 and then passed to other methods via method invocations. Finally, it is logged using a sink point."
+      }
+    ],
+    "Label": "leak"
+  }
+]

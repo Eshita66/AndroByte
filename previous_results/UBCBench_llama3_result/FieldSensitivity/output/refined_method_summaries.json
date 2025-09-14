@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get device ID via getSystemService and getDeviceId",
+                "Source Method": "Llina/ubc/fieldsensitivity/FieldSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive data originated from getting the device ID",
+                "Action": "Stored in FieldSensitivity$A's info1 field"
+            },
+            {
+                "Step": "Sink identified: Log.e() called with tainted argument",
+                "Source Method": "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I",
+                "Reasoning": "Tainted data passed to sink method",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Llina/ubc/fieldsensitivity/FieldSensitivity;->onCreate:(Landroid/os/Bundle;)V --> FieldSensitivity$A's info1 field --> Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I ",
+                "Reasoning": "Sensitive data originated from getting the device ID, stored in FieldSensitivity$A's info1 field, and passed to Log.e() method"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

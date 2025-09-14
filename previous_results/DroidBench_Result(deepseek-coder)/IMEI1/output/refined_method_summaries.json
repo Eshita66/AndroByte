@@ -1,0 +1,45 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID",
+            "SMS content"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID from TelephonyManager and store it in a local variable.",
+                "Source Method": "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "Device ID is retrieved from the TelephonyManager service which provides access to device-specific information including identifiers.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Construct a new string by appending 'secret' to the device ID stored in Step 1.",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The retrieved device ID is modified by appending 'secret' which potentially contains sensitive information.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Log the modified string using Log.d with tag 'DROIDBENCH'.",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The modified string, now tainted with device ID information, is logged directly without any further processing or sanitization.",
+                "Action": "Logged"
+            },
+            {
+                "Step": "Attempt to send an SMS, which involves data that might be tainted from the modified string constructed in Step 2.",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The content of the SMS is not specified but implied to involve potentially tainted data after modification with 'secret'.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Log.d"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;) --> Source Method(Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V) --> Log.d]",
+                "Reasoning": "The device ID is retrieved from TelephonyManager and used to modify the string in onCreate method, which is then directly logged by Log.d."
+            }
+        ],
+        "Label": "leak"
+    }
+]

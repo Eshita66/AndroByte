@@ -1,0 +1,61 @@
+Processing folder: D:\UBCBAPK_Methods\FieldSensitivity2
+Using methods file: D:\UBCBAPK_Methods\FieldSensitivity2\FieldSensitivity2_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves the SIM serial number via getSystemService and getSimSerialNumber, storing it in a Datacontainer object. The SIM serial number is not passed to any sink. The sendTextMessage method (part of android.telephony) is called but does not transmit sensitive data as it uses hardcoded values. No sink for user data is identified.",
+    "Next Methods": [
+        "Lde/ecspride/FieldSensitivity2;->setContentView:(I)V",
+        "Lde/ecspride/Datacontainer;-><init>()V",
+        "Lde/ecspride/FieldSensitivity2;->getSystemService:(Ljava/lang/String;)Ljava/lang/Object;",
+        "Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V",
+        "Lde/ecspride/Datacontainer;->getDescription:()Ljava/lang/String;"
+    ]
+}
+Processed summary for Lde/ecspride/Datacontainer;->getDescription:()Ljava/lang/String;: {
+    "Summary": "The method retrieves the description field from the Datacontainer object, which was previously populated with the SIM serial number. No sensitive data is passed to sinks or further methods. The data is only returned as a string without any transmission or storage operations.",
+    "Next Methods": []
+}
+Processed summary for Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V: {
+    "Summary": "The method sets the 'description' field of a Datacontainer object using the input parameter. No sensitive data is originated here. The input data (description) is stored in an instance field but not passed to any sinks or further methods. No method invocations are present, and no sink operations are identified.",
+    "Next Methods": []
+}
+Processed summary for Lde/ecspride/Datacontainer;-><init>:()V: {
+    "Summary": "No sensitive data operations were observed in this method related to its own originations. The method only performs object initialization without handling or propagating any user data.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\FieldSensitivity2\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\FieldSensitivity2\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\FieldSensitivity2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "SIM serial number retrieved via getSystemService and stored in Datacontainer",
+                "Source Method": "Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the SIM serial number and stores it in a Datacontainer object, but does not pass it to any sink.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Description field retrieved from Datacontainer",
+                "Source Method": "Lde/ecspride/Datacontainer;->getDescription:()Ljava/lang/String;",
+                "Reasoning": "The method returns the description field from the Datacontainer, which was previously populated with the SIM serial number, but no sensitive data is passed to sinks.",
+                "Action": "Returned"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V ",
+                "Reasoning": "The SIM serial number is stored in Datacontainer via onCreate, and later retrieved by getDescription. No sink methods receive the data."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\FieldSensitivity2\output\refined_method_summaries.json
+Saved 0 'sensitive' subgraphs to: D:\UBCBAPK_Methods\FieldSensitivity2\output\sensitive_only.json
+Total summary time: 861.4950890541077 seconds

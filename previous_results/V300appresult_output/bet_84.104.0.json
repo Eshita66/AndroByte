@@ -1,0 +1,193 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC Address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method explicitly retrieves MAC address",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress(...) --> Stored",
+        "Reasoning": "MAC address is retrieved and stored"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude",
+      "Accuracy",
+      "Point of Interest"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected from the `Location` object.",
+        "Source Method": "Lcom/adobe/mobile/AnalyticsTrackLocation;->trackLocation:(Landroid/location/Location; Ljava/util/Map;)V",
+        "Reasoning": "Method signature and summary mention collecting location data.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Location data is passed to the `trackInternal()` method.",
+        "Source Method": "Lcom/adobe/mobile/AnalyticsTrackLocation;->trackLocation:(Landroid/location/Location; Ljava/util/Map;)V",
+        "Reasoning": "Method signature and summary mention passing location data.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Location data is logged.",
+        "Source Method": "Lcom/adobe/mobile/AnalyticsTrackLocation;->trackInternal:(Landroid/location/Location; Ljava/util/Map;)V",
+        "Reasoning": "Method signature and summary mention logging location data.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adobe/mobile/AnalyticsTrackLocation;->trackInternal:(Landroid/location/Location; Ljava/util/Map;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adobe/mobile/AnalyticsTrackLocation;->trackLocation:(Landroid/location/Location; Ljava/util/Map;)V --> Lcom/adobe/mobile/AnalyticsTrackLocation;->trackInternal:(Landroid/location/Location; Ljava/util/Map;)V --> null",
+        "Reasoning": "Data is collected, passed, and logged within the same method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location",
+        "Source Method": "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "Method signature and summary",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Validate location",
+        "Source Method": "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "Method signature and summary",
+        "Action": "Validated"
+      },
+      {
+        "Step": "Log location",
+        "Source Method": "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "Method signature and summary",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location; --> Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location; --> Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "Stepwise explanation of data flow"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "altitude",
+      "accuracy",
+      "location data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is extracted from a Location object.",
+        "Source Method": "Lbo/app/i2;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary mention extracting location data.",
+        "Action": "Stored in instance variables"
+      },
+      {
+        "Step": "Location data is validated.",
+        "Source Method": "Lbo/app/i2;-><init>:(D D Ljava/lang/Double; Ljava/lang/Double;)V",
+        "Reasoning": "Method signature and summary mention validating location data.",
+        "Action": "Validated and exception thrown if invalid"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sanitization",
+        "Source Method": "Lcom/helpshift/util/LocationUtil;->sanitizeLocation:(Landroid/location/Location;)Landroid/location/Location;",
+        "Reasoning": "The method sanitizes the location object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/helpshift/util/LocationUtil;->sanitizeLocation:(Landroid/location/Location;)Landroid/location/Location; --> null",
+        "Reasoning": "The sanitized location is not written to any external storage or sent to any external systems."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI",
+      "SIM serial number",
+      "Android ID",
+      "Package name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting device identifiers",
+        "Source Method": "Lcom/npaw/youbora/lib6/plugin/Plugin;->generateDeviceUUID:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method extracts sensitive user personal data from telephony and settings services.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Hashing package name",
+        "Source Method": "Lcom/npaw/youbora/lib6/plugin/Plugin;->generateDeviceUUID:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method combines the collected data with a hash of the user's package name.",
+        "Action": "Processed"
+      },
+      {
+        "Step": "Generating UUID",
+        "Source Method": "Lcom/npaw/youbora/lib6/plugin/Plugin;->generateDeviceUUID:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method generates a unique device UUID based on the combined data.",
+        "Action": "Generated"
+      },
+      {
+        "Step": "Returning UUID",
+        "Source Method": "Lcom/npaw/youbora/lib6/plugin/Plugin;->generateDeviceUUID:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method returns the generated UUID as a string.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/npaw/youbora/lib6/plugin/Plugin;->generateDeviceUUID:(Landroid/content/Context;)Ljava/lang/String; --> Returned",
+        "Reasoning": "The generated UUID is returned as a string."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

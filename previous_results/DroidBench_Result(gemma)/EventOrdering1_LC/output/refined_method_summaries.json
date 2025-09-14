@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V",
+                "Reasoning": "The method retrieves the device's IMEI using `getDeviceId()` which is a sensitive API.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log.d(..., ...)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V --> android.util.Log.d(..., ...)",
+                "Reasoning": "The `onLowMemory` method retrieves the DeviceId from `getDeviceId()`. This value is then logged using `android.util.Log.d`. Since the DeviceId is not overwritten, this constitutes a potential leak."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\ArrayAccess2
+Using methods file: D:\UBCBAPK_Methods\ArrayAccess2\ArrayAccess2_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/ArrayAccess2;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/ArrayAccess2;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive data originated from getSystemService() and getDeviceId(). The device ID is stored in an array and passed to sendTextMessage(), which is a sink.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ArrayAccess2\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ArrayAccess2\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ArrayAccess2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "getDeviceId() returns DeviceId",
+                "Source Method": "Lde/ecspride/ArrayAccess2;->getDeviceId:()J",
+                "Reasoning": "Sensitive data originated from getDeviceId()",
+                "Action": "Stored in an array"
+            },
+            {
+                "Step": "DeviceId is passed to sendTextMessage()",
+                "Source Method": "Lde/ecspride/ArrayAccess2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is stored in an array and passed to sendTextMessage(), which is a sink.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ArrayAccess2;->sendTextMessage:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId() --> onCreate(...) --> sendTextMessage(...)",
+                "Reasoning": "Sensitive data originated from getDeviceId(), stored in an array, and passed to sendTextMessage()."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ArrayAccess2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ArrayAccess2\output\sensitive_only.json
+Total summary time: 26.713712453842163 seconds

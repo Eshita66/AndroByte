@@ -1,0 +1,53 @@
+Processing folder: D:\UBCBAPK_Methods\ArrayAccess2
+Using methods file: D:\UBCBAPK_Methods\ArrayAccess2\ArrayAccess2_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/ArrayAccess2;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/ArrayAccess2;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method originates user personal data via `Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;` which retrieves the device ID. This data is stored in a String array and then passed to `Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;...` for network transmission, constituting a sink. No further methods are required as the data reaches a sink.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ArrayAccess2\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ArrayAccess2\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ArrayAccess2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID from TelephonyManager",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+                "Reasoning": "Directly accesses device ID from system telephony service",
+                "Action": "Collected"
+            },
+            {
+                "Step": "Store in String array",
+                "Source Method": "Lde/ecspride/ArrayAccess2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Stores retrieved device ID in a String array",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Transmit to network",
+                "Source Method": "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;...",
+                "Reasoning": "Passes device ID to SMS manager for network transmission",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;...Ljava/lang/String;Ljava/lang/String;IZ)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/ArrayAccess2;->onCreate:(Landroid/os/Bundle;)V --> Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String; --> Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;...",
+                "Reasoning": "Device ID is retrieved from TelephonyManager, stored in array, then passed to SmsManager's sendTextMessage method for network transmission without being overwritten by non-sensitive values"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ArrayAccess2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ArrayAccess2\output\sensitive_only.json
+Total summary time: 325.5871503353119 seconds

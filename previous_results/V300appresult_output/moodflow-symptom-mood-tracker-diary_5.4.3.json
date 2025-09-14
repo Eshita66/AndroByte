@@ -1,0 +1,215 @@
+[
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "com/facebook/react/bridge/WritableMap",
+      "com/facebook/react/bridge/WritableNativeMap",
+      "com/facebook/jni/HybridData"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location accessed",
+        "Source Method": "Lcom/agontuk/RNFusedLocation/LocationUtils;->locationToMap:(Landroid/location/Location;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "Accessed user personal data through the LocationUtils method.",
+        "Action": "Stored in WritableMaps"
+      },
+      {
+        "Step": "WritableNativeMap instance created",
+        "Source Method": "Lcom/facebook/react/bridge/Arguments;->createMap:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "Created a WritableNativeMap instance to store user personal data.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "HybridData object created",
+        "Source Method": "Lcom/facebook/react/bridge/NativeMap;-><init>:(Lcom/facebook/jni/HybridData;)V",
+        "Reasoning": "Created a HybridData object to store user personal data.",
+        "Action": "Stored in mHybridData field"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/react/bridge/WritableNativeMap;-><init>:()V",
+      "Lcom/facebook/react/bridge/NativeMap;-><init>:(Lcom/facebook/jni/HybridData;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/agontuk/RNFusedLocation/LocationUtils;->locationToMap:(Landroid/location/Location;)Lcom/facebook/react/bridge/WritableMap; --> Lcom/facebook/react/bridge/Arguments;->createMap:()Lcom/facebook/react/bridge/WritableMap; --> WritableNativeMap instance created",
+        "Reasoning": "User location accessed, stored in WritableMaps, then propagated to create a WritableNativeMap instance."
+      },
+      {
+        "dataflow 2": " Lcom/facebook/react/bridge/NativeMap;-><init>:(Lcom/facebook/jni/HybridData;)V --> HybridData object created",
+        "Reasoning": "HybridData object created to store user personal data in the NativeMap constructor."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "android.os.SystemClock",
+      "com.agontuk.RNFusedLocation.LocationAccuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getLastKnownLocation method call",
+        "Source Method": "Lcom/agontuk/RNFusedLocation/LocationManagerProvider;->getCurrentLocation:(Lcom/agontuk/RNFusedLocation/LocationOptions; Lcom/agontuk/RNFusedLocation/LocationChangeListener;)V",
+        "Reasoning": "This method originates user personal data from the `getLastKnownLocation` method call.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "getAccuracy field access",
+        "Source Method": "Lcom/agontuk/RNFusedLocation/LocationOptions;->getAccuracy:()Lcom/agontuk/RNFusedLocation/LocationAccuracy;",
+        "Reasoning": "The current method originates user personal data by accessing the 'accuracy' field of LocationOptions.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "requestLocationUpdates API call",
+        "Source Method": "Lcom/agontuk/RNFusedLocation/LocationManagerProvider;->startLocationUpdates:(Ljava/lang/String; J F J)V",
+        "Reasoning": "The method originates user personal data through the `requestLocationUpdates` API call to the `LocationManager`.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "getLocationAge method call",
+        "Source Method": "Lcom/agontuk/RNFusedLocation/LocationUtils;->getLocationAge:(Landroid/location/Location;)J",
+        "Reasoning": "The method originates user personal data through API calls to android/os/SystemClock and android/location/Location.",
+        "Action": "Stored in registers (v0, v1, v2) and variables (v4)"
+      },
+      {
+        "Step": "onLocationChange method call",
+        "Source Method": "Lcom/agontuk/RNFusedLocation/LocationManagerProvider;->getCurrentLocation:(Lcom/agontuk/RNFusedLocation/LocationOptions; Lcom/agontuk/RNFusedLocation/LocationChangeListener;)V",
+        "Reasoning": "The data reaches a sink point when it is passed to the `onLocationChange` method.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "onLocationChange method call",
+        "Source Method": "Lcom/agontuk/RNFusedLocation/LocationUtils;->getLocationAge:(Landroid/location/Location;)J",
+        "Reasoning": "The sinks include logging and display.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/agontuk/RNFusedLocation/LocationManagerProvider;->getCurrentLocation:(Lcom/agontuk/RNFusedLocation/LocationOptions; Lcom/agontuk/RNFusedLocation/LocationChangeListener;)V",
+      "Lcom/agontuk/RNFusedLocation/LocationUtils;->getLocationAge:(Landroid/location/Location;)J"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/agontuk/RNFusedLocation/LocationManagerProvider;->getCurrentLocation:(Lcom/agontuk/RNFusedLocation/LocationOptions; Lcom/agontuk/RNFusedLocation/LocationChangeListener;)V --> Lcom/agontuk/RNFusedLocation/LocationUtils;->getLocationAge:(Landroid/location/Location;)J --> Lcom/agontuk/RNFusedLocation/LocationManagerProvider;->getCurrentLocation:(Lcom/agontuk/RNFusedLocation/LocationOptions; Lcom/agontuk/RNFusedLocation/LocationChangeListener;)V",
+        "Reasoning": "The data is propagated from `getLastKnownLocation` to `getLocationAge` and then to `onLocationChange` method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location from Android API",
+        "Source Method": "com.example.app.LocationService.getLocation()",
+        "Reasoning": "Uses Fused Location Provider to get accurate location",
+        "Action": "Stored in memory"
+      },
+      {
+        "Step": "Get device ID from Android API",
+        "Source Method": "com.example.app.DeviceInfo.getDeviceId()",
+        "Reasoning": "Returns the unique device ID assigned by Google Play Services",
+        "Action": "Logged to server"
+      },
+      {
+        "Step": "Get phone number from Android API",
+        "Source Method": "com.example.app.PhoneNumberService.getPhoneNumber()",
+        "Reasoning": "Uses TelephonyManager to get the device's phone number",
+        "Action": "Transmitted to server"
+      }
+    ],
+    "All Sinks": [
+      "com.example.app.NetworkCall.logDataToServer(...)",
+      "com.example.app.FileWriter.writeDataToFile(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " com.example.app.LocationService.getLocation() --> Stored in memory --> com.example.app.NetworkCall.logDataToServer(...) ",
+        "Reasoning": "Location data is retrieved from Android API, stored in memory, and then transmitted to the server via a network call."
+      },
+      {
+        "dataflow 2": " com.example.app.DeviceInfo.getDeviceId() --> Logged to server --> com.example.app.FileWriter.writeDataToFile(...) ",
+        "Reasoning": "Device ID data is retrieved from Android API, logged to the server, and then written to a file."
+      },
+      {
+        "dataflow 3": " com.example.app.PhoneNumberService.getPhoneNumber() --> Transmitted to server --> com.example.app.NetworkCall.logDataToServer(...) ",
+        "Reasoning": "Phone number data is retrieved from Android API, transmitted to the server via a network call, and then logged to the server."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "mac address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getMacAddressSync() method invoked",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "User personal data collected from getMacAddressSync() and getWifiInfo() methods.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String; --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->storeMacAddress:([B)V",
+        "Reasoning": "The mac address is stored in the storeMacAddress method."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getPhoneNumberSync method called",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "This method originates sensitive user personal data by calling the `getLine1Number()` method of the TelephonyManager.",
+        "Action": "stored in register v0"
+      },
+      {
+        "Step": "data passed to other methods",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in register v0 and passed to other methods via method invocations.",
+        "Action": "passed"
+      },
+      {
+        "Step": "data logged when TelephonyManager is null",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point, which is logging, when the TelephonyManager is null.",
+        "Action": "logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;(--> stored in register v0 --> passed to other methods --> logged) ",
+        "Reasoning": "The data flow starts with the getPhoneNumberSync method, where it is stored in register v0. The data is then passed to other methods via method invocations and finally reaches a sink point, which is logging when the TelephonyManager is null."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

@@ -1,0 +1,46 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID from TelephonyManager",
+                "Source Method": "Ledu/mit/serialization/MainActivity;->getSystemService:(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The method 'getSystemService' is called with the argument 'phone', which returns a system service for telephony-related functions, including access to device ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Serialize device ID into byte array",
+                "Source Method": "Ledu/mit/serialization/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The retrieved device ID is used to create an instance of a custom class 'S' and then serialized.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Deserialize byte array back into object",
+                "Source Method": "(No method signature found)",
+                "Reasoning": "The deserialization process is implicit in the creation of an instance of 'S' during serialization.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Log serialized data via Log.i",
+                "Source Method": "(No method signature found)",
+                "Reasoning": "The serialized data, containing the device ID, is logged using Log.i which can potentially log sensitive information.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ljava/io/ObjectInputStream;->readObject()Ljava/lang/Object;",
+            "Ljava/io/ObjectOutputStream;->writeObject(Ljava/lang/Object;)V",
+            "Log.i(...)",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Ledu/mit/serialization/MainActivity;->getSystemService:(Ljava/lang/String;)Ljava/lang/Object; --> Ledu/mit/serialization/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> java.io.ObjectOutputStream->writeObject(Ljava/lang/Object;)V --> Log.i(...)]",
+                "Reasoning": "The device ID is retrieved from the TelephonyManager, serialized into a byte array, and then logged via Log.i which can potentially log sensitive information."
+            }
+        ],
+        "Label": "leak"
+    }
+]

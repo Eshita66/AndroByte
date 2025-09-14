@@ -1,0 +1,264 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "MAC address is collected.",
+        "Source Method": "Lcom/amazon/device/ads/DeviceInfo;->setMacAddress:()V",
+        "Reasoning": "The method `setMacAddress()` collects the MAC address from the user.",
+        "Action": "Stored in `sha1_mac` field"
+      },
+      {
+        "Step": "MAC address is hashed.",
+        "Source Method": null,
+        "Reasoning": "The MAC address is hashed using SHA-1.",
+        "Action": "Encoded as URL string"
+      },
+      {
+        "Step": "Encoded string is stored.",
+        "Source Method": null,
+        "Reasoning": "The encoded string is stored in the `sha1_mac` field.",
+        "Action": "Stored in `sha1_mac` field"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/DeviceInfo;->setMacAddress:()V --> sha1_mac field",
+        "Reasoning": "The MAC address is collected in `setMacAddress()` and stored in `sha1_mac`."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve device ID",
+        "Source Method": "Lcom/amazon/identity/auth/device/dx;->getDeviceId:()Ljava/lang/String;",
+        "Reasoning": "Method `getDeviceId()` retrieves the device ID",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/auth/device/dx;->getDeviceId:()Ljava/lang/String; --> Stored",
+        "Reasoning": "Device ID is stored in the `v0` register and returned as the result of the method"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method call",
+        "Source Method": "Lcom/amazon/identity/auth/device/dx;->getLine1Number:()Ljava/lang/String;",
+        "Reasoning": "getLine1Number() method retrieves the user's phone number.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/auth/device/dx;->getLine1Number:()Ljava/lang/String; --> Collected",
+        "Reasoning": "The collected phone number is not explicitly sent to any sink points."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address",
+        "Source Method": "Lcom/amazon/identity/auth/device/ed;->dO:()Ljava/lang/String;",
+        "Reasoning": "Method `dO()` explicitly retrieves the MAC address.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user's phone number",
+        "Source Method": "Lcom/amazon/identity/frc/FrcCookiesManager/c;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The `getLine1Number()` method of the `TelephonyManager` class is used to retrieve the user's phone number.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/frc/FrcCookiesManager/c;->f:(Landroid/content/Context;)Ljava/lang/String; --> Stored",
+        "Reasoning": "The phone number is directly stored in the method's return value."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is retrieved from LocationManager.",
+        "Source Method": "Lcom/facebook/react/modules/location/LocationModule;->getCurrentPosition(...)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Location data is passed to SingleUpdateRequest.",
+        "Source Method": "Lcom/facebook/react/modules/location/LocationModule;->getCurrentPosition(...)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Location data is logged to the console.",
+        "Source Method": "Lcom/facebook/react/modules/location/SingleUpdateRequest;->invoke(...)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/react/modules/location/SingleUpdateRequest;->invoke(...)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/react/modules/location/LocationModule;->getCurrentPosition(...)V --> Lcom/facebook/react/modules/location/SingleUpdateRequest;->invoke(...)V",
+        "Reasoning": "Stepwise explanation of data flow from source method to sink method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Age",
+      "Email",
+      "Phone Number",
+      "Gender",
+      "User ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Data is extracted from TuneParameters.",
+        "Source Method": "Lcom/tune/TuneUrlBuilder;->buildDataUnencrypted:(Lcom/tune/TuneParameters; Lcom/tune/TuneEvent;)Ljava/lang/String;",
+        "Reasoning": "Method signature and summary mention user data extraction.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is appended to a StringBuilder.",
+        "Source Method": "Lcom/tune/TuneUrlBuilder;->buildDataUnencrypted:(Lcom/tune/TuneParameters; Lcom/tune/TuneEvent;)Ljava/lang/String;",
+        "Reasoning": "Method signature and summary mention StringBuilder usage.",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Data is transmitted via a toString() call.",
+        "Source Method": "Lcom/tune/TuneUrlBuilder;->buildDataUnencrypted:(Lcom/tune/TuneParameters; Lcom/tune/TuneEvent;)Ljava/lang/String;",
+        "Reasoning": "Method signature and summary mention toString() call.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tune/TuneUrlBuilder;->buildDataUnencrypted(...) --> Transmitted",
+        "Reasoning": "Overall Data Flow provides the data flow from TuneUrlBuilder to transmission."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "user identifiers",
+      "location",
+      "timestamps"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Data extraction from TuneParameters",
+        "Source Method": "Lcom/tune/TuneUrlBuilder;->updateAndEncryptData:(Lcom/tune/TuneParameters; Ljava/lang/String; Lcom/tune/TuneEncryption;)Ljava/lang/String;",
+        "Reasoning": "Method signature specifies input parameter TuneParameters",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Encryption of data",
+        "Source Method": "Lcom/tune/TuneUrlBuilder;->updateAndEncryptData:(Lcom/tune/TuneParameters; Ljava/lang/String; Lcom/tune/TuneEncryption;)Ljava/lang/String;",
+        "Reasoning": "Method name implies encryption",
+        "Action": "Encrypted"
+      },
+      {
+        "Step": "Return encrypted data",
+        "Source Method": "Lcom/tune/TuneUrlBuilder;->updateAndEncryptData:(Lcom/tune/TuneParameters; Ljava/lang/String; Lcom/tune/TuneEncryption;)Ljava/lang/String;",
+        "Reasoning": "Method signature specifies return type",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/tune/TuneUrlBuilder;->updateAndEncryptData:(Lcom/tune/TuneParameters; Ljava/lang/String; Lcom/tune/TuneEncryption;)Ljava/lang/String; --> [Encrypted Data]",
+        "Reasoning": "Data is encrypted before being returned"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Implicit getLastKnownLocation() call",
+        "Source Method": "Lcom/tune/location/TuneLocationListener$GetLocationUpdates;->run:()V",
+        "Reasoning": "Called by the method to retrieve user location.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Passed to TuneDebugLog.d() method",
+        "Source Method": "Lcom/tune/location/TuneLocationListener$GetLocationUpdates;->run:()V",
+        "Reasoning": "Logged using TuneDebugLog.d() method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tune/util/TuneDebugLog.d()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tune/location/TuneLocationListener$GetLocationUpdates;->run:()V --> Lcom/tune/util/TuneDebugLog.d()",
+        "Reasoning": "Location data is collected in the method and then logged using TuneDebugLog.d() method."
+      }
+    ],
+    "Label": "leak"
+  }
+]

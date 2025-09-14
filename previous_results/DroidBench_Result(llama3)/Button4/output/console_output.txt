@@ -1,0 +1,45 @@
+
+Processing folder: D:\UBCBAPK_Methods\Button4
+Using methods file: D:\UBCBAPK_Methods\Button4\Button4_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V => The method originates and stores user personal data (IMEI) in the 'imei' static field.
+[SUMMARY] Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V => Sensitive user data (IMEI) is retrieved and used to send an SMS message with a hardcoded prefix (+49). The method does not definitively pass tainted data to any other methods.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "IMEI"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Store user personal data (IMEI) in 'imei' static field",
+            "Source Method": "Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method originates and stores the IMEI in a static field.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Retrieve sensitive user data (IMEI) to send an SMS message",
+            "Source Method": "Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V",
+            "Reasoning": "The method retrieves the IMEI from the static field and uses it to send an SMS message.",
+            "Action": "Retrieved"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V]",
+            "Reasoning": "The IMEI is stored in the 'imei' static field by onCreate, and then retrieved by sendMessage to send an SMS message."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Button4\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Button4\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Button4\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Button4\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\Button4\output\sensitive_only.json
+Total time for folder: 36.55 seconds

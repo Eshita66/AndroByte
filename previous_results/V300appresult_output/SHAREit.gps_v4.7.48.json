@@ -1,0 +1,1205 @@
+[
+  {
+    "Data Types Collected": [
+      "user_location",
+      "device_id",
+      "phone_number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originating Sensitive Data",
+        "Source Method": "Lcom/ushareit/sharezone/download/task/DownloadRecord;->n()",
+        "Reasoning": "Sensitive user personal data is retrieved from this method.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Originating Sensitive Data",
+        "Source Method": "Lcom/ushareit/sharezone/download/task/DownloadRecord;->l()",
+        "Reasoning": "Sensitive user personal data is retrieved from this method.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Passing Sensitive Data",
+        "Source Method": "Lcom/lenovo/anyshare/yo;->a(...)",
+        "Reasoning": "Sensitive user personal data is passed to this method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Storing Sensitive Data",
+        "Source Method": "Lcom/lenovo/anyshare/ceu;->b()",
+        "Reasoning": "Sensitive user personal data is stored in this method.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/lenovo/anyshare/ceu;->b()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/ushareit/sharezone/download/task/DownloadRecord;->n() --> Lcom/ushareit/sharezone/download/task/DownloadRecord;->l() --> Lcom/lenovo/anyshare/yo;->a(...) --> Lcom/lenovo/anyshare/ceu;->b()",
+        "Reasoning": "Sensitive user personal data is passed through these methods and stored in the database."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "SIM serial number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "SIM serial number is obtained from TelephonyManager API.",
+        "Source Method": "Lcom/tencent/bugly/crashreport/common/info/b;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature and summary mention obtaining SIM serial number.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user's phone ID",
+        "Source Method": "Lcom/umeng/analytics/pro/ae;->f:()Ljava/lang/String;",
+        "Reasoning": "Method `f()` uses `TelephonyManager` API to retrieve the phone ID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Logging"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/umeng/analytics/pro/ae;->f:()Ljava/lang/String; --> Logging",
+        "Reasoning": "Phone ID is retrieved in `f()` and then logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID",
+      "Android ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract Device ID",
+        "Source Method": "Lcom/umeng/analytics/pro/bv;->A:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "TelephonyManager API and ContentResolver are used to retrieve device ID and Android ID.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check for Empty Device ID",
+        "Source Method": "Lcom/umeng/analytics/pro/bv;->A:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Device ID is checked for emptiness.",
+        "Action": "N/A"
+      },
+      {
+        "Step": "Use Android ID if Device ID is Empty",
+        "Source Method": "Lcom/umeng/analytics/pro/bv;->A:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Android ID is used as a fallback if device ID is empty.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "N/A"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/umeng/analytics/pro/bv;->A:(Landroid/content/Context;)Ljava/lang/String; --> Stored",
+        "Reasoning": "Device ID and Android ID are both stored."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve phone ID",
+        "Source Method": "Lcom/umeng/analytics/pro/bv;->F:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Sensitive API `getDeviceId()` is used.",
+        "Action": "Stored in `v1`"
+      },
+      {
+        "Step": "Return phone ID",
+        "Source Method": "Lcom/umeng/analytics/pro/bv;->F:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Return value of the method.",
+        "Action": "Returned as result"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/umeng/analytics/pro/bv;->F:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/umeng/analytics/pro/bv;->F:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/umeng/analytics/pro/bv;->F:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Phone ID is stored in `v1` and then returned as the result."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve IMEI from TelephonyManager",
+        "Source Method": "Lcom/umeng/analytics/social/e;->a:(Landroid/content/Context;)Ljava/util/Map;",
+        "Reasoning": "Method signature matches the summary",
+        "Action": "Stored in HashMap"
+      },
+      {
+        "Step": "Add IMEI to HashMap",
+        "Source Method": "Lcom/umeng/analytics/social/e;->a:(Landroid/content/Context;)Ljava/util/Map;",
+        "Reasoning": "Method signature matches the summary",
+        "Action": "Added to HashMap"
+      },
+      {
+        "Step": "Return HashMap",
+        "Source Method": "Lcom/umeng/analytics/social/e;->a:(Landroid/content/Context;)Ljava/util/Map;",
+        "Reasoning": "Method signature matches the summary",
+        "Action": "Returned as result"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/umeng/analytics/social/e;->a:(Landroid/content/Context;)Ljava/util/Map; --> Return HashMap",
+        "Reasoning": "Overall Data Flow summarizes the flow"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "MAC address is collected in `DeviceHelper`.",
+        "Source Method": "Lcom/ushareit/common/utils/DeviceHelper;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `c()` in `DeviceHelper` collects the MAC address.",
+        "Action": "Stored in `b` field"
+      },
+      {
+        "Step": "MAC address is checked for emptiness.",
+        "Source Method": "Lcom/ushareit/common/utils/DeviceHelper;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method checks if the MAC address is empty.",
+        "Action": "Logged if empty"
+      },
+      {
+        "Step": "MAC address is transmitted.",
+        "Source Method": "Lcom/ushareit/common/utils/DeviceHelper;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method transmits the MAC address via `DeviceHelper$a`.",
+        "Action": "Transmitted via `DeviceHelper$a`"
+      },
+      {
+        "Step": "MAC address is stored again.",
+        "Source Method": "Lcom/ushareit/common/utils/DeviceHelper;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method stores the MAC address again in the `b` field.",
+        "Action": "Stored in `b` field"
+      },
+      {
+        "Step": "MAC address is logged again.",
+        "Source Method": "Lcom/ushareit/common/utils/DeviceHelper;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method logs the MAC address again.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/ushareit/common/utils/DeviceHelper$a;->a(Ljava/lang/String;)V",
+      "Lcom/ushareit/common/utils/DeviceHelper;->b(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/ushareit/common/utils/DeviceHelper;->c:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/ushareit/common/utils/DeviceHelper$a;->a(Ljava/lang/String;)V --> Lcom/ushareit/common/utils/DeviceHelper;->b(Ljava/lang/String;)V",
+        "Reasoning": "MAC address is collected, transmitted, and stored."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve IMEI/Device ID",
+        "Source Method": "Lcom/ushareit/common/utils/IMSUtils;->a:(Landroid/telephony/TelephonyManager; I)Ljava/lang/String;",
+        "Reasoning": "Method signature and summary indicate IMEI/Device ID retrieval.",
+        "Action": "Stored in v0 register"
+      }
+    ],
+    "All Sinks": [
+      "None detected in provided data."
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number",
+      "Subscriber ID",
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User's phone number, subscriber ID, and IMEI are collected.",
+        "Source Method": "Lcom/ushareit/common/utils/IMSUtils;->d:(Landroid/content/Context;)Lcom/ushareit/common/utils/IMSUtils$a;",
+        "Reasoning": "Method `IMSUtils.d()` collects this data.",
+        "Action": "Stored in `IMSUtils.a` object."
+      },
+      {
+        "Step": "Data is passed to `IMSUtils.a.c()` and `IMSUtils.a.d()` methods.",
+        "Source Method": "Lcom/ushareit/common/utils/IMSUtils$a;->c()V",
+        "Reasoning": "Called by `IMSUtils.d()`.",
+        "Action": "Logs data to console."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/ushareit/common/utils/IMSUtils$a;->c()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/ushareit/common/utils/IMSUtils;->d:(Landroid/content/Context;)Lcom/ushareit/common/utils/IMSUtils$a --> Lcom/ushareit/common/utils/IMSUtils$a;->c()V",
+        "Reasoning": "Data is collected in `IMSUtils.d()` and logged in `IMSUtils.a.c()`."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is originated in WifiMaster.a() method.",
+        "Source Method": "Lcom/ushareit/nft/discovery/wifi/WifiMaster;->a:(Landroid/content/Intent;)V",
+        "Reasoning": "invoke-virtual instruction with Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed through Lcom/lenovo/anyshare/cmr;->b(Ljava/lang/String; Ljava/lang/String;)V method.",
+        "Source Method": "Lcom/ushareit/nft/discovery/wifi/WifiMaster;->a:(Landroid/content/Intent;)V",
+        "Reasoning": "invoke-static instruction with Lcom/lenovo/anyshare/cmr;->b(Ljava/lang/String; Ljava/lang/String;)V",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Data reaches sink Lcom/lenovo/anyshare/cmr;->b(Ljava/lang/String; Ljava/lang/String;)V method.",
+        "Source Method": "Lcom/ushareit/nft/discovery/wifi/WifiMaster;->a:(Landroid/content/Intent;)V",
+        "Reasoning": "invoke-static instruction with Lcom/lenovo/anyshare/cmr;->b(Ljava/lang/String; Ljava/lang/String;)V",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/lenovo/anyshare/cmr;->b(Ljava/lang/String; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " WifiMaster.a() --> Lcom/lenovo/anyshare/cmr;->b(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "Sensitive data is passed through Lcom/lenovo/anyshare/cmr;->b(Ljava/lang/String; Ljava/lang/String;)V method and finally reaches sink Lcom/lenovo/anyshare/cmr;->b(Ljava/lang/String; Ljava/lang/String;)V method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi password"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User provides Wi-Fi password",
+        "Source Method": "Lcom/ushareit/nft/discovery/wifi/WifiMaster;->a:(Lcom/ushareit/nft/discovery/Device; Ljava/lang/String; Z)Z",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/ushareit/nft/discovery/wifi/WifiMaster;->a:(Lcom/ushareit/nft/discovery/Device; Ljava/lang/String; Z)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " User provides Wi-Fi password --> WifiMaster;->a(...) --> WifiMaster;->a(...)",
+        "Reasoning": "Sensitive API call detected. User's Wi-Fi password is being collected."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is collected from the `getAccounts()` method of the `AccountManager` class.",
+        "Source Method": "Lcom/lenovo/anyshare/bgf;->f:()Ljava/lang/String;",
+        "Reasoning": "See Summary",
+        "Action": "Stored in `v2` variable"
+      },
+      {
+        "Step": "Sensitive user personal data is passed to the `a()` method of the `dhh` class.",
+        "Source Method": "Lcom/lenovo/anyshare/bgf;->f:()Ljava/lang/String;",
+        "Reasoning": "See Summary",
+        "Action": "Passed to `a()` method"
+      },
+      {
+        "Step": "Sensitive user personal data is returned from the `f()` method.",
+        "Source Method": "Lcom/lenovo/anyshare/bgf;->f:()Ljava/lang/String;",
+        "Reasoning": "See Summary",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "None mentioned in the provided data"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/bgf;->f:()Ljava/lang/String; --> None mentioned in the provided data",
+        "Reasoning": "Sensitive user personal data is collected and returned from the `f()` method, but no sink points are mentioned in the provided data."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "user ID",
+      "location",
+      "orientation",
+      "network information",
+      "app version",
+      "consent status",
+      "privacy policy version"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "ClientMetadata is created",
+        "Source Method": "Lcom/mopub/common/ClientMetadata;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "Constructor initializes user ID, location, orientation, network information, app version, consent status, and privacy policy version.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "ClientMetadata is passed to AdUrlGenerator",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->a:(Lcom/mopub/common/ClientMetadata;)V",
+        "Reasoning": "Method receives ClientMetadata as input.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Sensitive data is logged",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->a:(Lcom/mopub/common/ClientMetadata;)V",
+        "Reasoning": "Sensitive data is logged within the method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mopub/common/AdUrlGenerator;->a:(Lcom/mopub/common/ClientMetadata;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mopub/common/ClientMetadata;-><init>:(Landroid/content/Context;)V --> Lcom/mopub/common/AdUrlGenerator;->a:(Lcom/mopub/common/ClientMetadata;)V --> Lcom/mopub/common/AdUrlGenerator;->a:(Lcom/mopub/common/ClientMetadata;)V",
+        "Reasoning": "Sensitive data flows from ClientMetadata initialization to logging within AdUrlGenerator."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user's Wi-Fi SSID",
+        "Source Method": "Lcom/lenovo/anyshare/bdc;->a:(Landroid/content/Context;)Z",
+        "Reasoning": "Sensitive API call detected",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Logging"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/lenovo/anyshare/bdc;->a:(Landroid/content/Context;)Z --> Logging",
+        "Reasoning": "Sensitive data is logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "SIM Serial Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "SIM Serial Number is retrieved from TelephonyManager",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->a:(Landroid/content/Context; Z Z Z)Ljava/lang/String;",
+        "Reasoning": "getSimSerialNumber() method",
+        "Action": "Stored"
+      },
+      {
+        "Step": "SIM Serial Number is appended to StringBuilder",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->a:(Landroid/content/Context; Z Z Z)Ljava/lang/String;",
+        "Reasoning": "StringBuilder",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "SIM Serial Number is returned as a string",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->a:(Landroid/content/Context; Z Z Z)Ljava/lang/String;",
+        "Reasoning": "Return statement",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/lenovo/anyshare/brz;->a:(Landroid/content/Context; Z Z Z)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/brz;->a:(Landroid/content/Context; Z Z Z)Ljava/lang/String; --> Lcom/lenovo/anyshare/brz;->a:(Landroid/content/Context; Z Z Z)Ljava/lang/String;",
+        "Reasoning": "Data is passed to itself as a result"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "TelephonyManager",
+      "SubscriptionManager",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "TelephonyManager and SubscriptionManager APIs collect user data.",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->a:(Landroid/content/Context; Z Z Z Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Sensitive user data is originated from these APIs.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to the a() method.",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->a:(Landroid/content/Context; Z Z Z Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Data is passed within the method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is compared to a string.",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->a:(Landroid/content/Context; Z Z Z Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Data is compared for equality.",
+        "Action": "Compared"
+      },
+      {
+        "Step": "If equal, data is logged.",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->a:(Landroid/content/Context; Z Z Z Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Sensitive data is logged.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/lenovo/anyshare/brz;->a:(Landroid/content/Context; Z Z Z Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " TelephonyManager and SubscriptionManager APIs --> a() method --> a() method --> Logging",
+        "Reasoning": "Sensitive user data is collected, compared, and logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain MAC address",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "WifiManager API",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "TelephonyManager"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "TelephonyManager API collects user personal data.",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->b:(Landroid/content/Context; Z Z Z)Ljava/lang/String;",
+        "Reasoning": "TelephonyManager API is used to retrieve user personal data.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is passed to the toString() method.",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->b:(Landroid/content/Context; Z Z Z)Ljava/lang/String;",
+        "Reasoning": "toString() method is called on the collected data.",
+        "Action": "Transformed"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " TelephonyManager API --> toString() --> null",
+        "Reasoning": "Data is collected from TelephonyManager API and transformed using toString(), but no sink is identified in the given code."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User device ID is retrieved from TelephonyManager.",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->b:(Landroid/content/Context; Z Z Z Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Method `b()` calls `getDeviceId()` on TelephonyManager.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Device ID is compared to predefined strings.",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->b:(Landroid/content/Context; Z Z Z Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Comparison logic in the method.",
+        "Action": "N/A"
+      },
+      {
+        "Step": "Matching string is returned.",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->b:(Landroid/content/Context; Z Z Z Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Matching logic in the method.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "N/A"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/brz;->b:(Landroid/content/Context; Z Z Z Ljava/lang/String;)Ljava/lang/String; --> Returned",
+        "Reasoning": "The method returns the user device ID if a match is found."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve IMEI",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "TelephonyManager API",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SIM serial number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "SIM serial number is retrieved from TelephonyManager API.",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->f() method",
+        "Reasoning": "TelephonyManager API calls",
+        "Action": "Stored in local variable"
+      },
+      {
+        "Step": "SIM serial number is passed as an argument to other methods.",
+        "Source Method": "Lcom/lenovo/anyshare/brz;->f() method",
+        "Reasoning": "Method argument",
+        "Action": "Passed to other methods"
+      }
+    ],
+    "All Sinks": [
+      "No sink points found"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/lenovo/anyshare/brz;->f() --> No sink points",
+        "Reasoning": "Data is passed to other methods but not logged, transmitted, or displayed."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "GPS location manager receives location data",
+        "Source Method": "Lcom/lenovo/anyshare/bxe$1;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method receives location data as input",
+        "Action": "Stored in pair object"
+      },
+      {
+        "Step": "Pair object passed to a() method",
+        "Source Method": "Lcom/lenovo/anyshare/bxe$1;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method stores location data in pair object",
+        "Action": "Passed to a() method"
+      },
+      {
+        "Step": "a() method logs location data to a file",
+        "Source Method": "Lcom/lenovo/anyshare/bxe$1;->a(Ljava/util/Pair;)V",
+        "Reasoning": "a() method receives location data from pair object",
+        "Action": "Logged to a file"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/lenovo/anyshare/bxe$1;->a(Ljava/util/Pair;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/bxe$1;->onLocationChanged:(Landroid/location/Location;)V --> Lcom/lenovo/anyshare/bxe$1;->a(Ljava/util/Pair;)V",
+        "Reasoning": "Location data is first stored in a pair object and then passed to the a() method where it is logged to a file"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract SSID",
+        "Source Method": "Lcom/lenovo/anyshare/cnn;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method extracts SSID from Context.",
+        "Action": "Stored in return value"
+      }
+    ],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location.Stats"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location.Stats passed to UF_LocationGms via LocationCallback",
+        "Source Method": "Lcom/lenovo/anyshare/cwf;->a:(Lcom/lenovo/anyshare/cwf; Z Landroid/location/Location;)V",
+        "Reasoning": "Sensitive data originated from Location.Stats",
+        "Action": "Stored in key_location_gms in cms"
+      },
+      {
+        "Step": "Stored data logged in SZ.Location.GMS",
+        "Source Method": "Lcom/lenovo/anyshare/cwf;->a:(Lcom/lenovo/anyshare/cwf; Z Landroid/location/Location;)V",
+        "Reasoning": "Sensitive data stored in cms",
+        "Action": "Logged in SZ.Location.GMS"
+      }
+    ],
+    "All Sinks": [
+      "SZ.Location.GMS"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/cwf;->a:(Lcom/lenovo/anyshare/cwf; Z Landroid/location/Location;)V --> SZ.Location.GMS",
+        "Reasoning": "Sensitive data is stored in cms and logged in SZ.Location.GMS"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected from LocationSource.Instant",
+        "Source Method": "Lcom/lenovo/anyshare/cwh;->a:(Z Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary mention location data collection",
+        "Action": "Stored in Location object"
+      },
+      {
+        "Step": "Location object is passed to cms instance",
+        "Source Method": "Lcom/lenovo/anyshare/cwh;->a:(Z Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary mention passing location data to cms",
+        "Action": "Logged and transmitted via UF_LocationInner"
+      }
+    ],
+    "All Sinks": [
+      "cms instance"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/cwh;->a:(Z Landroid/location/Location;)V --> cms instance",
+        "Reasoning": "Overall data flow summary explains the flow of location data"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is collected in `onReceive` method.",
+        "Source Method": "Lcom/lenovo/anyshare/dgu$1;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "Method summary indicates data originates in `onReceive`.",
+        "Action": "Stored in `a` field"
+      },
+      {
+        "Step": "Data is passed to `b()` method.",
+        "Source Method": "Lcom/lenovo/anyshare/dgu$1;->b()V",
+        "Reasoning": "Method summary indicates data is passed to `b()`.",
+        "Action": "No further action is taken"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieving SSID",
+        "Source Method": "Lcom/lenovo/anyshare/dgu;->a:(Landroid/content/Context;)V",
+        "Reasoning": "Method `a()` retrieves the SSID from the connected WiFi network.",
+        "Action": "Stored in `a` field of `dgu` object"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/dgu;->a:(Landroid/content/Context;)V --> N/A",
+        "Reasoning": "The method stores the SSID in the `a` field but does not perform any logging, network calls, or file writes."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "WifiManager.getConnectionInfo()"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WifiManager.getConnectionInfo() method is called to retrieve user's connection information.",
+        "Source Method": "Lcom/lenovo/anyshare/dtc;->m:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Sensitive user data is originated from this method.",
+        "Action": "Stored in local variable"
+      },
+      {
+        "Step": "duq.e() method is called to perform additional processing on the collected data.",
+        "Source Method": "Lcom/lenovo/anyshare/dtc;->m:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Data is further processed within this method.",
+        "Action": "Data is passed through this method"
+      },
+      {
+        "Step": "dts.a() method is called to log the user's connection information.",
+        "Source Method": "Lcom/lenovo/anyshare/dtc;->m:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Sensitive user data is logged.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "dts.a()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " WifiManager.getConnectionInfo() --> duq.e() --> dts.a()",
+        "Reasoning": "Data flows through these methods before being logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Device ID",
+        "Source Method": "Lcom/lenovo/anyshare/dvv;->b:()Ljava/lang/String;",
+        "Reasoning": "Method `b()` retrieves the device ID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/dvv;->b:()Ljava/lang/String; --> Stored",
+        "Reasoning": "Device ID is retrieved and stored in memory."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve BSSID",
+        "Source Method": "Lcom/lenovo/anyshare/dwm;->a:(Landroid/content/Context; I)Ljava/lang/String;",
+        "Reasoning": "Method `a()` explicitly retrieves the BSSID.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is collected in `dzg.a()` method.",
+        "Source Method": "Lcom/lenovo/anyshare/dzg;->a:(Landroid/content/Context; Z)V",
+        "Reasoning": "Method summary mentions data is originated in `dzg.a()` method.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is passed to `l.a()` method.",
+        "Source Method": "Lcom/lenovo/anyshare/dzg;->a:(Landroid/content/Context; Z)V",
+        "Reasoning": "Method summary mentions data is passed to `l.a()` method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is passed to `p.a()` method.",
+        "Source Method": "Lcom/xiaomi/xmpush/thrift/l;->a()Lcom/xiaomi/xmpush/thrift/p;",
+        "Reasoning": "Method summary mentions data is passed to `p.a()` method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is passed to `ai.a()` method.",
+        "Source Method": "Lcom/xiaomi/xmpush/thrift/p;->a()Lcom/xiaomi/xmpush/thrift/ai;",
+        "Reasoning": "Method summary mentions data is passed to `ai.a()` method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is sent to the server via `dzg.b()` method.",
+        "Source Method": "Lcom/lenovo/anyshare/dzg;->b()V",
+        "Reasoning": "Method summary mentions data is sent to the server via `dzg.b()` method.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/lenovo/anyshare/dzg;->b()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "dzg.a() --> l.a() --> p.a() --> ai.a() --> dzg.b()",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi network information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method extracts user's Wi-Fi network information",
+        "Source Method": "Lcom/lenovo/anyshare/dzr;->b:()Ljava/lang/String;",
+        "Reasoning": "Method signature and summary mention extracting Wi-Fi network information",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/dzr;->b:()Ljava/lang/String; --> Stored",
+        "Reasoning": "Overall Data Flow shows the method stores the extracted Wi-Fi network information"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "user account information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract user account information",
+        "Source Method": "Lcom/lenovo/anyshare/eao;->b:()Ljava/lang/String;",
+        "Reasoning": "Method summary",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/lenovo/anyshare/eao;->b:()Ljava/lang/String; --> None",
+        "Reasoning": "No sink points identified"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "MAC address is accessed from WiFi network.",
+        "Source Method": "Lcom/lenovo/anyshare/eav;->g:()Ljava/lang/String;",
+        "Reasoning": "Method `g()` calls this method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "MAC address is passed to `f()` method.",
+        "Source Method": "Lcom/lenovo/anyshare/eav;->g:()Ljava/lang/String;",
+        "Reasoning": "Method `g()` calls this method.",
+        "Action": "Passed as argument"
+      },
+      {
+        "Step": "MAC address is returned as a string.",
+        "Source Method": "Lcom/lenovo/anyshare/eav;->f:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Method `f()` receives the MAC address.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/eav;->g:()Ljava/lang/String; --> Lcom/lenovo/anyshare/eav;->f:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Method `g()` calls method `f()` with the MAC address it collects."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SIM serial number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "SIM serial number extracted from method i()",
+        "Source Method": "Lcom/lenovo/anyshare/eav;->i:()Ljava/lang/String;",
+        "Reasoning": "Method i() explicitly extracts the SIM serial number.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "SIM serial number appended to string",
+        "Source Method": "Lcom/lenovo/anyshare/eav;->i:()Ljava/lang/String;",
+        "Reasoning": "SIM serial number is concatenated with other parameters in the method.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Method where SIM serial number is appended to string"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/eav;->i:()Ljava/lang/String; --> Method where SIM serial number is appended to string",
+        "Reasoning": "SIM serial number is extracted in method i() and then appended to a string in the same method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi network information (SSID, BSSID, signal strength)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting Wi-Fi network information",
+        "Source Method": "Lcom/lenovo/anyshare/eba;->b:()Ljava/lang/String;",
+        "Reasoning": "The method collects SSID, BSSID, and signal strength",
+        "Action": "Stored in StringBuilder object"
+      },
+      {
+        "Step": "Returning string representation",
+        "Source Method": "Lcom/lenovo/anyshare/eba;->b:()Ljava/lang/String;",
+        "Reasoning": "The method returns the StringBuilder object as a string",
+        "Action": "Returned as result"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [
+      {
+        "Step": "Reads last WiFi SSID from shared preferences",
+        "Source Method": "Lcom/lenovo/anyshare/ebc;->f:()Z",
+        "Reasoning": "Method reads the last WiFi SSID from shared preferences",
+        "Action": "Read"
+      }
+    ],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve SSID from WifiManager",
+        "Source Method": "Lcom/lenovo/anyshare/service/ShareService;->d:(Lcom/lenovo/anyshare/service/ShareService;)Lcom/ushareit/nft/channel/UserInfo$b;",
+        "Reasoning": "Method signature indicates SSID retrieval",
+        "Action": "Stored in UserInfo$b object"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/ushareit/nft/channel/UserInfo$b;->a()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/service/ShareService;->d(...) --> Lcom/ushareit/nft/channel/UserInfo$b;->a()",
+        "Reasoning": "SSID is stored in UserInfo$b object, which is then passed to the a() method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WifiSSID extracted from WifiManager",
+        "Source Method": "TransferStats.b()",
+        "Reasoning": "WifiManager.getConnectionInfo() and WifiInfo.getSSID()",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Substring extraction",
+        "Source Method": "cnn.b()",
+        "Reasoning": "Input string contains specific character sequence",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "com.lenovo.anyshare.cnn.b()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "TransferStats.b() --> cnn.b()",
+        "Reasoning": "WifiSSID is passed from TransferStats.b() to cnn.b()"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Geocoder",
+      "Lcom/lenovo/anyshare/cmr"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location object is retrieved.",
+        "Source Method": "Lcom/lenovo/anyshare/sharezone/user/login/phone/CountryCodesActivity$a$1;->execute:()V",
+        "Reasoning": "Sensitive user personal data is originated from the `Location` object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Geocoder is used to get country code and name.",
+        "Reasoning": "The data is then logged using `Lcom/lenovo/anyshare/cmr;->b()`.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/lenovo/anyshare/cmr;->b()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/sharezone/user/login/phone/CountryCodesActivity$a$1;->execute:()V --> Lcom/lenovo/anyshare/cmr;->b()",
+        "Reasoning": "Location object is passed to the `Geocoder` and then logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Origination",
+        "Source Method": "Lcom/lenovo/anyshare/tl;->a:(Landroid/content/Context;)V",
+        "Reasoning": "SysNetworkStats class",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Propagation",
+        "Source Method": "Lcom/lenovo/anyshare/tl;->a:(Landroid/content/Context;)V",
+        "Reasoning": "Method invocations",
+        "Action": "Passed through"
+      },
+      {
+        "Step": "Logging",
+        "Source Method": "Lcom/lenovo/anyshare/tl;->a:(Landroid/content/Context;)V",
+        "Reasoning": "cmr class",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/lenovo/anyshare/tl;->a:(Landroid/content/Context;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lenovo/anyshare/tl;->a:(Landroid/content/Context;)V --> Lcom/lenovo/anyshare/tl;->a:(Landroid/content/Context;)V --> Lcom/lenovo/anyshare/tl;->a:(Landroid/content/Context;)V",
+        "Reasoning": "Sensitive user personal data is originated from SysNetworkStats class, propagated through method invocations, and potentially reaches logging through cmr class"
+      }
+    ],
+    "Label": "leak"
+  }
+]

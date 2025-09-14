@@ -1,0 +1,128 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC addresses"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Load MAC address from network interfaces",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; originates user personal data by calling sensitive APIs to load MAC addresses from network interfaces.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Read MAC address from /sys/class/net/<interface>/address",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "[This method originates user personal data by reading the MAC address from /sys/class/net/<interface>/address.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Return MAC address as a string",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point when it is returned as a string.",
+        "Action": "Returned to caller"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated from getRawMacAddress to loadAddress and then back to getRawMacAddress, with each step storing the MAC address in registers and variables within the method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected through sensitive API calls.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data through sensitive API calls to get location and search text.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "User search text is collected through sensitive API calls.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data through sensitive API calls to get location and search text.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Exception message is created with user personal data.",
+        "Source Method": "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+        "Reasoning": "The current method originates user personal data through a sensitive API call to the constructor of RuntimeException with a String parameter.",
+        "Action": "Passed to the next method via an invoke-direct instruction"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+      "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> Stored in registers and variables within the method --> Lcom/facebook/GraphRequest;->executeRequest:(Lcom/facebook/GraphRequest;)V",
+        "Reasoning": "The data is propagated through method invocations, ultimately reaching sinks like logging and transmission."
+      },
+      {
+        "dataflow 2": " Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V --> Passed to the next method via an invoke-direct instruction --> Ljava/io/PrintWriter;->println:(Ljava/lang/Object;)V",
+        "Reasoning": "The data is propagated through method invocations, ultimately reaching sinks like logging and transmission."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location from device",
+        "Source Method": "get_location_from_device()",
+        "Reasoning": "Using LocationManager to get the current location",
+        "Action": "Stored in a variable"
+      },
+      {
+        "Step": "Extract device ID from IMEI",
+        "Source Method": "extract_imei()",
+        "Reasoning": "IMEI is a unique identifier for each mobile device",
+        "Action": "Logged to server"
+      },
+      {
+        "Step": "Get phone number from Contacts",
+        "Source Method": "get_phone_number_from_contacts()",
+        "Reasoning": "Using ContactsContract to get the phone number of the user",
+        "Action": "Transmitted over network"
+      }
+    ],
+    "All Sinks": [
+      "log_to_server()",
+      "transmit_over_network()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "get_location_from_device() --> log_to_server()",
+        "Reasoning": "Location is retrieved from the device and then logged to the server"
+      },
+      {
+        "dataflow 2": "extract_imei() --> transmit_over_network()",
+        "Reasoning": "Device ID (IMEI) is extracted and transmitted over the network"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {}
+]

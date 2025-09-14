@@ -1,0 +1,44 @@
+Processing folder: D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1
+Using methods file: D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1\BroadcastReceiverLifecycle1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V
+Processed summary for Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V: {
+    "Summary": "Sensitive personal data is originated through retrieval of device ID using getSystemService and getDeviceId. Data is stored in register v3 and passed to sendTextMessage method.",
+    "Next Methods": [
+        "Landroid/telephony/SmsManager;->getDefault()Landroid/telephony/SmsManager;",
+        "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V"
+    ]
+}
+Method summaries saved to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive personal data is originated through retrieval of device ID",
+                "Source Method": "Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+                "Reasoning": "Data is tainted from a sensitive source.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage:(Ljava/lang/String; Ljava/lang/String; Landroid/content/Intent;, Landroid/app/PendingResult;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V --> Lde/ecspride/TestReceiver;->sendTextMessage:(Ljava/lang/String; Ljava/lang/String; Landroid/content/Intent;, Landroid/app/PendingResult;)V",
+                "Reasoning": "Data is tainted from a sensitive source and passed to sendTextMessage method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1\output\sensitive_only.json
+Total summary time: 75.26546788215637 seconds

@@ -1,0 +1,72 @@
+
+[INFO] Processing folder: D:\UBCBAPK_Methods\ServiceLifecycle2
+[INFO] Using methods file: D:\UBCBAPK_Methods\ServiceLifecycle2\ServiceLifecycle2_bytecode_instructions.json
+
+[DEBUG] === FIELD WRITERS & READERS ===
+[DEBUG] Field: Ledu/mit/service_lifecycle/MyService;->value
+   Writers = {'Ledu/mit/service_lifecycle/MyService;-><init>:()V', 'Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I'}
+   Readers = {'Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I'}
+   => Adding Edge: Ledu/mit/service_lifecycle/MyService;-><init>:()V --> Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I
+[DEBUG] === END FIELD WRITERS & READERS ===
+
+[DEBUG] === FINAL GRAPH ADJACENCY ===
+   Ledu/mit/service_lifecycle/BuildConfig;-><init>:()V => []
+   Ledu/mit/service_lifecycle/MainActivity;-><init>:()V => []
+   Ledu/mit/service_lifecycle/MainActivity;->onCreate:(Landroid/os/Bundle;)V => ['Ledu/mit/service_lifecycle/MainActivity;->setContentView(I)V', 'Ledu/mit/service_lifecycle/MainActivity;->startService(Landroid/content/Intent;)Landroid/content/ComponentName;']
+   Ledu/mit/service_lifecycle/MyService;-><init>:()V => ['Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I']
+   Ledu/mit/service_lifecycle/MyService;->onBind:(Landroid/content/Intent;)Landroid/os/IBinder; => []
+   Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I => ['Ledu/mit/service_lifecycle/MyService;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;']
+   Ledu/mit/service_lifecycle/R$attr;-><init>:()V => []
+   Ledu/mit/service_lifecycle/R$dimen;-><init>:()V => []
+   Ledu/mit/service_lifecycle/R$drawable;-><init>:()V => []
+   Ledu/mit/service_lifecycle/R$id;-><init>:()V => []
+   Ledu/mit/service_lifecycle/R$layout;-><init>:()V => []
+   Ledu/mit/service_lifecycle/R$menu;-><init>:()V => []
+   Ledu/mit/service_lifecycle/R$string;-><init>:()V => []
+   Ledu/mit/service_lifecycle/R$style;-><init>:()V => []
+   Ledu/mit/service_lifecycle/R;-><init>:()V => []
+   Ledu/mit/service_lifecycle/MainActivity;->setContentView(I)V => []
+   Ledu/mit/service_lifecycle/MainActivity;->startService(Landroid/content/Intent;)Landroid/content/ComponentName; => []
+   Ledu/mit/service_lifecycle/MyService;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; => []
+[DEBUG] === END GRAPH ADJACENCY ===
+
+[INFO] Root methods with sensitive calls: ['Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I']
+
+[INFO] BFS from root: Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I
+  [BFS] Popped: Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I
+[SUMMARY] Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I => This method originates user data by obtaining the device ID using `getDeviceId()` from the `TelephonyManager`. This device ID, a unique identifier, is then stored within the `value` field of the `MyService` instance. The `Log.i` call represents a real sink, as it logs the device ID to the logcat, potentially exposing this sensitive data.
+    => Check neighbor: Ledu/mit/service_lifecycle/MyService;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+  [BFS] Popped: Ledu/mit/service_lifecycle/MyService;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+
+[INFO] Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Device ID obtained via TelephonyManager.",
+            "Source Method": "Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I",
+            "Reasoning": "The `onStartCommand` method uses `getDeviceId()` to retrieve a unique device ID from the `TelephonyManager`. This is a key step in collecting personal data.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I --> Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I",
+            "Reasoning": "The `onStartCommand` method initiates the data flow. It calls `getDeviceId()` to obtain the device ID. This ID is then stored within the `value` field of the `MyService` instance.  Finally, the `Log.i` call logs this device ID to logcat, representing a real sink."
+        }
+    ],
+    "Label": "leak"
+}
+[INFO] Saved method-level subgraphs to D:\UBCBAPK_Methods\ServiceLifecycle2\output\method_summaries.json
+[INFO] Saved refined subgraphs to D:\UBCBAPK_Methods\ServiceLifecycle2\output\refined_method_summaries.json
+[INFO] Saved sensitive calls to D:\UBCBAPK_Methods\ServiceLifecycle2\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ServiceLifecycle2\output\visited_graph
+[INFO] Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ServiceLifecycle2\output\sensitive_only.json
+[INFO] Total time for folder: 8.39 seconds

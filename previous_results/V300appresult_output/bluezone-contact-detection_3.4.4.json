@@ -1,0 +1,42 @@
+[
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "com/facebook/react/bridge/WritableMap",
+      "com/facebook/jni/HybridData"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is propagated from LocationUtils to WritableMaps.",
+        "Source Method": "Lcom/agontuk/RNFusedLocation/LocationUtils;->locationToMap:(Landroid/location/Location;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The method originates user personal location data and stores it in variables v1 and v0, which are WritableMaps.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "WritableNativeMap is created with initHybrid() method call.",
+        "Source Method": "Lcom/facebook/react/bridge/WritableNativeMap;-><init>:()V",
+        "Reasoning": "The method originates user personal data by calling the initHybrid() method of WritableNativeMap.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "HybridData object is used to create NativeMap object.",
+        "Source Method": "Lcom/facebook/react/bridge/NativeMap;-><init>:(Lcom/facebook/jni/HybridData;)V",
+        "Reasoning": "The current method originates user personal data by using the sensitive API call to create a NativeMap object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/agontuk/RNFusedLocation/LocationUtils;->locationToMap:(Landroid/location/Location;)Lcom/facebook/react/bridge/WritableMap; --> Lcom/facebook/react/bridge/WritableNativeMap;-><init>:()V --> No Sink",
+        "Reasoning": "The data is propagated from LocationUtils to WritableNativeMap without any sinks identified."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {}
+]

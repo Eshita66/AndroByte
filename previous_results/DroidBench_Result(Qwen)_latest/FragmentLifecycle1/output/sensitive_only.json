@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "IMEI retrieval",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "TelephonyManager is used to retrieve IMEI (sensitive DeviceId) in onCreate",
+                "Action": "Stored"
+            },
+            {
+                "Step": "IMEI transmission",
+                "Source Method": "Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V",
+                "Reasoning": "Stored IMEI is passed to SmsManager's sendTextMessage method",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V",
+                "Reasoning": "IMEI is stored in MainActivity and passed to ExampleFragment's onActivityCreated method for SMS transmission"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

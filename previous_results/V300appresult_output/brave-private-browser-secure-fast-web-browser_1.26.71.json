@@ -1,0 +1,196 @@
+[
+  {
+    "Data Types Collected": [
+      "Wifi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Call getWifiSSID() method",
+        "Source Method": "Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the Android Network Library's getWifiSSID() method.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Check for nullity",
+        "Source Method": "Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The retrieved SSID is then checked for nullity.",
+        "Action": ""
+      },
+      {
+        "Step": "Return SSID if not null",
+        "Source Method": "Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "If the SSID is not null, it is returned as the result of the method.",
+        "Action": ""
+      },
+      {
+        "Step": "Return empty string if SSID is null",
+        "Source Method": "Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "Otherwise, an empty string is returned.",
+        "Action": ""
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": "not_sensitive "
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location accessed via API call",
+        "Source Method": "LbS0;->a:(Z)V",
+        "Reasoning": "Sensitive API call to get location",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Location data propagated through registers",
+        "Source Method": "LbS0;->a:(Z)V",
+        "Reasoning": "Data stored in registers and passed between methods via method invocations",
+        "Action": "Passed between methods via method invocations"
+      },
+      {
+        "Step": "Location data logged at sink point",
+        "Source Method": "LbS0;->a:(Z)V",
+        "Reasoning": "Data reaches a logging sink point",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "LbS0;->b:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "LbS0;->a:(Z)V --> LbS0;->b:(Ljava/lang/String;)V",
+        "Reasoning": "Location data accessed via API call, stored in registers and variables within the method, propagated through registers, and logged at sink point"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access location permissions",
+        "Source Method": "Lw9;->c:()I",
+        "Reasoning": "The method originates user personal data through sensitive API calls to access location permissions.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Pass location data between methods",
+        "Source Method": "Lw9;->c:()I",
+        "Reasoning": "The data is passed between methods via method invocations.",
+        "Action": "Passed as an argument"
+      },
+      {
+        "Step": "Log location data",
+        "Source Method": null,
+        "Reasoning": "The data eventually reaches a sink point for logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lw9;->c:()I --> Lw9;->d:(Ljava/lang/String;)V --> null",
+        "Reasoning": "The location data is accessed through permissions, passed between methods, and eventually logged."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "geolocation permission",
+      "location information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates geolocation permission and location information through sensitive API calls.",
+        "Source Method": "Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->a:(Ljava/lang/String; Lorg/chromium/chrome/browser/profiles/Profile; Lorg/chromium/chrome/browser/tab/Tab;)Ljava/lang/String;",
+        "Reasoning": "The current method originates user personal data through sensitive API calls to get geolocation permission and location information.",
+        "Action": "Stored in registers and variables within the method, then passed to other methods via method invocations."
+      },
+      {
+        "Step": "Origins user personal data by calling myPid() and myUid() APIs.",
+        "Source Method": "Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->hasGeolocationPermission:()Z",
+        "Reasoning": "The method originates user personal data by calling `myPid()` and `myUid()` APIs.",
+        "Action": "Stored in registers v0 and v1."
+      },
+      {
+        "Step": "Origins user personal data by getting an instance of OTRProfileID from the Profile class.",
+        "Source Method": "Lorg/chromium/chrome/browser/profiles/Profile;->i:()Z",
+        "Reasoning": "The method originates user personal data by getting an instance of OTRProfileID from the Profile class.",
+        "Action": "Stored in register v0 and passed to subsequent methods."
+      }
+    ],
+    "All Sinks": [
+      "Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->a:(Ljava/lang/String; Lorg/chromium/chrome/browser/profiles/Profile; Lorg/chromium/chrome/browser/tab/Tab;)Ljava/lang/String;",
+      "Ly8;->a(Landroid/content/Context;Ljava/lang/String;II)I",
+      "Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->hasGeolocationPermission:()Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->a:(Ljava/lang/String; Lorg/chromium/chrome/browser/profiles/Profile; Lorg/chromium/chrome/browser/tab/Tab;)Ljava/lang/String; --> ... --> Ly8;->a(Landroid/content/Context;Ljava/lang/String;II)I]",
+        "Reasoning": "The data is stored in registers and variables within the method, then passed to other methods via method invocations."
+      },
+      {
+        "dataflow 2": "[Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->hasGeolocationPermission:()Z --> ... --> Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->a:(Ljava/lang/String; Lorg/chromium/chrome/browser/profiles/Profile; Lorg/chromium/chrome/browser/tab/Tab;)Ljava/lang/String;]",
+        "Reasoning": "The method originates user personal data by calling `myPid()` and `myUid()` APIs."
+      },
+      {
+        "dataflow 3": "[Lorg/chromium/chrome/browser/profiles/Profile;->i:()Z --> ... --> Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->a:(Ljava/lang/String; Lorg/chromium/chrome/browser/profiles/Profile; Lorg/chromium/chrome/browser/tab/Tab;)Ljava/lang/String;]",
+        "Reasoning": "The method originates user personal data by getting an instance of OTRProfileID from the Profile class."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Geolocation permission",
+      "Last known location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check for geolocation permission",
+        "Source Method": "Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->d:()V",
+        "Reasoning": "Permission check to access user location",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Access last known location",
+        "Source Method": "Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->d:()V",
+        "Reasoning": "Location data is accessed from device storage",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Propagate through method invocations",
+        "Source Method": "Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->d:()V",
+        "Reasoning": "Data is passed to other methods for further processing",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Log location data",
+        "Source Method": "[Full method signature of sink method]",
+        "Reasoning": "Location data is logged to device log",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "[Full method signature of logging method]"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->d:()V (...) --> [Logging Method](...)",
+        "Reasoning": "Location data is accessed, propagated through method invocations, and logged to device log"
+      }
+    ],
+    "Label": "leak"
+  }
+]

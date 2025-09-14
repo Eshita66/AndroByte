@@ -1,0 +1,38 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieving device ID from TelephonyManager",
+                "Source Method": "Ledu/mit/clinit/Test;-><clinit>:()V",
+                "Reasoning": "The method retrieves the device ID, which is a unique identifier for the mobile device and can be considered sensitive information.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Storing retrieved device ID in instance variable of MainActivity",
+                "Source Method": "Ledu/mit/clinit/Test;-><clinit>:()V",
+                "Reasoning": "The device ID is transferred to the instance variable 's' of MainActivity.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging stored device ID in onCreate method",
+                "Source Method": "Ledu/mit/clinit/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The string 's' contains the sensitive information (device ID), which is then logged along with a constant string.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/clinit/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Ledu/mit/clinit/Test;-><clinit>:()V --> Stored in instance variable 's' of MainActivity --> Logged in onCreate method]",
+                "Reasoning": "The device ID is retrieved from TelephonyManager, stored in the instance variable 's' of MainActivity, and finally logged in the onCreate method."
+            }
+        ],
+        "Label": "leak"
+    }
+]

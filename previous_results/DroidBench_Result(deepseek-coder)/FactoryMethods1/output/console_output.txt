@@ -1,0 +1,38 @@
+
+Processing folder: D:\UBCBAPK_Methods\FactoryMethods1
+Using methods file: D:\UBCBAPK_Methods\FactoryMethods1\FactoryMethods1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V => This method does not involve any user personal data in its operations beyond what may be inherent to location services, such as latitude and longitude values obtained from the device's GPS or network-based location services. The data is used for logging purposes but is not stored persistently.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Location coordinates"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Accessing location data from Bundle",
+            "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method involves accessing location data from the bundle, which could be tainted with latitude and longitude values.",
+            "Action": "Used for logging purposes but not stored persistently."
+        }
+    ],
+    "All Sinks": [
+        "Log.i(...)"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V --> Log.i(...)",
+            "Reasoning": "The onCreate method retrieves the Bundle, which could contain location data that is considered tained data. This data is then used in subsequent methods without any clear indication of how it's handled or if it reaches a sink safely."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\FactoryMethods1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\FactoryMethods1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\FactoryMethods1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\FactoryMethods1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\FactoryMethods1\output\sensitive_only.json
+Total time for folder: 347.88 seconds

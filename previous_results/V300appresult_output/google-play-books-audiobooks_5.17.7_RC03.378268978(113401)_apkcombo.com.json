@@ -1,0 +1,107 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "TimeZone",
+      "System Time",
+      "Wide Value"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method 'a' in class 'Liky;' originates user personal data by invoking a sensitive API call to get the system time.",
+        "Source Method": "Liky;->a:(Landroid/location/Location; Ljava/util/TimeZone;)F",
+        "Reasoning": "The method uses sensitive APIs to obtain system time and location.",
+        "Action": "Stored in registers 'v11', 'v9', and 'v7'"
+      },
+      {
+        "Step": "Method 'b' in class 'Likt;' originates user personal data by invoking a sensitive API call to get the system time.",
+        "Source Method": "Likt;->b:(J J J)Liku;",
+        "Reasoning": "The method uses sensitive APIs to obtain system time and wide values.",
+        "Action": "Stored in registers 'v11', 'v9', and 'v7' and propagated through various operations"
+      },
+      {
+        "Step": "Method '<init>' in class 'Liku;' originates user personal data by calling the constructor of 'Liku;' which takes two long parameters.",
+        "Source Method": "Liku;-><init>:(J J)V",
+        "Reasoning": "The method uses sensitive APIs to obtain wide values and stores them in instance fields 'a' and 'b'.",
+        "Action": "Stored in instance fields 'a' and 'b'"
+      }
+    ],
+    "All Sinks": [
+      "Likt;-><init>:(J J)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Liky;->a:(Landroid/location/Location; Ljava/util/TimeZone;)F --> Likt;->b:(J J J)Liku; --> Likt;-><init>:(J J)V",
+        "Reasoning": "The system time and location obtained by method 'a' in class 'Liky;' are propagated to method 'b' in class 'Likt;', which then passes them to the constructor of 'Liku;' through instance fields 'a' and 'b'."
+      },
+      {
+        "dataflow 2": "Likt;->b:(J J J)Liku; --> Likt;-><init>:(J J)V",
+        "Reasoning": "The system time and wide values obtained by method 'b' in class 'Likt;' are passed directly to the constructor of 'Liku;' through instance fields 'a' and 'b'."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get system's night mode and location",
+        "Source Method": "Lsw;->L:(Landroid/content/Context; I)I",
+        "Reasoning": "Sensitive API calls to get the system's night mode and location.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get the application context and check for location permissions",
+        "Source Method": "Lsw;->W:(Landroid/content/Context;)Lsq;",
+        "Reasoning": "Method invocations to get the application context and check for location permissions.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Get instance variables 'b' and 'a'",
+        "Source Method": "Lsr;-><init>:(Lsw; Ltl;)V",
+        "Reasoning": "Sensitive API calls to get instance variables.",
+        "Action": "Stored in registers 'v0' and 'v1'"
+      },
+      {
+        "Step": "Get PowerManager reference",
+        "Source Method": "Lso;-><init>:(Lsw; Landroid/content/Context;)V",
+        "Reasoning": "Sensitive API call to get a reference to the PowerManager.",
+        "Action": "Stored in instance variables 'b' and 'a'"
+      },
+      {
+        "Step": "Call sensitive API through constructor of Object class",
+        "Source Method": "Lsq;-><init>:(Lsw;)V",
+        "Reasoning": "Sensitive API calls to get the location system service.",
+        "Action": "Passed to another method"
+      }
+    ],
+    "All Sinks": [
+      "Lsw;->L:(Landroid/content/Context; I)I",
+      "Lso;-><init>:(Lsw; Landroid/content/Context;)V",
+      "Lsq;-><init>(Lsw;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lsw;->L:(Landroid/content/Context; I)I --> Lso;-><init>:(Lsw; Landroid/content/Context;)V --> Lsq;-><init>(Lsw;)V]",
+        "Reasoning": "Data is propagated from Lsw;->L:(Landroid/content/Context; I)I to Lso;-><init>:(Lsw; Landroid/content/Context;)V and then to Lsq;-><init>(Lsw;)V through method invocations."
+      },
+      {
+        "dataflow 2": "[Lsw;->W:(Landroid/content/Context;)Lsq --> Lso;-><init>:(Lsw; Landroid/content/Context;)V]",
+        "Reasoning": "Data is propagated from Lsw;->W:(Landroid/content/Context;)Lsq to Lso;-><init>:(Lsw; Landroid/content/Context;)V through method invocations."
+      },
+      {
+        "dataflow 3": "[Lsr;-><init>:(Lsw; Ltl;)V --> Lsq;-><init>(Lsw;)V]",
+        "Reasoning": "Data is propagated from Lsr;-><init>:(Lsw; Ltl;)V to Lsq;-><init>(Lsw;)V through method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

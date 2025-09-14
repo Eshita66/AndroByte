@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve sensitive data via TelephonyManager",
+                "Source Method": "Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "getSimSerialNumber() is called to obtain SIM serial number from TelephonyManager",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Transmit sensitive data via SMS",
+                "Source Method": "Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "SIM serial number is passed to SmsManager.sendTextMessage() as network transmission sink",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/SmsManager$PendingIntent;I)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/SmsManager$PendingIntent;I)V ",
+                "Reasoning": "SIM serial number (tainted) from getSimSerialNumber() is passed to SmsManager.sendTextMessage() as SMS transmission sink"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

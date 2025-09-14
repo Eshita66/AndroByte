@@ -1,0 +1,57 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\InheritedObjects1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\InheritedObjects1\InheritedObjects1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/InheritedObjects1;->onCreate:(Landroid/os/Bundle;)V
+Sensitive method found: Lde/ecspride/VarA;->getInfo:()Ljava/lang/String;
+Processed summary for Lde/ecspride/InheritedObjects1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "User personal data (phone information) is originated via the TelephonyManager obtained from getSystemService(\"phone\"). This data is propagated through the General class's getInfo() method and sent via SMS using SmsManager's sendTextMessage, which is a network transmission sink.",
+    "Next Methods": []
+}
+Processed summary for Lde/ecspride/VarA;->getInfo:()Ljava/lang/String;: {
+    "Summary": "The method retrieves the device ID via the TelephonyManager's getDeviceId() API, which is a source of personal data. The data is directly returned and not passed to other methods or sinks.",
+    "Next Methods": []
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\InheritedObjects1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\InheritedObjects1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\InheritedObjects1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "User personal data (phone information)"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data origin",
+                "Source Method": "Lde/ecspride/InheritedObjects1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "TelephonyManager obtains phone information via getSystemService(\"phone\").",
+                "Action": "Source identified"
+            },
+            {
+                "Step": "Data propagation",
+                "Source Method": "Lde/ecspride/InheritedObjects1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Data is passed to General class's getInfo() method.",
+                "Action": "Data flow tracked"
+            },
+            {
+                "Step": "Sink invocation",
+                "Source Method": "Lde/ecspride/InheritedObjects1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Data is sent via SmsManager's sendTextMessage (network transmission sink).",
+                "Action": "Sink identified"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/InheritedObjects1;->onCreate:(Landroid/os/Bundle;)V --> Landroid/telephony/TelephonyManager;->getDeviceId:()Ljava/lang/String; --> Lde/ecspride/General;->getInfo:()Ljava/lang/String; --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;)V",
+                "Reasoning": "Phone information flows from TelephonyManager to SMS sending sink without taint removal."
+            }
+        ],
+        "Label": "leak"
+    },
+    {}
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\InheritedObjects1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\InheritedObjects1\output\sensitive_only.json
+Total summary time: 59.136274099349976 seconds

@@ -1,0 +1,43 @@
+Processing folder: D:\UBCBAPK_Methods\SetGetHint
+Using methods file: D:\UBCBAPK_Methods\SetGetHint\SetGetHint_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "This method initializes the `MainActivity` by calling the superclass's `onCreate` method. It then sets the content view, retrieves the device ID using `TelephonyManager.getDeviceId()`, sets the hint text for a button, and logs a string to the logcat using `android.util.Log.v`. The device ID is obtained via a sensitive API (`TelephonyManager`), making it a potential data origin. The data is then logged to the logcat, which is a sink.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\UBCBAPK_Methods\SetGetHint\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\SetGetHint\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\SetGetHint\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieved via TelephonyManager.",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The summary explicitly states that the device ID is retrieved using `TelephonyManager.getDeviceId()`, which is a sensitive API.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log.v"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> android.util.Log.v",
+                "Reasoning": "The `onCreate` method retrieves the `DeviceId` from `TelephonyManager` and logs it to `android.util.Log.v`. The `DeviceId` is still tainted at the time of logging."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\SetGetHint\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\SetGetHint\output\sensitive_only.json
+Total summary time: 7.2032859325408936 seconds

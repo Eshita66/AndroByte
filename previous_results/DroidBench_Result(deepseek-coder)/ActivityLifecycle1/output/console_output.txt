@@ -1,0 +1,46 @@
+
+Processing folder: D:\UBCBAPK_Methods\ActivityLifecycle1
+Using methods file: D:\UBCBAPK_Methods\ActivityLifecycle1\ActivityLifecycle1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V => The method onCreate extracts the device ID from TelephonyManager and concatenates it with a hardcoded string to form a URL, which is then stored in a static field. The sensitive information (device ID) is originated, processed, and stored within this method.
+[SUMMARY] Lde/ecspride/ActivityLifecycle1;->connect:()V => The method connects to a URL specified in the class variable 'URL' of the same Activity (Lde/ecspride/ActivityLifecycle1). It creates an HttpURLConnection, sets the request method to GET, and initiates the connection. The sensitive data being accessed or passed here is the URL which might contain user-specific information.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID",
+        "URL"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Source Method (`onCreate`) extracts device ID and forms URL.",
+            "Source Method": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "Device ID is extracted from TelephonyManager and concatenated with a hardcoded string to form a URL.",
+            "Action": "Stored in static field"
+        },
+        {
+            "Step": "URL formed in `onCreate` method is passed to `connect` method.",
+            "Source Method": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V -> Lde/ecspride/ActivityLifecycle1;->connect:()V",
+            "Reasoning": "URL contains sensitive information (device ID).",
+            "Action": "Accessed in `connect` method"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/ActivityLifecycle1;->connect:()V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V -> Lde/ecspride/ActivityLifecycle1;->connect:()V",
+            "Reasoning": "Device ID is extracted in `onCreate`, processed to form a URL, and passed to `connect` method where it forms part of the URL."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ActivityLifecycle1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ActivityLifecycle1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ActivityLifecycle1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ActivityLifecycle1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ActivityLifecycle1\output\sensitive_only.json
+Total time for folder: 14.73 seconds

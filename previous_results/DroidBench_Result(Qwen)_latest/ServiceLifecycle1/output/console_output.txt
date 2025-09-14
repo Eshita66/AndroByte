@@ -1,0 +1,59 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ServiceLifecycle1
+ Using methods file: D:\UBCBAPK_Methods\ServiceLifecycle1\ServiceLifecycle1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)I']
+[SUMMARY] Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)I => {
+    "Summary": [
+        "The onStartCommand method retrieves the SIM serial number via TelephonyManager and stores it in the 'secret' field of MainService. This could potentially expose sensitive data if the field is accessed without proper security measures."
+    ],
+    "Next Methods": [
+        "Lde/ecspride/MainService;->onLowMemory:()V"
+    ]
+}
+[SUMMARY] Lde/ecspride/MainService;->onLowMemory:()V => {
+    "Summary": [
+        "The onLowMemory method uses the 'secret' field (containing SIM serial number) as part of an SMS send operation, potentially leaking sensitive data via SMS."
+    ],
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ServiceLifecycle1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ServiceLifecycle1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ServiceLifecycle1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "SIM serial number is retrieved and stored in 'secret' field",
+                "Source Method": "Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)I",
+                "Reasoning": "Method explicitly retrieves SIM serial number via TelephonyManager and stores it in a field",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Stored SIM serial number is used in SMS send operation",
+                "Source Method": "Lde/ecspride/MainService;->onLowMemory:()V",
+                "Reasoning": "Method uses 'secret' field (containing SIM serial number) as argument for SMS send",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainService;->onLowMemory:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)I --> Lde/ecspride/MainService;->onLowMemory:()V",
+                "Reasoning": "SIM serial number is stored in 'secret' field by onStartCommand, then used as argument in SMS send operation by onLowMemory without indication of taint removal"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ServiceLifecycle1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\ServiceLifecycle1\output\sensitive_only.json
+Total time for folder: 253.47 seconds

@@ -1,0 +1,38 @@
+
+Processing folder: D:\UBCBAPK_Methods\StringFormatter1
+Using methods file: D:\UBCBAPK_Methods\StringFormatter1\StringFormatter1_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/string_formatter/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/string_formatter/MainActivity;->onCreate:(Landroid/os/Bundle;)V => In the given method, sensitive data such as the device ID obtained from TelephonyManager is processed and potentially logged. The device ID is initially retrieved using getDeviceId() from TelephonyManager, which handles user personal data according to its privacy policy.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Device ID retrieval",
+            "Source Method": "Ledu/mit/string_formatter/MainActivity;->getDeviceId()Ljava/lang/String;",
+            "Reasoning": "The device ID is retrieved using getDeviceId() from TelephonyManager, which handles user personal data.",
+            "Action": "Retrieved"
+        }
+    ],
+    "All Sinks": [
+        "null"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Ledu/mit/string_formatter/MainActivity;->getDeviceId()Ljava/lang/String;) --> ... --> Sink Method(...)]",
+            "Reasoning": "The device ID is processed and potentially logged in the onCreate method, which we identified as a potential sink."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\StringFormatter1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\StringFormatter1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\StringFormatter1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\StringFormatter1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\StringFormatter1\output\sensitive_only.json
+Total time for folder: 831.54 seconds

@@ -1,0 +1,83 @@
+[
+  {
+    "Data Types Collected": [
+      "WiFi state",
+      "SSID",
+      "User ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WiFi information",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by accessing the WiFi state and SSID.",
+        "Action": "Stored in registers (v0, v1, v2) and variables within the method."
+      },
+      {
+        "Step": "Get package name",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The current method originates sensitive user personal data by invoking the getPackageManager() and getPackageName() methods from the Context class.",
+        "Action": "Stored in variables within the method."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String; --> (WiFi state, SSID) stored in registers and variables --> Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated through method invocations to retrieve the WiFi information."
+      },
+      {
+        "dataflow 2": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z --> (User ID) stored in variables --> Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The data is propagated through method invocations to retrieve the package name."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method originates user personal data by calling the sensitive API to check if a permission is granted.",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Permission check using PackageManager's checkPermission() method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is propagated through registers and variables within the method.",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method propagates data to sinks such as logging and transmission.",
+        "Action": "Logged, Transmitted"
+      },
+      {
+        "Step": "The current method originates user personal data by calling the getPackageManager() and getPackageName() methods of the Context class.",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "Permission check using PackageManager's checkPermission() method.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String; --> Stored in registers and variables --> Logged, Transmitted by Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Data is propagated from method to sinks through registers and variables."
+      },
+      {
+        "dataflow 2": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z --> Stored in registers and variables --> Logged, Transmitted by Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "Data is propagated from method to sinks through registers and variables."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

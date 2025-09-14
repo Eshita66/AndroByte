@@ -1,0 +1,55 @@
+Processing folder: D:\UBCBAPK_Methods\MultidimensionalArray1
+Using methods file: D:\UBCBAPK_Methods\MultidimensionalArray1\MultidimensionalArray1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive data originated from the device ID obtained using TelephonyManager. The device ID was stored in register v1 and then passed to a new array. This array was used to log a message using Android's Log class.",
+    "Next Methods": [
+        "Ledu/mit/array_slice/MainActivity->setContentView:(I)V"
+    ]
+}
+Method summaries saved to D:\UBCBAPK_Methods\MultidimensionalArray1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\MultidimensionalArray1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\MultidimensionalArray1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from device ID",
+                "Source Method": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID was obtained using TelephonyManager.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID stored in register v1 and passed to new array",
+                "Source Method": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID was stored in register v1 and then passed to a new array.",
+                "Action": "Passed"
+            },
+            {
+                "Step": "Array used to log message using Android's Log class",
+                "Source Method": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "This array was used to log a message using Android's Log class.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljava/lang/Object;-><init>():V --> Landroid/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "Sensitive data originated from device ID, stored in register v1 and passed to new array, then used to log message using Android's Log class."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\MultidimensionalArray1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\MultidimensionalArray1\output\sensitive_only.json
+Total summary time: 10.06556248664856 seconds

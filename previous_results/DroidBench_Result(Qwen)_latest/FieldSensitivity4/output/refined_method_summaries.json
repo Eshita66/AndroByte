@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval and transmission",
+                "Source Method": "Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves device ID via TelephonyManager.getDeviceId() and sends it via SMS using SmsManager.sendTextMessage",
+                "Action": "transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;)V ",
+                "Reasoning": "Device ID is retrieved from TelephonyManager.getDeviceId() and directly used as payload in SmsManager.sendTextMessage without overwriting"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

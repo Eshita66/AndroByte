@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval and logging",
+                "Source Method": "Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method directly retrieves the device ID via TelephonyManager.getDeviceId() and passes it to android.util.Log.i without overwriting or taint removal.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The device ID (tainted sensitive data) is directly passed from the source method to the logging sink without being overwritten or sanitized."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

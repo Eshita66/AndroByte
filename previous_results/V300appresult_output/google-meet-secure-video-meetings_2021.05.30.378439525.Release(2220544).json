@@ -1,0 +1,39 @@
+[
+  {
+    "Data Types Collected": [
+      "WifiSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getWifiSSID API call",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect;->getWifiSSID:(Lorg/webrtc/NetworkMonitorAutoDetect$NetworkState;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the getWifiSSID API to get the current network connection type.",
+        "Action": "Stored in register v4"
+      },
+      {
+        "Step": "Method invocation",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect;->getWifiSSID:(Lorg/webrtc/NetworkMonitorAutoDetect$NetworkState;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in register v4 and then passed to other methods via method invocations.",
+        "Action": "Passed through registers"
+      },
+      {
+        "Step": "IntentFilter construction",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect;->getWifiSSID:(Lorg/webrtc/NetworkMonitorAutoDetect$NetworkState;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated through registers and variables within the method, ultimately reaching a sink point where it is used to construct an IntentFilter.",
+        "Action": "Used in IntentFilter construction"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/webrtc/NetworkMonitorAutoDetect;->registerReceiver:(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/webrtc/NetworkMonitorAutoDetect;->getWifiSSID:(Lorg/webrtc/NetworkMonitorAutoDetect$NetworkState;)Ljava/lang/String; --> ... --> Lorg/webrtc/NetworkMonitorAutoDetect;->registerReceiver:(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)V",
+        "Reasoning": "The data is collected from the getWifiSSID API call, passed through registers and method invocations, and ultimately used to construct an IntentFilter for BroadcastReceiver registration."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

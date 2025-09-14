@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain IMEI from TelephonyManager and store it in instance variable `imei`",
+                "Source Method": "Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "IMEI is obtained as a part of user personal data, which needs to be protected.",
+                "Action": "Stored in instance variable `imei`"
+            },
+            {
+                "Step": "Use IMEI to instantiate classes that call logData(), potentially logging sensitive information",
+                "Source Method": "Lde/ecspride/VirtualDispatch1;->clickButton:(Landroid/view/View;)V",
+                "Reasoning": "The use of IMEI in class instantiation and method calls suggests potential exposure of personal data.",
+                "Action": "Transmitted to potentially sensitive classes"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/NoDataLeak#logData()",
+            "Lde/ecspride/DataLeak#logData()"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V) --> Stored in instance variable `imei` --> Transmitted to Lde/ecspride/NoDataLeak and Lde/ecspride/DataLeak --> Called method logData() on these classes]",
+                "Reasoning": "IMEI is used during instantiation of potentially sensitive classes, which might lead to logging or transmission of personal data."
+            }
+        ],
+        "Label": "leak"
+    }
+]

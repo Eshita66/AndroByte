@@ -1,0 +1,108 @@
+[
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location data from Location object",
+        "Source Method": "Lcom/my/tracker/obfuscated/h0;->a:(Landroid/location/Location; Ljava/lang/String;)V",
+        "Reasoning": "Calling sensitive API `getLongitude()`, `getLatitude()`, `getAccuracy()`, `getSpeed()`, and `getTime()` from the `Location` object.",
+        "Action": "Stored in a JSONObject instance variable f"
+      },
+      {
+        "Step": "Propagate location data to other methods",
+        "Source Method": "Lcom/my/tracker/obfuscated/h0;->a:(Landroid/location/Location; Ljava/lang/String;)V",
+        "Reasoning": "Data is propagated via method invocations, specifically to `put()` methods of the `JSONObject`.",
+        "Action": "Propagated"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get last known location from LocationManager",
+        "Source Method": "Lcom/my/tracker/obfuscated/b0;->a:(Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data from the LocationManager's getLastKnownLocation()",
+        "Action": "Stored in variables a and b"
+      },
+      {
+        "Step": "Check calling or permission for specific APIs",
+        "Source Method": "Lcom/my/tracker/obfuscated/i0;->a:(Ljava/lang/String; Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data from the `checkCallingOrSelfPermission` API call",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Log device ID and phone number using Log.d()",
+        "Source Method": "Lcom/my/tracker/obfuscated/d;->a:(Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data from the 'a' field of the current class instance",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/my/tracker/obfuscated/d;->a:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/my/tracker/obfuscated/b0;->a:(Landroid/content/Context;)V --> Lcom/my/tracker/obfuscated/i0;->a:(Ljava/lang/String; Landroid/content/Context;)Z --> Lcom/my/tracker/obfuscated/d;->a:(Ljava/lang/String;)V",
+        "Reasoning": "The data flows from the LocationManager's getLastKnownLocation() to checkCallingOrSelfPermission API call and then logged using Log.d()"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "BSSID",
+      "Link Speed",
+      "Network ID",
+      "Rssi"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user personal data",
+        "Source Method": "Lcom/my/tracker/obfuscated/w;->d:(Landroid/content/Context;)V",
+        "Reasoning": "Using WifiInfo object methods to collect data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Propagate data to other methods",
+        "Source Method": "Lcom/my/tracker/obfuscated/w;->d:(Landroid/content/Context;)V",
+        "Reasoning": "Method invocations to d() method of the same class.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Reach sink point through a() method",
+        "Source Method": "com/my/tracker/obfuscated/d;->a(...)V",
+        "Reasoning": "Data reaches sink point through a() method of com/my/tracker/obfuscated/d class.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "com/my/tracker/obfuscated/d;->a(...)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/my/tracker/obfuscated/w;->d:(Landroid/content/Context;)V --> Lcom/my/tracker/obfuscated/w;->d:(Landroid/content/Context;)V --> com/my/tracker/obfuscated/d;->a(...)V",
+        "Reasoning": "Data is collected from WifiInfo object methods, propagated to other methods via method invocations, and reaches sink point through a() method of com/my/tracker/obfuscated/d class."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

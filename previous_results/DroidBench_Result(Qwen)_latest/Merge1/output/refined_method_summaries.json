@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "User personal data (device ID)"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID sourced from TelephonyManager",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+                "Reasoning": "Directly retrieves device ID from telephony system",
+                "Action": "Originated"
+            },
+            {
+                "Step": "Device ID stored in activity field",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "Stores device ID in local field 'b'",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID transmitted via SMS",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "Passed to SmsManager's sendTextMessage method",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String; --> Lde/ecspride/MainActivity$A;->b Ljava/lang/String; --> Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V ",
+                "Reasoning": "Device ID is first obtained from TelephonyManager, stored in MainActivity's field 'b', then passed to SmsManager's sendTextMessage method as the third argument"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

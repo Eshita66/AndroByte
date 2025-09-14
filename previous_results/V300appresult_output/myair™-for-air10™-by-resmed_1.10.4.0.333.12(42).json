@@ -1,0 +1,41 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data",
+        "Source Method": "Lc/b/i/a/z;->a:()Z",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get the last known location",
+        "Source Method": "Lc/b/i/a/z;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The current method is using the LocationManager API to get the last known location.",
+        "Action": "Retrieved"
+      },
+      {
+        "Step": "Originate user personal data",
+        "Source Method": "Lc/b/i/a/y;->a:(J D D)V",
+        "Reasoning": "Data originates from sensitive API calls to originate user personal data.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lc/b/i/a/z;->a:()Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/b/i/a/z;->a:()Z --> Lc/b/i/a/y;->a:(J D D)V --> Lc/b/i/a/z;->a:()Z ",
+        "Reasoning": "Data is propagated from Lc/b/i/a/z;->a:()Z to Lc/b/i/a/y;->a:(J D D)V and then back to Lc/b/i/a/z;->a:()Z through method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

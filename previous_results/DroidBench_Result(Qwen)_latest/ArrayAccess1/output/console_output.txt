@@ -1,0 +1,53 @@
+Processing folder: D:\UBCBAPK_Methods\ArrayAccess1
+Using methods file: D:\UBCBAPK_Methods\ArrayAccess1\ArrayAccess1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/ArrayAccess1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/ArrayAccess1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive data originated from the device ID obtained via getDeviceId() in Landroid/telephony/TelephonyManager;. The device ID is stored and propagated through registers. It was passed to a sink, Landroid/telephony/SmsManager;->sendTextMessage().",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ArrayAccess1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ArrayAccess1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ArrayAccess1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from getDeviceId() in Landroid/telephony/TelephonyManager;",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId():",
+                "Reasoning": "The device ID is obtained via getDeviceId()",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Propagated through registers.",
+                "Source Method": null,
+                "Reasoning": "It was stored and propagated through registers.",
+                "Action": "Transmitted"
+            },
+            {
+                "Step": "Passed to a sink, Landroid/telephony/SmsManager;->sendTextMessage().",
+                "Source Method": "Lde/ecspride/ArrayAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "It was passed to a sink.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage()"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Landroid/telephony/TelephonyManager;->getDeviceId() --> Lde/ecspride/ArrayAccess1;->onCreate:(Landroid/os/Bundle;)V --> Landroid/telephony/SmsManager;->sendTextMessage()",
+                "Reasoning": "Sensitive data originated from getDeviceId() in Landroid/telephony/TelephonyManager;, propagated through registers, and passed to a sink."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ArrayAccess1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ArrayAccess1\output\sensitive_only.json
+Total summary time: 13.278178691864014 seconds

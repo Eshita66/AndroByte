@@ -1,0 +1,39 @@
+
+Processing folder: D:\UBCBAPK_Methods\ImplicitFlow1
+Using methods file: D:\UBCBAPK_Methods\ImplicitFlow1\ImplicitFlow1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V => The method Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V involves obtaining the device ID from the TelephonyManager, which is then obfuscated and logged. The original IMEI is obtained directly from the TelephonyManager without any further processing.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "IMEI"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Obtain IMEI from TelephonyManager",
+            "Source Method": "Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method retrieves the device ID (IMEI) directly from the TelephonyManager, which is considered a personal data type.",
+            "Action": "Stored and logged"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V",
+        "Log.i(...)"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V --> ... --> Sink Method: Log.i(...) or writeToLog]",
+            "Reasoning": "The IMEI is obtained directly from the TelephonyManager in onCreate, which is an untrusted source. This data is then logged without any processing, indicating a direct flow to a sink that logs the information."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ImplicitFlow1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ImplicitFlow1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ImplicitFlow1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ImplicitFlow1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ImplicitFlow1\output\sensitive_only.json
+Total time for folder: 445.86 seconds

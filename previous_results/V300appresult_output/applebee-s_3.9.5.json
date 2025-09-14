@@ -1,0 +1,397 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location object creation",
+        "Source Method": "Lc/k/a/a/b/a/f/A;->a:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "Method receives a Location object as input.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "JSONObject creation",
+        "Source Method": "Lc/k/a/a/b/a/f/A;->a:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "Location object is used to create a JSONObject.",
+        "Action": "Created"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/k/a/a/b/a/f/A;->a:(Landroid/location/Location;)Lorg/json/JSONObject; --> null",
+        "Reasoning": "Location object is created and a JSONObject is created, but no sink method is identified in the provided data."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "List<Beacon>"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location and beacon data is created",
+        "Source Method": "Lcom/radiusnetworks/flybuy/sdk/data/location/LocationWithBeaconUpdate;-><init>:(Landroid/location/Location; Ljava/util/List;)V",
+        "Reasoning": "Method constructor initializes the object with the provided data",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LocationWithBeaconUpdate;-><init> --> null",
+        "Reasoning": "Data is only created and stored within the object, not used further."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "URL",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is extracted from Location object.",
+        "Source Method": "k.a()",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Converted to URL string."
+      },
+      {
+        "Step": "URL string is used to launch an Intent.",
+        "Source Method": "k.a()",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Launched as intent with ACTION_VIEW action."
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "k.a() --> Intent launch with ACTION_VIEW action",
+        "Reasoning": "Overall Data Flow steps."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Integer"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve integer from shared preferences",
+        "Source Method": "Lc/k/a/a/b/a/f/v;->c:(Landroid/content/Context;)V",
+        "Reasoning": "Method retrieves an integer value from shared preferences",
+        "Action": "Stored in local variable"
+      },
+      {
+        "Step": "Pass integer to sensitive method",
+        "Source Method": "Lc/k/a/a/b/a/f/v;->c:(Landroid/content/Context;)V",
+        "Reasoning": "Integer value is stored in a local variable",
+        "Action": "Passed to sensitive method Lc/k/a/a/b/a/f/c;->j:()Lc/k/a/a/b/a/f/A;"
+      },
+      {
+        "Step": "Sensitive method logs data",
+        "Source Method": "Lc/k/a/a/b/a/f/c;->j:()Lc/k/a/a/b/a/f/A;",
+        "Reasoning": "Sensitive method collects user input and stores it in the `aa` field",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lc/k/a/a/b/a/f/c;->j:()Lc/k/a/a/b/a/f/A;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/k/a/a/b/a/f/v;->c:(Landroid/content/Context;)V --> Lc/k/a/a/b/a/f/c;->j:()Lc/k/a/a/b/a/f/A;",
+        "Reasoning": "Integer value retrieved from shared preferences is passed to the sensitive method and logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is collected from user.",
+        "Source Method": "Lc/m/a/d/N;->a:(Landroid/location/Location; Lc/m/a/b/b; I)Lc/m/a/d/Q;",
+        "Reasoning": "Method signature and summary indicate data collection.",
+        "Action": "Stored in a list"
+      },
+      {
+        "Step": "Location is used to create a LatLngBounds object.",
+        "Source Method": "Lc/m/a/d/N;->a:(Landroid/location/Location; Lc/m/a/b/b; I)Lc/m/a/d/Q;",
+        "Reasoning": "Method signature and summary indicate data transformation.",
+        "Action": "Created as LatLngBounds object"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lc/m/a/d/N;->a:(Landroid/location/Location; Lc/m/a/b/b; I)Lc/m/a/d/Q; --> Created as LatLngBounds object",
+        "Reasoning": "Data is transformed and not passed to any sink method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Latitude",
+      "Longitude",
+      "Altitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data from input object",
+        "Source Method": "Lc/m/a/d/N;->b:(Landroid/location/Location; Lc/m/a/b/b;)Lc/m/a/d/Q;",
+        "Reasoning": "Method signature and summary description",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Create LatLngBounds object",
+        "Source Method": "Lc/m/a/d/N;->b:(Landroid/location/Location; Lc/m/a/b/b;)Lc/m/a/d/Q;",
+        "Reasoning": "Method signature and summary description",
+        "Action": "Created"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method initializes G object",
+        "Source Method": "Lcom/wearehathway/NomNomCoreSDK/Models/RealmModels/G;-><init>:(Ljava/lang/String; Landroid/location/Location;)V",
+        "Reasoning": "The method receives location and name as arguments.",
+        "Action": "Stored in G object"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Method initializes G object --> G object stored",
+        "Reasoning": "The location and name are stored in the G object."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved from Location object in StoreHomeFragment.",
+        "Source Method": "Lcom/wearehathway/apps/NomNomStock/Views/Dashboard/DashboardActivity;->p:()V",
+        "Reasoning": "Method summary",
+        "Action": "Stored in E field of DashboardActivity"
+      },
+      {
+        "Step": "Data is logged using System.out.",
+        "Source Method": "Lcom/wearehathway/apps/NomNomStock/Views/Dashboard/DashboardActivity;->p:()V",
+        "Reasoning": "Method summary",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/wearehathway/apps/NomNomStock/Views/Dashboard/DashboardActivity;->p:()V",
+      "System.out"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "StoreHomeFragment --> DashboardActivity --> System.out",
+        "Reasoning": "Overall data flow based on method summaries"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved using `invoke-static Lc/m/a/d/N;->c()`.",
+        "Source Method": "Lcom/wearehathway/apps/NomNomStock/Views/OrderAhead/Order/OrderHomeFragment;->E:()V",
+        "Reasoning": "Sensitive API call `invoke-static Lc/m/a/d/N;->c()` is used to get user location.",
+        "Action": "Stored in a `Location` object"
+      },
+      {
+        "Step": "The location is passed to the `a()` method.",
+        "Source Method": "Lcom/wearehathway/apps/NomNomStock/Views/OrderAhead/Order/OrderHomeFragment;->E:()V",
+        "Reasoning": "The `Location` object is passed to the `a()` method.",
+        "Action": "Passed between methods"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/wearehathway/apps/NomNomStock/Views/OrderAhead/Order/OrderHomeFragment;->E:()V --> Lcom/wearehathway/apps/NomNomStock/Views/OrderAhead/Order/OrderHomeFragment;->a:(Lc/m/a/d/Q;)V",
+        "Reasoning": "The user location is retrieved and passed to the `a()` method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved from Location object.",
+        "Source Method": "Lcom/wearehathway/apps/NomNomStock/Views/OrderAhead/Order/OrderWelcomeFragment;->B:()Lcom/wearehathway/NomNomCoreSDK/Models/Store;",
+        "Reasoning": "Method signature matches.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is passed to N class's a() method.",
+        "Source Method": "Lcom/wearehathway/apps/NomNomStock/Views/OrderAhead/Order/OrderWelcomeFragment;->B:()Lcom/wearehathway/NomNomCoreSDK/Models/Store;",
+        "Reasoning": "Method call.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "N class's a() method stores location in Store object.",
+        "Source Method": "Lc/m/a/d/N;->a:(Landroid/location/Location; Lc/m/a/b/b;)Lcom/wearehathway/NomNomCoreSDK/Models/Store;",
+        "Reasoning": "Method signature matches.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Store object is returned.",
+        "Source Method": "Lc/m/a/d/N;->a:(Landroid/location/Location; Lc/m/a/b/b;)Lcom/wearehathway/NomNomCoreSDK/Models/Store;",
+        "Reasoning": "Method signature matches.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/wearehathway/apps/NomNomStock/Views/OrderAhead/Order/OrderWelcomeFragment;->B:()Lcom/wearehathway/NomNomCoreSDK/Models/Store; --> Lc/m/a/d/N;->a:(Landroid/location/Location; Lc/m/a/b/b;)Lcom/wearehathway/NomNomCoreSDK/Models/Store; --> null",
+        "Reasoning": "No sink points identified in the provided summaries."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method extracts user location.",
+        "Source Method": "Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreHomeAlternativeFragment;->E:()Ljava/util/List;",
+        "Reasoning": "Method signature and summary match.",
+        "Action": "Stored in a list."
+      },
+      {
+        "Step": "List passed to method x().",
+        "Source Method": "Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreHomeAlternativeFragment;->E:()Ljava/util/List;",
+        "Reasoning": "Method signature and summary match.",
+        "Action": "Logged."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreHomeAlternativeFragment;->x:(Ljava/util/List;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreHomeAlternativeFragment;->E:()Ljava/util/List; --> Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreHomeAlternativeFragment;->x:(Ljava/util/List;)V",
+        "Reasoning": "Overall Data Flow describes the data flow between these two methods."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude",
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract latitude and longitude from c field",
+        "Source Method": "Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreHomeFragment;->E:()Ljava/util/List;",
+        "Reasoning": "Method summary",
+        "Action": "Stored in h field"
+      },
+      {
+        "Step": "Log Location object",
+        "Source Method": "Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreHomeFragment;->E:()Ljava/util/List;",
+        "Reasoning": "Method summary",
+        "Action": "Logged using N class"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreHomeFragment;->N:(Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreHomeFragment;->E:()Ljava/util/List; --> Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreHomeFragment;->N:(Ljava/lang/Object;)V",
+        "Reasoning": "Overall data flow summary"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "User Personal Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is obtained from `StoreHomeFragment`",
+        "Source Method": "Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreSearch/StoreSearchFragment;->H:()V",
+        "Reasoning": "Method summary",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive user personal data is obtained from `Q` object",
+        "Source Method": "Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreSearch/StoreSearchFragment;->a:(Lc/m/a/d/Q;)V",
+        "Reasoning": "Method summary",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User location and personal data are used to search for stores",
+        "Source Method": "Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreSearch/StoreSearchFragment;->H:()V",
+        "Reasoning": "Method summary",
+        "Action": "Used in search"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreSearch/StoreSearchFragment;->H:()V --> Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreSearch/StoreSearchFragment;->a:(Lc/m/a/d/Q;)V --> Lcom/wearehathway/apps/NomNomStock/Views/Store/StoreSearch/StoreSearchFragment;->H:()V",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed"
+      }
+    ],
+    "Label": "no leak"
+  }
+]

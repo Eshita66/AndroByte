@@ -1,0 +1,28 @@
+[
+    {
+        "Data Types Collected": [
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieval of SIM serial number",
+                "Source Method": "Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the SIM serial number from the device and prepares to send it as part of an SMS message.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ObjectSensitivity1;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            null,
+            "Log.i(...)",
+            "Toast.makeText(...)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V --> ... --> Sink Method: Lde/ecspride/ObjectSensitivity1;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;]",
+                "Reasoning": "The SIM serial number is retrieved and prepared for transmission. The getSystemService method could potentially log the data, but without further action by the developer (like setting a specific permission or handling), it remains unlogged."
+            }
+        ],
+        "Label": "leak"
+    }
+]

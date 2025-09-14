@@ -1,0 +1,51 @@
+
+Processing folder: D:\UBCBAPK_Methods\FlowSensitivity
+Using methods file: D:\UBCBAPK_Methods\FlowSensitivity\FlowSensitivity_bytecode_instructions.json
+Source methods with sensitive calls: ['Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the device ID from TelephonyManager and logs it using Log.e, which are considered sinks for sensitive data in this context.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieving TelephonyManager instance",
+            "Source Method": "Llina/ubc/flowsensitivity/FlowSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The method retrieves the TelephonyManager service, which is used to access device-specific information including the device ID.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Accessing Device ID",
+            "Source Method": "Llina/ubc/flowsensitivity/FlowSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The TelephonyManager instance is used to access the device ID, which is considered sensitive data.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Logging Device ID",
+            "Source Method": "Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method logs the device ID using Log.e, which is a sink for sensitive data.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+ 
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Llina/ubc/flowsensitivity/FlowSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The TelephonyManager instance is retrieved and used to access the device ID, which is then logged in the onCreate method."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\FlowSensitivity\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\FlowSensitivity\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\FlowSensitivity\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\FlowSensitivity\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\FlowSensitivity\output\sensitive_only.json
+Total time for folder: 103.79 seconds

@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive device ID originated from getDeviceId()",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The sensitive value is still tainted and passed to a sink.",
+                "Action": "Stored, logged, transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lorg/apache/http/client/method/HttpUriRequest;->execute:()Ljava/lang/Object;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> ... --> Lorg/apache/http/client/method/HttpUriRequest;->execute:()Ljava/lang/Object;",
+                "Reasoning": "The sensitive device ID is passed to execute() method call without any overwrite or taint loss."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

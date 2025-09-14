@@ -1,0 +1,42 @@
+Processing folder: D:\UBCBAPK_Methods\ConservativeModel1
+Using methods file: D:\UBCBAPK_Methods\ConservativeModel1\ConservativeModel1_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves the device ID using TelephonyManager.getDeviceId(), which is stored in register v1. This data is then passed to Toast.makeText for UI display and to Log.v for logging, both of which are identified as sinks. Since sensitive data reached a sink, no further method propagation is tracked.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ConservativeModel1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ConservativeModel1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ConservativeModel1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval and propagation",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID via TelephonyManager.getDeviceId(), stores it in register v1, and passes it to Toast.makeText and Log.v sinks without overwriting.",
+                "Action": "Stored and passed to sinks"
+            }
+        ],
+        "All Sinks": [
+            "android.widget.Toast;->makeText:(Landroid/content/Context;Ljava/lang/CharSequence;)Landroid/widget/Toast;",
+            "android.util.Log;->v:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> android.widget.Toast;->makeText:(Landroid/content/Context;Ljava/lang/CharSequence;)Landroid/widget/Toast; and android.util.Log;->v:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The device ID (sensitive source) is directly passed to both Toast.makeText (UI display) and Log.v (logging) sinks without being overwritten by non-sensitive values."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ConservativeModel1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ConservativeModel1\output\sensitive_only.json
+Total summary time: 17.954030752182007 seconds

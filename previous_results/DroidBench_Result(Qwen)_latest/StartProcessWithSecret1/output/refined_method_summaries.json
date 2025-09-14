@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved via TelephonyManager",
+                "Source Method": "Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly retrieves the device ID through TelephonyManager, indicating a sensitive source.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is used in a ProcessBuilder command",
+                "Source Method": "Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The summary indicates the device ID is directly passed to a ProcessBuilder command, which could execute external commands.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "java.lang.ProcessBuilder->start:([Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> java.lang.ProcessBuilder->start:([Ljava/lang/String;)V",
+                "Reasoning": "The device ID (sensitive source) is retrieved via TelephonyManager and directly passed to ProcessBuilder's start method, which executes external commands. No overwriting or taint removal is mentioned, so the data remains tainted."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

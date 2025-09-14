@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "IMEI stored in static field",
+                "Source Method": "Lde/ecspride/ApplicationLifecyle1;->onCreate:()V",
+                "Reasoning": "Summary explicitly states IMEI is stored in static field",
+                "Action": "Stored"
+            },
+            {
+                "Step": "IMEI read by onResume",
+                "Source Method": "Lde/ecspride/ApplicationLifecyle1;->onCreate:()V",
+                "Reasoning": "Summary indicates IMEI is accessed by MainActivity.onResume()",
+                "Action": "Read"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->onResume:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ApplicationLifecyle1;->onCreate:()V --> Lde/ecspride/MainActivity;->onResume:()V",
+                "Reasoning": "IMEI stored in static field (source) is read by MainActivity.onResume() (sink) without being overwritten with non-sensitive value"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

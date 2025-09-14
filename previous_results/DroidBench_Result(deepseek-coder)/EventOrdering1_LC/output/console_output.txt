@@ -1,0 +1,38 @@
+
+Processing folder: D:\UBCBAPK_Methods\EventOrdering1_LC
+Using methods file: D:\UBCBAPK_Methods\EventOrdering1_LC\EventOrdering1_LC_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V']
+[SUMMARY] Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V => The method retrieves the device's IMEI number from TelephonyManager and logs it using Log.i, which can be considered as a potential real sink for sensitive information.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "IMEI"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve IMEI from TelephonyManager and log it using Log.i",
+            "Source Method": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V",
+            "Reasoning": "IMEI is a sensitive piece of information that can reveal user privacy, and logging it potentially exposes this data to potential leaks.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V --> Log.i(...)",
+            "Reasoning": "The method retrieves the IMEI number from TelephonyManager and logs it using Log.i, which is considered a real sink for sensitive information."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\EventOrdering1_LC\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\EventOrdering1_LC\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\EventOrdering1_LC\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\EventOrdering1_LC\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\EventOrdering1_LC\output\sensitive_only.json
+Total time for folder: 299.50 seconds

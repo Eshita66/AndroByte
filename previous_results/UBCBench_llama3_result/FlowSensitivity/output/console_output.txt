@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\FlowSensitivity
+Using methods file: D:\UBCBAPK_Methods\FlowSensitivity\FlowSensitivity_bytecode_instructions.json
+Sensitive method found: Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method originates device ID from calling getDeviceId on TelephonyManager and passes it to Log.e methods without intermediate storage. A sink is identified: Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\FlowSensitivity\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\FlowSensitivity\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\FlowSensitivity\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get device ID from TelephonyManager",
+                "Source Method": "getDeviceId on TelephonyManager",
+                "Reasoning": "Sensitive value obtained directly",
+                "Action": "Stored (in method parameters)"
+            },
+            {
+                "Step": "Pass device ID to Log.e methods",
+                "Source Method": "Log.e methods",
+                "Reasoning": "Sensitive value passed without intermediate storage",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId on TelephonyManager(...) --> Log.e methods(...)",
+                "Reasoning": "Sensitive device ID obtained and passed to sink without intermediate storage"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\FlowSensitivity\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\FlowSensitivity\output\sensitive_only.json
+Total summary time: 15.411921739578247 seconds

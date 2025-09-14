@@ -1,0 +1,43 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\StaticInitialization1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\StaticInitialization1\StaticInitialization1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method first invokes the superclass constructor. Then, it calls `getSystemService` with the string \"phone\", which retrieves a `TelephonyManager` instance. Subsequently, `getDeviceId()` is called on this `TelephonyManager` instance, and the returned string is stored in the `im` field of the `MainActivity` class. This constitutes a flow: `[getDeviceId() \u279d String \u279d sget-object]`. Specifically, the `getDeviceId()` call is the source, the returned string is the tainted value, and the `sget-object` instruction stores this value into the `im` field.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\StaticInitialization1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\StaticInitialization1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\StaticInitialization1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "deviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method calls `getDeviceId()` on a `TelephonyManager` instance, retrieving the device ID.",
+                "Action": "deviceId retrieved"
+            }
+        ],
+        "All Sinks": [
+            "null"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> getDeviceId() --> deviceId",
+                "Reasoning": "The `onCreate` method initiates the flow by calling `getDeviceId()`. The returned device ID is then stored."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\StaticInitialization1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\StaticInitialization1\output\sensitive_only.json
+Total summary time: 102.81355118751526 seconds

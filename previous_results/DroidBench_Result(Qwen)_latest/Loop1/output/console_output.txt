@@ -1,0 +1,53 @@
+Processing folder: D:\UBCBAPK_Methods\Loop1
+Using methods file: D:\UBCBAPK_Methods\Loop1\Loop1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves the device ID using TelephonyManager.getDeviceId(), processes it into a string with underscores, and sends it via SMS using SmsManager.sendTextMessage(). This constitutes a network transmission sink for the user's device identifier.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\Loop1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Loop1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Loop1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval",
+                "Source Method": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID using TelephonyManager.getDeviceId()",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Data formatting",
+                "Source Method": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is processed into a string with underscores",
+                "Action": "Transformed"
+            },
+            {
+                "Step": "Network transmission",
+                "Source Method": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The formatted device ID is sent via SMS using SmsManager.sendTextMessage()",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V --> TelephonyManager.getDeviceId() --> String formatting --> SmsManager.sendTextMessage() ",
+                "Reasoning": "The device ID is retrieved from TelephonyManager, formatted into a string with underscores, and passed as an argument to SmsManager.sendTextMessage() which constitutes a network transmission sink."
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Loop1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Loop1\output\sensitive_only.json
+Total summary time: 1191.1578986644745 seconds

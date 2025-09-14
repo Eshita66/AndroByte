@@ -1,0 +1,336 @@
+[
+  {
+    "Data Types Collected": [
+      "Lcom/facebook/AccessToken;",
+      "Landroid/location/Location;",
+      "Ljava/lang/String;",
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected from the input parameters.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data through the `newPlacesSearchRequest` method.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "User personal data is checked for null or emptiness.",
+        "Source Method": "Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z",
+        "Reasoning": "The method checks if the input string is null or empty by calling length() and returning true if it's empty.",
+        "Action": "Stored in register v0."
+      },
+      {
+        "Step": "User personal data is passed to the superclass constructor.",
+        "Source Method": "Lcom/facebook/GraphRequest$3;-><init>:(Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)V",
+        "Reasoning": "[This method originates user personal data from the val$callback field of an instance of GraphJSONArrayCallback.]",
+        "Action": "Passed to the superclass constructor via invoke-direct instruction and stored in register v0."
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> Stored in registers and variables within the method. --> No sinks identified.",
+        "Reasoning": "The data is stored in registers and variables within the method, but no sinks are identified."
+      },
+      {
+        "dataflow 2": "Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z --> Stored in register v0. --> No sinks identified.",
+        "Reasoning": "The data is stored in register v0, but no sinks are identified."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "com/facebook/places/model/CurrentPlaceRequestParams"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location from CurrentPlaceRequestParams",
+        "Source Method": "Lcom/facebook/places/model/CurrentPlaceRequestParams;->getLocation:()Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by calling the getLocation() method which returns a Location object.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Store location in LocationPackage",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle;",
+        "Reasoning": "The method originates user personal data by calling the `getLocation()` method of `CurrentPlaceRequestParams` and storing it in the `location` field of `LocationPackage`.",
+        "Action": "Stored in LocationPackage"
+      },
+      {
+        "Step": "Get WiFi scan results from WifiScanResult",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getWifiScanJson:(Lcom/facebook/places/internal/WifiScanResult;)Lorg/json/JSONObject;",
+        "Reasoning": "This method originates user personal data by using sensitive API calls to get WiFi scan results.",
+        "Action": "Stored in JSONObject"
+      },
+      {
+        "Step": "Pass location to getWifiScanJson() method",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle;",
+        "Reasoning": "The data is then propagated to other methods through method invocations.",
+        "Action": "Passed as argument"
+      },
+      {
+        "Step": "Return WiFi scan results in JSONObject",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getWifiScanJson:(Lcom/facebook/places/internal/WifiScanResult;)Lorg/json/JSONObject;",
+        "Reasoning": "The data is stored in registers and variables within the method, specifically in a JSONObject.",
+        "Action": "Returned as result"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/places/PlaceManager;->getWifiScanJson:(Lcom/facebook/places/internal/WifiScanResult;)Lorg/json/JSONObject;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/model/CurrentPlaceRequestParams;->getLocation:()Landroid/location/Location; --> Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle; --> Lcom/facebook/places/PlaceManager;->getWifiScanJson:(Lcom/facebook/places/internal/WifiScanResult;)Lorg/json/JSONObject;",
+        "Reasoning": "The data is propagated from `CurrentPlaceRequestParams` to `LocationPackage`, then passed to `getWifiScanJson()` method, which returns a JSONObject containing user location information."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "String (searchText)",
+      "Integer (limit)",
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "PlaceSearchRequestParams.getSearchText() is called",
+        "Source Method": "Lcom/facebook/places/model/PlaceSearchRequestParams;->getSearchText:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data from the 'searchText' field of PlaceSearchRequestParams.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "PlaceSearchRequestParams.getLimit() is called",
+        "Source Method": "Lcom/facebook/places/model/PlaceSearchRequestParams;->getLimit:()I",
+        "Reasoning": "This method originates user personal data from the 'limit' field in PlaceSearchRequestParams.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Location is obtained through Location API",
+        "Source Method": "Landroid/location/Location;-><init>:(Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data from the Location API.",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "Device ID is obtained through Android API",
+        "Source Method": "Landroid/os/Bundle;->get(Ljava/lang/String;)Ljava/lang/Object;",
+        "Reasoning": "The method originates user personal data from the Android API.",
+        "Action": "Stored in register v2"
+      },
+      {
+        "Step": "Phone Number is obtained through Phone API",
+        "Source Method": "Landroid/telephony/TelephonyManager;->getLine1Number()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data from the Phone API.",
+        "Action": "Stored in register v3"
+      },
+      {
+        "Step": "Data is passed to GraphRequest constructor",
+        "Source Method": "Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod;)V",
+        "Reasoning": "The method originates user personal data from sensitive API calls to Facebook's Graph API.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Data is passed to FetchedAppGateKeepersManager.loadAppGateKeepersAsync()",
+        "Source Method": "Lcom/facebook/internal/FetchedAppGateKeepersManager;->loadAppGateKeepersAsync:(Lcom/facebook/internal/FetchedAppGateKeepersManager$Callback;)V",
+        "Reasoning": "The method originates user personal data through the getSharedPreferences and getString methods.",
+        "Action": "Passed to other methods for parsing and execution"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod;)V",
+      "Lcom/facebook/internal/FetchedAppGateKeepersManager;->loadAppGateKeepersAsync:(Lcom/facebook/internal/FetchedAppGateKeepersManager$Callback;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "PlaceSearchRequestParams.getSearchText() --> GraphRequest constructor --> Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod;)V",
+        "Reasoning": "The data flow starts from PlaceSearchRequestParams.getSearchText(), which passes the data to GraphRequest constructor, and then it is passed to Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod;)V"
+      },
+      {
+        "dataflow 2": "PlaceSearchRequestParams.getLimit() --> GraphRequest constructor --> Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod;)V",
+        "Reasoning": "The data flow starts from PlaceSearchRequestParams.getLimit(), which passes the data to GraphRequest constructor, and then it is passed to Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod;)V"
+      },
+      {
+        "dataflow 3": "Location --> GraphRequest constructor --> Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod;)V",
+        "Reasoning": "The data flow starts from Location, which passes the data to GraphRequest constructor, and then it is passed to Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod;)V"
+      },
+      {
+        "dataflow 4": "Device ID --> FetchedAppGateKeepersManager.loadAppGateKeepersAsync()",
+        "Reasoning": "The data flow starts from Device ID, which passes the data to FetchedAppGateKeepersManager.loadAppGateKeepersAsync()"
+      },
+      {
+        "dataflow 5": "Phone Number --> FetchedAppGateKeepersManager.loadAppGateKeepersAsync()",
+        "Reasoning": "The data flow starts from Phone Number, which passes the data to FetchedAppGateKeepersManager.loadAppGateKeepersAsync()"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "java.lang.String",
+      "com.appsflyer.internal.g",
+      "java.util.Map",
+      "com.appsflyer.AppsFlyerProperties",
+      "Landroid/content/pm/PackageManager;",
+      "java.lang.Throwable"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "AppsFlyerProperties.getInstance() called to retrieve AppsFlyer instance.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties;",
+        "Reasoning": "Sensitive API call to get the AFKeystoreWrapper instance.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "AppsFlyerProperties.getString() called to retrieve string value.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getString:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Sensitive API call to get the 'values' Map in AppsFlyerProperties.",
+        "Action": "Stored in register v0 and then propagated to register v2 after a get operation on the map."
+      },
+      {
+        "Step": "PackageManager.getApplicationInfo() called to retrieve ApplicationInfo object.",
+        "Source Method": "Lcom/appsflyer/internal/ae;->AFKeystoreWrapper:(Ljava/lang/String; Landroid/content/pm/PackageManager; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Sensitive API call to get the metaData field from PackageManager.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "AppsFlyerProperties.getInt() called to retrieve integer value.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getInt:(Ljava/lang/String; I)I",
+        "Reasoning": "Sensitive API call to get the string value from AppsFlyerProperties and then convert it to an integer using Integer.valueOf().",
+        "Action": "Stored in register v1."
+      },
+      {
+        "Step": "AppsFlyerProperties.getBoolean() called to retrieve boolean value.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getBoolean:(Ljava/lang/String; Z)Z",
+        "Reasoning": "Sensitive API call to get the string value from AppsFlyerProperties and then convert it to a Boolean value using Java's Boolean.valueOf method.",
+        "Action": "Stored in register v1."
+      },
+      {
+        "Step": "AppsFlyerProperties.getString() called to retrieve string value.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getString:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Sensitive API call to get the 'values' Map in AppsFlyerProperties.",
+        "Action": "Stored in register v0 and then propagated to register v2 after a get operation on the map."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AFLogger;->AFInAppEventType:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+      "Lcom/appsflyer/AFLogger;->AFKeystoreWrapper:(Ljava/lang/String; Ljava/lang/Throwable; Z Z)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "AppsFlyerProperties.getInstance() --> AppsFlyerProperties.getString() --> AFInAppEventType()",
+        "Reasoning": "The data flow starts with the retrieval of the AppsFlyer instance using sensitive API call. The string value is then retrieved from the 'values' Map in AppsFlyerProperties and passed to AFInAppEventType()."
+      },
+      {
+        "dataflow 2": "PackageManager.getApplicationInfo() --> AFKeystoreWrapper()",
+        "Reasoning": "The data flow starts with the retrieval of the ApplicationInfo object using sensitive API call. The metaData field is then retrieved from PackageManager and passed to AFKeystoreWrapper()."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Call getLastKnownLocation API",
+        "Source Method": "Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by calling the getLastKnownLocation API to retrieve a location.",
+        "Action": "Stored in register v5"
+      },
+      {
+        "Step": "Get lastLocationMaxAgeMs field",
+        "Source Method": "Lcom/facebook/places/internal/LocationPackageRequestParams;->getLastLocationMaxAgeMs:()J",
+        "Reasoning": "The method originates user personal data by accessing the 'lastLocationMaxAgeMs' field using a wide get instruction.",
+        "Action": "Passed to return statement"
+      },
+      {
+        "Step": "Return location as result",
+        "Source Method": "Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The data is stored in register v5 and then passed through various operations before being returned as a result.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location; --> Stored in register v5 --> Returned ",
+        "Reasoning": "The location is retrieved from the getLastKnownLocation API, stored in register v5, and then returned as a result."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "BSSID",
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method invocation: getBSSID() and getSSID() of WifiInfo",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The method originates user personal data through the getBSSID() and getSSID() methods of WifiInfo.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Method invocation: invoke-virtual on WifiManager and WifiInfo",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The data is propagated to other methods via method invocations.",
+        "Action": "Passed as parameters"
+      },
+      {
+        "Step": "Return-object instructions",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The data reaches a sink point through return-object instructions.",
+        "Action": "Returned as WifiScanResult"
+      },
+      {
+        "Step": "Method invocation: isWifiSsidBlacklisted() checks input parameter",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->isWifiSsidBlacklisted:(Ljava/lang/String;)Z",
+        "Reasoning": "The method WifiScannerImpl.isWifiSsidBlacklisted() originates user personal data from the input parameter (Ljava/lang/String;).",
+        "Action": "Stored in registers v1 and v0"
+      },
+      {
+        "Step": "Conditional statements to determine whether string matches certain conditions",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->isWifiSsidBlacklisted:(Ljava/lang/String;)Z",
+        "Reasoning": "The data is propagated through conditional statements to determine whether the string matches certain conditions.",
+        "Action": "Passed as parameters"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+      "Lcom/facebook/places/internal/WifiScannerImpl;->isWifiSsidBlacklisted:(Ljava/lang/String;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult; --> Lcom/facebook/places/internal/WifiManager;->invoke-virtual(...) --> Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The data is propagated from getConnectedWifi() to WifiManager's invoke-virtual() and then back to getConnectedWifi()."
+      },
+      {
+        "dataflow 2": " Lcom/facebook/places/internal/WifiScannerImpl;->isWifiSsidBlacklisted:(Ljava/lang/String;)Z --> Lcom/facebook/places/internal/WifiScannerImpl;->isWifiSsidBlacklisted:(Ljava/lang/String;)Z",
+        "Reasoning": "The data is propagated within the same method, isWifiSsidBlacklisted(), through conditional statements."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

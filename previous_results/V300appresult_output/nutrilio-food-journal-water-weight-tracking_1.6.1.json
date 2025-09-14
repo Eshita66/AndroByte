@@ -1,0 +1,48 @@
+[
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate location services data",
+        "Source Method": "Ld/b/c/k$g;->c:()I",
+        "Reasoning": "API calls to access location services",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Retrieve user personal data",
+        "Source Method": "Ld/h/b/h;->g:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "Invocation of sensitive API calls to retrieve process ID and UID",
+        "Action": "Stored in registers v0 and v1"
+      },
+      {
+        "Step": "Pass data to other methods via method invocations",
+        "Source Method": "Ld/h/b/h;->g:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "getPackageName() and checkPermission() method invocations",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Data reaches a sink point (logging)",
+        "Source Method": "Ld/b/c/k$g;->c:()I",
+        "Reasoning": "Logging",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Ld/b/c/k$g;->c:()I",
+      "Ld/h/b/h;->g:(Landroid/content/Context; Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Ld/b/c/k$g;->c:()I --> Ld/h/b/h;->g:(Landroid/content/Context; Ljava/lang/String;)I --> AppOpsManager noteProxyOpNoThrow()",
+        "Reasoning": "Location services data is originated, stored in registers and variables, passed to other methods via method invocations, and finally logged."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

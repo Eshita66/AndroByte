@@ -1,0 +1,25 @@
+[
+    {
+        "Data Types Collected": [
+            "Location coordinates"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Accessing location data from Bundle",
+                "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method involves accessing location data from the bundle, which could be tainted with latitude and longitude values.",
+                "Action": "Used for logging purposes but not stored persistently."
+            }
+        ],
+        "All Sinks": [
+            "Log.i(...)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V --> Log.i(...)",
+                "Reasoning": "The onCreate method retrieves the Bundle, which could contain location data that is considered tained data. This data is then used in subsequent methods without any clear indication of how it's handled or if it reaches a sink safely."
+            }
+        ],
+        "Label": "leak"
+    }
+]

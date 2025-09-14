@@ -1,0 +1,189 @@
+[
+  {
+    "Data Types Collected": [
+      "device ID",
+      "phone type",
+      "network type",
+      "currentTimeMillis()",
+      "Throwable object"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device info and phone type",
+        "Source Method": "Lcom/ford/syncV4/trace/TraceDeviceInfo;->getTelephonyHeader:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling sensitive API to get device ID, phone type, and network type.",
+        "Action": "Stored in 'v1' register"
+      },
+      {
+        "Step": "Log error with Throwable object",
+        "Source Method": "Lcom/ford/syncV4/util/DebugTool;->logError:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The current method originates user personal data from the `toString()` method invocation on a `Throwable` object and stores it in register `v2`. The data is then propagated to the `logToSiphon()` method via an invoke-static instruction.",
+        "Action": "Passed to logToSiphon() function"
+      },
+      {
+        "Step": "Log sensitive info to server",
+        "Source Method": "Lcom/ford/syncV4/util/DebugTool;->logToSiphon:(Ljava/lang/String;)Ljava/lang/Boolean;",
+        "Reasoning": "The method originates user personal data through the logToSiphon() function, which likely logs sensitive information to a server.",
+        "Action": "Passed to sendSiphonLogData() function"
+      },
+      {
+        "Step": "Initialize SiphonServer",
+        "Source Method": "Lcom/ford/syncV4/transport/SiphonServer;->init:()Z",
+        "Reasoning": "The method originates user personal data by initializing the m_siphonClientThread and setting its name to 'Siphon'. The data is stored in registers (v0, v1) and variables (m_siphonInitialized, m_siphonLock). The data is passed to other methods via method invocations.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Send sensitive log data",
+        "Source Method": "Lcom/ford/syncV4/transport/SiphonServer;->sendSiphonLogData:(Ljava/lang/String;)Ljava/lang/Boolean;",
+        "Reasoning": "The method originates user personal data through the `sendSiphonLogData` method, which is a sensitive API call.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Send data to SiphonSocket",
+        "Source Method": "Lcom/ford/syncV4/transport/SiphonServer;->sendDataToSiphonSocket:(B Ljava/lang/Integer; [B I I)Ljava/lang/Boolean;",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls (e.g., `sget-object` and `invoke-virtual`) to access and manipulate sensitive data.",
+        "Action": "Passed to OutputStream::write([B)V"
+      },
+      {
+        "Step": "Convert int to byte array",
+        "Source Method": "Lcom/ford/syncV4/util/BitConverter;->intToByteArray:(I)[B",
+        "Reasoning": "The method originates user personal data by using the `ushr-int/lit8` instruction to extract bytes from an integer.",
+        "Action": "Returned as object"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/ford/syncV4/util/DebugTool;->logError:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+      "Lcom/ford/syncV4/util/DebugTool;->logToSiphon:(Ljava/lang/String;)Ljava/lang/Boolean;",
+      "Lcom/ford/syncV4/transport/SiphonServer;->sendSiphonLogData:(Ljava/lang/String;)Ljava/lang/Boolean;",
+      "Lcom/ford/syncV4/transport/SiphonServer;->sendDataToSiphonSocket:(B Ljava/lang/Integer; [B I I)Ljava/lang/Boolean;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/ford/syncV4/trace/TraceDeviceInfo;->getTelephonyHeader:()Ljava/lang/String; --> Lcom/ford/syncV4/util/DebugTool;->logToSiphon:(Ljava/lang/String;)Ljava/lang/Boolean; --> Lcom/ford/syncV4/transport/SiphonServer;->sendSiphonLogData:(Ljava/lang/String;)Ljava/lang/Boolean;",
+        "Reasoning": "The device info and phone type are first stored in the 'v1' register, then passed to logToSiphon() function, which likely logs sensitive information to a server. The data is then propagated to sendSiphonLogData() function."
+      },
+      {
+        "dataflow 2": " Lcom/ford/syncV4/util/DebugTool;->logError:(Ljava/lang/String; Ljava/lang/Throwable;)V --> Lcom/ford/syncV4/util/BitConverter;->intToByteArray:(I)[B",
+        "Reasoning": "The Throwable object is first stored in register 'v2', then passed to logToSiphon() function, which likely logs sensitive information to a server. The data is then propagated to BitConverter::intToByteArray(I)[B"
+      },
+      {
+        "dataflow 3": " Lcom/ford/syncV4/transport/SiphonServer;->init:()Z --> Lcom/ford/syncV4/transport/SiphonServer;->sendDataToSiphonSocket:(B Ljava/lang/Integer; [B I I)Ljava/lang/Boolean;",
+        "Reasoning": "The data is first stored in registers (v0, v1) and variables (m_siphonInitialized, m_siphonLock), then passed to other methods via method invocations. The data is then propagated to sendDataToSiphonSocket() function."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "device location",
+      "location string",
+      "unique API key",
+      "platform information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device location and query for stations",
+        "Source Method": "Lorg/npr/ford_sync/ProxyToAppBridge;->LoadStations:()V",
+        "Reasoning": "The method originates user personal data by using sensitive API calls to get the device's location and query for stations.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Query NPR API with unique API key and platform information",
+        "Source Method": "Lorg/npr/api/Station$StationFactory;->queryForStations:(Landroid/content/Context; Ljava/lang/String;)Ljava/util/List;",
+        "Reasoning": "The method originates user personal data by querying the NPR API with a unique API key and platform information.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Store location string in list of station IDs",
+        "Source Method": "Lorg/npr/ford_sync/ProxyToAppBridge;->LoadStations:()V",
+        "Reasoning": "The data is stored in a list of station IDs.",
+        "Action": "Stored in a list"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/npr/api/Station$StationFactory;->queryForStations:(Landroid/content/Context; Ljava/lang/String;)Ljava/util/List;",
+      "Lorg/npr/ford_sync/ProxyToAppBridge;->LoadStations:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lorg/npr/ford_sync/ProxyToAppBridge;->LoadStations:()V --> Lorg/npr/api/Station$StationFactory;->queryForStations:(Landroid/content/Context; Ljava/lang/String;)Ljava/util/List; --> Lorg/npr/api/Station$StationFactory;->queryForStations:(Landroid/content/Context; Ljava/lang/String;)Ljava/util/List;",
+        "Reasoning": "The data is propagated from LoadStations() to queryForStations(), and then stored in a list of station IDs."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "API key",
+      "platform information",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get last known location",
+        "Source Method": "Lorg/npr/livio/ProxyToAppBridge;->LoadStations:()V",
+        "Reasoning": "The current method LoadStations() in class ProxyToAppBridge originates user personal data by calling getLastKnownLocation(), which retrieves the device's last known location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Query stations using latitude and longitude",
+        "Source Method": "Lorg/npr/livio/ProxyToAppBridge;->LoadStations:()V",
+        "Reasoning": "The latitude and longitude are then used to query for stations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get API key and platform information",
+        "Source Method": "Lorg/npr/api/Station$StationFactory;->queryForStations:(Landroid/content/Context; Ljava/lang/String;)Ljava/util/List;",
+        "Reasoning": "The method originates user personal data from the API key and platform information.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get sensitive data from CarbonStation",
+        "Source Method": "Lorg/npr/api/CarbonStation;-><init>:(Lorg/npr/api/CarbonStation;)V",
+        "Reasoning": "The data is stored in registers and variables within the method, and then propagated to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get city name from CarbonStation",
+        "Source Method": "Lorg/npr/api/CarbonStation;->getCity:()Ljava/lang/String;",
+        "Reasoning": "Sensitive user personal data is originated from the 'getCity' method of class CarbonStation.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get frequency from CarbonStation",
+        "Source Method": "Lorg/npr/api/CarbonStation;->getFrequency:()Ljava/lang/String;",
+        "Reasoning": "Sensitive data originates from the 'getFrequency' method of the CarbonStation class.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/npr/api/Station$StationFactory;->queryForStations:(Landroid/content/Context; Ljava/lang/String;)Ljava/util/List;",
+      "Lorg/npr/livio/ProxyToAppBridge;->LoadStations:()V",
+      "Lorg/npr/api/CarbonStation;-><init>:(Lorg/npr/api/CarbonStation;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lorg/npr/livio/ProxyToAppBridge;->LoadStations:()V --> Lorg/npr/livio/ProxyToAppBridge;->LoadStations:()V --> Lorg/npr/api/Station$StationFactory;->queryForStations:(Landroid/content/Context; Ljava/lang/String;)Ljava/util/List;]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      },
+      {
+        "dataflow 2": "[Lorg/npr/api/CarbonStation;-><init>:(Lorg/npr/api/CarbonStation;)V --> Lorg/npr/api/CarbonStation;->getCity:()Ljava/lang/String;]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      },
+      {
+        "dataflow 3": "[Lorg/npr/api/CarbonStation;-><init>:(Lorg/npr/api/CarbonStation;)V --> Lorg/npr/api/CarbonStation;->getFrequency:()Ljava/lang/String;]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

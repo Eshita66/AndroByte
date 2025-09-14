@@ -1,0 +1,487 @@
+[
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location Coordinates"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location coordinates",
+        "Source Method": "Lcom/iapps/ssc/Fragments/FragmentProgrammeList;->onActivityResult:(I I Landroid/content/Intent;)V",
+        "Reasoning": "Method signature matches the source method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Call API with coordinates",
+        "Source Method": "Lcom/iapps/ssc/Fragments/FragmentProgrammeList;->onActivityResult:(I I Landroid/content/Intent;)V",
+        "Reasoning": "API call is made with the retrieved coordinates.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/iapps/ssc/api/ApiManager;->callApi:(Ljava/lang/String;Ljava/util/Map;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [FragmentProgrammeList(...) --> ... --> ApiManager(...)]",
+        "Reasoning": "Data flows from the source method to the API call sink method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is enabled",
+        "Source Method": "Lcom/iapps/ssc/Fragments/FragmentProgrammeList;->onViewCreated:(Landroid/view/View; Landroid/os/Bundle;)V",
+        "Reasoning": "Call to `callApi()` with location enabled",
+        "Action": "Passed to `callApi()` method"
+      },
+      {
+        "Step": "Location is passed to API",
+        "Source Method": "Lcom/iapps/ssc/Fragments/FragmentProgrammeList;->callApi:(Ljava/lang/String;)V",
+        "Reasoning": "Call to `onResponse()` with location data",
+        "Action": "Logged using `Timber` library"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/iapps/ssc/Fragments/FragmentProgrammeList;->onResponse:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/iapps/ssc/Fragments/FragmentProgrammeList;->onViewCreated:(Landroid/view/View; Landroid/os/Bundle;)V --> Lcom/iapps/ssc/Fragments/FragmentProgrammeList;->callApi:(Ljava/lang/String;)V --> Lcom/iapps/ssc/Fragments/FragmentProgrammeList;->onResponse:(Ljava/lang/String;)V",
+        "Reasoning": "Location is collected in `onViewCreated`, passed to `callApi`, and logged in `onResponse`"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is retrieved from the `mBundle` field.",
+        "Source Method": "Lcom/iapps/ssc/Fragments/FragmentSearchResult;->callApi:()V",
+        "Reasoning": "Sensitive user personal data is originated from the `mBundle` field.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User personal data is passed to the API using POST parameters.",
+        "Source Method": "Lcom/iapps/ssc/Fragments/FragmentSearchResult;->callApi:()V",
+        "Reasoning": "Sensitive user personal data is passed to the API using POST parameters.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "User personal data is sent to the server for further processing.",
+        "Source Method": "Lcom/iapps/ssc/Fragments/FragmentSearchResult;->callApi:()V",
+        "Reasoning": "Sensitive user personal data is sent to the server for further processing.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/iapps/ssc/api/ApiManager;->callApi:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/iapps/ssc/Fragments/FragmentSearchResult;->callApi:()V --> Lcom/iapps/ssc/api/ApiManager;->callApi:(Ljava/lang/String;)V",
+        "Reasoning": "User personal data is passed to the API using POST parameters and sent to the server for further processing."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Gather user location data",
+        "Source Method": "Lcom/snowplowanalytics/snowplow/tracker/utils/d;->c:(Landroid/content/Context;)Lcom/snowplowanalytics/snowplow/tracker/h/b;",
+        "Reasoning": "Method description",
+        "Action": "Stored in HashMap"
+      },
+      {
+        "Step": "Pass data to a() method",
+        "Source Method": "Lcom/snowplowanalytics/snowplow/tracker/utils/d;->c:(Landroid/content/Context;)Lcom/snowplowanalytics/snowplow/tracker/h/b;",
+        "Reasoning": "Method description",
+        "Action": "Passed to a() method"
+      },
+      {
+        "Step": "Log data to console",
+        "Source Method": "Lcom/snowplowanalytics/snowplow/tracker/h/b;->a()V",
+        "Reasoning": "Method description",
+        "Action": "Logged to console"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/snowplowanalytics/snowplow/tracker/h/b;->a()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/snowplowanalytics/snowplow/tracker/utils/d;->c:(Landroid/content/Context;)Lcom/snowplowanalytics/snowplow/tracker/h/b; --> Lcom/snowplowanalytics/snowplow/tracker/h/b;->a()V",
+        "Reasoning": "Data is gathered, passed to a() method, and logged to console"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID",
+      "IP address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is collected through WifiManager API.",
+        "Source Method": "Lcom/iapps/ssc/Helpers/GetWifiList;->onPostExecute:(Lc/i/c/b/a;)V",
+        "Reasoning": "The method uses WifiManager API to retrieve SSID and IP address.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive data is sent to a server via POST request.",
+        "Source Method": "Lcom/iapps/ssc/Helpers/SendWifiTask;->doInBackground:(Ljava/lang/Void;)Ljava/lang/Object;",
+        "Reasoning": "The SendWifiTask class sends the collected data to a server using POST request.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/iapps/ssc/Helpers/SendWifiTask;->doInBackground:(Ljava/lang/Void;)Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/iapps/ssc/Helpers/GetWifiList;->onPostExecute:(Lc/i/c/b/a;)V --> Lcom/iapps/ssc/Helpers/SendWifiTask;->doInBackground:(Ljava/lang/Void;)Ljava/lang/Object;",
+        "Reasoning": "The sensitive data collected in GetWifiList is sent to the server in SendWifiTask via POST request."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved from `mlocation` field.",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/facility/FacilityForMeViewModel;->loadData:()V",
+        "Reasoning": "Method summary",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is converted to strings.",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/facility/FacilityForMeViewModel;->loadData:()V",
+        "Reasoning": "Method summary",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Location is set as GET parameters.",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/facility/FacilityForMeViewModel;->loadData:()V",
+        "Reasoning": "Method summary",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Location is sent to API endpoint `getFacilityRecommended()` with the method `post`.",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/facility/FacilityForMeViewModel;->loadData:()V",
+        "Reasoning": "Method summary",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/iapps/ssc/api/FacilityApi;->getFacilityRecommended:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/iapps/ssc/viewmodel/facility/FacilityForMeViewModel;->loadData:()V --> Lcom/iapps/ssc/api/FacilityApi;->getFacilityRecommended:(Ljava/lang/String;)V",
+        "Reasoning": "Overall data flow summary"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "date",
+      "page"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "FacilityNearMeViewModel collects user location data.",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/facility/FacilityNearMeViewModel;->loadData:()V",
+        "Reasoning": "Method invocation",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is passed to Helper$GenericHttpAsyncTask.",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/facility/FacilityNearMeViewModel;->loadData:()V",
+        "Reasoning": "Method invocation",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is sent via GET request to API endpoint.",
+        "Source Method": "Lcom/iapps/ssc/helper/Helper$GenericHttpAsyncTask",
+        "Reasoning": "HTTP request",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/iapps/ssc/helper/Helper$GenericHttpAsyncTask"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/iapps/ssc/viewmodel/facility/FacilityNearMeViewModel;->loadData:()V --> Lcom/iapps/ssc/helper/Helper$GenericHttpAsyncTask",
+        "Reasoning": "FacilityNearMeViewModel collects user location data, which is then passed to Helper$GenericHttpAsyncTask and sent via GET request to API endpoint."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "type",
+      "date",
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User input is collected from the `type`, `date`, and location fields of the `FacilitySearchViewModel`.",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/facility/FacilitySearchViewModel;->loadData:()V",
+        "Reasoning": "Data is collected from the UI.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to the `Helper` class.",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/facility/FacilitySearchViewModel;->loadData:()V",
+        "Reasoning": "Data is passed between classes.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is executed asynchronously using `AsyncTask`.",
+        "Source Method": "Lcom/iapps/ssc/helper/Helper;",
+        "Reasoning": "Asynchronous task is used.",
+        "Action": "Executed"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/iapps/ssc/viewmodel/facility/FacilitySearchViewModel;->loadData:()V --> Lcom/iapps/ssc/helper/Helper; --> null",
+        "Reasoning": "Data is collected from the UI, passed to the `Helper` class, and then executed asynchronously. No sink points are identified in the provided summary."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is retrieved in `FacilityTrendingViewModel.loadData()`",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/facility/FacilityTrendingViewModel;->loadData:()V",
+        "Reasoning": "Method summary indicates data retrieval",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is passed to `Helper.GenericHttpAsyncTask`",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/facility/FacilityTrendingViewModel;->loadData:()V",
+        "Reasoning": "Method call within `FacilityTrendingViewModel.loadData()`",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is sent to API endpoint",
+        "Source Method": "Lcom/iapps/ssc/utils/Helper$GenericHttpAsyncTask",
+        "Reasoning": "API call within `Helper.GenericHttpAsyncTask`",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/iapps/ssc/utils/Helper$GenericHttpAsyncTask"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "FacilityTrendingViewModel.loadData() --> Helper.GenericHttpAsyncTask --> API endpoint",
+        "Reasoning": "Data is passed from source method to API endpoint through Helper.GenericHttpAsyncTask"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is retrieved from `mlocation` field in `GenericActivitySSC`.",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/facility/FacilityYouMayLikeThisViewModel;->loadData:()V",
+        "Reasoning": "Method summary",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User location data is set as GET parameters in the API request.",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/facility/FacilityYouMayLikeThisViewModel;->loadData:()V",
+        "Reasoning": "Method summary",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/iapps/ssc/api/FacilityApi;->requestFacilityData:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/iapps/ssc/viewmodel/facility/FacilityYouMayLikeThisViewModel;->loadData:()V --> Lcom/iapps/ssc/api/FacilityApi;->requestFacilityData:()V",
+        "Reasoning": "Overall data flow analysis"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "barcode"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is collected from the `barcode` field.",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/merchant_pay/MerchantPayInitiateViewModel;->loadData:()V",
+        "Reasoning": "Method summary specifies data source.",
+        "Action": "Stored in `h` object."
+      },
+      {
+        "Step": "Sensitive data is transmitted to the API.",
+        "Source Method": "Lcom/iapps/ssc/viewmodel/merchant_pay/MerchantPayInitiateViewModel;->execute:()V",
+        "Reasoning": "Method name implies API interaction.",
+        "Action": "Transmitted to API."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/iapps/ssc/viewmodel/merchant_pay/MerchantPayInitiateViewModel;->execute:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/iapps/ssc/viewmodel/merchant_pay/MerchantPayInitiateViewModel;->loadData:()V --> Lcom/iapps/ssc/viewmodel/merchant_pay/MerchantPayInitiateViewModel;->execute:()V",
+        "Reasoning": "Overall data flow based on individual steps."
+      }
+    ],
+    "Label": "leak"
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "location",
+      "barcodeString"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User provides barcodeString and location",
+        "Source Method": "Lcom/iapps/ssc/views/myhealth/play/PlayScanQRCodeFragment;->callApi:()V",
+        "Reasoning": "Sensitive user personal data is originated from these fields.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to GetCampaginScanTask",
+        "Source Method": "Lcom/iapps/ssc/views/myhealth/play/PlayScanQRCodeFragment;->callApi:()V",
+        "Reasoning": "GetCampaginScanTask is called with the sensitive data.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is potentially logged in execute() method",
+        "Source Method": "Lcom/iapps/ssc/views/myhealth/play/GetCampaginScanTask",
+        "Reasoning": "The execute() method is called within GetCampaginScanTask.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/iapps/ssc/views/myhealth/play/GetCampaginScanTask;->execute:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/iapps/ssc/views/myhealth/play/PlayScanQRCodeFragment;->callApi:()V --> Lcom/iapps/ssc/views/myhealth/play/GetCampaginScanTask;->execute:()V",
+        "Reasoning": "Sensitive user personal data is passed to the execute() method where it is potentially logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "barcodeString"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User input is collected in the `barcodeString` field.",
+        "Source Method": "Lcom/iapps/ssc/views/payments/ScanQRCodeFragment;->callApi:(I)V",
+        "Reasoning": "Sensitive user data is originated from the `barcodeString` field.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "The data is passed to the `PostTransactionInitiateTask` class.",
+        "Source Method": "Lcom/iapps/ssc/views/payments/ScanQRCodeFragment;->callApi:(I)V",
+        "Reasoning": "The data is propagated through the `callApi()` method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "The data is sent to the API using the `postTransactionInit()` method.",
+        "Source Method": "Lcom/iapps/ssc/tasks/PostTransactionInitiateTask;",
+        "Reasoning": "The data is sent to the API using the `postTransactionInit()` method.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "The data is logged using the `h` helper class.",
+        "Source Method": "Lcom/iapps/ssc/tasks/PostTransactionInitiateTask;",
+        "Reasoning": "The data is logged using the `h` helper class.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/iapps/ssc/tasks/PostTransactionInitiateTask;->postTransactionInit(Ljava/lang/String;)V",
+      "Lcom/iapps/ssc/utils/h;->a(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/iapps/ssc/views/payments/ScanQRCodeFragment;->callApi(I)V --> Lcom/iapps/ssc/tasks/PostTransactionInitiateTask;->postTransactionInit(Ljava/lang/String;)V --> Lcom/iapps/ssc/utils/h;->a(Ljava/lang/String;)V",
+        "Reasoning": "Sensitive user data is originated from the `barcodeString` field, is propagated through the `callApi()` method, sent to the API using the `postTransactionInit()` method, and finally logged using the `h` helper class."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is originated from the `FragmentMisc` method.",
+        "Source Method": "Lcom/iapps/ssc/views/fragments/facility/FragmentMisc;->callApi:()V",
+        "Reasoning": "Data is passed to the `Api` class for API call.",
+        "Action": "Transmitted to server"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/iapps/ssc/api/Api;->executeApiCall:(Ljava/util/Map;)Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/iapps/ssc/views/fragments/facility/FragmentMisc;->callApi:()V --> Lcom/iapps/ssc/api/Api;->executeApiCall:(Ljava/util/Map;)Ljava/lang/Object;",
+        "Reasoning": "Data is passed from the `FragmentMisc` method to the `Api` class via the `executeApiCall()` method."
+      }
+    ],
+    "Label": "leak"
+  }
+]

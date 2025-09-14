@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive DeviceId is logged via Log.i",
+                "Source Method": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V",
+                "Reasoning": "The method directly logs the device IMEI (DeviceId) using Log.i, which is a known sink for sensitive data exposure.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ljava/util/logging/Log;->i:(Ljava/lang/String;Ljava/lang/Object;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V --> Ljava/util/logging/Log;->i:(Ljava/lang/String;Ljava/lang/Object;)V",
+                "Reasoning": "The onLowMemory method directly logs the DeviceId (IMEI) to Logcat via Log.i, with no indication of taint removal or overwriting."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

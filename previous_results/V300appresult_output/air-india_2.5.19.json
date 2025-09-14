@@ -1,0 +1,132 @@
+[
+  {
+    "Data Types Collected": [
+      "User Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected.",
+        "Source Method": "Lc/a/a/a/r1/h0;->T:(Landroid/content/Context; Ljava/util/List;)Laero/developer/itravel/foo/objects/Airport;",
+        "Reasoning": "Method T() explicitly collects user location.",
+        "Action": "Stored in a list."
+      },
+      {
+        "Step": "List is sorted.",
+        "Source Method": "Lc/a/a/a/r1/h0;->T:(Landroid/content/Context; Ljava/util/List;)Laero/developer/itravel/foo/objects/Airport;",
+        "Reasoning": "Method T() sorts the list.",
+        "Action": "No change in data storage location."
+      },
+      {
+        "Step": "First airport is returned.",
+        "Source Method": "Lc/a/a/a/r1/h0;->T:(Landroid/content/Context; Ljava/util/List;)Laero/developer/itravel/foo/objects/Airport;",
+        "Reasoning": "Method T() returns the first airport in the list.",
+        "Action": "No change in data storage location."
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/a/a/a/r1/h0;->T:(Landroid/content/Context; Ljava/util/List;)Laero/developer/itravel/foo/objects/Airport --> No Sink",
+        "Reasoning": "The method T() does not explicitly log, transmit, or write the user location data anywhere."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected",
+        "Source Method": "Lf/a/c/x;->b:()Z",
+        "Reasoning": "ACCESS_COARSE_LOCATION and ACCESS_FINE_LOCATION permissions",
+        "Action": "Stored in x$a object"
+      },
+      {
+        "Step": "Sunrise and sunset times are calculated",
+        "Source Method": "Lf/a/c/x;->a:()V",
+        "Reasoning": "Location data",
+        "Action": "None"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lf/a/c/x;->b:()Z --> Lf/a/c/x;->a:()V",
+        "Reasoning": "Location data is collected in b() and used in a() to calculate sunrise and sunset times, but not further processed or sent anywhere."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is retrieved from the `get()` method.",
+        "Source Method": "Lg/d/a/b/i0;->get:()Ljava/lang/Object;",
+        "Reasoning": "Method summary indicates data originates here.",
+        "Action": "Stored in `c` field"
+      },
+      {
+        "Step": "Sensitive data is passed to the `e()` method.",
+        "Source Method": "Lg/d/a/b/i0;->e:()V",
+        "Reasoning": "Method summary indicates data is passed here.",
+        "Action": "Logged using `Lg/d/a/h/s;->e()`"
+      }
+    ],
+    "All Sinks": [
+      "Lg/d/a/h/s;->e()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lg/d/a/b/i0;->get() --> Lg/d/a/b/i0;->e() --> Lg/d/a/h/s;->e()",
+        "Reasoning": "Data flows from source method to sink method through the `e()` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is originated in onCreateView",
+        "Source Method": "Lc/a/a/a/h1/a0/r;->S0:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View;",
+        "Reasoning": "Stored in c0 list",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive data is passed to j object",
+        "Source Method": "Lc/a/a/a/h1/a0/r;->S0:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View;",
+        "Reasoning": "Passed to j object",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Sensitive data is used to set the adapter of the ExpandableListView",
+        "Source Method": "Lc/a/a/a/h1/a0/r;->S0:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View;",
+        "Reasoning": "Adapter is set",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/a/a/a/h1/a0/r;->S0(...) --> Lc/a/a/a/h1/a0/r;->j(...) --> Lc/a/a/a/h1/a0/r;->b0(...)",
+        "Reasoning": "Sensitive data is passed through j object and used to set the adapter of ExpandableListView"
+      }
+    ],
+    "Label": "no leak"
+  }
+]

@@ -1,0 +1,504 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "MAC address is collected from user device.",
+        "Source Method": "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in `sha1_mac` field."
+      },
+      {
+        "Step": "MAC address is formatted and hashed.",
+        "Source Method": "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Generated SHA-1 hash."
+      }
+    ],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User location data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is retrieved using `getLocation()`",
+        "Source Method": "Lcom/amazon/device/ads/DtbGeoLocation;->getLocation:()Ljava/lang/String;",
+        "Reasoning": "Return-object instruction",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User location data is passed to `getLocationParam()`",
+        "Source Method": "Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String;",
+        "Reasoning": "Return-object instruction",
+        "Action": "Passed as argument"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/DtbGeoLocation;->getLocation:()Ljava/lang/String; --> Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String;",
+        "Reasoning": "Return-object instruction in both methods"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Search Text"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location and search text are collected.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Input parameters of the method.",
+        "Action": "Stored in a Bundle object."
+      },
+      {
+        "Step": "Bundle object is passed to GraphRequest constructor.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Argument of the constructor.",
+        "Action": "Passed to GraphRequest object."
+      }
+    ],
+    "All Sinks": [
+      "GraphRequest object"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> GraphRequest object",
+        "Reasoning": "GraphRequest object is created with the collected user location and search text."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID",
+      "SSID",
+      "RSSI",
+      "IP address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WifiManager API is used to retrieve sensitive data.",
+        "Source Method": "Lcom/inmobi/a/b/b;->a:(Z Z)Lcom/inmobi/a/b/a;",
+        "Reasoning": "Method summary indicates the data originates from WifiManager.",
+        "Action": "Stored in a and c fields"
+      },
+      {
+        "Step": "SSID is extracted from the WifiManager data.",
+        "Source Method": "Lcom/inmobi/a/b/b;->a:(Z Z)Lcom/inmobi/a/b/a;",
+        "Reasoning": "Method summary mentions setting b field to SSID.",
+        "Action": "Set b field"
+      },
+      {
+        "Step": "IP address is extracted from the WifiManager data.",
+        "Source Method": "Lcom/inmobi/a/b/b;->a:(Z Z)Lcom/inmobi/a/b/a;",
+        "Reasoning": "Method summary mentions setting d field to IP address.",
+        "Action": "Set d field"
+      }
+    ],
+    "All Sinks": [
+      "com.inmobi.a.b.a"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " WifiManager API(...) --> com.inmobi.a.b.a",
+        "Reasoning": "Overall data flow summarizes the data flow from WifiManager to the sink method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Timestamp",
+      "Latitude",
+      "Longitude",
+      "Accuracy",
+      "Location Permission Status"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method collects user location data",
+        "Source Method": "Lcom/inmobi/a/m;->a:(Landroid/location/Location; Z)Ljava/util/HashMap;",
+        "Reasoning": "Method signature and summary mention data collection",
+        "Action": "Stored in HashMap"
+      },
+      {
+        "Step": "HashMap returned as result",
+        "Source Method": "Lcom/inmobi/a/m;->a:(Landroid/location/Location; Z)Ljava/util/HashMap;",
+        "Reasoning": "Method signature and summary mention result type",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "None mentioned in the given data"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive API call detected",
+        "Source Method": "Lcom/inmobi/a/m;->j:()Landroid/location/Location;",
+        "Reasoning": "getLastKnownLocation() potentially retrieves user location data.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      "Logging"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/inmobi/a/m;->j:()Landroid/location/Location; --> Logging",
+        "Reasoning": "Location data is collected by getLastKnownLocation() and then logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location information is collected",
+        "Source Method": "Lcom/inmobi/a/m;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method logs location data",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/inmobi/a/m;->onLocationChanged:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/inmobi/a/m;->onLocationChanged:(Landroid/location/Location;)V --> Lcom/inmobi/a/m;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Location data is logged within the same method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected.",
+        "Source Method": "Lcom/inmobi/commons/core/utilities/b/g;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method stores user location in shared preferences.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/inmobi/commons/core/utilities/b/g;->a:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/inmobi/commons/core/utilities/b/g;->a:(Landroid/location/Location;)V --> Lcom/inmobi/commons/core/utilities/b/g;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Location is stored in shared preferences within the same method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location retrieved from getLastKnownLocation()",
+        "Source Method": "Lcom/moat/analytics/mobile/inm/o;->f:()Landroid/location/Location;",
+        "Reasoning": "Sensitive data originated in this method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location passed to API method",
+        "Source Method": "Lcom/moat/analytics/mobile/inm/o;->b:(Landroid/location/Location; Landroid/location/Location;)Landroid/location/Location;",
+        "Reasoning": "Sensitive data is passed between methods.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/moat/analytics/mobile/inm/o;->a:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/moat/analytics/mobile/inm/o;->f:()Landroid/location/Location; --> Lcom/moat/analytics/mobile/inm/o;->b:(Landroid/location/Location; Landroid/location/Location;)Landroid/location/Location; --> Lcom/moat/analytics/mobile/inm/o;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Location data is retrieved, passed to API method, and then logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude",
+      "Timestamp",
+      "Horizontal Accuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location object creation",
+        "Source Method": "Lcom/moat/analytics/mobile/inm/z;->b:(Landroid/location/Location;)Ljava/util/Map;",
+        "Reasoning": "Method receives Location object as input",
+        "Action": "Stored"
+      },
+      {
+        "Step": "HashMap creation",
+        "Source Method": "Lcom/moat/analytics/mobile/inm/z;->b:(Landroid/location/Location;)Ljava/util/Map;",
+        "Reasoning": "Location object is converted to HashMap",
+        "Action": "Created"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location data",
+        "Source Method": "Lcom/moat/analytics/mobile/und/o;->f:()Landroid/location/Location;",
+        "Reasoning": "getLastKnownLocation() methods are used for both GPS and network providers",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Forward location data",
+        "Source Method": "Lcom/moat/analytics/mobile/und/o;->b:(Landroid/location/Location; Landroid/location/Location;)Landroid/location/Location;",
+        "Reasoning": "Method does not explicitly store or forward data",
+        "Action": "Forwarded"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/moat/analytics/mobile/und/m;->a:(Ljava/lang/Exception;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/moat/analytics/mobile/und/o;->f:()Landroid/location/Location; --> Lcom/moat/analytics/mobile/und/o;->b:(Landroid/location/Location; Landroid/location/Location;)Landroid/location/Location; --> Lcom/moat/analytics/mobile/und/m;->a:(Ljava/lang/Exception;)V",
+        "Reasoning": "Location data is retrieved, forwarded, and logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected from the `Location` object.",
+        "Source Method": "Lcom/moat/analytics/mobile/und/y;->b:(Landroid/location/Location;)Ljava/util/Map;",
+        "Reasoning": "Method invocation with `Location` parameter.",
+        "Action": "Stored in a `HashMap`"
+      },
+      {
+        "Step": "Data is passed to the `a()` method.",
+        "Source Method": "Lcom/moat/analytics/mobile/und/y;->b:(Landroid/location/Location;)Ljava/util/Map;",
+        "Reasoning": "Method invocation.",
+        "Action": "Passed to `a()` method"
+      },
+      {
+        "Step": "Data is logged to the console.",
+        "Source Method": "Lcom/moat/analytics/mobile/und/y;->a(Ljava/util/Map;)V",
+        "Reasoning": "Method invocation.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/moat/analytics/mobile/und/y;->a(Ljava/util/Map;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/moat/analytics/mobile/und/y;->b:(Landroid/location/Location;)Ljava/util/Map; --> Lcom/moat/analytics/mobile/und/y;->a(Ljava/util/Map;)V",
+        "Reasoning": "Location data is collected, passed to the `a()` method, and then logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected.",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->setLocation:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in local variable."
+      },
+      {
+        "Step": "Location is used to generate a location string.",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->setLocation:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Transmitted as parameter."
+      },
+      {
+        "Step": "Location string is added to the AdUrlGenerator object.",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->setLocation:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in object."
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mopub/common/AdUrlGenerator;->setLocation:(Landroid/location/Location;)V --> None",
+        "Reasoning": "No sink points are mentioned in the summaries."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method receives location data",
+        "Source Method": "Lcom/myfitnesspal/feature/explore/ui/view/NearbyVenuesCard;->moveMapToLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The method receives location data as an argument.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Updates camera position on Google Map",
+        "Source Method": "Lcom/myfitnesspal/feature/explore/ui/view/NearbyVenuesCard;->moveMapToLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The method uses the location data to update the camera position on a Google Map.",
+        "Action": "Used"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/myfitnesspal/feature/explore/ui/view/NearbyVenuesCard;->moveMapToLocation:(Landroid/location/Location;)V --> Google Map]",
+        "Reasoning": "The location data is used to update the camera position on a Google Map, which is considered a legitimate action."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Radius"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location and radius from VenuesRequestData object",
+        "Source Method": "Lcom/myfitnesspal/feature/restaurantlogging/service/VenueServiceImpl;->getVenuesForLocationAndRadius:(Lcom/myfitnesspal/feature/restaurantlogging/model/VenuesRequestData;)Ljava/util/List;",
+        "Reasoning": "Method argument",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Send request to API with user location and radius",
+        "Source Method": "Lcom/myfitnesspal/feature/restaurantlogging/service/VenueServiceImpl;->getVenuesForLocationAndRadius:(Lcom/myfitnesspal/feature/restaurantlogging/model/VenuesRequestData;)Ljava/util/List;",
+        "Reasoning": "API request",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Calculate distance from each venue to user location",
+        "Source Method": "Lcom/myfitnesspal/feature/restaurantlogging/service/VenueServiceImpl;->getVenuesForLocationAndRadius:(Lcom/myfitnesspal/feature/restaurantlogging/model/VenuesRequestData;)Ljava/util/List;",
+        "Reasoning": "Method logic",
+        "Action": "Processed"
+      }
+    ],
+    "All Sinks": [
+      "API request"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/myfitnesspal/feature/restaurantlogging/service/VenueServiceImpl;->getVenuesForLocationAndRadius:(Lcom/myfitnesspal/feature/restaurantlogging/model/VenuesRequestData;)Ljava/util/List; --> API request",
+        "Reasoning": "Data is transmitted to the API request"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": null,
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved from the Location object.",
+        "Source Method": "Lcom/myfitnesspal/shared/service/location/LocationServiceImpl$updateUserLocation$$inlined$with$lambda$1;->onSuccess:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature matches the source method.",
+        "Action": "Stored in UserLocation object"
+      },
+      {
+        "Step": "User location is set in local settings.",
+        "Source Method": "Lcom/myfitnesspal/shared/service/location/LocationServiceImpl$updateUserLocation$$inlined$with$lambda$1;->onSuccess:(Landroid/location/Location;)V",
+        "Reasoning": "Location is stored in UserLocation object.",
+        "Action": "Set in LocalSettingsService"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/myfitnesspal/shared/service/settings/LocalSettingsService;->setUserLocation(Lcom/myfitnesspal/shared/model/user/UserLocation;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LocationServiceImpl$updateUserLocation$$inlined$with$lambda$1;->onSuccess(...) --> LocalSettingsService;->setUserLocation(...)",
+        "Reasoning": "Location is retrieved in the source method and set in the sink method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved.",
+        "Source Method": "Lcom/myfitnesspal/feature/restaurantlogging/ui/activity/VenuesActivity;->moveToRequestedLocationOrUserLocation:(Lcom/myfitnesspal/feature/restaurantlogging/model/RequestedVenueLocation; Lcom/myfitnesspal/feature/restaurantlogging/ui/activity/VenuesActivity$ZoomState; Z)V",
+        "Reasoning": "The method moves the user location or requested location to the map view.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Camera position is set based on user location.",
+        "Source Method": "Lcom/myfitnesspal/feature/restaurantlogging/ui/activity/VenuesActivity;->moveToLocation:(D D Lcom/myfitnesspal/feature/restaurantlogging/ui/activity/VenuesActivity$ZoomState; Z)V",
+        "Reasoning": "The camera position is set using the provided latitude, longitude, and zoom level.",
+        "Action": "Processed"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/myfitnesspal/feature/restaurantlogging/ui/activity/VenuesActivity;->moveToRequestedLocationOrUserLocation(...) --> Lcom/myfitnesspal/feature/restaurantlogging/ui/activity/VenuesActivity;->moveToLocation(...) --> None",
+        "Reasoning": "User location is retrieved and used to set the camera position."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

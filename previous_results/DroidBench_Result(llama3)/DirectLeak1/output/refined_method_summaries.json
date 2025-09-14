@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from the device's Telephony Manager",
+                "Source Method": "getSystemService()",
+                "Reasoning": "This data was passed to sendTextMessage(), a sink for sensitive data.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/content/SendingEndpointReference;Landroid/content/Intent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getSystemService() --> sendTextMessage()",
+                "Reasoning": "Sensitive data originated from the device's Telephony Manager via getSystemService(). This data was passed to sendTextMessage(), a sink for sensitive data."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

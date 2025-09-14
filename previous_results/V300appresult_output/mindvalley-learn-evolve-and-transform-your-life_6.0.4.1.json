@@ -1,0 +1,250 @@
+[
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is passed to newPlacesSearchRequest method.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data from the location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Search text is passed to newPlacesSearchRequest method.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data from the search text.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Input parameter 'v0' is a String, which contains user personal data.",
+        "Source Method": "Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data from the input parameter 'v0'.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "val$callback field is initialized with a sensitive API call.",
+        "Source Method": "Lcom/facebook/GraphRequest$3;-><init>:(Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)V",
+        "Reasoning": "The method originates user personal data by calling a sensitive API to initialize the val$callback field.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed from newPlacesSearchRequest method to network transmission.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The data reaches a sink point, which is the network transmission.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/facebook/GraphRequest$3;<init>(...) --> Lcom/facebook/GraphRequest;<newPlacesSearchRequest>(...) --> Lcom/facebook/GraphRequest;",
+        "Reasoning": "The data flow starts with the initialization of val$callback field, then passes to newPlacesSearchRequest method and finally transmitted over network."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get current location",
+        "Source Method": "Lbo/app/l1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by calling the `isProviderEnabled` and `getLastKnownLocation` methods of the `LocationManager`. The data is stored in register `v6`",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Log location",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data through the 'd' method of AppboyLogger class which takes sensitive information as parameters.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Log debug info",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String; Z)I",
+        "Reasoning": "The method originates user personal data through the invocation of a sensitive API call to AppboyLogger's d() method, which logs debug information.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Log exception and debug info",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable; Z)I",
+        "Reasoning": "The method originates user personal data through the use of sensitive APIs (AppboyLogger and Log) to log messages.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I",
+      "Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String;)I",
+      "Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String; Z)I",
+      "Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable; Z)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lbo/app/l1;->a(Landroid/location/LocationManager;)Landroid/location/Location --> Lcom/appboy/support/AppboyLogger;->d(Ljava/lang/String;Ljava/lang/String;)I --> Sink Method(...)",
+        "Reasoning": "The data flows from the source method to AppboyLogger's d() method, where it is logged."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "com.appsflyer.internal.h",
+      "java.util.Map",
+      "android.content.SharedPreferences"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data through AFInAppEventType",
+        "Source Method": "Lcom/appsflyer/internal/af;->AFKeystoreWrapper:(Landroid/content/Context;)Z",
+        "Reasoning": "The method AFKeystoreWrapper in com/appsflyer/internal/af originates user personal data through the sensitive API call to AFInAppEventType.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Retrieve SharedPreferences instance",
+        "Source Method": "Lcom/appsflyer/internal/af;->AFInAppEventType:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The method originates user personal data by calling the `getSharedPreferences` method to retrieve a SharedPreferences instance.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass SharedPreferences instance to AFInAppEventType",
+        "Source Method": "Lcom/appsflyer/internal/af;->AFInAppEventType:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The data is then passed to other methods via method invocations, specifically to the `AFInAppEventType` method.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Return SharedPreferences instance",
+        "Source Method": "Lcom/appsflyer/internal/af;->AFInAppEventType:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "A sink point is identified as the `return-object v3` statement, which returns the SharedPreferences instance.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/internal/af;->AFInAppEventType:(Landroid/content/Context;)Landroid/content/SharedPreferences;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/internal/af;->AFKeystoreWrapper:(Landroid/content/Context;)Z --> Lcom/appsflyer/internal/af;->AFInAppEventType:(Landroid/content/Context;)Landroid/content/SharedPreferences; --> Lcom/appsflyer/internal/af;->AFInAppEventType:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The data flow originates from AFKeystoreWrapper, then passes through AFInAppEventType to finally reach the sink point at AFInAppEventType."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "double",
+      "java.lang.Double"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location information from android.location package",
+        "Source Method": "Lbo/app/k2;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data by calling sensitive API methods from the android.location package to retrieve location information.",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "Store location values in instance fields",
+        "Source Method": "Lbo/app/k2;-><init>:(D D Ljava/lang/Double; Ljava/lang/Double;)V",
+        "Reasoning": "The data is then stored in instance fields 'a', 'b', 'c', and 'd'.",
+        "Action": "Stored in instance fields"
+      },
+      {
+        "Step": "Validate location values using isValidLocation method",
+        "Source Method": "Lcom/appboy/support/ValidationUtils;->isValidLocation:(D D)Z",
+        "Reasoning": "The method originates user personal data from the input parameters (v3 and v5), stores it in registers (v2 and v0), and propagates it through conditional statements.",
+        "Action": "Propagated through conditional statements"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbo/app/k2;-><init>:(Landroid/location/Location;)V --> Lbo/app/k2;-><init>:(D D Ljava/lang/Double; Ljava/lang/Double;)V --> null",
+        "Reasoning": "The location information is retrieved and stored in instance fields, but no sinks like logging, transmission, or storage are identified within this method."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android_id",
+      "device serial number",
+      "phone ID",
+      "UUID",
+      "location",
+      "Context",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device ID from Settings$Secure class",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the `getContentResolver()` method on a `Context` object and then retrieving the `android_id` from the `Settings$Secure` class.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get device serial number or phone ID if permissions are granted",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in register `v0`. If the retrieved ID does not match certain known values, it attempts to retrieve the device's serial number or phone ID if permissions are granted.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get location from Context",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->getSystemService:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/Object;",
+        "Reasoning": "The current method originates user personal data through the getSystemService API call.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Check if CharSequence is empty",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->isEmpty:(Ljava/lang/CharSequence;)Z",
+        "Reasoning": "The method checks if a CharSequence is empty. It uses the length() method to get the length of the sequence and returns true if it's 0, indicating an empty string.",
+        "Action": "Stored in registers v0 and v1"
+      },
+      {
+        "Step": "Get trimmed length of CharSequence",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->getTrimmedLength:(Ljava/lang/CharSequence;)I",
+        "Reasoning": "The method originates user personal data from the input CharSequence via sensitive API calls (length() and charAt(I)). The data is stored in registers v0 and v3.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Check for permissions",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->hasPermission:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data by checking for permissions. The data is stored in registers and variables within the method.",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "Log permission status",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->hasPermission:(Landroid/content/Context; Ljava/lang/String; I)Z",
+        "Reasoning": "The method hasPermission checks for a permission using the Utils class. The data originates from the Context and String parameters, which are stored in registers before being passed to the next method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/segment/analytics/internal/Utils;->hasPermission:(Landroid/content/Context; Ljava/lang/String; I)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/segment/analytics/internal/Utils;->hasPermission:(Landroid/content/Context; Ljava/lang/String;)Z --> Lcom/segment/analytics/internal/Utils;->hasPermission:(Landroid/content/Context; Ljava/lang/String; I)Z ",
+        "Reasoning": "The data originates from the `getDeviceId` method, then propagated to the `hasPermission` method and finally logged in the `hasPermission` method with parameter `I`."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

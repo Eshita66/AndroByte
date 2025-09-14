@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "Sensitive data (device ID)"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID originated in onCreate method",
+                "Source Method": "Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Summary states device ID is originated in this method",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID transmitted over the network via SmsManager's sendTextMessage method",
+                "Source Method": "Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Summary states device ID is transmitted over the network via SmsManager's sendTextMessage method",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingResult;,Landroid/net/Uri;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V --> SmsManager's sendTextMessage method",
+                "Reasoning": "Device ID originated in onCreate method and transmitted over the network via SmsManager's sendTextMessage method"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

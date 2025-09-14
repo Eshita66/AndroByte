@@ -1,0 +1,40 @@
+[
+  {
+    "Data Types Collected": [
+      "device ID",
+      "Wi-Fi MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device ID and Wi-Fi MAC address from sensitive APIs",
+        "Source Method": "Lorg/cocos2dx/cpp/PlatformConfig;->getDeviceId:()Ljava/lang/String;",
+        "Reasoning": "The method calls sensitive APIs to get the device ID and Wi-Fi MAC address.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Pass data to other methods via method invocations",
+        "Source Method": "Lorg/cocos2dx/cpp/PlatformConfig;->getDeviceId:()Ljava/lang/String;",
+        "Reasoning": "The data is passed to other methods using method invocations.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Log the data using Android's Log class",
+        "Source Method": "Lorg/cocos2dx/cpp/PlatformConfig;->getDeviceId:()Ljava/lang/String;",
+        "Reasoning": "The data is ultimately logged using Android's Log class.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/cocos2dx/cpp/PlatformConfig;->getDeviceId:()Ljava/lang/String; --> Stored in registers and variables within the method --> Passed to other methods --> Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I;",
+        "Reasoning": "The data is collected from sensitive APIs, stored in registers and variables, passed to other methods, and finally logged using Android's Log class."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

@@ -1,0 +1,46 @@
+
+Processing folder: D:\UBCBAPK_Methods\Button3
+Using methods file: D:\UBCBAPK_Methods\Button3\Button3_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V']
+[SUMMARY] Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V => Sensitive user personal data (IMEI) is originated from the TelephonyManager and stored in MainActivity's imei field. The data is then passed to Button2Listener through OnClickListener.
+[SUMMARY] Lde/ecspride/Button2Listener;->onClick:(Landroid/view/View;)V => No summary provided.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Sensitive user personal data (IMEI)"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "IMEI is originated from TelephonyManager",
+            "Source Method": "Lde/ecspride/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+            "Reasoning": "The method returns the device ID, which is sensitive user personal data.",
+            "Action": "Stored in MainActivity's imei field"
+        },
+        {
+            "Step": "IMEI is passed to Button2Listener through OnClickListener",
+            "Source Method": "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V",
+            "Reasoning": "The method calls the onClick() method of Button2Listener, passing the tainted data (IMEI) as an argument.",
+            "Action": "Passed to Button2Listener"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V",
+        null
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "TelephonyManager.getDeviceId() --> MainActivity.findViewById(...) --> Button1Listener.onClick(...) --> Button2Listener.onClick(...)",
+            "Reasoning": "The IMEI is originated from TelephonyManager and stored in MainActivity's imei field. Then, it's passed to Button1Listener through OnClickListener. Finally, the tainted data is passed to Button2Listener."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Button3\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Button3\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Button3\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Button3\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\Button3\output\sensitive_only.json
+Total time for folder: 14.75 seconds

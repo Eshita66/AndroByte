@@ -1,0 +1,56 @@
+
+ Processing folder: D:\UBCBAPK_Methods\UnreachableCode
+ Using methods file: D:\UBCBAPK_Methods\UnreachableCode\UnreachableCode_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/UnreachableCode;->unrechable:()V']
+[SUMMARY] Lde/ecspride/UnreachableCode;->unrechable:()V => {
+    "Summary": [
+        "The method retrieves the device ID via TelephonyManager and logs it using Log.i, which may expose sensitive information."
+    ],
+    "Next Methods": [
+        "Lde/ecspride/UnreachableCode;->getBaseContext()Landroid/content/Context;",
+        "Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+        "Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\UnreachableCode\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\UnreachableCode\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\UnreachableCode\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved via TelephonyManager",
+                "Source Method": "Lde/ecspride/UnreachableCode;->unrechable:()V",
+                "Reasoning": "The method explicitly retrieves the device ID from TelephonyManager, which is a sensitive source.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is logged using Log.i",
+                "Source Method": "Lde/ecspride/UnreachableCode;->unrechable:()V",
+                "Reasoning": "The method logs the device ID using Log.i, which is a potential sink for sensitive data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log.i"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/UnreachableCode;->unrechable:()V --> android.util.Log.i",
+                "Reasoning": "The device ID is retrieved from TelephonyManager and directly passed to Log.i without being overwritten, maintaining taint."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\UnreachableCode\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\UnreachableCode\output\sensitive_only.json
+Total time for folder: 123.39 seconds

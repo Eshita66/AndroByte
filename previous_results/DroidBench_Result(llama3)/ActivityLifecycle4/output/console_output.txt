@@ -1,0 +1,51 @@
+
+Processing folder: D:\UBCBAPK_Methods\ActivityLifecycle4
+Using methods file: D:\UBCBAPK_Methods\ActivityLifecycle4\ActivityLifecycle4_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity;->onResume:()V']
+[SUMMARY] Lde/ecspride/MainActivity;->onResume:()V => The method `onResume` originates user personal data by obtaining the device ID using `getSystemService(Ljava/lang/String;)Ljava/lang/Object;` which accesses the TelephonyManager. This TelephonyManager is used to retrieve the device ID (`getDeviceId()`). This device ID, a form of Personally Identifiable Information (PII), is then stored within the `MainActivity` object itself, specifically in the `imei` field. This represents a potential data leak as the device ID is stored persistently within the application.
+[SUMMARY] Lde/ecspride/MainActivity;->onPause:()V => This method initiates the sending of an SMS message containing the Imei (+49 1234) via the SmsManager. This directly involves the collection and transmission of a potentially sensitive data point (IMEI) which is a unique identifier associated with the device. The Imei is retrieved from the `imei` field of the `MainActivity` class. The SMS sending operation itself is a potential data leak if the Imei is not properly sanitized or handled. The method does not appear to sanitize or filter the Imei before sending.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID (IMEI: +49 1234)"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Device ID retrieved via TelephonyManager.",
+            "Source Method": "Lde/ecspride/MainActivity;->onResume:()V",
+            "Reasoning": "The `onResume` method uses `getSystemService(Ljava/lang/String;)Ljava/lang/Object;` to obtain the device ID, specifically using the TelephonyManager to call `getDeviceId()`.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "IMEI stored in MainActivity object.",
+            "Source Method": "Lde/ecspride/MainActivity;->onResume:()V",
+            "Reasoning": "The retrieved device ID is stored in the `imei` field of the `MainActivity` object.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "IMEI transmitted via SMS.",
+            "Source Method": "Lde/ecspride/MainActivity;->onPause:()V",
+            "Reasoning": "The `onPause` method retrieves the IMEI from the `MainActivity` object and then sends it as an SMS message using the SmsManager.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->onPause:()V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/MainActivity;->onResume:()V --> Lde/ecspride/MainActivity;->onPause:()V",
+            "Reasoning": "The `onResume` method retrieves the device ID and stores it. The `onPause` method then retrieves this stored device ID and transmits it via SMS. This represents a direct flow of PII from the application to a potentially insecure channel."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ActivityLifecycle4\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ActivityLifecycle4\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ActivityLifecycle4\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ActivityLifecycle4\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ActivityLifecycle4\output\sensitive_only.json
+Total time for folder: 19.24 seconds

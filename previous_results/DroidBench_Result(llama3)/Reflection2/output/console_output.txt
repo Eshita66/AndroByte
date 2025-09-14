@@ -1,0 +1,54 @@
+
+ Processing folder: D:\UBCBAPK_Methods\Reflection2
+ Using methods file: D:\UBCBAPK_Methods\Reflection2\Reflection2_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "This method creates an instance of de.ecspride.BaseClass, retrieves the IMEI using TelephonyManager, and sends a SMS message.",
+    "Next Methods": [
+        "Landroid/app/Activity;->onCreate(Landroid/os/Bundle;)V",
+        "Lde/ecspride/BaseClass;->foo()Ljava/lang/String;",
+        "Landroid/telephony/SmsManager;->getDefault()Landroid/telephony/SmsManager;",
+        "Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\Reflection2\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\Reflection2\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\Reflection2\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve IMEI from TelephonyManager",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method creates an instance of de.ecspride.BaseClass, retrieves the IMEI using TelephonyManager.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send SMS message with tainted IMEI",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method sends a SMS message with the retrieved IMEI.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendSMS:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->sendSMS:(Ljava/lang/String;)V",
+                "Reasoning": "The tainted IMEI is passed from the onCreate method to the sendSMS method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\Reflection2\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\Reflection2\output\sensitive_only.json
+Total time for folder: 24.48 seconds

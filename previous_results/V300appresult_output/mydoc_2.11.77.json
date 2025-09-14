@@ -1,0 +1,105 @@
+[
+  {
+    "Data Types Collected": [
+      "Android ID",
+      "Device Serial Number",
+      "IMEI (International Mobile Equipment Identity)",
+      "UUID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieves Android ID from Context object",
+        "Source Method": "Lcom/segment/analytics/c/c;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method uses getContentResolver() to retrieve Android ID",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Checks if Android ID matches known values and returns it if not",
+        "Source Method": "Lcom/segment/analytics/c/c;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method checks for specific Android IDs and returns the one that doesn't match",
+        "Action": "Returned"
+      },
+      {
+        "Step": "Obtains device serial number using Build.SERIAL",
+        "Source Method": "Lcom/segment/analytics/c/c;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method attempts to get the device's serial number if Android ID is null or empty",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Checks for READ_PHONE_STATE permission and retrieves IMEI using TelephonyManager object",
+        "Source Method": "Lcom/segment/analytics/c/c;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method tries to get the device's IMEI if serial number retrieval fails",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Generates random UUID as fallback",
+        "Source Method": "Lcom/segment/analytics/c/c;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method generates a random UUID if all other attempts fail",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data from getPackageManager() and hasSystemFeature() methods of Context object",
+        "Source Method": "Lcom/segment/analytics/c/c;->b:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "Method uses PackageManager to access sensitive information",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Originates user personal data from CharSequence object",
+        "Source Method": "Lcom/segment/analytics/c/c;->d:(Ljava/lang/CharSequence;)I",
+        "Reasoning": "Method uses length() method of CharSequence to determine its length",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data from a sensitive API call",
+        "Source Method": "Lcom/segment/analytics/c/c;->a:(Ljava/lang/CharSequence;)Z",
+        "Reasoning": "Method uses a sensitive API call to originate user personal data",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/segment/analytics/c/c;->a:(Landroid/content/Context;)Ljava/lang/String--> Lcom/segment/analytics/c/c;->b:(Landroid/content/Context; Ljava/lang/String;)Z --> null",
+        "Reasoning": "Data is propagated from Android ID to PackageManager, but no sinks are identified"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WiFi SSID from broadcast receiver",
+        "Source Method": "Lorg/otwebrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by getting the WiFi SSID.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Pass WiFi SSID to other methods",
+        "Source Method": "Lorg/otwebrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in register v0 and passed to other methods via method invocations.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Return WiFi SSID as a string",
+        "Source Method": "Lorg/otwebrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point when it is returned as a string.",
+        "Action": "Returned as string"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/otwebrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/otwebrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> Stored in register v0 --> Passed via method invocation --> Returned as string",
+        "Reasoning": "The WiFi SSID is collected from a broadcast receiver, stored in a register, passed to other methods, and finally returned as a string."
+      }
+    ],
+    "Label": "leak"
+  }
+]

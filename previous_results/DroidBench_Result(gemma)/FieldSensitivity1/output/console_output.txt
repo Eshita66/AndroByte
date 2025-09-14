@@ -1,0 +1,38 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\FieldSensitivity1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\FieldSensitivity1\FieldSensitivity1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;
+Processed summary for Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;: {
+    "Summary": "This method sets the 'secret' field of a Datacontainer object with the value obtained from the TelephonyManager's getSimSerialNumber() method. This method originates user data by accessing the device's SIM serial number through the Android TelephonyManager API. The SIM serial number is then stored within the Datacontainer object. No sinks were identified in this method.",
+    "Next Methods": []
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\FieldSensitivity1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\FieldSensitivity1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\FieldSensitivity1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "SimSerialNumber"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "getSimSerialNumber() called",
+                "Source Method": "Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;",
+                "Reasoning": "The method `setTaint` originates from `getSimSerialNumber()`, which accesses the device's SIM serial number.",
+                "Action": "SIM serial number obtained"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " [Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer; --> ... ]",
+                "Reasoning": "The SIM serial number obtained from `getSimSerialNumber()` is stored in the `Datacontainer` object via the `setTaint` method. No sinks are identified."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\FieldSensitivity1\output\refined_method_summaries.json
+Saved 0 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\FieldSensitivity1\output\sensitive_only.json
+Total summary time: 8.44147777557373 seconds

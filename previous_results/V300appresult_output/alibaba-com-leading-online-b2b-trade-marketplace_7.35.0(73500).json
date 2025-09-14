@@ -1,0 +1,1225 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address",
+        "Source Method": "Lm31;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method retrieves MAC address",
+        "Action": "Stored in shared preferences"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lm31;->e(...) --> Shared Preferences",
+        "Reasoning": "MAC address retrieved by the method is stored in shared preferences"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Device ID",
+        "Source Method": "Lm31;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `Lm31;->f(...)` uses `TelephonyManager` API to retrieve device ID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lm31;->f(...) --> [Stored in Device ID]",
+        "Reasoning": "Device ID is retrieved and stored in the application memory."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract IMEI from telephony manager",
+        "Source Method": "Lvx0;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the given method signature.",
+        "Action": "Stored in shared preference"
+      },
+      {
+        "Step": "Retrieve IMEI from shared preference",
+        "Source Method": "Lvx0;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "IMEI is retrieved from the shared preference.",
+        "Action": "Returned as result"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lvx0;->b:(Landroid/content/Context;)Ljava/lang/String; --> Shared Preference --> null",
+        "Reasoning": "The IMEI is stored in the shared preference and not logged, transmitted, or written to a file."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Country Name",
+      "Timestamp"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data from LBSCountryInfo",
+        "Source Method": "Lg3;->m:(Landroid/location/Location; Landroid/alibaba/support/base/service/pojo/LBSCountryInfo;)V",
+        "Reasoning": "Method signature matches",
+        "Action": "Stored in HashMap"
+      },
+      {
+        "Step": "Pass location data to ActivityRfqCustomizePostForm",
+        "Source Method": "Lg3;->m:(Landroid/location/Location; Landroid/alibaba/support/base/service/pojo/LBSCountryInfo;)V",
+        "Reasoning": "Method call within the same class",
+        "Action": "Passed as argument"
+      },
+      {
+        "Step": "Handle location update in ActivityRfqCustomizePostForm",
+        "Source Method": "ActivityRfqCustomizePostForm->onLocateUpdate",
+        "Reasoning": "Method call within the same class",
+        "Action": "Passed to unspecified method"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lg3;->m --> ActivityRfqCustomizePostForm->onLocateUpdate",
+        "Reasoning": "Data is passed from method to method within the same class"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected from the Location object.",
+        "Source Method": "Lg3;->onLocated:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in local variables."
+      },
+      {
+        "Step": "User location data is passed to the method Lg3;->q.",
+        "Source Method": "Lg3;->onLocated:(Landroid/location/Location;)V",
+        "Reasoning": "Invoke-direct instruction.",
+        "Action": "Passed as argument."
+      },
+      {
+        "Step": "User location data is logged to the console.",
+        "Source Method": "Lg3;->q",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lg3;->q"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lg3;->onLocated --> Lg3;->q",
+        "Reasoning": "Overall Data Flow steps."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "NetworkStatusHelper$NetworkStatus"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is originated from NetworkStatusMonitor",
+        "Source Method": "Lanet/channel/status/NetworkStatusMonitor;->a:()V",
+        "Reasoning": "checkNetworkStatus() method",
+        "Action": "Stored in a field"
+      },
+      {
+        "Step": "Sensitive data is logged",
+        "Source Method": "Lanet/channel/status/NetworkStatusMonitor;->a:()V",
+        "Reasoning": "ALog.g() method",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lanet/channel/status/NetworkStatusMonitor;->a:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lanet/channel/status/NetworkStatusMonitor;->a:()V --> Lanet/channel/status/NetworkStatusMonitor;->a:()V",
+        "Reasoning": "Sensitive data is stored in a field and then logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract BSSID from WiFi connection",
+        "Source Method": "Lcom/alibaba/analytics/core/logbuilder/LogAssemble;->getBssID:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the source method.",
+        "Action": "Extracted"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve WiFi MAC address",
+        "Source Method": "Lcom/alibaba/analytics/core/network/NetworkUtil;->getWifiMacID22:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method returns WiFi MAC address if available.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "TelephonyManager API"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting IMEI using TelephonyManager API",
+        "Source Method": "Lcom/alibaba/analytics/utils/PhoneInfoUtils;->getImeiBySystem:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method `getImeiBySystem` uses the `TelephonyManager` API to retrieve the IMEI.",
+        "Action": "Stored in `mSystemImei` field"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/alibaba/analytics/utils/PhoneInfoUtils;->getImeiBySystem:(Landroid/content/Context;)Ljava/lang/String; --> mSystemImei",
+        "Reasoning": "The IMEI is stored in the `mSystemImei` field within the `PhoneInfoUtils` class."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve SSID",
+        "Source Method": "Lmh1;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method retrieves the SSID using WifiManager API",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lmh1;->a:(Landroid/content/Context;)Ljava/lang/String; --> null",
+        "Reasoning": "SSID is retrieved but not logged, transmitted, or displayed"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.content.Context"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is extracted from the `android.content.Context` object.",
+        "Source Method": "Lcom/xiaomi/push/cs;->a:()Ljava/lang/String;",
+        "Reasoning": "Method `a()` of class `Lcom/xiaomi/push/cs` retrieves sensitive user data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Network type and connection information are derived from the extracted data.",
+        "Source Method": "Lcom/xiaomi/push/cs;->a:()Ljava/lang/String;",
+        "Reasoning": "Sensitive data is used to determine network information.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/xiaomi/push/cs;->a:()Ljava/lang/String; --> Transmitted",
+        "Reasoning": "Sensitive data is transmitted through network calls."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "TelephonyManager"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "TelephonyManager data is collected.",
+        "Source Method": "Lcom/xiaomi/push/i;->g:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Sensitive user personal data is originated from the TelephonyManager.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is passed to the c() method.",
+        "Source Method": "Lcom/xiaomi/push/i;->g:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Data is passed to the c() method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is potentially logged using b.a() method.",
+        "Source Method": "Lcom/xiaomi/push/i;->g:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Data is potentially logged using b.a() method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/xiaomi/push/i;->b(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/xiaomi/push/i;->g:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/xiaomi/push/i;->c(Ljava/lang/String;)Ljava/lang/String; --> Lcom/xiaomi/push/i;->b(Ljava/lang/String;)V",
+        "Reasoning": "TelephonyManager data is collected, passed to the c() method, and potentially logged using b.a() method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Wi-Fi BSSID",
+        "Source Method": "Lio/flutter/plugins/connectivity/Connectivity;->getWifiBSSID()",
+        "Reasoning": "Method `getWifiBSSID()` explicitly retrieves user's Wi-Fi BSSID.",
+        "Action": "Stored in `v0`"
+      },
+      {
+        "Step": "Return Wi-Fi BSSID",
+        "Source Method": "Lio/flutter/plugins/connectivity/Connectivity;->getWifiBSSID()",
+        "Reasoning": "Method returns the Wi-Fi BSSID stored in `v0`.",
+        "Action": "Returned as a string"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lio/flutter/plugins/connectivity/Connectivity;->getWifiBSSID() --> Return",
+        "Reasoning": "The Wi-Fi BSSID is retrieved and returned as a string without any further processing or storage."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wifi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Wifi SSID",
+        "Source Method": "Lio/flutter/plugins/connectivity/Connectivity;->getWifiName:()Ljava/lang/String;",
+        "Reasoning": "Method returns the Wifi SSID as a string.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lio/flutter/plugins/connectivity/Connectivity;->getWifiName:()Ljava/lang/String; --> Stored",
+        "Reasoning": "The Wifi SSID is retrieved and stored in memory."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve IMEI from TelephonyManager",
+        "Source Method": "Lcom/taobao/tao/log/environment/EnvironmentInfo;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the summary.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract Device ID",
+        "Source Method": "Ly54;->e:(Landroid/content/Context;)Z",
+        "Reasoning": "TelephonyManager provides device ID",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Compare with Predefined Value",
+        "Source Method": "Ly54;->e:(Landroid/content/Context;)Z",
+        "Reasoning": "Comparison with predefined value",
+        "Action": "Decision Point"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Ly54;->e:(Landroid/content/Context;)Z --> Decision Point",
+        "Reasoning": "Based on comparison, the method returns either true or false"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi signal strength (integer)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Wi-Fi signal strength",
+        "Source Method": "Lcom/huawei/hms/framework/common/NetworkUtil;->getWifiRssi:(Landroid/content/Context;)I",
+        "Reasoning": "The method `getWifiRssi()` explicitly retrieves the Wi-Fi signal strength.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/huawei/hms/framework/common/NetworkUtil;->getWifiRssi:(Landroid/content/Context;)I --> Collected",
+        "Reasoning": "The Wi-Fi signal strength is collected by the `getWifiRssi()` method and not further processed or sent anywhere."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve WiFi RSSI level",
+        "Source Method": "Lcom/huawei/hms/framework/common/NetworkUtil;->getWifiRssiLevel:(Landroid/content/Context;)I",
+        "Reasoning": "The method retrieves the WiFi RSSI level without accessing any sensitive user personal data.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "appKey",
+      "ttid",
+      "model",
+      "brand",
+      "exts",
+      "macAddress",
+      "imei",
+      "imsi"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Data Collection",
+        "Source Method": "Lcom/taobao/accs/data/Message;->buildBindApp(...)",
+        "Reasoning": "Data is collected from various fields in the `buildBindApp()` method.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data Transformation",
+        "Source Method": "Lcom/taobao/accs/data/Message;->buildBindApp(...)",
+        "Reasoning": "Collected data is passed through the `build()` method without any transformation.",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Data Return",
+        "Source Method": "Lcom/taobao/accs/data/Message;->buildBindApp(...)",
+        "Reasoning": "The transformed data is returned as an object of type `Message`.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/taobao/accs/data/Message;->buildBindApp(...) --> Lcom/taobao/accs/data/Message;->build(...) --> null",
+        "Reasoning": "Collected data is transformed and returned without being sent to any sink points."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Reading Phone Number",
+        "Source Method": "Lcom/huawei/hianalytics/ab/cd/bc/cd;->fg:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method reads the user's phone number using the READ_PHONE_STATE permission.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/huawei/hianalytics/ab/cd/bc/cd;->fg:(Landroid/content/Context;)Ljava/lang/String; --> Stored",
+        "Reasoning": "The phone number is read and stored in memory."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Device ID is retrieved from TelephonyManager",
+        "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+        "Reasoning": "Method call",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Device ID is passed to qw2 class",
+        "Source Method": "Lqw2;->b(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)[B",
+        "Reasoning": "Method argument",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Device ID is logged using ALog",
+        "Source Method": "Lqw2;->a(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)[B",
+        "Reasoning": "Method call",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lqw2;->a(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)[B"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String; --> Lqw2;->b(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)[B --> Lqw2;->a(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)[B",
+        "Reasoning": "Data is passed from TelephonyManager to qw2 class and then logged using ALog"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Network Information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Network information is retrieved using `getActiveNetworkInfo()`",
+        "Source Method": "Lmtopsdk/xstate/network/NetworkStateReceiver;->c:(Landroid/content/Context;)V",
+        "Reasoning": "Sensitive data originates from `getActiveNetworkInfo()`",
+        "Action": "Stored in `b` and `c` variables"
+      },
+      {
+        "Step": "Network information is logged with `INFO` level",
+        "Source Method": "Lmtopsdk/xstate/network/NetworkStateReceiver;->c:(Landroid/content/Context;)V",
+        "Reasoning": "Sensitive data is logged",
+        "Action": "Logged with `INFO` level"
+      }
+    ],
+    "All Sinks": [
+      "Lmtopsdk/xstate/network/NetworkStateReceiver;->c:(Landroid/content/Context;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "NetworkStateReceiver;->c(...) --> NetworkStateReceiver;->c(...)",
+        "Reasoning": "Network information is retrieved, analyzed, and logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wifi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method call",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method `getWifiSSID` retrieves the WiFi SSID.",
+        "Action": "Retrieved"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> null",
+        "Reasoning": "The WiFi SSID is retrieved but not logged, transmitted, or stored."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract Wi-Fi SSID",
+        "Source Method": "Lorg/webrtc/alimeeting/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "Method `getWifiSSID()` directly extracts the Wi-Fi SSID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/webrtc/alimeeting/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> Stored",
+        "Reasoning": "The Wi-Fi SSID is extracted and stored in the method's local variable."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve IMEI",
+        "Source Method": "Lvu5;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "TelephonyManager.getDeviceId() is used to retrieve IMEI.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Encode IMEI",
+        "Source Method": "Lvu5;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Base64.encodeToString() is used to encode IMEI.",
+        "Action": "Encoded"
+      },
+      {
+        "Step": "Save IMEI",
+        "Source Method": "Lvu5;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "MtopConfigStore.put() is used to save IMEI.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lvu5;->c:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lvu5;->c:(Landroid/content/Context;)Ljava/lang/String; --> MtopConfigStore.put()",
+        "Reasoning": "IMEI is retrieved, encoded, and saved to MtopConfigStore."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "PHONE_INFO_STORE configuration store"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is retrieved from the PHONE_INFO_STORE configuration store.",
+        "Source Method": "Lvu5;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `e()` retrieves user personal data from the PHONE_INFO_STORE configuration store.",
+        "Action": "Stored in PHONE_INFO_STORE configuration store"
+      },
+      {
+        "Step": "User personal data is encoded in Base64 format.",
+        "Source Method": "Lvu5;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Encoded in Base64 format before storing.",
+        "Action": "Encoded in Base64 format"
+      }
+    ],
+    "All Sinks": [
+      "Lvu5;->e:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lvu5;->e:(Landroid/content/Context;)Ljava/lang/String; --> Lvu5;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "User personal data is retrieved from the PHONE_INFO_STORE configuration store, encoded in Base64 format, and stored in the PHONE_INFO_STORE configuration store."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting IMEI",
+        "Source Method": "Lvu5;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "TelephonyManager.getDeviceId() collects IMEI",
+        "Action": "Stored in v0"
+      },
+      {
+        "Step": "Checking IMEI",
+        "Source Method": "Lvu5;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Checking if IMEI is empty",
+        "Action": "Logging error if empty"
+      },
+      {
+        "Step": "Returning IMEI",
+        "Source Method": "Lvu5;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Returning IMEI",
+        "Action": "Returning value"
+      }
+    ],
+    "All Sinks": [
+      "Lvu5;->f:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lvu5;->f:(Landroid/content/Context;)Ljava/lang/String; --> Logging Error",
+        "Reasoning": "IMEI is collected, checked for emptiness, and logged in case of emptiness"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC addresses"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "MAC address is retrieved from the device context.",
+        "Source Method": "Lcom/alibaba/intl/usergrowth/uga/util/MacUtil;->getMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "API calls to getAddressByInterface() and getSystemService() are used to retrieve the MAC address.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "MAC address is returned from the method.",
+        "Source Method": "Lcom/alibaba/intl/usergrowth/uga/util/MacUtil;->getMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Return-object instruction is used to return the MAC address.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/alibaba/intl/usergrowth/uga/util/MacUtil;->getMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> null",
+        "Reasoning": "MAC address is returned from the method but not explicitly logged, written to a file, or sent over a network."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "telephone_id"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Reading telephone ID",
+        "Source Method": "Lcom/alibaba/intl/usergrowth/uga/util/UgaUtil;->getTelelphoneId:(Landroid/content/Context; I)Ljava/lang/String;",
+        "Reasoning": "Method reads the user's telephone ID",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/alibaba/intl/usergrowth/uga/util/UgaUtil;->getTelelphoneId:(Landroid/content/Context; I)Ljava/lang/String; --> null",
+        "Reasoning": "The method reads the telephone ID but does not write it anywhere."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieving SSID",
+        "Source Method": "Lcom/alibaba/sharkupload/core/netstatus/NetworkStatusProvider;->getSSID:()Ljava/lang/String;",
+        "Reasoning": "The `getSSID()` method retrieves the SSID.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Logging SSID",
+        "Source Method": "Lcom/alibaba/sharkupload/core/netstatus/NetworkStatusProvider;->getSSID:()Ljava/lang/String;",
+        "Reasoning": "The SSID is logged using the `LogProxy` instance.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/alibaba/sharkupload/core/netstatus/NetworkStatusProvider;->log:Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/alibaba/sharkupload/core/netstatus/NetworkStatusProvider;->getSSID:()Ljava/lang/String; --> Lcom/alibaba/sharkupload/core/netstatus/NetworkStatusProvider;->log:Ljava/lang/String;",
+        "Reasoning": "The SSID is retrieved by the `getSSID()` method and then logged using the `log()` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve SSID from WifiManager",
+        "Source Method": "Lcom/alibaba/tcms/network/NetworkManager;->getSSID:()Ljava/lang/String;",
+        "Reasoning": "Method `getSSID` explicitly retrieves the SSID",
+        "Action": "Stored in `v0`"
+      },
+      {
+        "Step": "Return SSID",
+        "Source Method": "Lcom/alibaba/tcms/network/NetworkManager;->getSSID:()Ljava/lang/String;",
+        "Reasoning": "Method returns the SSID stored in `v0`",
+        "Action": "Returned as result"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/alibaba/tcms/network/NetworkManager;->getSSID:()Ljava/lang/String; --> Return",
+        "Reasoning": "The SSID is returned as the result of the `getSSID` method"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve IMEI",
+        "Source Method": "Lcom/alibaba/wxlib/util/PhoneInfo;->getImeiByDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `getImeiByDeviceId()` explicitly retrieves the IMEI.",
+        "Action": "Stored in variable"
+      },
+      {
+        "Step": "Trim IMEI",
+        "Source Method": "Lcom/alibaba/wxlib/util/PhoneInfo;->getImeiByDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "IMEI is trimmed to remove any leading or trailing spaces.",
+        "Action": "No change to data type"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi MAC Address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC Address",
+        "Source Method": "Lcom/alibaba/wxlib/util/PhoneInfo;->getLocalMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method call to getLocalMacAddress()",
+        "Action": "Stored in v0 register"
+      },
+      {
+        "Step": "Validate MAC Address",
+        "Source Method": "Lcom/alibaba/wxlib/util/PhoneInfo;->getLocalMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Regular expression check for emptiness and validity",
+        "Action": "Validation result used in subsequent steps"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/alibaba/wxlib/util/PhoneInfo;->getLocalMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> Validation --> null",
+        "Reasoning": "MAC address is retrieved but not explicitly sent or logged anywhere"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Read device ID from TelephonyManager",
+        "Source Method": "Lcom/alipay/alipaysecuritysdk/common/collector/b;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "READ_PHONE_STATE permission is granted",
+        "Action": "Stored in v2 register"
+      },
+      {
+        "Step": "Return device ID as string",
+        "Source Method": "Lcom/alipay/alipaysecuritysdk/common/collector/b;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Return value of v2 register",
+        "Action": "Returned as string"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/alipay/alipaysecuritysdk/common/collector/b;->a:(Landroid/content/Context;)Ljava/lang/String; --> Return",
+        "Reasoning": "The method reads the device ID and returns it as a string"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiManager.getConnectionInfo().getMacAddress()"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WifiManager.getConnectionInfo().getMacAddress() is collected.",
+        "Source Method": "Lcom/alipay/alipaysecuritysdk/common/collector/b;->l:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method argument of l() method.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is passed to Lcom/alipay/alipaysecuritysdk/common/collector/b;->b(Ljava/lang/String;)Ljava/lang/String;.",
+        "Source Method": "Lcom/alipay/alipaysecuritysdk/common/collector/b;->l:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method return value of l() method.",
+        "Action": "Sent to sink point"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/alipay/alipaysecuritysdk/common/collector/b;->b(Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " WifiManager.getConnectionInfo().getMacAddress() --> Lcom/alipay/alipaysecuritysdk/common/collector/b;->b(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Data is collected in l() method and sent to Lcom/alipay/alipaysecuritysdk/common/collector/b;->b(Ljava/lang/String;)Ljava/lang/String; for logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "SIM serial number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "TelephonyManager retrieves SIM serial number",
+        "Source Method": "Lcom/alipay/alipaysecuritysdk/common/collector/b;->m:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature and summary description",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " TelephonyManager(...) --> Stored",
+        "Reasoning": "Stepwise explanation of data flow"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain BSSID",
+        "Source Method": "Lcom/alipay/alipaysecuritysdk/common/collector/b;->q:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method attempts to obtain the BSSID of the connected WiFi network.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/alipay/alipaysecuritysdk/common/collector/b;->q:(Landroid/content/Context;)Ljava/lang/String; --> null]",
+        "Reasoning": "The BSSID is collected but not stored, logged, or transmitted."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Hardware",
+      "Product",
+      "Fingerprint",
+      "Phone State"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data",
+        "Source Method": "Lcom/alipay/alipaysecuritysdk/common/collector/c;->a:(Landroid/content/Context;)Z",
+        "Reasoning": "Method `a()` collects user personal data from device hardware, product, fingerprint, and phone state.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Transmit data to `com.alipay.alipaysecuritysdk.common.e.e`",
+        "Source Method": "Lcom/alipay/alipaysecuritysdk/common/collector/c;->a:(Landroid/content/Context;)Z",
+        "Reasoning": "Collected data is transmitted to `com.alipay.alipaysecuritysdk.common.e.e` for further processing.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Extract single character",
+        "Source Method": "Lcom/alipay/alipaysecuritysdk/common/e/e;->c:(Ljava/lang/String;)Z",
+        "Reasoning": "Method `c()` extracts a single character from the input string.",
+        "Action": "Processed"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/alipay/alipaysecuritysdk/common/collector/c;->a:(Landroid/content/Context;)Z --> com.alipay.alipaysecuritysdk.common.e.e --> null",
+        "Reasoning": "Collected data is transmitted to `com.alipay.alipaysecuritysdk.common.e.e` but no sink points are identified in the provided summaries."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID",
+      "SSID",
+      "RSSI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting Network and WiFi Information",
+        "Source Method": "Lcom/alipay/alipaysecuritysdk/common/collector/d;->a:(Landroid/content/Context;)Lcom/alipay/alipaysecuritysdk/common/collector/d;",
+        "Reasoning": "Method collects BSSID, SSID, and RSSI.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/alipay/alipaysecuritysdk/common/collector/d;->a:(Landroid/content/Context;)Lcom/alipay/alipaysecuritysdk/common/collector/d; --> null",
+        "Reasoning": "Collected data is not explicitly sent or logged."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected from the Location object.",
+        "Source Method": "Lcom/facebook/GraphRequest;->X:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in a bundle."
+      },
+      {
+        "Step": "Location is used in a GraphRequest.",
+        "Source Method": "Lcom/facebook/GraphRequest;->X:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Passed to the GraphRequest callback method."
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->X(...) --> GraphRequest callback method",
+        "Reasoning": "Overall data flow summary."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "LocationPackage"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user location data is extracted from LocationPackage.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->c:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle;",
+        "Reasoning": "Method summary specifies that LocationPackage contains sensitive user location data.",
+        "Action": "Stored in LocationPackage object"
+      },
+      {
+        "Step": "LocationPackage is included in JSON object.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->c:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle;",
+        "Reasoning": "Method summary specifies that LocationPackage is included in JSON object.",
+        "Action": "Transmitted as request parameter 'location'"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/places/internal/NetworkRequestManager;->a(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/PlaceManager;->c(...) --> Lcom/facebook/places/internal/NetworkRequestManager;->a(...)",
+        "Reasoning": "LocationPackage is passed from PlaceManager to NetworkRequestManager, where it is transmitted as a request parameter."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user location from PlaceSearchRequestParams",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->j:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Sensitive user location data is obtained from the PlaceSearchRequestParams object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass location data to GraphRequest",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->j:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Location data is passed to the GraphRequest object.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Send location data to Facebook Graph API",
+        "Source Method": "Lcom/facebook/GraphRequest",
+        "Reasoning": "The GraphRequest object sends the location data to the Facebook Graph API.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/PlaceManager;->j(...) --> Lcom/facebook/GraphRequest --> null",
+        "Reasoning": "Location data is obtained from PlaceSearchRequestParams, passed to GraphRequest, and sent to Facebook Graph API."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve last known location",
+        "Source Method": "Lcom/facebook/places/internal/LocationScannerImpl;->b:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "Method documentation specifies retrieving location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check time window",
+        "Source Method": "Lcom/facebook/places/internal/LocationScannerImpl;->b:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "Method logic checks for location within time window.",
+        "Action": "Not Transmitted"
+      },
+      {
+        "Step": "Return location or null",
+        "Source Method": "Lcom/facebook/places/internal/LocationScannerImpl;->b:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "Method returns location if within time window, null otherwise.",
+        "Action": "Return Value"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/internal/LocationScannerImpl;->b:(Ljava/lang/String;)Landroid/location/Location; --> Return Value",
+        "Reasoning": "Location is returned as a result of the method call."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID",
+      "SSID",
+      "RSSI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method call",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The method `getConnectedWifi` collects user's Wi-Fi network information.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Object creation",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The method creates a `WifiScanResult` object from the collected data.",
+        "Action": "Created"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult; --> Created --> null",
+        "Reasoning": "The collected Wi-Fi network information is stored in a `WifiScanResult` object but not further processed or transmitted."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

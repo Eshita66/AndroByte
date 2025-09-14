@@ -1,0 +1,45 @@
+[
+    {
+        "Data Types Collected": [
+            "user personal data"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get location information",
+                "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive APIs are called to get location information.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Pass location data to `getBestProvider` method",
+                "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Location data is passed as an argument.",
+                "Action": "Passed"
+            },
+            {
+                "Step": "Pass location provider to `getLastKnownLocation` method",
+                "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The best provider is passed as an argument.",
+                "Action": "Passed"
+            },
+            {
+                "Step": "Log location data",
+                "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Location data reaches a sink point, which is the logging operation.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V --> getBestProvider --> getLastKnownLocation --> Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The location data is passed from `onCreate` to `getBestProvider`, then to `getLastKnownLocation`, and finally logged in the same method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

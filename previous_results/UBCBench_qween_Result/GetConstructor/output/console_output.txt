@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\GetConstructor
+Using methods file: D:\UBCBAPK_Methods\GetConstructor\GetConstructor_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V
+Processed summary for Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V: {
+    "Summary": "The method retrieves the device ID using Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String; via the Context's getSystemService, stores it in register v2, and logs it using Landroid/util/Log;->v(Ljava/lang/String; Ljava/lang/String;)I, which is a logging sink. No further data propagation occurs as the sensitive data reaches a sink.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\GetConstructor\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\GetConstructor\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\GetConstructor\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieves device ID",
+                "Source Method": "Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V",
+                "Reasoning": "The method calls getSystemService to obtain TelephonyManager, which then invokes getDeviceId() to retrieve the device ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logs device ID",
+                "Source Method": "Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V",
+                "Reasoning": "The retrieved device ID is passed to Log.v() as a sensitive argument, which is a logging sink.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->v(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V --> Landroid/util/Log;->v(Ljava/lang/String; Ljava/lang/String;)I",
+                "Reasoning": "The device ID is retrieved via getSystemService, stored in register v2, and directly passed to Log.v() as a tainted argument without overwriting, fulfilling the sink condition."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\GetConstructor\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\GetConstructor\output\sensitive_only.json
+Total summary time: 21.055341005325317 seconds

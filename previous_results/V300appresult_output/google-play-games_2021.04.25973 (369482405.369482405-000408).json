@@ -1,0 +1,70 @@
+[
+  {
+    "Data Types Collected": [
+      "android/content/Context",
+      "LocationManager",
+      "PowerManager"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data through API calls to ACCESS_COARSE_LOCATION and ACCESS_FINE_LOCATION.",
+        "Source Method": "Lpx;->K:(Landroid/content/Context; I)I",
+        "Reasoning": "The method originates sensitive user personal data through API calls.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Propagates data to other methods via method invocations.",
+        "Source Method": "Lpx;->W:(Landroid/content/Context;)Lps;",
+        "Reasoning": "The method originates user personal data by calling the sensitive API android/content/Context.",
+        "Action": "Stored in register v0 and variable Z of class px"
+      },
+      {
+        "Step": "Originates user personal data by invoking the Context.getApplicationContext() API and using it to create a LocationManager instance.",
+        "Source Method": "Lpx;->V:(Landroid/content/Context;)Lps;",
+        "Reasoning": "The method originates user personal data by invoking the Context.getApplicationContext() API.",
+        "Action": "Stored in registers (v0, v1) and variables (Lpx;->Y Lps)"
+      },
+      {
+        "Step": "Originates user personal data by using the `getSystemService` API to retrieve the PowerManager.",
+        "Source Method": "Lpq;-><init>:(Lpx; Landroid/content/Context;)V",
+        "Reasoning": "The current method originates user personal data by using the `getSystemService` API.",
+        "Action": "Stored in the `b` field of the current object"
+      },
+      {
+        "Step": "Originates user personal data by calling sensitive API through direct invocation.",
+        "Source Method": "Lpt;-><init>:(Lpx; Lqm;)V",
+        "Reasoning": "The method originates user personal data by calling sensitive API through direct invocation.",
+        "Action": "Stored in registers (`v1`, `v2`) and variables (`b`, `a`)"
+      },
+      {
+        "Step": "Originates user personal data from the 'v1' object stored in register 'v0', which is an instance of 'Lpx'.",
+        "Source Method": "Lps;-><init>:(Lpx;)V",
+        "Reasoning": "The method originates user personal data from the 'v1' object.",
+        "Action": "Passed to another method via direct invocation"
+      }
+    ],
+    "All Sinks": [
+      "iget-boolean v0, 3, Lql;->a Z",
+      "Lps;-><init>(Lpx;)V",
+      "data logging (e.g., iget-boolean v0, 3, Lql;->a Z)",
+      "storage"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lpx;->K:(Landroid/content/Context; I)I --> Lpx;->W:(Landroid/content/Context;)Lps; --> storage",
+        "Reasoning": "The data is propagated from the first method to the second, and then stored in the third."
+      },
+      {
+        "dataflow 2": "Lpx;->V:(Landroid/content/Context;)Lps; --> Lpt;-><init>:(Lpx; Lqm;)V --> storage",
+        "Reasoning": "The data is propagated from the first method to the second, and then stored in the third."
+      },
+      {
+        "dataflow 3": "Lpq;-><init>:(Lpx; Landroid/content/Context;)V --> Lps;-><init>(Lpx;)V --> storage",
+        "Reasoning": "The data is propagated from the first method to the second, and then stored in the third."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

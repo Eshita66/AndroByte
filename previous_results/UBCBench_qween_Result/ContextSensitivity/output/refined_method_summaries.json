@@ -1,0 +1,64 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieves device ID from TelephonyManager",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V",
+                "Reasoning": "The method explicitly calls TelephonyManager.getDeviceId(), a sensitive API that retrieves device identifiers.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Transmits device ID to logging sink",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V",
+                "Reasoning": "The device ID is passed to Log.e(), which is a data logging sink method.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log;->e:(Ljava/lang/String;Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V --> android.util.Log;->e:(Ljava/lang/String;Ljava/lang/String;)V",
+                "Reasoning": "The device ID is retrieved via TelephonyManager.getDeviceId(), passed to returnString, and then directly logged via Log.e() without being overwritten by non-sensitive values."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    },
+    {
+        "Data Types Collected": [
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve SIM serial number from TelephonyManager",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V",
+                "Reasoning": "The method explicitly calls android.telephony.TelephonyManager.getSimSerialNumber() to obtain the SIM serial number",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Log SIM serial number to error log",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V",
+                "Reasoning": "The method passes the SIM serial number to android.util.Log.e, which is explicitly marked as a sink for data logging",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log;->e:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V --> android.util.Log;->e:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The SIM serial number is retrieved via getSimSerialNumber(), passed to returnString(), and then directly to Log.e without taint loss"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

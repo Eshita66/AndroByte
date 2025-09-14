@@ -1,0 +1,46 @@
+
+Processing folder: D:\UBCBAPK_Methods\ServiceLifecycle1
+Using methods file: D:\UBCBAPK_Methods\ServiceLifecycle1\ServiceLifecycle1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)I']
+[SUMMARY] Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)I => The method retrieves the SIM serial number using TelephonyManager and stores it as 'secret' in the MainService instance.
+[SUMMARY] Lde/ecspride/MainService;->onLowMemory:()V => The method sends a text message containing user-specific personal data (the secret string) to a hardcoded phone number.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "SIM serial number"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval of SIM serial number",
+            "Source Method": "Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)I",
+            "Reasoning": "SIM serial number is retrieved and stored as 'secret' in the MainService instance.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Sending of personal data via SMS",
+            "Source Method": "Lde/ecspride/MainService;->onLowMemory:()V",
+            "Reasoning": "Sensitive information (SIM serial number) is sent to a hardcoded phone number.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainService;->onLowMemory:()V",
+        
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)I) --> Stored as 'secret' in MainService instance --> Source Method(Lde/ecspride/MainService;->onLowMemory:()V) --> Transmitted via SMS]",
+            "Reasoning": "The SIM serial number is first retrieved and stored within the service, then used to send an SMS message containing personal data."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ServiceLifecycle1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ServiceLifecycle1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ServiceLifecycle1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ServiceLifecycle1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ServiceLifecycle1\output\sensitive_only.json
+Total time for folder: 748.85 seconds

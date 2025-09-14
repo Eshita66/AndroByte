@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve sensitive data",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method calls TelephonyManager.getDeviceId(), which is a sensitive data source.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Pass data to UI component",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is passed to a Button's setHint method.",
+                "Action": "Transmitted"
+            },
+            {
+                "Step": "Log sensitive data",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is converted to a String and logged via android.util.Log.v.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/Object;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/Object;)I",
+                "Reasoning": "The device ID is retrieved from TelephonyManager.getDeviceId(), passed to Button.setHint, converted to String via toString(), and then passed to Log.v as a tainted argument."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

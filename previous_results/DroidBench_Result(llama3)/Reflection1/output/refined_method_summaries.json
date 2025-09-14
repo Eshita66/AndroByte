@@ -1,0 +1,34 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI",
+            "PhoneNumber"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get IMEI and phone number",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive values obtained from unknown sources.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send SMS using SmsManager",
+                "Sink Method": "SmsManager",
+                "Reasoning": "Tainted IMEI and phone number passed to sink method.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V(...) --> SmsManager(...) ",
+                "Reasoning": "IMEI and phone number obtained in onCreate method, passed to SmsManager for transmission."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

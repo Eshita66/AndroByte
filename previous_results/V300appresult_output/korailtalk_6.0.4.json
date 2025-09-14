@@ -1,0 +1,199 @@
+[
+  {
+    "Data Types Collected": [
+      "IMEI number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getDeviceId() method of TelephonyManager",
+        "Source Method": "Lcom/h2osystech/smartalimi/common/Const;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method retrieves the device's IMEI number.",
+        "Action": "Stored in register v1 and passed to the return statement"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/h2osystech/smartalimi/common/Const;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String; --> Stored in register v1 and passed to the return statement",
+        "Reasoning": "The IMEI number is retrieved by getDeviceId() method of TelephonyManager, stored in register v1 and then passed to the return statement."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SMS message body",
+      "LoggerConfig instance",
+      "Tag object",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method getMessagesFromIntent retrieves SMS message body",
+        "Source Method": "Lcom/kakao/util/apicompatibility/APILevel19Compatibility;->getSmsMessage:(Landroid/content/Intent;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data from the SMS message body using sensitive API calls.",
+        "Action": "Stored in register v6 and variable v1"
+      },
+      {
+        "Step": "Method getDefaultTag() of LoggerConfig retrieves default tag",
+        "Source Method": "Lcom/kakao/util/helper/log/LoggerConfig;->getDefaultTag:()Lcom/kakao/util/helper/log/Tag;",
+        "Reasoning": "The method originates user personal data by accessing the default tag from LoggerConfig.",
+        "Action": "Stored in register v0 and returned as an object"
+      },
+      {
+        "Step": "Method et() of Logger logs user personal data",
+        "Source Method": "Lcom/kakao/util/helper/log/Logger;->et:(Lcom/kakao/util/helper/log/Tag; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data from the 'et' method, which likely retrieves sensitive information.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Method dt() of Logger logs user personal data",
+        "Source Method": "Lcom/kakao/util/helper/log/Logger;->dt:(Lcom/kakao/util/helper/log/Tag; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data from the `dt` parameter, which is a string.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Method printLog() of Logger logs user personal data",
+        "Source Method": "Lcom/kakao/util/helper/log/Logger;->printLog:(Lcom/kakao/util/helper/log/Tag; I Ljava/lang/String;)I",
+        "Reasoning": "Data originates from sensitive API call to log user personal data.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kakao/util/helper/log/Logger;->printLog:(Lcom/kakao/util/helper/log/Tag; I Ljava/lang/String;)I",
+      "Lcom/kakao/util/helper/log/Logger;->dt:(Lcom/kakao/util/helper/log/Tag; Ljava/lang/String;)I",
+      "Lcom/kakao/util/helper/log/Logger;->et:(Lcom/kakao/util/helper/log/Tag; Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/kakao/util/apicompatibility/APILevel19Compatibility;->getSmsMessage:(Landroid/content/Intent;)Ljava/lang/String; --> Lcom/kakao/util/helper/log/LoggerConfig;->getDefaultTag:()Lcom/kakao/util/helper/log/Tag; --> Lcom/kakao/util/helper/log/Logger;->et:(Lcom/kakao/util/helper/log/Tag; Ljava/lang/String;)I]",
+        "Reasoning": "The data flow starts with the method getMessagesFromIntent, which retrieves the SMS message body. This data is then passed to the getDefaultTag() method of LoggerConfig, which returns a Tag object. Finally, this Tag object is logged by the et() method of Logger."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "java.lang.String",
+      "[I",
+      "[J",
+      "[Lb/k/a/a$e;",
+      "ByteBuffer"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get GPS information from android.location.Location",
+        "Source Method": "Lb/k/a/a;->setGpsInfo:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data by using the android.location.Location class to get GPS information.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Parse strings into various data types (double, long, int) and store them in arrays",
+        "Source Method": "Lb/k/a/a;->setAttribute:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The current method originates user personal data by parsing strings into various data types (double, long, int) and storing them in arrays.",
+        "Action": "Passed to the `createURational`, `createULong`, `createUShort`, `createString`, or `createByte` methods for further processing"
+      },
+      {
+        "Step": "Retrieve an array of integers from a static field",
+        "Source Method": "Lb/k/a/a$c;->createUShort:([I Ljava/nio/ByteOrder;)Lb/k/a/a$c;",
+        "Reasoning": "The method originates user personal data by using the sget-object instruction to retrieve an array of integers from a static field.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Call the `sget-object` instruction to retrieve a sensitive array",
+        "Source Method": "Lb/k/a/a$c;->createURational:([Lb/k/a/a$e; Ljava/nio/ByteOrder;)Lb/k/a/a$c;",
+        "Reasoning": "This method originates user personal data by calling the `sget-object` instruction to retrieve a sensitive array.",
+        "Action": "Passed to the `new-instance` constructor for the `Lb/k/a/a$c` class"
+      },
+      {
+        "Step": "Extract and process string data using sensitive API calls",
+        "Source Method": "Lb/k/a/a$c;->createByte:(Ljava/lang/String;)Lb/k/a/a$c;",
+        "Reasoning": "The method originates user personal data through the `createByte` method which uses sensitive API calls to extract and process string data.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Invoke a sensitive API (sget-object) to retrieve an array of integers",
+        "Source Method": "Lb/k/a/a$c;->createULong:([J Ljava/nio/ByteOrder;)Lb/k/a/a$c;",
+        "Reasoning": "The method originates user personal data by invoking a sensitive API (sget-object) to retrieve an array of integers.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Pass string data to the constructor",
+        "Source Method": "Lb/k/a/a$c;->createString:(Ljava/lang/String;)Lb/k/a/a$c;",
+        "Reasoning": "The method originates user personal data from the `Ljava/lang/String` parameter passed to the constructor.",
+        "Action": "Stored in registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      "Lb/k/a/a;->setAttribute:(Ljava/lang/String; Ljava/lang/String;)V",
+      "Lb/k/a/a$c;->createByte:(Ljava/lang/String;)Lb/k/a/a$c;",
+      "Lb/k/a/a$c;->createULong:([J Ljava/nio/ByteOrder;)Lb/k/a/a$c;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lb/k/a/a;->setGpsInfo:(Landroid/location/Location;)V --> Lb/k/a/a;->setAttribute:(Ljava/lang/String; Ljava/lang/String;)V --> Lb/k/a/a$c;->createULong:([J Ljava/nio/ByteOrder;)Lb/k/a/a$c;",
+        "Reasoning": "GPS information is stored in the `setAttribute` method and then passed to the `createULong` method, which processes it further."
+      },
+      {
+        "dataflow 2": "Lb/k/a/a$e;->createURational:([Lb/k/a/a$e; Ljava/nio/ByteOrder;)Lb/k/a/a$c --> Lb/k/a/a$c;->createULong:([J Ljava/nio/ByteOrder;)Lb/k/a/a$c;",
+        "Reasoning": "Sensitive array is processed in the `createURational` method and then passed to the `createULong` method."
+      },
+      {
+        "dataflow 3": "Lb/k/a/a$c;->createString:(Ljava/lang/String;)Lb/k/a/a$c --> Lb/k/a/a$c;->createByte:(Ljava/lang/String;)Lb/k/a/a$c;",
+        "Reasoning": "String data is processed in the `createString` method and then passed to the `createByte` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location manager",
+      "last known location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get Location Manager",
+        "Source Method": "Lc/b/b/j/f;->requestLocationUpdates:(Landroid/content/Context; Landroid/location/LocationListener;)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to get the location manager.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Request Location Updates",
+        "Source Method": "Lc/b/b/j/f;->requestLocationUpdates:(Landroid/content/Context; Landroid/location/LocationListener;)V",
+        "Reasoning": "The data is propagated to other methods via method invocations, including checking permissions and requesting location updates.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Check Location Provider Enabled",
+        "Source Method": "Lc/b/b/j/f;->a:(Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data from the LocationManager using the isProviderEnabled() method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check if Object is Not Null",
+        "Source Method": "Lc/b/b/h/e;->isNotNull:(Ljava/lang/Object;)Z",
+        "Reasoning": "The method originates data from a sensitive API call (isNotNull) and stores it in register v0.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check if Object is Null",
+        "Source Method": "Lc/b/b/h/e;->isNull:(Ljava/lang/Object;)Z",
+        "Reasoning": "The current method originates data from a sensitive API call to check if an object is null.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lc/b/b/j/f;->a:(Ljava/lang/String;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/b/b/j/f;->requestLocationUpdates:(Landroid/content/Context; Landroid/location/LocationListener;)V --> Lc/b/b/j/f;->a:(Ljava/lang/String;)Z --> Lc/b/b/h/e;->isNotNull:(Ljava/lang/Object;)Z",
+        "Reasoning": "The location manager is first obtained in the requestLocationUpdates method, which then propagates to a check for location provider enabled. This data is then stored in the isNotNull method."
+      }
+    ],
+    "Label": "leak"
+  }
+]

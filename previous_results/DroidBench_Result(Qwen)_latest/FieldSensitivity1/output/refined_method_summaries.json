@@ -1,0 +1,35 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Originates sensitive data",
+                "Source Method": "Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;",
+                "Reasoning": "The method originates user personal data via TelephonyManager.getSimSerialNumber() which retrieves the SIM serial number (DeviceId).",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Stores sensitive data",
+                "Source Method": "Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V",
+                "Reasoning": "The method stores the SIM serial number (originated from TelephonyManager.getSimSerialNumber()) into the 'secret' field of the Datacontainer object.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sets non-sensitive description",
+                "Source Method": "Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V",
+                "Reasoning": "The method sets the 'description' field with a provided string value, which was previously originated from the setSecret method.",
+                "Action": "Not passed to sinks"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer; --> Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V --> Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V ",
+                "Reasoning": "The SIM serial number (DeviceId) is originated via TelephonyManager.getSimSerialNumber() in setTaint, stored in setSecret, and then used to set the description field in setDescription. No sink methods are called with the tainted data."
+            }
+        ],
+        "Label": "no leak"
+    }
+]

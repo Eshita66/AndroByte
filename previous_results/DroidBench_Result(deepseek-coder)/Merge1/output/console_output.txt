@@ -1,0 +1,53 @@
+Processing folder: D:\UBCBAPK_Methods\Merge1
+Using methods file: D:\UBCBAPK_Methods\Merge1\Merge1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->aliasFlowTest:()V
+Processed summary for Lde/ecspride/MainActivity;->aliasFlowTest:()V: {
+    "Summary": "In the method aliasFlowTest(), sensitive data is originated from the device ID obtained through Landroid/telephony/TelephonyManager;. This data is stored in the register v8 and then passed to instances of Lde/ecspride/MainActivity$A; one such instance is created and its field b is set with the device ID. Subsequently, this data is used to send an SMS message via Landroid/telephony/SmsManager;, which could potentially be a sink if not properly handled. However, no explicit logging or network transmission operations are observed in this method.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\Merge1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Merge1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Merge1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data (DeviceId) is obtained from TelephonyManager and stored in a register.",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "The device ID is sourced directly from the TelephonyManager, which is considered sensitive information.",
+                "Action": "Stored in register v8"
+            },
+            {
+                "Step": "Instance of MainActivity$A is created and its field b is set with the DeviceId.",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "The device ID, now stored in register v8, is passed to an instance of MainActivity$A where it overwrites field b.",
+                "Action": "Overwritten and set as field b"
+            },
+            {
+                "Step": "DeviceId is used to send an SMS via SmsManager.",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "The DeviceId, now part of the instance field b in MainActivity$A, is passed to SmsManager for potential transmission as SMS content.",
+                "Action": "Used to send SMS"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;."
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Lde/ecspride/MainActivity;->aliasFlowTest:()V --> Stored in register v8 --> Overwritten and set as field b in Lde/ecspride/MainActivity$A --> Used to send SMS via Landroid/telephony/SmsManager;.]",
+                "Reasoning": "Step-by-step explanation of how the sensitive data (DeviceId) is propagated, stored, overwritten, and eventually used without proper handling."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Merge1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Merge1\output\sensitive_only.json
+Total summary time: 390.98391556739807 seconds

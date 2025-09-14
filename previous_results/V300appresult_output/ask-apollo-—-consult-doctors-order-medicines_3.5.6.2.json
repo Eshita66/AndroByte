@@ -1,0 +1,146 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Search Text",
+      "Limit",
+      "Center"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is passed to GraphRequest object creation.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method argument",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Search text is passed to GraphRequest object creation.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method argument",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Limit is passed to GraphRequest object creation.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method argument",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Center is passed to GraphRequest object creation.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method argument",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...) ",
+        "Reasoning": "GraphRequest object is created with user location, search text, limit, and center. The GraphRequest object is passed to GraphJSONArrayCallback.onActivityResult(), which likely logs or transmits the data."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Latitude",
+      "Longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "GPS and Network Location Services",
+        "Source Method": "Lcom/twhc/user/trackuser/service/LocationTrack;->getLocation:()Landroid/location/Location;",
+        "Reasoning": "Sensitive user personal data is originated from GPS and network location services.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LocationTrack;->getLocation:()Landroid/location/Location; --> null",
+        "Reasoning": "Location data is not sent to any sinks."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract latitude from Location object",
+        "Source Method": "Lcom/twhc/user/trackuser/service/LocationTrack;->getLatitude:()D",
+        "Reasoning": "Method signature matches the summary",
+        "Action": "Stored in latitude field"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/twhc/user/trackuser/service/LocationTrack;->getLatitude:()D --> latitude field",
+        "Reasoning": "Data flows from source method to field"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract longitude from Location object",
+        "Source Method": "Lcom/twhc/user/trackuser/service/LocationTrack;->getLongitude:()D",
+        "Reasoning": "Method signature and summary analysis",
+        "Action": "Stored in longitude field"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/twhc/user/trackuser/service/LocationTrack;->getLongitude:()D --> longitude field",
+        "Reasoning": "Overall data flow analysis"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is set in `setUserLocation()` method.",
+        "Source Method": "Lin/netcore/smartechfcm/Smartech;->setUserLocation:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary indicates location is stored in registers.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is passed to `NetcoreSDK.setUserLocation()` method.",
+        "Source Method": "Lin/netcore/smartechfcm/Smartech;->setUserLocation:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature matches the source method.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lin/netcore/smartechfcm/NetcoreSDK;->setUserLocation:(Ljava/lang/String;Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " setUserLocation(...) --> NetcoreSDK.setUserLocation(...)",
+        "Reasoning": "Overall data flow summary provides the flow."
+      }
+    ],
+    "Label": "leak"
+  }
+]

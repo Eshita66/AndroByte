@@ -1,0 +1,44 @@
+
+Processing folder: D:\UBCBAPK_Methods\MethodOverride1
+Using methods file: D:\UBCBAPK_Methods\MethodOverride1\MethodOverride1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MethodOverride1;->attachBaseContext:(Landroid/content/Context;)V']
+[SUMMARY] Lde/ecspride/MethodOverride1;->attachBaseContext:(Landroid/content/Context;)V => The method retrieves the device ID from the TelephonyManager obtained via getSystemService('phone'), which is sensitive information typically associated with user privacy, and then logs this device ID using Log.d(), which can be considered a real sink if it involves logging tainted data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval of device ID from TelephonyManager",
+            "Source Method": "Lde/ecspride/MethodOverride1;->getSystemService('phone')",
+            "Reasoning": "The method retrieves the system service for phone, which provides access to telephony-related information including device ID.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Logging of device ID using Log.d()",
+            "Source Method": "Lde/ecspride/MethodOverride1;->attachBaseContext:(Landroid/content/Context;)V",
+            "Reasoning": "The method logs the retrieved device ID, which is sensitive information.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MethodOverride1;->Log.d(...)"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Lde/ecspride/MethodOverride1;->getSystemService('phone')) --> ... --> Sink Method(Lde/ecspride/MethodOverride1;->Log.d(...))]",
+            "Reasoning": "Data flows from the retrieval of system service to logging, where it is potentially exposed and logged as sensitive information."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\MethodOverride1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\MethodOverride1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\MethodOverride1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\MethodOverride1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\MethodOverride1\output\sensitive_only.json
+Total time for folder: 241.99 seconds

@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval",
+                "Source Method": "Ljunbin/ubc/MainActivity;->buttonClick:(Landroid/view/View;)V",
+                "Reasoning": "The method directly accesses TelephonyManager.getDeviceId(), which is a sensitive source for device identifiers.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging of device ID",
+                "Source Method": "Ljunbin/ubc/MainActivity;->buttonClick:(Landroid/view/View;)V",
+                "Reasoning": "The device ID is explicitly passed to android.util.Log.v, a logging sink method.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log;->v:(Ljava/lang/String;Ljava/lang/Object;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MainActivity;->buttonClick:(Landroid/view/View;)V --> android.util.Log;->v:(Ljava/lang/String;Ljava/lang/Object;)V",
+                "Reasoning": "The device ID is retrieved from TelephonyManager.getDeviceId() and directly passed to the logging sink without being overwritten or sanitized."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

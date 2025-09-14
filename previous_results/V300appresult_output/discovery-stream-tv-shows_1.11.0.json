@@ -1,0 +1,149 @@
+[
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "android/content/Context",
+      "java/lang/String",
+      "java/lang/Exception",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access device location using Context.getSystemService() method.",
+        "Source Method": "Lcom/blueshift/BlueshiftAttributesApp;->addDeviceLocation:(Landroid/content/Context;)V",
+        "Reasoning": "The data is stored in register v0 and propagated to other methods via method invocations. The data reaches a sink point through network transmission.",
+        "Action": "Stored, logged, transmitted"
+      },
+      {
+        "Step": "Use sensitive API calls to getLatitude and getLongitude from the Location object.",
+        "Source Method": "Lcom/blueshift/BlueshiftAttributesApp;->setDeviceLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The data is stored in JSONObject instances within the method, and it propagates through registers (v3, v4) and variables (instance of BlueshiftAttributesApp). No sinks are identified directly, but further analysis is required due to indirect logging via BlueshiftLogger.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check for permissions using sensitive user personal data (Context and String).",
+        "Source Method": "Lcom/blueshift/util/PermissionUtils;->hasAnyPermission:(Landroid/content/Context; [Ljava/lang/String;)Z",
+        "Reasoning": "The result of the permission check is stored in register v3. If the permission is granted, v4 is set to 1. Otherwise, it remains 0.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Call sensitive API (hasPermission) to check if the app has a specific permission.",
+        "Source Method": "Lcom/blueshift/util/PermissionUtils;->hasPermission:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The data is stored in registers (v2, v3). It propagates through registers and is passed to other methods via method invocations. The data reaches a sink point (BlueshiftLogger.e), which logs an exception.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Retrieve sensitive value from static field using `sget` instruction.",
+        "Source Method": "Lcom/blueshift/BlueshiftLogger;->e:(Ljava/lang/String; Ljava/lang/Exception;)V",
+        "Reasoning": "The data is stored in register v0 and later passed to the `e` method of `BlueshiftLogger`. The data propagation involves passing the exception's stack trace as a string to the `e` method. A sink point is identified: the `e` method, which logs the error.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Access user personal data through myPid() and myUid() API calls.",
+        "Source Method": "Lg1/i/f/a;->a:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The data is stored in registers v0 and v1. The data is propagated to the checkPermission() method via a method invocation. The method does not reach any sink points like logging, network transmission, or storage.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass sensitive data from 'sLogLevel' field to 'prepareMessage' method.",
+        "Source Method": "Lcom/blueshift/BlueshiftLogger;->e:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The prepared message is then logged using the 'Log.e' method.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Access user personal data through sensitive API calls to `Landroid/content/Context;->getSharedPreferences(Ljava/lang/String; I)Landroid/content/SharedPreference;`.",
+        "Source Method": "Lcom/blueshift/BlueshiftLogger;->prepareMessage:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers or variables. The data is then passed to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Access user personal data through sensitive API calls.",
+        "Source Method": "Le/d/c/a/a;->B:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers and variables within the method. It propagates to other methods via method invocations. The data reaches a sink point, which is logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/blueshift/BlueshiftLogger;->e:(Ljava/lang/String; Ljava/lang/Exception;)V",
+      "Lcom/blueshift/BlueshiftLogger;->e:(Ljava/lang/String; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/blueshift/BlueshiftAttributesApp;->addDeviceLocation:(Landroid/content/Context;)V --> Lcom/blueshift/BlueshiftLogger;->e:(Ljava/lang/String; Ljava/lang/Exception;)V",
+        "Reasoning": "The data is stored in register v0 and propagated to other methods via method invocations. The data reaches a sink point through network transmission."
+      },
+      {
+        "dataflow 2": "Lcom/blueshift/BlueshiftAttributesApp;->setDeviceLocation:(Landroid/location/Location;)V --> Lcom/blueshift/BlueshiftLogger;->e:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in JSONObject instances within the method, and it propagates through registers (v3, v4) and variables (instance of BlueshiftAttributesApp). No sinks are identified directly, but further analysis is required due to indirect logging via BlueshiftLogger."
+      },
+      {
+        "dataflow 3": "Lcom/blueshift/util/PermissionUtils;->hasAnyPermission:(Landroid/content/Context; [Ljava/lang/String;)Z --> Lcom/blueshift/BlueshiftLogger;->e:(Ljava/lang/String; Ljava/lang/Exception;)V",
+        "Reasoning": "The result of the permission check is stored in register v3. If the permission is granted, v4 is set to 1. Otherwise, it remains 0."
+      },
+      {
+        "dataflow 4": "Lcom/blueshift/util/PermissionUtils;->hasPermission:(Landroid/content/Context; Ljava/lang/String;)Z --> Lcom/blueshift/BlueshiftLogger;->e:(Ljava/lang/String; Ljava/lang/Exception;)V",
+        "Reasoning": "The data is stored in registers (v2, v3). It propagates through registers and is passed to other methods via method invocations. The data reaches a sink point (BlueshiftLogger.e), which logs an exception."
+      },
+      {
+        "dataflow 5": "Lg1/i/f/a;->a:(Landroid/content/Context; Ljava/lang/String;)I --> Le/d/c/a/a;->B:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String",
+        "Reasoning": "The data is stored in registers v0 and v1. The data is propagated to the checkPermission() method via a method invocation. The method does not reach any sink points like logging, network transmission, or storage."
+      },
+      {
+        "dataflow 6": "Lcom/blueshift/BlueshiftLogger;->e:(Ljava/lang/String; Ljava/lang/String;)V --> Le/d/c/a/a;->B:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String)java/lang/String",
+        "Reasoning": "The prepared message is then logged using the 'Log.e' method."
+      },
+      {
+        "dataflow 7": "Lcom/blueshift/BlueshiftLogger;->prepareMessage:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String --> Le/d/c/a/a;->B:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String)java/lang/String",
+        "Reasoning": "The data is stored in registers or variables. The data is then passed to other methods via method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from current time and location.",
+        "Source Method": "Lg1/b/k/n$i;->c:()I",
+        "Reasoning": "The method originates user personal data from the current time and location.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to Math.sin() and Math.cos().",
+        "Source Method": "Lg1/b/k/w;->a:(J D D)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to Math.sin() and Math.cos().",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "Originates user personal data by invoking the `myPid()` and `myUid()` methods from the Android API.",
+        "Source Method": "Lg1/b/k/n$j;->l:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The current method originates user personal data by invoking the `myPid()` and `myUid()` methods from the Android API.",
+        "Action": "Stored in registers (v0 and v1) and variables (v2)."
+      }
+    ],
+    "All Sinks": [
+      "Lg1/b/k/n$i;->c:()I",
+      null,
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lg1/b/k/n$j;->l:(Landroid/content/Context; Ljava/lang/String;)I --> Lg1/b/k/w;->a:(J D D)V --> Sink Method(...)",
+        "Reasoning": "The data is propagated through method invocations, ultimately reaching sinks such as assignment to instance fields."
+      },
+      {
+        "dataflow 2": "Lg1/b/k/n$i;->c:()I --> Lg1/b/k/w;->a:(J D D)V --> Sink Method(...)",
+        "Reasoning": "The data is propagated through method invocations, ultimately reaching sinks such as assignment to instance fields."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

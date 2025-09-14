@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "IMEI is retrieved from TelephonyManager",
+                "Source Method": "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "The method explicitly retrieves IMEI from TelephonyManager, a known sensitive source",
+                "Action": "Stored"
+            },
+            {
+                "Step": "IMEI is transmitted via SMS",
+                "Source Method": "Lde/ecspride/Button2Listener;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "The method uses the IMEI stored in MainActivity's 'imei' field for SMS transmission",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Button2Listener;->onClick:(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V --> Lde/ecspride/Button2Listener;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "IMEI is stored in MainActivity's 'imei' field by Button1Listener, then accessed by Button2Listener's onClick method which sends it via SMS"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

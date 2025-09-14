@@ -1,0 +1,29 @@
+[
+    {
+        "Data Types Collected": [
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "SIM serial number retrieved via getSystemService and stored in Datacontainer",
+                "Source Method": "Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the SIM serial number and stores it in a Datacontainer object, but does not pass it to any sink.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Description field retrieved from Datacontainer",
+                "Source Method": "Lde/ecspride/Datacontainer;->getDescription:()Ljava/lang/String;",
+                "Reasoning": "The method returns the description field from the Datacontainer, which was previously populated with the SIM serial number, but no sensitive data is passed to sinks.",
+                "Action": "Returned"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V ",
+                "Reasoning": "The SIM serial number is stored in Datacontainer via onCreate, and later retrieved by getDescription. No sink methods receive the data."
+            }
+        ],
+        "Label": "no leak"
+    }
+]

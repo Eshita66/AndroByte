@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "User personal data is originated from the TelephonyManager service through the getDeviceId method",
+                "Source Method": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive data is propagated through registers and passed between methods.",
+                "Action": "Stored in register v3"
+            },
+            {
+                "Step": "The device ID is later used to log a message with other information using the Landroid/util/Log;i(Ljava/lang/String; Ljava/lang/String;)I sink point",
+                "Source Method": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive data is passed to a sink method.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;i(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId(...) --> Stored in register v3(...) --> Logged(...)",
+                "Reasoning": "Sensitive data is originated from the TelephonyManager service, stored in a register, and then logged using the Landroid/util/Log;i(Ljava/lang/String; Ljava/lang/String;)I sink point."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

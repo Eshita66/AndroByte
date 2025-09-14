@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get device ID from TelephonyManager",
+                "Source Method": "getDeviceId on TelephonyManager",
+                "Reasoning": "Sensitive value obtained directly",
+                "Action": "Stored (in method parameters)"
+            },
+            {
+                "Step": "Pass device ID to Log.e methods",
+                "Source Method": "Log.e methods",
+                "Reasoning": "Sensitive value passed without intermediate storage",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId on TelephonyManager(...) --> Log.e methods(...)",
+                "Reasoning": "Sensitive device ID obtained and passed to sink without intermediate storage"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

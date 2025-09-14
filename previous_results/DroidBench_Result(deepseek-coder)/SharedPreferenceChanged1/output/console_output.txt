@@ -1,0 +1,38 @@
+
+Processing folder: D:\UBCBAPK_Methods\SharedPreferenceChanged1
+Using methods file: D:\UBCBAPK_Methods\SharedPreferenceChanged1\SharedPreferenceChanged1_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/event_context_shared_pref_listener/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/event_context_shared_pref_listener/MainActivity;->onCreate:(Landroid/os/Bundle;)V => In the given method, sensitive data (IMEI of the device) is retrieved using TelephonyManager and then stored in SharedPreferences. The IMEI is considered sensitive as it can uniquely identify a mobile device.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve IMEI using TelephonyManager",
+            "Source Method": "Ledu/mit/event_context_shared_pref_listener/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "IMEI is retrieved and considered sensitive as it can uniquely identify a mobile device.",
+            "Action": "Stored in SharedPreferences"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/event_context_shared_pref_listener/MainActivity;->getSharedPreferences(Ljava/lang/String; I)Landroid/content/SharedPreferences;"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Ledu/mit/event_context_shared_pref_listener/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/event_context_shared_pref_listener/MainActivity;->getSharedPreferences(Ljava/lang/String; I)Landroid/content/SharedPreferences;",
+            "Reasoning": "IMEI is retrieved in onCreate and stored in SharedPreferences, which could lead to data leakage if not properly secured."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\SharedPreferenceChanged1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\SharedPreferenceChanged1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\SharedPreferenceChanged1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\SharedPreferenceChanged1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\SharedPreferenceChanged1\output\sensitive_only.json
+Total time for folder: 767.65 seconds

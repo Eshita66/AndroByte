@@ -1,0 +1,52 @@
+
+Processing folder: D:\UBCBAPK_Methods\StaticInitialization1
+Using methods file: D:\UBCBAPK_Methods\StaticInitialization1\StaticInitialization1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => In the given method, sensitive user personal data (specifically, the device ID obtained from TelephonyManager) is originated and stored within the MainActivity instance. The device ID is retrieved using the getDeviceId() method of TelephonyManager, which directly accesses hardware-specific information about the device. This data is then stored in a static field named 'im' within the MainActivity class.
+[SUMMARY] Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V => The method sends an SMS message containing the phone number '+49 1234'. This involves accessing and using user-provided phone numbers, which can be considered sensitive personal information.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID",
+        "Phone Number"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Sensitive data (Device ID) is originated and stored in a static field.",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The device ID is retrieved from TelephonyManager and stored in a static field, MainActivity instance.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Sensitive data (Phone Number) is processed during class initialization.",
+            "Source Method": "Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V",
+            "Reasoning": "The phone number is used to send an SMS, which involves handling sensitive user information.",
+            "Action": "Processed"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Lde/ecspride/MainActivity;->setContentView(I)V",
+        null
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Stored in static field 'im' --> Potential sink not identified directly]",
+            "Reasoning": "The device ID is stored but no immediate action to log or transmit it is seen. Future actions might involve logging which could lead to leakage."
+        },
+        {
+            "dataflow 1": "[Source Method: Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V --> Uses phone number for SMS --> Potential sink not identified directly]",
+            "Reasoning": "The phone number is used to send an SMS, but no immediate action to log or transmit it is seen. Future actions might involve logging which could lead to leakage."
+        }
+    ],
+    "Label": "no leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\StaticInitialization1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\StaticInitialization1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\StaticInitialization1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\StaticInitialization1\output\visited_graph
+Saved 0 'leak' subgraphs to: D:\UBCBAPK_Methods\StaticInitialization1\output\sensitive_only.json
+Total time for folder: 799.32 seconds

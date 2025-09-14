@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\FlowSensitivity
+Using methods file: D:\UBCBAPK_Methods\FlowSensitivity\FlowSensitivity_bytecode_instructions.json
+Sensitive method found: Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves the device ID using Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String; and logs it via Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I, which is a sink for user personal data. No further propagation occurs as the data reaches a logging sink.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\FlowSensitivity\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\FlowSensitivity\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\FlowSensitivity\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data retrieval and logging",
+                "Source Method": "Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID via getDeviceId() and passes it to Log.e(), which is a sink for user personal data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I",
+                "Reasoning": "The device ID is retrieved from getDeviceId() and directly passed to Log.e() without being overwritten by a non-sensitive value, maintaining taint to the sink."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\FlowSensitivity\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\FlowSensitivity\output\sensitive_only.json
+Total summary time: 16.863743543624878 seconds

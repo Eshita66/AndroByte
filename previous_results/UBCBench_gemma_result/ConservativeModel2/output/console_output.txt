@@ -1,0 +1,46 @@
+Processing folder: D:\UBCBAPK_Methods\ConservativeModel2
+Using methods file: D:\UBCBAPK_Methods\ConservativeModel2\ConservativeModel2_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "This method originates user data by calling `TelephonyManager.getDeviceId()`. This API retrieves the device's unique ID, which is then used to create an HTTP POST request using Apache HttpClient. The device ID is passed as the content of the POST request. This method does not appear to have any sinks directly within itself, but it initiates a network transmission which could be a sink.  The `Next Methods` list reflects the invoked methods in this chain.",
+    "Next Methods": [
+        "Lorg/apache/http/impl/client/DefaultHttpClient-><init>()V",
+        "Lorg/apache/http/client/methods/HttpPost-><init>()V",
+        "Lorg/apache/http/entity/StringEntity-><init>(Ljava/lang/String;)V",
+        "Lorg/apache/http/client/HttpClient->execute(Lorg/apache/http/client/methods/HttpUriRequest;)Lorg/apache/http/HttpResponse;"
+    ]
+}
+Method summaries saved to D:\UBCBAPK_Methods\ConservativeModel2\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ConservativeModel2\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ConservativeModel2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieved",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method `onCreate` calls `TelephonyManager.getDeviceId()` to obtain the Device ID.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Ljunbin/ubc/MainActivity;->makeHttpPostRequest:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljunbin/ubc/MainActivity;->makeHttpPostRequest:(Ljava/lang/String;)V",
+                "Reasoning": "The Device ID obtained from `TelephonyManager.getDeviceId()` is passed as the content of an HTTP POST request in `makeHttpPostRequest`. The summary indicates this is a network transmission, which could be a sink."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ConservativeModel2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ConservativeModel2\output\sensitive_only.json
+Total summary time: 7.986465215682983 seconds

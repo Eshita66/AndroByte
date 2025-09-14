@@ -1,0 +1,116 @@
+[
+  {
+    "Data Types Collected": [
+      "Account objects",
+      "account names"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get accounts from AccountManager",
+        "Source Method": "Landroid/accounts/AccountManager;->getAccounts(Landroid/accounts/AccountManager$Callback;)Ljava/util/Collection;",
+        "Reasoning": "The method calls getAccounts() to retrieve an array of Account objects.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Iterate over accounts and filter",
+        "Source Method": "Lfg;->m:(Landroid/content/Context;)Ljava/util/List;",
+        "Reasoning": "The method iterates over the retrieved account array and adds account names to a list if they pass a certain condition determined by the n(Ljava/lang/String;)Z method.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Landroid/accounts/AccountManager;->getAccounts(Landroid/accounts/AccountManager$Callback;)Ljava/util/Collection; --> Lfg;->m:(Landroid/content/Context;)Ljava/util/List; --> Stored",
+        "Reasoning": "The data flow starts with the getAccounts() method from AccountManager, which returns a collection of account objects. This collection is then passed to the m() method, which iterates over it and adds account names to a list if they pass a certain condition determined by the n(Ljava/lang/String;)Z method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiManager"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve WifiManager object",
+        "Source Method": "Lifk;->a:()V",
+        "Reasoning": "iget-object instruction retrieves a WifiManager object.",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Store WifiManager object in variable",
+        "Source Method": "Lifk;->a:()V",
+        "Reasoning": "WifiManager object is stored in a variable within the method.",
+        "Action": "Variable assignment"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lifk;->a:()V --> ... --> Lifk;->b:Landroid/net/Network;",
+        "Reasoning": "WifiManager object is propagated through method invocations to a network transmission sink."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive API calls to get location services in method S() of class jr.",
+        "Source Method": "Ljr;->S:(Landroid/content/Context;)Ljm;",
+        "Reasoning": "The data is stored in registers and variables within the method and propagated to other methods via method invocations. The data reaches a sink point, which is storage.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Method E() of class jr uses sensitive API calls to originate user personal data.",
+        "Source Method": "Ljr;->E:(Landroid/content/Context; I)I",
+        "Reasoning": "The data is stored in registers and variables within the method. The data is propagated through method invocations, ultimately reaching sinks like logging or storage.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Method <init> of class Ljk originates sensitive user personal data by using the getSystemService API to retrieve the PowerManager.",
+        "Source Method": "Ljk;-><init>:(Ljr; Landroid/content/Context;)V",
+        "Reasoning": "The data is stored in register v1 and then passed to the object field 'a' of the class Ljk. The data propagation analysis reveals that the data is passed from one method invocation to another, specifically from the getApplicationContext() method to the getSystemService() method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Method <init> in class Ljn; originates user personal data from two sources: the 'b' field (Ljr) and the 'a' field (Ljx).",
+        "Source Method": "Ljn;-><init>:(Ljr; Ljx;)V",
+        "Reasoning": "The data is stored in registers v0 and v1. The data propagation analysis shows that the 'b' field is passed to another method via invoke-direct instruction, while the 'a' field is stored locally within this method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Method <init> of class Ljm originates user personal data from the constructor which takes a parameter of type Ljr;.",
+        "Source Method": "Ljm;-><init>:(Ljr;)V",
+        "Reasoning": "The data is stored in register v0 and field c of class Ljm. The data is propagated to the next method through register v0.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Method T() of class jr uses sensitive API calls to originate user personal data from the Context.",
+        "Source Method": "Ljr;->T:(Landroid/content/Context;)Ljm;",
+        "Reasoning": "The data is stored in register v0 and variable X within the object of class jr. The data is propagated to other methods via method invocations.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Ljr;->S:(Landroid/content/Context;)Ljm;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Ljk;<init>(...) --> jr;T(...) --> Ljm;<init>(...)",
+        "Reasoning": "The data flows from the PowerManager in class Ljk to method T() of class jr, which then passes it to the constructor <init> of class Ljm."
+      }
+    ],
+    "Label": "leak"
+  }
+]

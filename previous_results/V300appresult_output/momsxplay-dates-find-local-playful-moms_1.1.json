@@ -1,0 +1,150 @@
+[
+  {
+    "Data Types Collected": [
+      "WiFi state",
+      "Connection information",
+      "SSID",
+      "Package name",
+      "Permissions"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access WiFi state and connection information",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by accessing the WiFi state and connection information.",
+        "Action": "Stored in registers (v0, v1) and variables (v2)"
+      },
+      {
+        "Step": "Get package name",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to get the package name.",
+        "Action": "Stored in registers (v0, v1)"
+      },
+      {
+        "Step": "Check permissions",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to check permissions.",
+        "Action": "Passed between methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kochava/base/network/DataPointsNetwork;->a(Landroid/content/Context;Ljava/lang/String;)Z",
+      "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String --> Lcom/kochava/base/network/DataPointsNetwork;->a(Landroid/content/Context;Ljava/lang/String;)Z --> Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String",
+        "Reasoning": "The data is propagated and transformed through method invocations, ultimately reaching a sink point by returning the SSID."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "BSSID (Base Station Identifier)",
+      "Package name",
+      "Context's package manager"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check for permission and access WiFi state",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method checks for a specific permission and if granted, accesses the WiFi state to retrieve the BSSID.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Retrieve package name from context's package manager",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method retrieves the package name from the context's package manager.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String() --> Stored in method d --> Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z --> Stored in method a",
+        "Reasoning": "The data flow starts with the 'd' function call, which checks for permission and accesses the WiFi state. The retrieved BSSID is then stored in the 'a' function call."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Landroid/location/Location",
+      "Ljava/lang/String;",
+      "Lcom/onesignal/OneSignal$LOG_LEVEL"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access location data",
+        "Source Method": "Lcom/onesignal/LocationController;->fireCompleteForLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates sensitive user personal data by accessing the location using the `Landroid/location/Location` object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass location to next method",
+        "Source Method": "Lcom/onesignal/LocationController;->fireCompleteForLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The data is propagated to other methods via method invocations, specifically `invoke-static {v0, v1, Lcom/onesignal/OneSignal;->Log(Lcom/onesignal/OneSignal$LOG_LEVEL;Ljava/lang/String;)V` and `invoke-static {v0, Lcom/onesignal/LocationController;->fireComplete(Lcom/onesignal/LocationController$LocationPoint;)V`.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Log location data",
+        "Source Method": "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String;)V",
+        "Reasoning": "The data reaches a sink point through the `Lcom/onesignal/OneSignal;->Log(Lcom/onesignal/OneSignal$LOG_LEVEL;Ljava/lang/String;)V` method, which is used for logging.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Retrieve ConcurrentHashMap",
+        "Source Method": "Lcom/onesignal/LocationController;->fireComplete:(Lcom/onesignal/LocationController$LocationPoint;)V",
+        "Reasoning": "The method originates user personal data through the `sget-object` instruction that retrieves a ConcurrentHashMap from LocationController.",
+        "Action": "Retrieved"
+      },
+      {
+        "Step": "Pass location to next method",
+        "Source Method": "Lcom/onesignal/LocationController;->fireComplete:(Lcom/onesignal/LocationController$LocationPoint;)V",
+        "Reasoning": "The data is then passed to other methods via method invocations, specifically to LocationHandler's onComplete method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Log location data",
+        "Source Method": "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the Log method of OneSignal, which takes a LOG_LEVEL and a String as parameters.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Log location data with exception",
+        "Source Method": "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The method originates user personal data from the logCatLevel and visualLogLevel variables.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/onesignal/OneSignal;->Log(Lcom/onesignal/OneSignal$LOG_LEVEL;Ljava/lang/String;)V",
+      "Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I",
+      "Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I",
+      "Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I",
+      "Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I",
+      "Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/onesignal/LocationController;->fireCompleteForLocation:(Landroid/location/Location;)V --> Lcom/onesignal/OneSignal;->Log(Lcom/onesignal/OneSignal$LOG_LEVEL;Ljava/lang/String;)V ",
+        "Reasoning": "The location data is accessed in LocationController, passed to OneSignal's Log method, and logged."
+      },
+      {
+        "dataflow 2": " Lcom/onesignal/LocationController;->fireComplete:(Lcom/onesignal/LocationController$LocationPoint;)V --> Landroid/util/Log;->v(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I ",
+        "Reasoning": "The location data is retrieved from ConcurrentHashMap in LocationController, passed to LocationHandler's onComplete method, and logged."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

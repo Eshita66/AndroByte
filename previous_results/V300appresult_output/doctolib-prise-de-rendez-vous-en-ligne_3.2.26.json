@@ -1,0 +1,208 @@
+[
+  {
+    "Data Types Collected": [
+      "WiFi network information",
+      "cellular network information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WiFi and cellular network information",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createDetailsMap:(Ljava/lang/String;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The current method originates user personal data by calling sensitive APIs to get WiFi and cellular network information.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Pass data to other methods",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createDetailsMap:(Ljava/lang/String;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The data is passed to other methods via method invocations.",
+        "Action": "Passed as parameters"
+      },
+      {
+        "Step": "Create a WritableNativeMap instance",
+        "Source Method": "Lcom/facebook/react/bridge/Arguments;->createMap:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The method originates data by creating a WritableNativeMap instance.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Store data in map",
+        "Source Method": "Lcom/facebook/react/bridge/Arguments;->createMap:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The map is stored in register v0 and returned as the result of this method.",
+        "Action": "Stored in registers"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->logDetails:(Ljava/lang/String;)V",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createDetailsMap:(Ljava/lang/String;)Lcom/facebook/react/bridge/WritableMap; --> Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->logDetails:(Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in registers and variables within the method, then passed to other methods via method invocations. The data reaches sinks such as logging through various operations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/mac address",
+      "wifi info"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getMacAddressSync() called",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data.",
+        "Action": "stored in registers (v0, v1) and variables (v2)"
+      },
+      {
+        "Step": "getWifiInfo() called",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The method originates user personal data by calling the `getSystemService` API with 'wifi' as a parameter.",
+        "Action": "stored in register v0"
+      },
+      {
+        "Step": "data propagated via method invocations",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;",
+        "Reasoning": "The data is passed to other methods via method invocations such as getReactApplicationContext(), checkCallingOrSelfPermission(), and invoke-virtual().",
+        "Action": "propagated"
+      },
+      {
+        "Step": "data reaches sink point through return-object instruction",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;",
+        "Reasoning": "The data reaches a sink point through the return-object instruction.",
+        "Action": "transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String; --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo; --> null",
+        "Reasoning": "The data flow starts from getMacAddressSync(), then propagates to getWifiInfo(). However, there is no clear sink point for wifi info. It seems the mac address data reaches a sink point through return-object instruction."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check permissions and use TelephonyManager to get phone number",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The method checks for permissions and uses the TelephonyManager to get the phone number.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Propagate through method invocations",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The data is propagated through method invocations.",
+        "Action": "Passed as argument"
+      },
+      {
+        "Step": "Reach sink point (logging) if TelephonyManager is null",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "If the TelephonyManager is null, the data reaches a sink point (logging).",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->log:()V;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String; --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->log:()V;",
+        "Reasoning": "The phone number is collected by the getPhoneNumberSync method, propagated through method invocations, and reaches a sink point (logging) if the TelephonyManager is null."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "LocationManager",
+      "ReadableMap",
+      "LocationOptions"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Read location data from system service",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData:(Lcom/facebook/react/bridge/ReadableMap; Lcom/facebook/react/bridge/Callback; Lcom/facebook/react/bridge/Callback;)V",
+        "Reasoning": "The method originates user personal data from the 'location' system service.",
+        "Action": "Stored in register v2 as a LocationManager object"
+      },
+      {
+        "Step": "Extract sensitive information from readable map",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule$LocationOptions;->fromReactMap:(Lcom/facebook/react/bridge/ReadableMap;)Lcom/reactnativecommunity/geolocation/GeolocationModule$LocationOptions;",
+        "Reasoning": "The method originates user personal data by reading from a ReadableMap.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Call sensitive API to check provider enabled",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule;->getValidProvider:(Landroid/location/LocationManager; Z)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling sensitive API `isProviderEnabled`.",
+        "Action": "Stored in registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/reactnativecommunity/geolocation/GeolocationModule;->getValidProvider:(Landroid/location/LocationManager; Z)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/reactnativecommunity/geolocation/GeolocationModule$LocationOptions;->fromReactMap:(Lcom/facebook/react/bridge/ReadableMap;)Lcom/reactnativecommunity/geolocation/GeolocationModule$LocationOptions; --> Lcom/reactnativecommunity/geolocation/GeolocationModule;->getValidProvider:(Landroid/location/LocationManager; Z)Ljava/lang/String;",
+        "Reasoning": "The data is propagated from the `fromReactMap` method to the `getValidProvider` method, where it reaches a sink point (network transmission)."
+      },
+      {
+        "dataflow 2": " Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData:(Lcom/facebook/react/bridge/ReadableMap; Lcom/facebook/react/bridge/Callback; Lcom/facebook/react/bridge/Callback;)V --> Lcom/reactnativecommunity/geolocation/GeolocationModule$LocationOptions;->fromReactMap:(Lcom/facebook/react/bridge/ReadableMap;)Lcom/reactnativecommunity/geolocation/GeolocationModule$LocationOptions;",
+        "Reasoning": "The data is propagated from the `getCurrentLocationData` method to the `fromReactMap` method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WiFi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access WiFi SSID through broadcast receiver",
+        "Source Method": "Lorg/otwebrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by accessing the WiFi SSID.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Pass WiFi SSID to method invocations",
+        "Source Method": "Lorg/otwebrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The data is passed between methods via method invocations.",
+        "Action": "Passed between methods"
+      },
+      {
+        "Step": "Display WiFi SSID",
+        "Source Method": "Lorg/otwebrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point through display.",
+        "Action": "Displayed"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/content/Context;->display:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/otwebrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> Stored in register v0 --> Passed between methods --> Displayed through Landroid/content/Context;->display:()V",
+        "Reasoning": "The WiFi SSID is accessed, stored, passed between methods, and finally displayed."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

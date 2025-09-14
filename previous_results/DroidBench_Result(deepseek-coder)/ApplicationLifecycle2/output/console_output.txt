@@ -1,0 +1,46 @@
+
+Processing folder: D:\UBCBAPK_Methods\ApplicationLifecycle2
+Using methods file: D:\UBCBAPK_Methods\ApplicationLifecycle2\ApplicationLifecycle2_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/ApplicationLifecyle2;->onCreate:()V']
+[SUMMARY] Lde/ecspride/ApplicationLifecyle2;->onCreate:()V => In the method onCreate() of Lde/ecspride/ApplicationLifecyle2, sensitive user personal data (IMEI) is obtained from the TelephonyManager service and stored within the application's instance. The IMEI number is a unique identifier for mobile devices and carries significant privacy implications.
+[SUMMARY] Lde/ecspride/ApplicationLifecyle2;->onLowMemory:()V => The method sends an SMS message containing the IMEI of the device, which could potentially be considered sensitive information.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "IMEI"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Obtain IMEI from TelephonyManager in onCreate()",
+            "Source Method": "Lde/ecspride/ApplicationLifecyle2;->onCreate:()V",
+            "Reasoning": "IMEI is obtained directly from the TelephonyManager service.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Send IMEI via SMS in onLowMemory()",
+            "Source Method": "Lde/ecspride/ApplicationLifecyle2;->onLowMemory:()V",
+            "Reasoning": "IMEI is sent as part of an SMS message, which could be considered sensitive information.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/ApplicationLifecyle2;->onLowMemory:()V",
+        "Log.i(...)"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method Lde/ecspride/ApplicationLifecyle2;->onCreate:()V --> onLowMemory() --> Sink Method Log.i(...) -->]",
+            "Reasoning": "IMEI is obtained in onCreate(), passed to onLowMemory() where it is logged."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ApplicationLifecycle2\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ApplicationLifecycle2\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ApplicationLifecycle2\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ApplicationLifecycle2\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ApplicationLifecycle2\output\sensitive_only.json
+Total time for folder: 66.70 seconds

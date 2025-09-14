@@ -1,0 +1,35 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity2
+Using methods file: D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity2\ObjectSensitivity2_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/OverwiteValue;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/OverwiteValue;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method `onCreate` first calls `getDeviceId` via `TelephonyManager.getDeviceId()`. This results in a tainted `String` being stored in `DataStore.field`. Subsequently, `sendTextMessage` is invoked with the same tainted `String` as the destination address (`vDest`). The `sendTextMessage` sink is triggered.  The `const-string v1, \"abc\"` and `iput-object v1, v10, Lde/ecspride/DataStore;->field Ljava/lang/String;` operations overwrite the previously tainted `DataStore.field` with a constant value. Therefore, the `sendTextMessage` sink is no longer triggered. The `const-string v1, \"abc\"` operation overwrites the previous taint.  The `Next Methods` array is empty.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity2\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity2\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "String",
+            "android.os.Bundle"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "getDeviceId called",
+                "Source Method": "Lde/ecspride/OverwiteValue;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method `onCreate` calls `getDeviceId` via `TelephonyManager.getDeviceId()`, resulting in a tainted `String` being stored in `DataStore.field`.",
+                "Action": "Tainted String created"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": null,
+        "Label": "no leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity2\output\refined_method_summaries.json
+Saved 0 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\ObjectSensitivity2\output\sensitive_only.json
+Total summary time: 7.491099834442139 seconds

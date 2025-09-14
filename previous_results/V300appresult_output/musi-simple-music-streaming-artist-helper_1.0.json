@@ -1,0 +1,113 @@
+[
+  {},
+  {
+    "Data Types Collected": [
+      "Location",
+      "Latitude",
+      "Longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method originates user personal data by using getAccuracy(), getTime(), getLatitude(), and getLongitude() methods of the Location object.",
+        "Source Method": "Lm4/a31;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "The method uses the Location object to collect location-related data, including accuracy, time, latitude, and longitude.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Bundle object created with sensitive location information.",
+        "Source Method": "Lm4/a31;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "A Bundle object is created to store the collected location-related data.",
+        "Action": "Stored in a Bundle object"
+      },
+      {
+        "Step": "Data passed to another method via method invocation.",
+        "Source Method": "Lm4/a31;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "The collected data is then passed to another method for further processing or transmission.",
+        "Action": "Passed to another method"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lm4/a31;->b:(Ljava/lang/Object;)V --> ... --> [Sink Method: null]",
+        "Reasoning": "The method originates user personal data by using the getAccuracy(), getTime(), getLatitude(), and getLongitude() methods of the Location object. A Bundle object is created to store the collected location-related data, which is then passed to another method via method invocation."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "location information",
+      "accuracy",
+      "time",
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access location information, including accuracy, time, latitude, and longitude.",
+        "Source Method": "Lm4/c81;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data by accessing location information.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lm4/c81;->b:(Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lm4/c81;->b:(Ljava/lang/Object;)V --> Stored in JSONObject --> Passed to 'uule' field of another JSONObject",
+        "Reasoning": "The data is stored in a JSONObject and passed to the 'uule' field of another JSONObject."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "java/lang/Object",
+      "Landroid/os/Bundle",
+      "Ljava/lang/String;",
+      "Ljava/util/List;",
+      "Ljava/lang/Integer;",
+      "Ljava/lang/Boolean;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method Lm4/s01;->b:(Ljava/lang/Object;)V originates user personal data.",
+        "Source Method": "Lm4/s01;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "The current method uses sensitive API calls to originate user personal data. The data is stored in registers and variables within the method, and it is passed to other methods via method invocations. The data reaches sink points like logging, network transmission, or storage.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Method Lc4/b;->v1:(Landroid/os/Bundle;Ljava/lang/String;Ljava/lang/Integer;Z)V originates user personal data by using the Bundle class to store and retrieve integer values.",
+        "Source Method": "Lc4/b;->v1:(Landroid/os/Bundle;Ljava/lang/String;Ljava/lang/Integer;Z)V",
+        "Reasoning": "The method originates sensitive user personal data by using the `Landroid/os/Bundle` class to store and retrieve integer values. The data is propagated through registers (v2) and passed between methods via method invocations.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Method Lc4/b;->w1:(Landroid/os/Bundle;Ljava/lang/String;Ljava/util/List;)V originates sensitive data from the Bundle and String parameters.",
+        "Source Method": "Lc4/b;->w1:(Landroid/os/Bundle;Ljava/lang/String;Ljava/util/List;)V",
+        "Reasoning": "Sensitive data originates from the Bundle and String parameters. The data is stored in a new ArrayList instance and then put into the Bundle.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Method Lc4/b;->u1:(Landroid/os/Bundle;Ljava/lang/String;Ljava/lang/Boolean;Z)V originates user personal data by calling the booleanValue() method on a Boolean object and then using the result to put a boolean value into an Android Bundle.",
+        "Source Method": "Lc4/b;->u1:(Landroid/os/Bundle;Ljava/lang/String;Ljava/lang/Boolean;Z)V",
+        "Reasoning": "The method originates sensitive user personal data by calling the booleanValue() method on a Boolean object and then using the result to put a boolean value into an Android Bundle. The data is stored in registers v2 and v3, and passed to another method via method invocation.",
+        "Action": "stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lm4/s01;->b:(Ljava/lang/Object;)V --> Lc4/b;->u1:(Landroid/os/Bundle;Ljava/lang/String;Ljava/lang/Boolean;Z)V] --> [no sink found]",
+        "Reasoning": "Data flows from method Lm4/s01;->b:(Ljava/lang/Object;)V to method Lc4/b;->u1:(Landroid/os/Bundle;Ljava/lang/String;Ljava/lang/Boolean;Z)V, but no sink is identified."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

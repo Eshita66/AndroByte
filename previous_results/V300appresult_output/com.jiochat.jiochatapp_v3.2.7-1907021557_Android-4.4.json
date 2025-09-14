@@ -1,0 +1,380 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "Lcom/cloud/datagrinchsdk/utils/applicationutils/d;->b:()Landroid/location/Location;",
+        "Reasoning": "Method signature matches the summary",
+        "Action": "Stored in `f` field"
+      }
+    ],
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive location data (latitude, longitude, accuracy)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location data",
+        "Source Method": "Lcom/cloud/datagrinchsdk/utils/applicationutils/d;->a:()V",
+        "Reasoning": "Method `a()` retrieves location data from the `Location` object.",
+        "Action": "Stored in registers `v0` and `v2`"
+      },
+      {
+        "Step": "Log location data",
+        "Source Method": "Lcom/cloud/datagrinchsdk/utils/applicationutils/d;->a:()V",
+        "Reasoning": "Method `a()` logs the location data using the `g.a()` method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/cloud/datagrinchsdk/utils/applicationutils/g;->a(Ljava/lang/String;Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/cloud/datagrinchsdk/utils/applicationutils/d;->a:()V --> Lcom/cloud/datagrinchsdk/utils/applicationutils/g;->a(Ljava/lang/String;Ljava/lang/String;)V",
+        "Reasoning": "Location data is retrieved in `a()` and logged in `g.a()`."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is received from the Location object.",
+        "Source Method": "Lcom/jio/jiowebviewsdk/JioWebViewManager;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature matches the summary.",
+        "Action": "Stored in currentLocationLat and currentLocationLong fields."
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/jio/jiowebviewsdk/JioWebViewManager;->onLocationChanged:(Landroid/location/Location;)V --> currentLocationLat and currentLocationLong fields",
+        "Reasoning": "Data flows from the source method to the fields."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "accuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain location data",
+        "Source Method": "Lcom/cloud/datagrinchsdk/utils/applicationutils/e;->c:()V",
+        "Reasoning": "Method logs latitude, longitude, and accuracy",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/cloud/datagrinchsdk/utils/applicationutils/e;->c:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/cloud/datagrinchsdk/utils/applicationutils/e;->c:()V --> Lcom/cloud/datagrinchsdk/utils/applicationutils/e;->c:()V",
+        "Reasoning": "Location data is logged in the same method where it is obtained"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location (latitude and longitude)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain location data",
+        "Source Method": "Lcom/jiochat/jiochatapp/ui/activitys/social/as;->run:()V",
+        "Reasoning": "The method calls `getFromLocationName()` with the obtained location data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Geocoding",
+        "Source Method": "Lcom/jiochat/jiochatapp/utils/GeocoderUtil;->getFromLocationName:(Ljava/lang/String;)Ljava/util/List;",
+        "Reasoning": "The method returns a list of addresses based on the location name.",
+        "Action": "Computed"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive user location data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user location data is collected",
+        "Source Method": "Lcom/jiochat/jiochatapp/manager/MiniAppManager;->parseResponse:(Ljava/lang/String;)V",
+        "Reasoning": "move-object v0, v2",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Sensitive user location data is passed through JSONObject",
+        "Source Method": "Lcom/jiochat/jiochatapp/manager/MiniAppManager;->parseResponse:(Ljava/lang/String;)V",
+        "Reasoning": "new-instance v7, Lorg/json/JSONObject;",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Sensitive user location data is sent to MiniAppView",
+        "Source Method": "Lcom/jiochat/jiochatapp/manager/MiniAppManager;->parseResponse:(Ljava/lang/String;)V",
+        "Reasoning": "invoke-interface v3, v0, Lcom/jiochat/jiochatapp/manager/IMiniAppView;->loadUrl(Ljava/lang/String;)V",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/jiochat/jiochatapp/manager/IMiniAppView;->loadUrl(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/jiochat/jiochatapp/manager/MiniAppManager;->parseResponse:(Ljava/lang/String;)V --> Lcom/jiochat/jiochatapp/manager/IMiniAppView;->loadUrl(Ljava/lang/String;)V",
+        "Reasoning": "Sensitive user location data is collected, passed through JSONObject, and sent to MiniAppView"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is received in `onLocationChanged` method.",
+        "Source Method": "Lcom/jiochat/jiochatapp/manager/p;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in `v6`"
+      },
+      {
+        "Step": "Location is sent to `IdamManager`.",
+        "Source Method": "Lcom/jiochat/jiochatapp/manager/p;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/jiochat/jiochatapp/manager/IdamManager;->sendPublicMenuMessage:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/jiochat/jiochatapp/manager/p;->onLocationChanged:(Landroid/location/Location;)V --> Lcom/jiochat/jiochatapp/manager/IdamManager;->sendPublicMenuMessage:(Ljava/lang/String;)V",
+        "Reasoning": "Overall Data Flow analysis."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected in `onLocationResult` method.",
+        "Source Method": "Lcom/jiochat/jiochatapp/manager/r;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "Sensitive user location data is originated in `onLocationResult`.",
+        "Action": "Stored in `v6`"
+      },
+      {
+        "Step": "Location data is passed to `requestSendPublicMenuMsg` method.",
+        "Source Method": "Lcom/jiochat/jiochatapp/manager/r;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "Stored in `v6`.",
+        "Action": "Passed to `requestSendPublicMenuMsg` via `IdamManager`"
+      },
+      {
+        "Step": "Location data is sent to the server.",
+        "Source Method": "Lcom/jiochat/jiochatapp/manager/r;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "Passed to `requestSendPublicMenuMsg` via `IdamManager`.",
+        "Action": "Sent to the server using `MainAidlManager`"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/jiochat/jiochatapp/manager/r;->requestSendPublicMenuMsg:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/jiochat/jiochatapp/manager/r;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V --> Lcom/jiochat/jiochatapp/manager/r;->requestSendPublicMenuMsg:(Ljava/lang/String;)V",
+        "Reasoning": "Location data is collected in `onLocationResult`, passed to `requestSendPublicMenuMsg`, and sent to the server."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is retrieved from LocationResult.",
+        "Source Method": "Lcom/jiochat/jiochatapp/ui/activitys/maps/c;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "Location is extracted from LocationResult.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is passed to GoogleMapActivity.",
+        "Source Method": "Lcom/jiochat/jiochatapp/ui/activitys/maps/c;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "Location is passed as an argument.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Location data is used to update camera position in GoogleMapActivity.",
+        "Source Method": "Lcom/jiochat/jiochatapp/ui/activitys/maps/GoogleMapActivity",
+        "Reasoning": "Location is used to set camera position.",
+        "Action": "Used"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/jiochat/jiochatapp/ui/activitys/maps/GoogleMapActivity"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/jiochat/jiochatapp/ui/activitys/maps/c;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V --> Lcom/jiochat/jiochatapp/ui/activitys/maps/GoogleMapActivity",
+        "Reasoning": "Location data is passed from onLocationResult to GoogleMapActivity where it is used to update camera position."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is received in `onLocationChanged` method.",
+        "Source Method": "Lcom/jiochat/jiochatapp/ui/activitys/maps/m;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary mention location data.",
+        "Action": "Stored in `LatLng` object."
+      },
+      {
+        "Step": "Location data is passed to `GoogleMap` for camera movement.",
+        "Source Method": "Lcom/jiochat/jiochatapp/ui/activitys/maps/m;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary mention passing data to `GoogleMap`.",
+        "Action": "Passed to `GoogleMap`."
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " onLocationChanged(...) --> GoogleMap",
+        "Reasoning": "Location data is stored in `LatLng` object and passed to `GoogleMap`."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number",
+      "IMEI",
+      "IMSI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User provides phone number, IMEI, and IMSI",
+        "Source Method": "Lcom/jiochat/jiochatapp/ui/activitys/idam/CreateIdamIdActivity;->onIdVerifyOk:()V",
+        "Reasoning": "Method summary indicates data originates from this method.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "IdamWorker receives user data",
+        "Source Method": "Lcom/jiochat/jiochatapp/core/worker/IdamWorker;->createIdamID:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Lcom/allstar/cinclient/idam/IdamCreateIdHandler$IdamDeviceInfo;)V",
+        "Reasoning": "Method summary indicates data is received by this method.",
+        "Action": "Processed"
+      }
+    ],
+    "All Sinks": [
+      "Remote server"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/jiochat/jiochatapp/ui/activitys/idam/CreateIdamIdActivity;->onIdVerifyOk:()V --> Lcom/jiochat/jiochatapp/core/worker/IdamWorker;->createIdamID:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Lcom/allstar/cinclient/idam/IdamCreateIdHandler$IdamDeviceInfo;)V --> Remote server",
+        "Reasoning": "Overall data flow shows data is transmitted to the remote server."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Mobile Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve mobile phone number",
+        "Source Method": "Lcom/jiochat/jiochatapp/utils/Util;->getTelephonyManagerMobile:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method documentation specifies retrieving the mobile phone number.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is extracted from the Location object.",
+        "Source Method": "Lcom/jiochat/jiochatapp/utils/Util;->setGpsParameters:(Landroid/hardware/Camera$Parameters; Landroid/location/Location;)V",
+        "Reasoning": "Defined in the method summary.",
+        "Action": "Stored in Camera$Parameters object."
+      }
+    ],
+    "All Sinks": [
+      "Landroid/hardware/Camera$Parameters;->setGpsLatitude:(D)V",
+      "Landroid/hardware/Camera$Parameters;->setGpsLongitude:(D)V",
+      "Landroid/hardware/Camera$Parameters;->setGpsAltitude:(D)V",
+      "Landroid/hardware/Camera$Parameters;->setGpsTimestamp:(J)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/jiochat/jiochatapp/utils/Util;->setGpsParameters(...) --> Landroid/hardware/Camera$Parameters;->setGpsLatitude(...) --> ... --> Landroid/hardware/Camera$Parameters;->setGpsTimestamp(...)",
+        "Reasoning": "Data is passed through method calls and written to camera parameters."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve WifiSSID",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "Method `getWifiSSID()` directly accesses the WifiSSID",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> Collected",
+        "Reasoning": "WifiSSID is collected directly in `getWifiSSID()` method"
+      }
+    ],
+    "Label": "no leak"
+  }
+]

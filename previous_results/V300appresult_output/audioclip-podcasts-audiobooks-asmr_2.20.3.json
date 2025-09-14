@@ -1,0 +1,250 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is extracted from Location object.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method argument",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Location data is used to construct a Bundle object.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method body",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Bundle object is passed to GraphRequest constructor.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method argument",
+        "Action": "Passed"
+      },
+      {
+        "Step": "GraphRequest object makes request to Facebook API.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method body",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult:(ILandroid/content/Intent;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...)",
+        "Reasoning": "GraphRequest object makes request to Facebook API and the callback object receives the result."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user name from AccountManager",
+        "Source Method": "Lcom/naver/login/core/account/NidAccountManager;->getAccountList()",
+        "Reasoning": "The method iterates over accounts with non-empty names.",
+        "Action": "Stored in ArrayList"
+      },
+      {
+        "Step": "Return ArrayList containing user names",
+        "Source Method": "Lcom/naver/login/core/account/NidAccountManager;->getAccountList()",
+        "Reasoning": "The method returns the ArrayList containing user names.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/naver/login/core/account/NidAccountManager;->getAccountList() --> ArrayList --> null",
+        "Reasoning": "The user name is stored in an ArrayList but not written to any sink points."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "OAuth token"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract OAuth token from user data",
+        "Source Method": "Lcom/naver/login/core/account/NidAccountManager;->getValidOAuthTokenByNaverId:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Method summary specifies extracting OAuth token from user data",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/naver/login/core/account/NidAccountManager;->getValidOAuthTokenByNaverId:(Ljava/lang/String;)Ljava/lang/String; --> Stored",
+        "Reasoning": "OAuth token is stored in the overall data flow"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID",
+      "SIM Serial Number",
+      "Unique UUID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Device ID, SIM Serial Number, and Unique UUID are extracted.",
+        "Source Method": "Lcom/naver/login/core/util/b;->l:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the source method.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/naver/login/core/util/b;->l:(Landroid/content/Context;)Ljava/lang/String; --> null",
+        "Reasoning": "No sink methods are identified in the summary."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract Device ID",
+        "Source Method": "Lcom/naver/login/core/util/b;->m:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "TelephonyManager or Settings.Secure",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Process Device ID",
+        "Source Method": "Lcom/naver/login/core/util/b;->a:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Internal method call",
+        "Action": "Processed"
+      },
+      {
+        "Step": "Return Device ID",
+        "Source Method": "Lcom/naver/login/core/util/b;->d()Ljava/lang/String;",
+        "Reasoning": "Internal method call",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SMS message body"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract SMS message body",
+        "Source Method": "Labx/t4/b;->b:(Landroid/content/Intent;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the given method signature.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Labx/t4/b;->b:(Landroid/content/Intent;)Ljava/lang/String; --> null",
+        "Reasoning": "SMS message body is extracted from the intent but not stored, logged, or transmitted."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve phone number",
+        "Source Method": "Labx/tf/s0;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Checks for READ_PHONE_STATE permission and accesses TelephonyManager",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Labx/tf/s0;->b:(Landroid/content/Context;)Ljava/lang/String; --> Stored",
+        "Reasoning": "Phone number is retrieved and stored in memory"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address",
+        "Source Method": "Labx/tf/s0;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method documentation specifies retrieving MAC address",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Labx/tf/s0;->c:(Landroid/content/Context;)Ljava/lang/String; --> null",
+        "Reasoning": "MAC address is retrieved but not further processed or sent anywhere"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved from LocationManager and Geocoder APIs.",
+        "Source Method": "LocationInfo.a()",
+        "Reasoning": "Method signature and summary mention location retrieval.",
+        "Action": "Stored in LocationInformation object"
+      },
+      {
+        "Step": "LocationInformation object is returned by the method.",
+        "Source Method": "LocationInfo.a()",
+        "Reasoning": "Method signature and summary mention returning LocationInformation.",
+        "Action": "Returned as a result"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "LocationInfo.a() --> LocationInformation object",
+        "Reasoning": "Overall Data Flow steps describe the data flow."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

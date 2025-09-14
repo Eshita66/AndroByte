@@ -1,0 +1,26 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "TelephonyManager"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "1",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method uses reflection to call `getDeviceId()` on a `TelephonyManager` instance, originating the `DeviceId` value.",
+                "Action": "Record `DeviceId` as a sensitive source."
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " [Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;)]",
+                "Reasoning": "The `sendTextMessage` method is a sink. The `DeviceId` value, originating from `getDeviceId()`, is passed to this sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]

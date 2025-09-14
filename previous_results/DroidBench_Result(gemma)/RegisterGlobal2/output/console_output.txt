@@ -1,0 +1,52 @@
+
+ Processing folder: D:\UBCBAPK_Methods\RegisterGlobal2
+ Using methods file: D:\UBCBAPK_Methods\RegisterGlobal2\RegisterGlobal2_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MyApplication$1;->onLowMemory:()V']
+[SUMMARY] Lde/ecspride/MyApplication$1;->onLowMemory:()V => {
+    "Summary": "This method retrieves the device ID from the TelephonyManager and stores it in the `imei` field of the `MyApplication$1` instance.",
+    "Next Methods": [
+        "Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V => {
+    "Summary": "This method sends a text message using the default SmsManager, likely with a phone number starting with \"+49\".",
+    "Next Methods": [
+        "Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\RegisterGlobal2\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\RegisterGlobal2\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\RegisterGlobal2\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "Configuration"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Lde/ecspride/MyApplication$1;->onLowMemory:()V",
+                "Reasoning": "The summary states that this method retrieves the device ID from TelephonyManager and stores it in `imei`.",
+                "Action": "Store"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MyApplication$1;->onLowMemory:()V --> DeviceId --> Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V",
+                "Reasoning": "The `onLowMemory` method retrieves the DeviceId and passes it to `onConfigurationChanged`. The DeviceId was not overwritten."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\RegisterGlobal2\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\RegisterGlobal2\output\sensitive_only.json
+Total time for folder: 24.01 seconds

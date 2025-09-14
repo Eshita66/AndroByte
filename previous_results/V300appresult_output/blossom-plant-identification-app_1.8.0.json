@@ -1,0 +1,135 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "loadAddress method reads MAC address from /sys/class/net/<interface>/address",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in a StringBuilder and then passed to a BufferedReader to read the file.",
+        "Action": "read"
+      },
+      {
+        "Step": "getRawMacAddress method calls loadAddress to propagate MAC address",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in register `v0` and then propagated through method invocations.",
+        "Action": "propagate"
+      },
+      {
+        "Step": "MAC address is logged or stored",
+        "Source Method": null,
+        "Reasoning": "As the MAC address reaches a sink point (logging or storage)",
+        "Action": "logged/stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adjust/sdk/MacAddressUtil;->logMacAddress:(Ljava/lang/String;)V",
+      "Lcom/adjust/sdk/MacAddressUtil;->storeMacAddress:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> (sink) Lcom/adjust/sdk/MacAddressUtil;->logMacAddress:(Ljava/lang/String;)V",
+        "Reasoning": "The MAC address is first read from the file in loadAddress method, then propagated to getRawMacAddress method and finally logged or stored."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "device information (e.g., platform, language, country)",
+      "carrier",
+      "device model",
+      "wide integer"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data through sensitive API calls to get device information.",
+        "Source Method": "Le/e/a/g;->g:(Ljava/lang/String; Lorg/json/JSONObject; Lorg/json/JSONObject; Lorg/json/JSONObject; Lorg/json/JSONObject; Lorg/json/JSONObject; J Z)J",
+        "Reasoning": "The method originates user personal data through sensitive API calls to get device information (e.g., platform, language, country), carrier, and device model.",
+        "Action": "stored in registers and variables within the method"
+      },
+      {
+        "Step": "Originate user personal data through sensitive API calls to `c()` and `f(J)` methods.",
+        "Source Method": "Le/e/a/g;->q:(J)Z",
+        "Reasoning": "The method originates user personal data through sensitive API calls to `c()` and `f(J)` methods.",
+        "Action": "stored in registers and variables within the method"
+      },
+      {
+        "Step": "Originate user personal data by calling the sensitive API 'c()' in line 1.",
+        "Source Method": "Le/e/a/g;->l:(J)V",
+        "Reasoning": "The method originates user personal data by calling the sensitive API 'c()' in line 1.",
+        "Action": "stored in register v0"
+      },
+      {
+        "Step": "Originate user personal data by using the `iput-wide` instructions to store sensitive information in registers.",
+        "Source Method": "Le/e/a/g;->p:(J)V",
+        "Reasoning": "The method originates user personal data by using the `iput-wide` instructions to store sensitive information in registers.",
+        "Action": "stored in variables `p J` and `u J`"
+      },
+      {
+        "Step": "Originate user personal data from sensitive API calls (iget-wide) to fields A and B of the Le/e/a/g class.",
+        "Source Method": "Le/e/a/g;->f:(J)Z",
+        "Reasoning": "The method originates user personal data from sensitive API calls (iget-wide) to fields A and B of the Le/e/a/g class.",
+        "Action": "stored in registers v0 and v2"
+      }
+    ],
+    "All Sinks": [
+      "Le/e/a/g;->g:(Ljava/lang/String; Lorg/json/JSONObject; Lorg/json/JSONObject; Lorg/json/JSONObject; Lorg/json/JSONObject; Lorg/json/JSONObject; J Z)J",
+      "Le/e/a/g;->p:(J)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Le/e/a/g;->g(...) --> Le/e/a/p;->S0(...) --> Le/e/a/g;->p(...)]",
+        "Reasoning": "The data is passed to other methods via method invocations, specifically the `invoke-static` instruction which calls the `valueOf` method from the `java/lang/Long` class. The data ultimately reaches a sink point, specifically a logging operation."
+      },
+      {
+        "dataflow 2": "[Le/e/a/g;->l(...) --> Le/e/a/g;->c(...) --> Le/e/a/g;->p(...)]",
+        "Reasoning": "The data is propagated through method invocations, ultimately reaching sinks such as data logging and transmission."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "current time",
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Call sensitive APIs to get current time and location",
+        "Source Method": "Ls/c/c/h$h;->c:()I",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Get process ID and UID from API calls",
+        "Source Method": "Ls/k/b/e;->o:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data from API calls.",
+        "Action": "Stored in registers (v0, v1) and variables (v2)"
+      },
+      {
+        "Step": "Pass data between methods via method invocations",
+        "Source Method": "Ls/c/c/h$h;->c:()I",
+        "Reasoning": "Data propagation analysis shows that the data is passed between methods.",
+        "Action": "Passed to check permissions and note proxy operations"
+      }
+    ],
+    "All Sinks": [
+      "Ls/c/c/h$h;->c:()I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Ls/k/b/e;->o:(Landroid/content/Context; Ljava/lang/String;)I --> Ls/c/c/h$h;->c:()I --> Ls/c/c/h$h;->c:()I",
+        "Reasoning": "Data is propagated from process ID and UID to current time and location, then passed between methods via method invocations, ultimately reaching a sink point for logging."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

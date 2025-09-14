@@ -1,0 +1,529 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WiFi RSSI from WifiManager instance",
+        "Source Method": "Lcom/huawei/hms/framework/common/NetworkUtil;->getWifiRssi:(Landroid/content/Context;)I",
+        "Reasoning": "Method retrieves WiFi RSSI, which may contain user location information.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Call getStackTrace() method on current thread",
+        "Source Method": "Lcom/huawei/hms/framework/common/Logger;->getCallMethodInfo:(I)Ljava/lang/String;",
+        "Reasoning": "Method originates user personal data by calling getStackTrace() method.",
+        "Action": "Stored in StringBuilder object and passed to return statement"
+      },
+      {
+        "Step": "Concatenate strings using a StringBuilder",
+        "Source Method": "Lcom/huawei/hms/framework/common/Logger;->complexAppTag:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Method originates user personal data by concatenating strings.",
+        "Action": "Stored in 'v2' register and propagated through method invocation"
+      },
+      {
+        "Step": "Check if app is loggable using extLogger field",
+        "Source Method": "Lcom/huawei/hms/framework/common/Logger;->isAPPLoggable:(I)Z",
+        "Reasoning": "Method originates user personal data from extLogger field.",
+        "Action": "Passed to 'isLoggable' method of Log class in Android's framework library"
+      },
+      {
+        "Step": "Determine if app is loggable using isEmpty() method call",
+        "Source Method": "Lcom/huawei/hms/framework/common/Logger;->complexMsg:(Ljava/lang/String; I)Ljava/lang/String;",
+        "Reasoning": "Method originates user personal data from isEmpty() method call.",
+        "Action": "Passed to other methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/hms/framework/common/Logger;->logPrintln:(I Ljava/lang/String; Ljava/lang/String;)I",
+      "Lcom/huawei/hms/framework/common/Logger;->i:(Ljava/lang/String; Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [NetworkUtil.getWifiRssi(...) --> Logger.logPrintln(...)]",
+        "Reasoning": "WiFi RSSI is retrieved and logged."
+      },
+      {
+        "dataflow 2": " [Logger.getCallMethodInfo(...) --> Logger.logPrintln(...)]",
+        "Reasoning": "getStackTrace() method call data is logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi RSSI level",
+      "String (from Logger.i())",
+      "Integer (from Logger.println())",
+      "Boolean (from Logger.isLoggable())",
+      "String (from Logger.logPrintln())",
+      "String (from TextUtils.isEmpty())",
+      "StringBuilder object (from complexMsg() and complexAppTag())",
+      "Thread's stack trace information (from getCallMethodInfo())"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WiFi RSSI level through NetworkUtil.getWifiRssiLevel()",
+        "Source Method": "Lcom/huawei/hms/framework/common/NetworkUtil;->getWifiRssiLevel:(Landroid/content/Context;)I",
+        "Reasoning": "The method originates user personal data by getting the WiFi RSSI level.",
+        "Action": "Stored in register v2 and variable v1"
+      },
+      {
+        "Step": "Call Logger.i() to log sensitive data",
+        "Source Method": "Lcom/huawei/hms/framework/common/Logger;->i:(Ljava/lang/String; Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data through the sensitive API call to Logger.i().",
+        "Action": "Stored in registers v1 and v2"
+      },
+      {
+        "Step": "Call Logger.println() to log sensitive data",
+        "Source Method": "Lcom/huawei/hms/framework/common/Logger;->println:(I Ljava/lang/String; Ljava/lang/Object;)V",
+        "Reasoning": "The current method is using the sensitive API call to originate user personal data.",
+        "Action": "Stored in registers v1 and v3"
+      },
+      {
+        "Step": "Call Logger.isLoggable() to determine loggability",
+        "Source Method": "Lcom/huawei/hms/framework/common/Logger;->isLoggable:(I)Z",
+        "Reasoning": "The method originates user personal data by calling the sensitive API `Landroid/util/Log;->isLoggable:(Ljava/lang/String;I)Z` to determine loggability.",
+        "Action": "Stored in register v1 and returned as a boolean value"
+      },
+      {
+        "Step": "Call Logger.logPrintln() to log sensitive data",
+        "Source Method": "Lcom/huawei/hms/framework/common/Logger;->logPrintln:(I Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data through the isAPPLoggable API call.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Extract thread's stack trace information using getCallMethodInfo()",
+        "Source Method": "Lcom/huawei/hms/framework/common/Logger;->getCallMethodInfo:(I)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by getting the current thread's stack trace and extracting relevant information.",
+        "Action": "Stored in a StringBuilder object"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/hms/framework/common/Logger;->i:(Ljava/lang/String; Ljava/lang/Object;)V",
+      "Lcom/huawei/hms/framework/common/Logger;->println:(I Ljava/lang/String; Ljava/lang/Object;)V",
+      "Lcom/huawei/hms/framework/common/Logger;->extLogPrintln:(I Ljava/lang/String; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/huawei/hms/framework/common/NetworkUtil;->getWifiRssiLevel:(Landroid/content/Context;)I --> Lcom/huawei/hms/framework/common/Logger;->i:(Ljava/lang/String; Ljava/lang/Object;)V --> Lcom/huawei/hms/framework/common/Logger;->extLogPrintln:(I Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The WiFi RSSI level is passed to Logger.i(), which logs it using extLogPrintln()."
+      },
+      {
+        "dataflow 2": "Lcom/huawei/hms/framework/common/Logger;->i:(Ljava/lang/String; Ljava/lang/Object;)V --> Lcom/huawei/hms/framework/common/Logger;->getCallMethodInfo:(I)Ljava/lang/String;",
+        "Reasoning": "The logged data is passed to getCallMethodInfo(), which extracts thread's stack trace information."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location collected from Location object",
+        "Source Method": "Lcom/huawei/hms/locationSdk/w0;->a:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "This method originates user personal data from the Location object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data stored in JSONObject",
+        "Source Method": "Lcom/huawei/hms/locationSdk/w0;->a:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "The data is stored in a JSONObject and propagated through registers.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data logged via Log.d() calls",
+        "Source Method": "Lcom/huawei/hms/locationSdk/w0;->a:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "The data reaches sinks such as logging via Log.d() calls.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/hms/locationSdk/w0;->a:(Landroid/location/Location;)Lorg/json/JSONObject;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/huawei/hms/locationSdk/w0;->a:(Landroid/location/Location;)Lorg/json/JSONObject; --> stored in JSONObject --> logged via Log.d() calls ",
+        "Reasoning": "The user location collected from the Location object is first stored in a JSONObject, then propagated through registers and finally logged via Log.d() calls."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "java.lang.String",
+      "android.content.Context",
+      "java.lang.Integer"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check for READ_PHONE_STATE permission",
+        "Source Method": "Lcom/huawei/hianalytics/ab/cd/bc/cd;->fg:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the sensitive API `Lcom/huawei/hianalytics/ab/bc/kl/bc;->ab(Landroid/content/Context;Ljava/lang/String;)Z` to check for READ_PHONE_STATE permission.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check for read phone permission",
+        "Source Method": "Lcom/huawei/hianalytics/ab/bc/kl/bc;->ab:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The current method originates user personal data by checking for read phone permission using the `checkPermission` method and `checkSelfPermission` method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get device ID",
+        "Source Method": "Lcom/huawei/hianalytics/ab/bc/ef/ab;->fg:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates sensitive user personal data through the static call to de() in com.huawei.hianalytics.ab.bc.ef.ab, which is not shown in this snippet.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Get device ID and IMEI",
+        "Source Method": "Lcom/huawei/hianalytics/ab/bc/ef/bc;->bc:(I Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data using the `String` class.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Log device ID and IMEI",
+        "Source Method": "Lcom/huawei/hianalytics/ab/bc/ef/bc;->ab:(I Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data from the `Lcom/huawei/hianalytics/ab/bc/ef/bc;->ab:(I Ljava/lang/String; Ljava/lang/String;)V` method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/hianalytics/ab/bc/ef/ab;->bc(Ljava/lang/String;Ljava/lang/String;)V",
+      "Lcom/huawei/hianalytics/ab/bc/ef/ab;->fg:(Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/huawei/hianalytics/ab/bc/ef/bc;->bc:(I Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/huawei/hianalytics/ab/bc/ef/bc;->ab:(I Ljava/lang/String; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/huawei/hianalytics/ab/cd/bc/cd;->fg:(Landroid/content/Context;)Ljava/lang/String --> Lcom/huawei/hianalytics/ab/bc/kl/bc;->ab(Landroid/content/Context;Ljava/lang/String;)Z --> Lcom/huawei/hianalytics/ab/bc/ef/ab;->bc(Ljava/lang/String;Ljava/lang/String;)V",
+        "Reasoning": "The data flows from the `fg` method to the `ab` method, which checks for READ_PHONE_STATE permission. The data is then logged by the `bc` method."
+      },
+      {
+        "dataflow 2": "Lcom/huawei/hianalytics/ab/bc/kl/bc;->ab:(Landroid/content/Context; Ljava/lang/String;)Z --> Lcom/huawei/hianalytics/ab/bc/ef/ab;->fg:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data flows from the `ab` method to the `fg` method, which logs the device ID and IMEI."
+      },
+      {
+        "dataflow 3": "Lcom/huawei/hianalytics/ab/bc/ef/ab;->fg:(Ljava/lang/String; Ljava/lang/String;)V --> Lcom/huawei/hianalytics/ab/bc/ef/bc;->bc:(I Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data flows from the `fg` method to the `bc` method, which logs the device ID and IMEI."
+      },
+      {
+        "dataflow 4": "Lcom/huawei/hianalytics/ab/bc/ef/bc;->bc:(I Ljava/lang/String; Ljava/lang/String;)V --> Lcom/huawei/hianalytics/ab/bc/ef/bc;->ab:(I Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data flows from the `bc` method to the `ab` method, which logs the device ID and IMEI."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "kotlinx/coroutines/u1",
+      "java/lang/String",
+      "java/util/List",
+      "Lua/com/rozetka/shop/managers/c",
+      "Lua/com/rozetka/shop/managers/f"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from location API.",
+        "Source Method": "Lua/com/rozetka/shop/screen/orders/OrdersViewModel;->H0:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data from the location API.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data through getViewModelScope API call.",
+        "Source Method": "Lua/com/rozetka/shop/screen/orders/OrdersViewModel;->m0:(D D)Lkotlinx/coroutines/u1;",
+        "Reasoning": "The method originates user personal data through the getViewModelScope API call.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data from input parameters.",
+        "Source Method": "Lua/com/rozetka/shop/managers/c;->n0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data from the input parameters.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Originates user personal data from sensitive API call.",
+        "Source Method": "Lua/com/rozetka/shop/screen/orders/OrdersViewModel;->p0:(Ljava/util/List;)Lkotlinx/coroutines/u1;",
+        "Reasoning": "The method originates user personal data from the sensitive API call.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Originates user personal data through invocation of sensitive API call.",
+        "Source Method": "Lua/com/rozetka/shop/managers/c;->m0:(Lua/com/rozetka/shop/managers/c; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; I Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data through the invocation of a sensitive API call.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Originates user personal data through invocation of sensitive API call.",
+        "Source Method": "Lua/com/rozetka/shop/screen/orders/OrdersViewModel$getPickupsByCoordinates$1;-><init>:(Lua/com/rozetka/shop/screen/orders/OrdersViewModel; D D Lkotlin/coroutines/c;)V",
+        "Reasoning": "The method originates user personal data through the invocation of a sensitive API call.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Originates user personal data from parameters.",
+        "Source Method": "Lua/com/rozetka/shop/managers/f;->w0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data from the input parameters.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API call.",
+        "Source Method": "Lua/com/rozetka/shop/managers/FirebaseManager;->k:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the invocation of a sensitive API call.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Originates user personal data from parameters.",
+        "Source Method": "Lua/com/rozetka/shop/managers/c;->l0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data from the input parameters.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Originates user personal data through direct API call to Google Analytics.",
+        "Source Method": "Lua/com/rozetka/shop/managers/f;->O0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)Lcom/google/android/gms/analytics/HitBuilders$EventBuilder;",
+        "Reasoning": "The method originates user personal data through the direct API call to Google Analytics.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Originates user personal data through invocation of put method on Map object.",
+        "Source Method": "Lua/com/rozetka/shop/managers/f;->F1:(Ljava/lang/String; Ljava/util/Map;)V",
+        "Reasoning": "The method originates user personal data through the invocation of the put method on a Map object.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Originates user personal data by calling FirebaseManager's B() method.",
+        "Source Method": "Lua/com/rozetka/shop/managers/FirebaseManager;->H:(Ljava/lang/String; Landroid/os/Bundle;)V",
+        "Reasoning": "The method originates user personal data by calling FirebaseManager's B() method.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Originates user personal data through use of sensitive APIs.",
+        "Source Method": "Lua/com/rozetka/shop/managers/f;->v0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the use of sensitive APIs.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Originates user personal data by calling a() method on FirebaseAnalytics instance.",
+        "Source Method": "Lcom/google/firebase/analytics/FirebaseAnalytics;->a:(Ljava/lang/String; Landroid/os/Bundle;)V",
+        "Reasoning": "The method originates user personal data by calling the a() method on the FirebaseAnalytics instance.",
+        "Action": "Passed to other methods"
+      }
+    ],
+    "All Sinks": [
+      "Lua/com/rozetka/shop/managers/FirebaseManager;->k:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/google/firebase/analytics/FirebaseAnalytics;->a:(Ljava/lang/String; Landroid/os/Bundle;)V",
+      "Lua/com/rozetka/shop/managers/f;->O0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)Lcom/google/android/gms/analytics/HitBuilders$EventBuilder;",
+      "Lua/com/rozetka/shop/managers/FirebaseManager;->H:(Ljava/lang/String; Landroid/os/Bundle;)V",
+      "Lua/com/rozetka/shop/screen/orders/OrdersViewModel;->p0:(Ljava/util/List;)Lkotlinx/coroutines/u1;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lua/com/rozetka/shop/screen/orders/OrdersViewModel;->H0:(Landroid/location/Location;)V --> Lua/com/rozetka/shop/managers/FirebaseManager;->k:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in the location API and then passed to FirebaseManager's k() method."
+      },
+      {
+        "dataflow 2": " Lua/com/rozetka/shop/screen/orders/OrdersViewModel;->m0:(D D)Lkotlinx/coroutines/u1; --> Lcom/google/firebase/analytics/FirebaseAnalytics;->a:(Ljava/lang/String; Landroid/os/Bundle;)V",
+        "Reasoning": "The data is stored in the getViewModelScope API call and then passed to FirebaseAnalytics's a() method."
+      },
+      {
+        "dataflow 3": " Lua/com/rozetka/shop/managers/c;->n0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V --> Lua/com/rozetka/shop/managers/f;->O0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)Lcom/google/android/gms/analytics/HitBuilders$EventBuilder;",
+        "Reasoning": "The data is stored in the input parameters and then passed to Google Analytics's O0() method."
+      },
+      {
+        "dataflow 4": " Lua/com/rozetka/shop/screen/orders/OrdersViewModel;->p0:(Ljava/util/List;)Lkotlinx/coroutines/u1; --> Lua/com/rozetka/shop/managers/FirebaseManager;->H:(Ljava/lang/String; Landroid/os/Bundle;)V",
+        "Reasoning": "The data is stored in the sensitive API call and then passed to FirebaseManager's H() method."
+      },
+      {
+        "dataflow 5": " Lua/com/rozetka/shop/managers/c;->m0:(Lua/com/rozetka/shop/managers/c; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; I Ljava/lang/Object;)V --> Lua/com/rozetka/shop/managers/f;->v0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in the invocation of a sensitive API call and then passed to the use of sensitive APIs."
+      },
+      {
+        "dataflow 6": " Lua/com/rozetka/shop/screen/orders/OrdersViewModel$getPickupsByCoordinates$1;-><init>:(Lua/com/rozetka/shop/screen/orders/OrdersViewModel; D D Lkotlin/coroutines/c;)V --> Lua/com/rozetka/shop/managers/f;->w0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in the invocation of a sensitive API call and then passed to the use of input parameters."
+      },
+      {
+        "dataflow 7": " Lua/com/rozetka/shop/managers/f;->w0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V --> Lua/com/rozetka/shop/managers/FirebaseManager;->k:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in the use of input parameters and then passed to FirebaseManager's k() method."
+      },
+      {
+        "dataflow 8": " Lua/com/rozetka/shop/managers/FirebaseManager;->k:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V --> null",
+        "Reasoning": "The data is stored in FirebaseManager's k() method and then passed to no sink."
+      },
+      {
+        "dataflow 9": " Lua/com/rozetka/shop/managers/f;->O0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)Lcom/google/android/gms/analytics/HitBuilders$EventBuilder; --> null",
+        "Reasoning": "The data is stored in Google Analytics's O0() method and then passed to no sink."
+      },
+      {
+        "dataflow 10": " Lua/com/rozetka/shop/managers/FirebaseManager;->H:(Ljava/lang/String; Landroid/os/Bundle;)V --> null",
+        "Reasoning": "The data is stored in FirebaseManager's H() method and then passed to no sink."
+      },
+      {
+        "dataflow 11": " Lua/com/rozetka/shop/managers/f;->v0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V --> null",
+        "Reasoning": "The data is stored in the use of sensitive APIs and then passed to no sink."
+      },
+      {
+        "dataflow 12": " Lcom/google/firebase/analytics/FirebaseAnalytics;->a:(Ljava/lang/String; Landroid/os/Bundle;)V --> null",
+        "Reasoning": "The data is stored in FirebaseAnalytics's a() method and then passed to no sink."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "LatLng"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Invoke getLatitude() and getLongitude() methods of an Android Location object.",
+        "Source Method": "Lua/com/rozetka/shop/ui/checkout/delivery/pickupsnew/PickupsFragment$locationPermission$1$1;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates sensitive user personal data by invoking the `getLatitude()` and `getLongitude()` methods of an Android Location object.",
+        "Action": "Stored in a LatLng object"
+      },
+      {
+        "Step": "Store location data in MutableLiveData instance variable.",
+        "Source Method": "Lua/com/rozetka/shop/ui/checkout/delivery/pickupsnew/PickupsFragment$locationPermission$1$1;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The data is then stored in a LatLng object, which is passed to a MutableLiveData instance variable.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Use sensitive API call to originate user personal data.",
+        "Source Method": "Lua/com/rozetka/shop/ui/checkout/delivery/pickupsnew/PickupsFragment;->u0:(Lua/com/rozetka/shop/ui/checkout/delivery/pickupsnew/Picks",
+        "Reasoning": "The current method is using a sensitive API call to originate user personal data.",
+        "Action": "Propagated through MutableLiveData object"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lua/com/rozetka/shop/ui/checkout/delivery/pickupsnew/PickupsFragment$locationPermission$1$1;->a:(Landroid/location/Location;)V --> Lua/com/rozetka/shop/ui/checkout/delivery/pickupsnew/PickupsFragment$locationPermission$1$1;->a:(Landroid/location/Location;)V --> null",
+        "Reasoning": "The data is stored in a LatLng object, which is passed to a MutableLiveData instance variable. However, there are no sink points like logging, network transmission, or storage within this method."
+      },
+      {
+        "dataflow 2": " Lua/com/rozetka/shop/ui/checkout/delivery/pickupsnew/PickupsFragment;->u0:(Lua/com/rozetka/shop/ui/checkout/delivery/pickupsnew/Picks --> Lua/com/rozetka/shop/ui/checkout/delivery/pickupsnew/PickupsFragment;->u0:(Lua/com/rozetka/shop/ui/checkout/delivery/pickupsnew/Picks --> null",
+        "Reasoning": "The current method is using a sensitive API call to originate user personal data. However, there are no sink points like logging, network transmission, or storage within this method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location data from Location object",
+        "Source Method": "Lua/com/rozetka/shop/utils/LocationClient$c;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Invoking getLongitude() and getLatitude() methods from the Location object.",
+        "Action": "Stored in StringBuilder instance variable"
+      },
+      {
+        "Step": "Pass location data to static method d() of class f/a/a",
+        "Source Method": "Lua/com/rozetka/shop/utils/LocationClient$c;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Data is stored in a StringBuilder instance variable, then passed to a static method d() of class f/a/a via an array of objects as arguments.",
+        "Action": "Passed between methods via method invocations"
+      },
+      {
+        "Step": "Retrieve object from static field 'd' and call another method 'd'",
+        "Source Method": "Lf/a/a;->d:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The retrieved object is then used to call another method 'd' on an instance of 'Lf/a/a$b', passing in a String and an array of Objects as parameters.",
+        "Action": "Data stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lua/com/rozetka/shop/utils/LocationClient$c;->onLocationChanged:(Landroid/location/Location;)V --> Lf/a/a;->d:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The location data is passed from onLocationChanged() method to d() method of class f/a/a, where it is stored in register v0 and passed between methods via method invocations."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data collected",
+        "Source Method": "Lua/com/rozetka/shop/ui/developer/DeveloperActivity$getCurrentLocation$1;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data from the `Location` object's latitude and longitude.",
+        "Action": "Stored in StringBuilder"
+      },
+      {
+        "Step": "Data stored in StringBuilder",
+        "Source Method": "Lua/com/rozetka/shop/ui/developer/DeveloperActivity$getCurrentLocation$1;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The data is stored in a `StringBuilder`.",
+        "Action": "Passed to TextView"
+      },
+      {
+        "Step": "Data passed to TextView",
+        "Source Method": "Lua/com/rozetka/shop/ui/developer/DeveloperActivity$getCurrentLocation$1;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The data is then passed to a `TextView`.",
+        "Action": "Displayed on screen"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lua/com/rozetka/shop/ui/developer/DeveloperActivity$getCurrentLocation$1;->a:(Landroid/location/Location;)V --> Lua/com/rozetka/shop/ui/developer/DeveloperActivity$getCurrentLocation$1;->b(Ljava/lang/String;)V --> null",
+        "Reasoning": "User location data collected, stored in StringBuilder, passed to TextView, and displayed on screen."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Invoke getLatitude() and getLongitude() methods",
+        "Source Method": "Lua/com/rozetka/shop/ui/developer/DeveloperActivity$getCurrentLocation$3;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data by invoking the `getLatitude()` and `getLongitude()` methods of the `Location` object.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Pass location coordinates to DeveloperActivity class",
+        "Source Method": "Lua/com/rozetka/shop/ui/developer/DeveloperActivity$getCurrentLocation$3;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The data is then passed to other methods via method invocations, specifically to the `d8(Lua/com/rozetka/shop/ui/developer/DeveloperActivity;)Landroid/widget/TextView;` method of the `DeveloperActivity` class.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Call sensitive API C8() from DeveloperActivity class",
+        "Source Method": "Lua/com/rozetka/shop/ui/developer/DeveloperActivity;->d8:(Lua/com/rozetka/shop/ui/developer/DeveloperActivity;)Landroid/widget/TextView;",
+        "Reasoning": "The method originates user personal data by calling the sensitive API C8() from the DeveloperActivity class.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Invoke findViewById method from AppCompatActivity",
+        "Source Method": "Lua/com/rozetka/shop/ui/developer/DeveloperActivity;->C8:()Landroid/widget/TextView;",
+        "Reasoning": "The method originates user personal data by invoking the findViewById method from AppCompatActivity.",
+        "Action": "Stored in register v1"
+      }
+    ],
+    "All Sinks": [
+      "Lua/com/rozetka/shop/ui/developer/DeveloperActivity;->d8:(Lua/com/rozetka/shop/ui/developer/DeveloperActivity;)Landroid/widget/TextView;",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lua/com/rozetka/shop/ui/developer/DeveloperActivity$getCurrentLocation$3;->a:(Landroid/location/Location;)V --> Lua/com/rozetka/shop/ui/developer/DeveloperActivity;->d8:(Lua/com/rozetka/shop/ui/developer/DeveloperActivity;)Landroid/widget/TextView; --> Lua/com/rozetka/shop/ui/developer/DeveloperActivity;->d8:(Lua/com/rozetka/shop/ui/developer/DeveloperActivity;)Landroid/widget/TextView;",
+        "Reasoning": "The data is propagated and transformed as follows: the location coordinates are passed to the `d8()` method of the `DeveloperActivity` class, which stores it in register v0. The data is then returned from this method, which is stored in a `TextView` widget."
+      }
+    ],
+    "Label": "leak"
+  }
+]

@@ -1,0 +1,33 @@
+[
+  {
+    "Data Types Collected": [
+      "mac addresses"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Invoke method to load mac address from file",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by reading the MAC address from a file at /sys/class/net/<interface>/address.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Invoke method to get raw mac address",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by invoking sensitive API calls to load mac addresses from various sources.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated from getRawMacAddress to loadAddress, where it is stored. The data then reaches a sink point in the return statement of loadAddress."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

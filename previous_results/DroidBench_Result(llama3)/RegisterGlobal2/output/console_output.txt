@@ -1,0 +1,49 @@
+
+ Processing folder: D:\UBCBAPK_Methods\RegisterGlobal2
+ Using methods file: D:\UBCBAPK_Methods\RegisterGlobal2\RegisterGlobal2_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MyApplication$1;->onLowMemory:()V']
+[SUMMARY] Lde/ecspride/MyApplication$1;->onLowMemory:()V => {
+    "Summary": "This method reads the IMEI of the device and stores it in a field.",
+    "Next Methods": [
+        "Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V",
+        "Lcom/example/MyClass;->someMethod(...)"
+    ]
+}
+[SUMMARY] Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V => {
+    "Summary": "This method reads the IMEI of the device and stores it in a field.",
+    "Next Methods": [
+        "Landroid/telephony/SmsManager;->getDefault()Landroid/telephony/SmsManager;",
+        "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\RegisterGlobal2\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\RegisterGlobal2\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\RegisterGlobal2\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Read IMEI from device",
+                "Source Method": "Lde/ecspride/MyApplication$1;->onLowMemory:()V",
+                "Reasoning": "The method reads the IMEI of the device and stores it in a field.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MyApplication$1;->onLowMemory:()V --> Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V",
+                "Reasoning": "The IMEI is read from the device and stored in a field. This data is then used by both methods."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\RegisterGlobal2\output\refined_method_summaries.json
+Saved 0 'leak' subgraphs to D:\UBCBAPK_Methods\RegisterGlobal2\output\sensitive_only.json
+Total time for folder: 13.68 seconds

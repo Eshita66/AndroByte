@@ -1,0 +1,77 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Receives location updates",
+        "Source Method": "Lcom/adobe/capturemodule/e/b$a;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary mention location updates",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adobe/capturemodule/e/b$a;->onLocationChanged:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Location --> onLocationChanged(...)",
+        "Reasoning": "Location is stored in the method's memory when it receives an update"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Personal Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is passed to the `Lcom/adobe/capturemodule/b/b` class.",
+        "Source Method": "Lcom/adobe/capturemodule/b/b;->a:(Landroid/content/Context; Lcom/adobe/capturemodule/c/k;)Lcom/adobe/capturemodule/b/b;",
+        "Reasoning": "Sensitive user personal data is originated from `Lcom/adobe/capturemodule/c/k` class.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adobe/capturemodule/c/k --> Lcom/adobe/capturemodule/b/b",
+        "Reasoning": "Sensitive user personal data is passed to the `Lcom/adobe/capturemodule/b/b` class."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected from the `Location` object.",
+        "Source Method": "Lcom/adobe/capturemodule/c/o;->d:(Landroid/hardware/Camera$Parameters;)Landroid/hardware/Camera$Parameters;",
+        "Reasoning": "Method summary mentions collecting user location.",
+        "Action": "Stored in `Camera.Parameters` object"
+      },
+      {
+        "Step": "User location is logged.",
+        "Source Method": "Lcom/adobe/capturemodule/c/o;->d:(Landroid/hardware/Camera$Parameters;)Landroid/hardware/Camera$Parameters;",
+        "Reasoning": "Method summary mentions logging user location.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adobe/capturemodule/c/o;->a(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adobe/capturemodule/c/o;->d:(Landroid/hardware/Camera$Parameters;)Landroid/hardware/Camera$Parameters; --> Lcom/adobe/capturemodule/c/o;->a(Ljava/lang/String;)V",
+        "Reasoning": "User location is first stored in `Camera.Parameters` object and then logged."
+      }
+    ],
+    "Label": "leak"
+  }
+]

@@ -1,0 +1,39 @@
+
+Processing folder: D:\UBCBAPK_Methods\CastingForward
+Using methods file: D:\UBCBAPK_Methods\CastingForward\CastingForward_bytecode_instructions.json
+Source methods with sensitive calls: ['Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the device ID from TelephonyManager and sets it as the hint for a TextView, while also logging it using Log.v with a custom tag.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve device ID from TelephonyManager",
+            "Source Method": "Ljunbin/ubc/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The system service 'phone' is retrieved, which provides access to telephony-related functions including the device ID.",
+            "Action": "Stored and used as hint for TextView"
+        }
+    ],
+    "All Sinks": [
+        "Ljunbin/ubc/MainActivity;->Log.v(Ljava/lang/String; Ljava/lang/String;)V",
+        
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Ljunbin/ubc/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> ... --> Sink Method: Ljunbin/ubc/MainActivity;->Log.v(Ljava/lang/String; Ljava/lang/String;)V]",
+            "Reasoning": "The device ID is retrieved from the system service and used as a hint for the TextView, which eventually gets logged using Log.v."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\CastingForward\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\CastingForward\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\CastingForward\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\CastingForward\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\CastingForward\output\sensitive_only.json
+Total time for folder: 29.33 seconds

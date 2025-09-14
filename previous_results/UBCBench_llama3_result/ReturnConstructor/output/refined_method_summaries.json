@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from getDeviceId method",
+                "Source Method": "Landroid/content/Context;->getDeviceId:()Ljava/lang/String;",
+                "Reasoning": "The sensitive data DeviceId is originated from the getDeviceId method.",
+                "Action": "Passed to logging method"
+            },
+            {
+                "Step": "Sensitive data passed to logging method",
+                "Source Method": "Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V",
+                "Reasoning": "The sensitive data DeviceId is passed to the logging method Landroid/util/Log;->v.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->v(Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(...) --> ... --> Sink Method(...)]",
+                "Reasoning": "The sensitive data DeviceId is originated from the getDeviceId method and passed to the logging method Landroid/util/Log;->v."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

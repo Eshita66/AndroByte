@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "getDeviceId() called",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId():I",
+                "Reasoning": "Sensitive API call",
+                "Action": "Stored in register v1"
+            },
+            {
+                "Step": "device ID set as intent action",
+                "Source Method": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Tainted value used directly",
+                "Action": "Set as intent action"
+            },
+            {
+                "Step": "intent's action logged",
+                "Source Method": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Tainted value used directly",
+                "Action": "Logged using Landroid/util/Log;i(Ljava/lang/String; Ljava/lang/String;)I"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;i(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Landroid/telephony/TelephonyManager;->getDeviceId():I --> Edu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;i(Ljava/lang/String; Ljava/lang/String;)I",
+                "Reasoning": "The method originates user personal data by calling the sensitive API getDeviceId() from Landroid/telephony/TelephonyManager;. This device ID is stored in register v1. The method then sets this device ID as an action for a new intent. Finally, it logs the intent's action using Landroid/util/Log;i(Ljava/lang/String; Ljava/lang/String;)I."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

@@ -1,0 +1,66 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is collected",
+        "Source Method": "Lcom/adobe/mobile/AnalyticsTrackLocation;->trackLocation:(Landroid/location/Location; Ljava/util/Map;)V",
+        "Reasoning": "Method signature matches",
+        "Action": "Stored in HashMap"
+      },
+      {
+        "Step": "HashMap is sent to TargetWorker",
+        "Source Method": "Lcom/adobe/mobile/AnalyticsTrackLocation;->trackLocation:(Landroid/location/Location; Ljava/util/Map;)V",
+        "Reasoning": "TargetWorker is mentioned in summary",
+        "Action": "Sent for persistent storage"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adobe/mobile/TargetWorker;->storeTarget:(Ljava/util/Map;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adobe/mobile/AnalyticsTrackLocation;->trackLocation(...) --> Lcom/adobe/mobile/TargetWorker;->storeTarget(...)",
+        "Reasoning": "Overall Data Flow encompasses each step"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location object creation",
+        "Source Method": "Lplugin/google/maps/PluginUtil;->location2Json:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "Location object is passed as an argument to the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "JSONObject creation",
+        "Source Method": "Lplugin/google/maps/PluginUtil;->location2Json:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "Location object is converted to a JSONObject.",
+        "Action": "Created"
+      },
+      {
+        "Step": "Data transmission",
+        "Source Method": "Lplugin/google/maps/PluginUtil;->location2Json:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "The JSONObject is returned by the method.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lplugin/google/maps/PluginUtil;->location2Json:(Landroid/location/Location;)Lorg/json/JSONObject; --> Transmitted",
+        "Reasoning": "Location object is first stored, then converted to a JSONObject, and finally transmitted."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

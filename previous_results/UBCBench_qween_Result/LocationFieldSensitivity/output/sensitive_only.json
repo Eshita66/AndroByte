@@ -1,0 +1,40 @@
+[
+    {
+        "Data Types Collected": [
+            "latitude",
+            "time"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Location data is retrieved using LocationManager",
+                "Source Method": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly retrieves location data (latitude and time) via LocationManager",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sensitive data is formatted into a string",
+                "Source Method": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method constructs a string combining location data and time",
+                "Action": "Processed"
+            },
+            {
+                "Step": "Sensitive data is logged via android.util.Log",
+                "Source Method": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method calls Log.d with the constructed string containing sensitive data",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log;->d:(Ljava/lang/String;Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> android.util.Log;->d:(Ljava/lang/String;Ljava/lang/String;)V",
+                "Reasoning": "Location data (latitude and time) is retrieved, formatted into a string, and passed to the Log.d sink method without being overwritten by non-sensitive values"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

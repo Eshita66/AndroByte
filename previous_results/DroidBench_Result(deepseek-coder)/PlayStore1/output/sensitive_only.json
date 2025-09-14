@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID",
+            "Phone Numbers"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Initialization and Retrieval of Device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The method retrieves device information from telephony services, which could include the device ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging Device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The retrieved device ID is logged, potentially exposing it to the user or in a log file.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Log.i(...) --> Sink Method]",
+                "Reasoning": "The device ID is retrieved from the telephony service and then logged, making it a potential leak."
+            }
+        ],
+        "Label": "leak"
+    }
+]

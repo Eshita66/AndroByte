@@ -1,0 +1,672 @@
+[
+  {
+    "Data Types Collected": [
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data stored in register v7",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data through the `location` parameter, which is stored in register `v7`. The data is then propagated to other methods via method invocations.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> [Potential logging or transmission of the data] --> Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The location data is stored in register v7 and then propagated to other methods via method invocations. A sink point is identified as a potential logging or transmission of the data."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "double",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is passed to setGpsInfo method.",
+        "Source Method": "Le8;->setGpsInfo:(Landroid/location/Location;)V",
+        "Reasoning": "The Location object contains user personal data.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "User location data is passed to D method.",
+        "Source Method": "Le8;->D:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The Location object contains user personal data.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "User altitude data is passed to setAltitude method.",
+        "Source Method": "Le8;->setAltitude:(D)V",
+        "Reasoning": "The double value represents user personal data.",
+        "Action": "Stored in registers and variables"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/util/Log;",
+      "Ljava/nio/ByteBuffer;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Le8;->setGpsInfo:(Landroid/location/Location;)V --> Le8;->D(Ljava/lang/String; Ljava/lang/String;)V --> Landroid/util/Log;",
+        "Reasoning": "The Location object contains user personal data, which is passed to the D method and then logged using Log."
+      },
+      {
+        "dataflow 2": "Le8;->setAltitude:(D)V --> Le8;->d(D)Ljava/lang/String; --> Landroid/util/Log;",
+        "Reasoning": "The double value represents user personal data, which is passed to the d method and then logged using Log."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user personal data from RandomChatFrg object's a field",
+        "Source Method": "Lb51;->onTick:(J)V",
+        "Reasoning": "The method originates user personal data from the `RandomChatFrg` object's `a` field.",
+        "Action": "Stored in location"
+      },
+      {
+        "Step": "Create a location with latitude and longitude using the collected data",
+        "Source Method": "Lb51;->onTick:(J)V",
+        "Reasoning": "The data is then used to create a location with latitude and longitude.",
+        "Action": "Created"
+      }
+    ],
+    "All Sinks": [
+      "Lb51;->logLocation:(Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lb51;->onTick:(J)V --> ... --> Lb51;->logLocation:(Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data from the `RandomChatFrg` object's `a` field, creates a location with latitude and longitude using this data, and then passes it to `logLocation()` for logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access device location",
+        "Source Method": "Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->getLatitude:()D",
+        "Reasoning": "The method originates user personal data by accessing the device's location using `getLatitude()` from the Location API.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->getLatitude:()D --> Stored in register --> Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->passLocationToOtherMethod:D()",
+        "Reasoning": "The latitude is stored in a register and then passed to another method via an assignment operation."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location from device",
+        "Source Method": "Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->getLocation:()V",
+        "Reasoning": "The method getLocation() in GPSTracker class retrieves the device's location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get device ID from system",
+        "Source Method": "Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->getDeviceID:()V",
+        "Reasoning": "The method getDeviceID() in GPSTracker class retrieves the device's unique identifier.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Combine location and device ID for transmission",
+        "Source Method": "Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->transmitData:()V",
+        "Reasoning": "The method transmitData() in GPSTracker class combines the retrieved location and device ID to be sent over the network.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->transmitData:()V",
+      "Landroid/content/Context;->getSharedPreferences(Ljava/lang/String;)Landroid/content/SharedPreferences;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->getLocation:()V --> Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->transmitData:()V ",
+        "Reasoning": "The location is retrieved from the device and then transmitted over the network."
+      },
+      {
+        "dataflow 2": " Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->getDeviceID:()V --> Landroid/content/Context;->getSharedPreferences(Ljava/lang/String;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The device ID is retrieved from the system and stored in shared preferences."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getLongitude() method invocation",
+        "Source Method": "Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->getLongitude:()D",
+        "Reasoning": "The current method is using the `getLongitude()` method of the Location class to originate sensitive user personal data.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Pass longitude value to another method via method invocation",
+        "Source Method": "Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->getLongitude:()D",
+        "Reasoning": "The data is propagated through registers, specifically v0, and eventually reaches a sink point.",
+        "Action": "Passed to another method"
+      },
+      {
+        "Step": "Return statement (sink point)",
+        "Source Method": "Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->getLongitude:()D",
+        "Reasoning": "The longitude value is stored in a register (v0) and then passed to another method via a method invocation.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->getLongitude:()D"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/improverllc/meetly/MqttChat/Utilities/GPSTracker;->getLongitude:()D --> Stored in register v0 --> Passed to another method --> Returned ",
+        "Reasoning": "The longitude value is originated from the `getLongitude()` method, stored in a register (v0), passed to another method via a method invocation, and eventually returned."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "com/improverllc/meetly/passportLocation/model/PassportLocation",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location through android.location.Location API calls.",
+        "Source Method": "Lh51;->Z:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to android.location.Location.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "Extract locality, admin area, country name, and feature name from the first address in the list.",
+        "Source Method": "Lf51;->getLocationName:(Lbj1;)Lcom/improverllc/meetly/passportLocation/model/PassportLocation;",
+        "Reasoning": "The method getLocationName() originates user personal data by calling the getLatitude() and getLongitude() methods on an instance of class bj1.",
+        "Action": "Used to construct a string containing the location information."
+      },
+      {
+        "Step": "Store user personal data in 'a' field of the PassportLocation object.",
+        "Source Method": "Lcom/improverllc/meetly/passportLocation/model/PassportLocation;->setLocationName:(Ljava/lang/String;)V",
+        "Reasoning": "The method originates sensitive user personal data from a string input and stores it in the 'a' field of the PassportLocation object.",
+        "Action": "Propagated to other methods via method invocations."
+      },
+      {
+        "Step": "Store user personal data (Ljava/lang/String;) in a variable b of type Lcom/improverllc/meetly/passportLocation/model/PassportLocation.",
+        "Source Method": "Lcom/improverllc/meetly/passportLocation/model/PassportLocation;->setSubLocationName:(Ljava/lang/String;)V",
+        "Reasoning": "The current method setSubLocationName is using the put-object instruction to store user personal data (Ljava/lang/String;) in a variable b of type Lcom/improverllc/meetly/passportLocation/model/PassportLocation.",
+        "Action": "Propagated through register v0 and passed to other methods via method invocations."
+      }
+    ],
+    "All Sinks": [
+      "Lf51;->saveCurrentLocation:(Lcom/improverllc/meetly/passportLocation/model/PassportLocation;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lh51;->Z:(Landroid/location/Location;)V --> Lf51;->getLocationName:(Lbj1;)Lcom/improverllc/meetly/passportLocation/model/PassportLocation; --> Lcom/improverllc/meetly/passportLocation/model/PassportLocation;->setSubLocationName:(Ljava/lang/String;)V ",
+        "Reasoning": "The data flows from the first method to the second, where it is used to extract location information. This information is then passed to the third method, where it is stored in a variable."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location API call to originate user personal data",
+        "Source Method": "Lht0;->Z:(Landroid/location/Location;)V",
+        "Reasoning": "The current method is using the Location API to originate user personal data (latitude and longitude).",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "API calls to Foursquare and Google Places to originate sensitive user personal data",
+        "Source Method": "Lht0;->a:(Lut0;)V",
+        "Reasoning": "The method originates sensitive user personal data through API calls to Foursquare and Google Places.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "GoogleApiClient instance originating sensitive data",
+        "Source Method": "Lgj1;->b:()V",
+        "Reasoning": "Sensitive data originates from the GoogleApiClient instance.",
+        "Action": "Passed to FusedLocationProviderApi method via interface invocation"
+      },
+      {
+        "Step": "FusedLocationProviderApi method receiving sensitive data",
+        "Source Method": "Lgj1;->b:()V",
+        "Reasoning": "The data is passed to the FusedLocationProviderApi method via interface invocation.",
+        "Action": "Passed to removeLocationUpdates method"
+      },
+      {
+        "Step": "removeLocationUpdates method receiving sensitive data",
+        "Source Method": "Lgj1;->b:()V",
+        "Reasoning": "The data ultimately reaches a sink point through the removeLocationUpdates method.",
+        "Action": "Logged, network transmission, or storage"
+      }
+    ],
+    "All Sinks": [
+      "Lut0;",
+      "removeLocationUpdates method"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lht0;->Z:(Landroid/location/Location;)V --> Lht0;->a:(Lut0;)V --> Lut0;,",
+        "Reasoning": "The location data is passed to the method Lht0;->a:(Lut0;)V, which originates sensitive user personal data through API calls to Foursquare and Google Places. The data is then stored in an object of class Lut0."
+      },
+      {
+        "dataflow 2": " Lgj1;->b:()V --> FusedLocationProviderApi method --> removeLocationUpdates method",
+        "Reasoning": "Sensitive data originates from the GoogleApiClient instance and is passed to the FusedLocationProviderApi method via interface invocation. The data ultimately reaches a sink point through the removeLocationUpdates method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method Lja1;->Z:(Landroid/location/Location;)V originates user personal data by calling sensitive APIs to get the location's latitude and longitude.",
+        "Source Method": "Lja1;->Z:(Landroid/location/Location;)V",
+        "Reasoning": "The method calls sensitive APIs to get the location's latitude and longitude, storing it in registers (v0, v1) and variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Method Lcom/improverllc/meetly/passportLocation/model/PassportLocation;->getSubLocationName:()Ljava/lang/String; originates user personal data from a sensitive API call.",
+        "Source Method": "Lcom/improverllc/meetly/passportLocation/model/PassportLocation;->getSubLocationName:()Ljava/lang/String;",
+        "Reasoning": "The method invokes a sensitive API call (getSubLocationName) to access string data, storing it in register v0.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Method Lja1;->c:(Ljava/lang/String;)V originates user personal data by invoking sensitive API calls to access and manipulate string data.",
+        "Source Method": "Lja1;->c:(Ljava/lang/String;)V",
+        "Reasoning": "The method invokes sensitive API calls to access and manipulate string data, storing it in registers (v0) and variables (Lja1;a).",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Method Lja1;->c:(Ljava/lang/String;)V propagates the user personal data through method invocations.",
+        "Source Method": "Lja1;->c:(Ljava/lang/String;)V",
+        "Reasoning": "The method propagates the user personal data to other methods, specifically the 'z0' and 'G' methods.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Method Lja1;->G:()Landroid/location/Location; reaches a sink point through logging or transmission.",
+        "Source Method": "Lja1;->G:()Landroid/location/Location;",
+        "Reasoning": "The method transmits or logs the user personal data, reaching a sink point.",
+        "Action": "Logged/Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lja1;->G:()Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lja1;->Z:(Landroid/location/Location;)V --> Lcom/improverllc/meetly/passportLocation/model/PassportLocation;->getSubLocationName:()Ljava/lang/String; --> Lja1;->c:(Ljava/lang/String;)V --> Lja1;->G:()Landroid/location/Location;",
+        "Reasoning": "The data originates from method Lja1;->Z:(Landroid/location/Location;)V, propagates through methods Lcom/improverllc/meetly/passportLocation/model/PassportLocation;->getSubLocationName:()Ljava/lang/String; and Lja1;->c:(Ljava/lang/String;)V, and reaches a sink point in method Lja1;->G:()Landroid/location/Location;"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "java.lang.String",
+      "com.improverllc.meetly.passportLocation.model.PassportLocation",
+      "double"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location from Location API",
+        "Source Method": "Lfw0;->Z:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data from the Location API.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Convert location to JSON string",
+        "Source Method": "Lcom/improverllc/meetly/home/Discover/Model/DiscoveryModel;->saveCurrentLocation:(Lcom/improverllc/meetly/passportLocation/model/PassportLocation;)V",
+        "Reasoning": "The method originates user personal data by invoking the getGson() method to obtain a Gson instance and then using it to convert the location object to a JSON string.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get latitude and longitude from bj1 object",
+        "Source Method": "Lcom/improverllc/meetly/home/Discover/Model/DiscoveryModel;->getLocationName:(Lbj1;)Lcom/improverllc/meetly/passportLocation/model/PassportLocation;",
+        "Reasoning": "The method originates user personal data by calling the getLatitude and getLongitude methods of the bj1 object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Set location name in PassportLocation object",
+        "Source Method": "Lcom/improverllc/meetly/passportLocation/model/PassportLocation;->setLocationName:(Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data from a string input.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Set sub location name in PassportLocation object",
+        "Source Method": "Lcom/improverllc/meetly/passportLocation/model/PassportLocation;->setSubLocationName:(Ljava/lang/String;)V",
+        "Reasoning": "The method setSubLocationName originates user personal data from a String input.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Set longitude in PassportLocation object",
+        "Source Method": "Lcom/improverllc/meetly/passportLocation/model/PassportLocation;->setLongitude:(Ljava/lang/Double;)V",
+        "Reasoning": "The method originates user personal data by calling the sensitive API setLongitude() which takes a Double as an argument.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Set latitude in PassportLocation object",
+        "Source Method": "Lcom/improverllc/meetly/passportLocation/model/PassportLocation;->setLatitude:(Ljava/lang/Double;)V",
+        "Reasoning": "The method originates sensitive user personal data by calling a sensitive API to set the latitude.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/improverllc/meetly/home/Discover/Model/DiscoveryModel;->saveCurrentLocation:(Lcom/improverllc/meetly/passportLocation/model/PassportLocation;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lfw0;->Z:(Landroid/location/Location;)V --> Lcom/improverllc/meetly/home/Discover/Model/DiscoveryModel;->saveCurrentLocation:(Lcom/improverllc/meetly/passportLocation/model/PassportLocation;)V",
+        "Reasoning": "The location data is passed from the Location API to the saveCurrentLocation method of DiscoveryModel, which stores or transmits this sensitive information."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location",
+        "Source Method": "Lgj1;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The method onLocationChanged originates user personal data through the getLatitude and getLongitude methods of the Location class.",
+        "Action": "Stored in registers (v1, v2)"
+      },
+      {
+        "Step": "Pass location to other methods",
+        "Source Method": "Lgj1;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The data is passed to other methods via method invocations.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Log location",
+        "Source Method": "Lgj1;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The data reaches a sink point, which is logging using the Log.i method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lgj1;->onLocationChanged:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lgj1;->onLocationChanged(Landroid/location/Location;)V --> ... --> Log.i(...) ",
+        "Reasoning": "The method onLocationChanged originates user personal data through the getLatitude and getLongitude methods of the Location class. The data is stored in registers (v1, v2) and passed to other methods via method invocations. The data reaches a sink point, which is logging using the Log.i method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Accessing user location data",
+        "Source Method": "Los0;->p0:(Landroid/location/Location;)V",
+        "Reasoning": "Method Los0;->p0:(Landroid/location/Location;)V accesses the Location object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Retrieving user first name",
+        "Source Method": "Lcom/facebookmanager/com/FacebookUserDetails;->getFirstName:()Ljava/lang/String;",
+        "Reasoning": "Method Lcom/facebookmanager/com/FacebookUserDetails;->getFirstName:()Ljava/lang/String; retrieves the firstName field of FacebookUserDetails.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Los0;->p0:(Landroid/location/Location;)V",
+      "Lcom/facebookmanager/com/FacebookUserDetails;->getFirstName:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Los0;->p0:(Landroid/location/Location;)V --> ... --> Lcom/facebookmanager/com/FacebookUserDetails;->getFirstName:()Ljava/lang/String;",
+        "Reasoning": "The Location object is accessed by method Los0;->p0:(Landroid/location/Location;)V and then its data is propagated to the return statement of method Lcom/facebookmanager/com/FacebookUserDetails;->getFirstName:()Ljava/lang/String;"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "model",
+      "app current version",
+      "language",
+      "authorization"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get latitude and longitude from Location object",
+        "Source Method": "Lqb1;->Z:(Landroid/location/Location;)V",
+        "Reasoning": "getLatitude() and getLongitude() methods of the Location object are called.",
+        "Action": "Stored in a Bundle object"
+      },
+      {
+        "Step": "Get model and app current version from API calls",
+        "Source Method": "Lqb1;->R0:(Landroid/os/Bundle;)V",
+        "Reasoning": "Sensitive API calls to get the model and app current version are made.",
+        "Action": "Stored in a HashMap"
+      },
+      {
+        "Step": "Get language from AppController instance",
+        "Source Method": "Ls00;->getLanguage:()Ljava/lang/String;",
+        "Reasoning": "getInstance() and getCurrentAppLanguage() methods of AppController are called.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get authorization from API call",
+        "Source Method": "Ls00;->getAuthorization:()Ljava/lang/String;",
+        "Reasoning": "Sensitive API call to getAuthorization() is made.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      "Lqb1;->R0:(Landroid/os/Bundle;)V",
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lqb1;->Z:(Landroid/location/Location;)V --> Lqb1;->R0:(Landroid/os/Bundle;)V] (latitude and longitude are stored in a Bundle object, which is then passed to R0())",
+        "Reasoning": "The latitude and longitude values are stored in a Bundle object, which is then passed to the method R0(), where it can be logged, transmitted, or stored."
+      },
+      {
+        "dataflow 2": "[Lqb1;->R0:(Landroid/os/Bundle;)V --> Ls00;->getAuthorization:()Ljava/lang/String;] (model and app current version are stored in a HashMap, which is then passed to getAuthorization())",
+        "Reasoning": "The model and app current version values are stored in a HashMap, which is then passed to the method getAuthorization(), where it can be logged, transmitted, or stored."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "device ID",
+      "phone number",
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data in RandomChatFrg.b1()",
+        "Source Method": "Lcom/improverllc/meetly/home/RandomChat/RandomChatFrg;->b1:()V",
+        "Reasoning": "Using sensitive API calls to originate user personal data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data in AsyncTask constructor",
+        "Source Method": "Lfo1;-><init>:(Lcom/pixplicity/sharp/Sharp; Lcom/pixplicity/sharp/Sharp$b;)V",
+        "Reasoning": "Storing sensitive information in instance fields 'a' and 'b'.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data in RandomChatFrg$a constructor",
+        "Source Method": "Lcom/improverllc/meetly/home/RandomChat/RandomChatFrg$a;-><init>:(Lcom/improverllc/meetly/home/RandomChat/RandomChatFrg;)V",
+        "Reasoning": "Initializing an object of type RandomChatFrg$a with a reference to the parent class RandomChatFrg.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data in Lu41 constructor",
+        "Source Method": "Lu41;-><init>:(Lcom/improverllc/meetly/home/RandomChat/RandomChatFrg;)V",
+        "Reasoning": "Storing a reference to the RandomChatFrg object in the 'a' field of the instance.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass data from RandomChatFrg.b1() to other methods via method invocations",
+        "Source Method": "Lcom/improverllc/meetly/home/RandomChat/RandomChatFrg;->b1:()V",
+        "Reasoning": "Data is propagated to other methods via method invocations.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Pass data from AsyncTask constructor to other methods via method invocations",
+        "Source Method": "Lfo1;-><init>:(Lcom/pixplicity/sharp/Sharp; Lcom/pixplicity/sharp/Sharp$b;)V",
+        "Reasoning": "Data is propagated to other methods via method invocations.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Pass data from RandomChatFrg$a constructor to other methods via method invocations",
+        "Source Method": "Lcom/improverllc/meetly/home/RandomChat/RandomChatFrg$a;-><init>:(Lcom/improverllc/meetly/home/RandomChat/RandomChatFrg;)V",
+        "Reasoning": "Data is propagated to other methods via method invocations.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Pass data from Lu41 constructor to other methods via method invocations",
+        "Source Method": "Lu41;-><init>:(Lcom/improverllc/meetly/home/RandomChat/RandomChatFrg;)V",
+        "Reasoning": "Data is propagated to other methods via method invocations.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Log and transmit data in sinks",
+        "Source Method": null,
+        "Reasoning": "No specific sink identified, but data may be logged or transmitted elsewhere.",
+        "Action": "Logged/Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/improverllc/meetly/home/RandomChat/RandomChatFrg;->b1:()V",
+      "Lfo1;-><init>:(Lcom/pixplicity/sharp/Sharp; Lcom/pixplicity/sharp/Sharp$b;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "RandomChatFrg.b1() --> AsyncTask constructor --> Lu41 constructor --> sinks",
+        "Reasoning": "Data is originated in RandomChatFrg.b1(), stored in AsyncTask constructor, and then propagated to other methods via method invocations. It finally reaches the sinks where it's logged or transmitted."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device location",
+        "Source Method": "Lcom/improverllc/meetly/home/RandomChat/RandomChatFrg;->c1:(D D Landroid/content/Intent;)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to get the device's location and stores it in variables.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/improverllc/meetly/home/RandomChat/RandomChatFrg;->c1:(D D Landroid/content/Intent;)V --> Stored location in variables --> No sink found",
+        "Reasoning": "The method originates user personal data through sensitive API calls to get the device's location and stores it in variables. However, no sink point (logging, network calls, or file writes) is identified."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "android.os.Process$myPid()",
+      "android.os.Process$myUid()"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Fused location API is called",
+        "Source Method": "Lcom/improverllc/meetly/locationMap/CustomLocActivity;->M0:()V",
+        "Reasoning": "The method originates user personal data from the fused location API.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive APIs are called",
+        "Source Method": "Ln4;->a:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data through sensitive API calls to `android.os.Process` for `myPid()` and `myUid()`.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is used from the fused location API",
+        "Source Method": "Lcom/improverllc/meetly/locationMap/CustomLocActivity;->L0:(Landroid/location/Location;)V",
+        "Reasoning": "This method originates user personal data through the use of sensitive APIs such as `Location` and `GoogleMap`. The data is stored in registers and variables within the method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Location is used from the fused location API",
+        "Source Method": "Lcom/improverllc/meetly/locationMap/CustomLocActivity;->N0:()V",
+        "Reasoning": "The method originates user personal data by using the sensitive API call to get location.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/improverllc/meetly/locationMap/CustomLocActivity;->displayLocation:(Landroid/location/Location;)V",
+      "Ln4;->log:(Ljava/lang/String;)I",
+      "Lcom/improverllc/meetly/locationMap/CustomLocActivity;->logLocation:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/improverllc/meetly/locationMap/CustomLocActivity;->M0:()V --> Ln4;->a:(Landroid/content/Context; Ljava/lang/String;)I --> Lcom/improverllc/meetly/locationMap/CustomLocActivity;->displayLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The data from the fused location API is passed to other methods via method invocations, ultimately reaching sink points like logging and display."
+      },
+      {
+        "dataflow 2": " Ln4;->a:(Landroid/content/Context; Ljava/lang/String;)I --> Lcom/improverllc/meetly/locationMap/CustomLocActivity;->logLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The data from the sensitive API calls is passed to other methods via method invocations, ultimately reaching sink points like logging."
+      },
+      {
+        "dataflow 3": " Lcom/improverllc/meetly/locationMap/CustomLocActivity;->L0:(Landroid/location/Location;)V --> Lcom/improverllc/meetly/locationMap/CustomLocActivity;->displayLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The data from the fused location API is passed to other methods via method invocations, ultimately reaching sink points like logging and display."
+      },
+      {
+        "dataflow 4": " Lcom/improverllc/meetly/locationMap/CustomLocActivity;->N0:()V --> Lcom/improverllc/meetly/locationMap/CustomLocActivity;->displayLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The data from the fused location API is passed to other methods via method invocations, ultimately reaching sink points like logging and display."
+      }
+    ],
+    "Label": "leak"
+  }
+]

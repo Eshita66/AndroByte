@@ -1,0 +1,55 @@
+
+ Processing folder: D:\UBCBAPK_Methods\Button2
+ Using methods file: D:\UBCBAPK_Methods\Button2\Button2_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/Button2;->clickOnButton3:(Landroid/view/View;)V']
+[SUMMARY] Lde/ecspride/Button2;->clickOnButton3:(Landroid/view/View;)V => {
+    "Summary": "The method retrieves the IMEI from TelephonyManager, stores it in a field, and logs it. This constitutes a potential data leak as sensitive information is exposed via logging.",
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\Button2\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\Button2\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\Button2\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieves IMEI from TelephonyManager",
+                "Source Method": "Lde/ecspride/Button2;->clickOnButton3:(Landroid/view/View;)V",
+                "Reasoning": "The method explicitly retrieves IMEI from TelephonyManager, indicating a sensitive data source.",
+                "Action": "Collected"
+            },
+            {
+                "Step": "Stores IMEI in a field",
+                "Source Method": "Lde/ecspride/Button2;->clickOnButton3:(Landroid/view/View;)V",
+                "Reasoning": "The IMEI is stored in a field, maintaining its tainted state.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logs IMEI",
+                "Source Method": "Lde/ecspride/Button2;->clickOnButton3:(Landroid/view/View;)V",
+                "Reasoning": "The method logs the IMEI, which is a potential sink for sensitive data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log;->d:(Ljava/lang/String;Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Button2;->clickOnButton3:(Landroid/view/View;)V --> android.util.Log;->d:(Ljava/lang/String;Ljava/lang/String;)V",
+                "Reasoning": "The IMEI is retrieved from TelephonyManager, stored in a field, and then logged via the Log.d method, maintaining taint throughout the flow."
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\Button2\output\refined_method_summaries.json
+Saved 0 'leak' subgraphs to D:\UBCBAPK_Methods\Button2\output\sensitive_only.json
+Total time for folder: 556.21 seconds

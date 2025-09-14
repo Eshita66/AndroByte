@@ -1,0 +1,457 @@
+[
+  {
+    "Data Types Collected": [
+      "WifiSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getWifiSSID() method called in AndroidNetworkLibrary",
+        "Source Method": "Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the `getWifiSSID()` method of `WifiInfo` which is obtained from a sensitive API call to `a()` in `AndroidNetworkLibrary`. The data is stored in register `v0` and propagated through registers.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "SSID returned if not null, otherwise empty string",
+        "Source Method": "Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "If the SSID is not null, it is returned; otherwise, an empty string is returned.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String; --> ... --> Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The SSID is obtained from a sensitive API call to `a()` in `AndroidNetworkLibrary`, stored in register `v0` and propagated through registers. If the SSID is not null, it is returned; otherwise, an empty string is returned."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "[Ljava/lang/Object;",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location manager and register for location updates.",
+        "Source Method": "LBM1;->a:(Z)V",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to get the location manager and register for location updates.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Invoke getLatitude(), getLongitude(), getTime(), getAltitude(), getAccuracy(), getBearing(), and getSpeed() methods of Location object.",
+        "Source Method": "Lorg/chromium/device/geolocation/LocationProviderAdapter;->b:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates sensitive user personal data by invoking the getLatitude(), getLongitude(), getTime(), getAltitude(), getAccuracy(), getBearing(), and getSpeed() methods of the Location object.",
+        "Action": "Stored in registers (v0, v2, v4, v7, v10, v13) and variables (v18)"
+      },
+      {
+        "Step": "Invoke-static instruction to originate sensitive user personal data from 'c' method of class WM1.",
+        "Source Method": "LWM1;->a:(Ljava/lang/String; Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The method originates sensitive user personal data from the 'c' method of class WM1 using the invoke-static instruction.",
+        "Action": "Stored in register v0 and propagated to other methods via method invocations"
+      },
+      {
+        "Step": "Construct string by appending substring of input string starting from index 3.",
+        "Source Method": "LWM1;->e:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data through the invocation of sensitive API calls to check if a string starts with 'cr_' or 'cr.'. If true, it returns the original string. Otherwise, it constructs and returns a new string by appending the substring of the input string starting from index 3.",
+        "Action": "Returned as the result"
+      },
+      {
+        "Step": "Store user personal data in StringBuilder object.",
+        "Source Method": "LBL2;->a:(Ljava/lang/String;)Ljava/lang/StringBuilder;",
+        "Reasoning": "The method originates user personal data from a string parameter (Ljava/lang/String;) and stores it in a StringBuilder object.",
+        "Action": "Stored in StringBuilder object"
+      }
+    ],
+    "All Sinks": [
+      "LBM1;->a:(Z)V",
+      "Lorg/chromium/device/geolocation/LocationProviderAdapter;->b:(Landroid/location/Location;)V",
+      "LWM1;->a:(Ljava/lang/String; Ljava/lang/String; [Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LBM1;->a:(Z)V --> Lorg/chromium/device/geolocation/LocationProviderAdapter;->b:(Landroid/location/Location;)V --> LWM1;->a:(Ljava/lang/String; Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The data flow starts from method LBM1;->a:(Z)V, where it gets the location manager and registers for location updates. The data is then passed to method Lorg/chromium/device/geolocation/LocationProviderAdapter;->b:(Landroid/location/Location;)V, which invokes getLatitude(), getLongitude(), getTime(), getAltitude(), getAccuracy(), getBearing(), and getSpeed() methods of Location object. Finally, the data is propagated to method LWM1;->a:(Ljava/lang/String; Ljava/lang/String; [Ljava/lang/Object;)V via method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data by calling getLastKnownLocation() function of LocationManager class.",
+        "Source Method": "LGd;->c:()I",
+        "Reasoning": "The method originates user personal data by calling the getLastKnownLocation() function of the LocationManager class.",
+        "Action": "stored in 'v3' register"
+      },
+      {
+        "Step": "Uses sensitive API calls to originate user personal data.",
+        "Source Method": "Lm44;->a:(J D D)V",
+        "Reasoning": "This method uses sensitive API calls to originate user personal data.",
+        "Action": "stored in registers and variables within the method"
+      },
+      {
+        "Step": "Propagates through registers and is passed between methods via method invocations.",
+        "Source Method": "Lm44;->a:(J D D)V",
+        "Reasoning": "The data ultimately reaches sinks such as logging, network transmission, or storage.",
+        "Action": "passed to other methods"
+      },
+      {
+        "Step": "Logged using the Log.i() function.",
+        "Source Method": "LGd;->c:()I",
+        "Reasoning": "The data is logged using the Log.i() function.",
+        "Action": "logged"
+      }
+    ],
+    "All Sinks": [
+      "LGd;->c:()I",
+      "Lm44;->a:(J D D)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LGd;->c:()I --> Lm44;->a:(J D D)V --> LGd;->c:()I ",
+        "Reasoning": "The location data is originated by LGd;->c:()I and passed to Lm44;->a:(J D D)V, which logs it using Log.i()."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location and geolocation permissions",
+        "Source Method": "Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->a:(Ljava/lang/String; Lorg/chromium/chrome/browser/profiles/Profile; Lorg/chromium/chrome/browser/tab/Tab;)Ljava/lang/String;",
+        "Reasoning": "Sensitive user personal data originates from API calls to get location and geolocation permissions.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get SDK_INT value (API level) and permissions",
+        "Source Method": "LCz2;->f:(Landroid/content/Context;)Z",
+        "Reasoning": "Sensitive user personal data originates from the SDK_INT value (API level) and permissions.",
+        "Action": "Stored in registers v0 and v1"
+      },
+      {
+        "Step": "Get WifiInfo object",
+        "Source Method": "LCz2;->a:(Landroid/net/wifi/WifiInfo;)LBk4;",
+        "Reasoning": "The current method originates sensitive user personal data from the WifiInfo object.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get phone number",
+        "Source Method": "Lorg/chromium/base/BuildInfo;->a:()Z",
+        "Reasoning": "The current method originates user personal data by calling sensitive APIs to get the Android version and codename.",
+        "Action": "Stored in registers (v0, v1) and variables (v3)"
+      },
+      {
+        "Step": "Get device ID",
+        "Source Method": "LCz2;->g:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "Sensitive user personal data originates from the SDK_INT value (API level) and permissions.",
+        "Action": "Stored in registers `v0` and `v1`"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/chromium/ui/base/WindowAndroid;->canRequestPermission:(Ljava/lang/String;)Z",
+      "LCz2;->g(Landroid/content/Context; Ljava/lang/String;)Z",
+      "LBc;->a:(Landroid/content/Context; Ljava/lang/String; I I)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->a:(...) --> LCz2;->f(...) --> LBc;->a(...)]",
+        "Reasoning": "Sensitive user personal data originates from API calls to get location and geolocation permissions. Data is stored in registers and variables within the method, then propagated through method invocations to other methods."
+      },
+      {
+        "dataflow 2": "[LCz2;->f(...) --> LCz2;->g(...) --> LBc;->a(...)]",
+        "Reasoning": "Sensitive user personal data originates from the SDK_INT value (API level) and permissions. Data is stored in registers `v0` and `v1`, then passed to other methods via method invocations."
+      },
+      {
+        "dataflow 3": "[LCz2;->a(...) --> LBk4;->(Landroid/net/TransportInfo;)Landroid/net/TransportInfo]",
+        "Reasoning": "The current method originates sensitive user personal data from the WifiInfo object. Data is stored in registers and variables within the method, then passed to other methods via method invocations."
+      },
+      {
+        "dataflow 4": "[Lorg/chromium/base/BuildInfo;->a(...) --> LBc;->a(...)]",
+        "Reasoning": "The current method originates user personal data by calling sensitive APIs to get the Android version and codename. Data is stored in registers (v0, v1) and variables (v3), then passed to other methods via method invocations."
+      },
+      {
+        "dataflow 5": "[LCz2;->g(...) --> LBc;->a(...)]",
+        "Reasoning": "Sensitive user personal data originates from the SDK_INT value (API level) and permissions. Data is stored in registers `v0` and `v1`, then passed to other methods via method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "device ID",
+      "phone number",
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates sensitive user personal data through the `hasGeolocationPermission()` API call.",
+        "Source Method": "Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->d:()V",
+        "Reasoning": "The method originates sensitive user personal data through the `hasGeolocationPermission()` API call.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to Process and Bc.",
+        "Source Method": "Lp61;->c:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data through sensitive API calls to Process and Bc.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by invoking a sensitive API call to request cell information.",
+        "Source Method": "LJc;->h:(Landroid/telephony/TelephonyManager; Lorg/chromium/base/Callback;)V",
+        "Reasoning": "The method originates user personal data by invoking a sensitive API call to request cell information.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through the <init> constructor of class Lorg/chromium/base/Callback;.",
+        "Source Method": "Lzz2;-><init>:(Lorg/chromium/base/Callback;)V",
+        "Reasoning": "The method originates user personal data through the <init> constructor of class Lorg/chromium/base/Callback;.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by calling the `getAllNetworks()` and `getNetworkCapabilities()` methods on the ConnectivityManager object.",
+        "Source Method": "LCz2;->c:(Landroid/content/Context;)LBk4;",
+        "Reasoning": "The method originates sensitive user personal data by calling the `getAllNetworks()` and `getNetworkCapabilities()` methods on the ConnectivityManager object.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to get phone and wifi information.",
+        "Source Method": "LEk4;->b:(Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to get phone and wifi information.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by using the sensitive API call to get all cell info from the telephony manager.",
+        "Source Method": "LCz2;->b:(Landroid/content/Context; Landroid/telephony/TelephonyManager;)LAk4;",
+        "Reasoning": "The method originates user personal data by using the sensitive API call to get all cell info from the telephony manager.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to check for WiFi state permission.",
+        "Source Method": "LCz2;->e:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data through sensitive API calls to check for WiFi state permission.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates sensitive user personal data by calling the `getAllNetworks()` and `getNetworkCapabilities()` methods on the ConnectivityManager object.",
+        "Source Method": "LCz2;->c:(Landroid/content/Context;)LBk4;",
+        "Reasoning": "The method originates sensitive user personal data by calling the `getAllNetworks()` and `getNetworkCapabilities()` methods on the ConnectivityManager object.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to check for location permissions.",
+        "Source Method": "LCz2;->f:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data through sensitive API calls to check for location permissions.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by using the sensitive API call to get all cell info from the telephony manager.",
+        "Source Method": "LCz2;->b:(Landroid/content/Context; Landroid/telephony/TelephonyManager;)LAk4;",
+        "Reasoning": "The method originates user personal data by using the sensitive API call to get all cell info from the telephony manager.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to check for WiFi state permission.",
+        "Source Method": "LCz2;->e:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data through sensitive API calls to check for WiFi state permission.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by checking for location permissions.",
+        "Source Method": "LCz2;->f:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data by checking for location permissions.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by using the sensitive API call to get all cell info from the telephony manager.",
+        "Source Method": "LCz2;->b:(Landroid/content/Context; Landroid/telephony/TelephonyManager;)LAk4;",
+        "Reasoning": "The method originates user personal data by using the sensitive API call to get all cell info from the telephony manager.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to check for WiFi state permission.",
+        "Source Method": "LCz2;->e:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data through sensitive API calls to check for WiFi state permission.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by checking for location permissions.",
+        "Source Method": "LCz2;->f:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data by checking for location permissions.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates sensitive user personal data by calling the `getAllNetworks()` and `getNetworkCapabilities()` methods on the ConnectivityManager object.",
+        "Source Method": "LCz2;->c:(Landroid/content/Context;)LBk4;",
+        "Reasoning": "The method originates sensitive user personal data by calling the `getAllNetworks()` and `getNetworkCapabilities()` methods on the ConnectivityManager object.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to check for WiFi state permission.",
+        "Source Method": "LCz2;->e:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data through sensitive API calls to check for WiFi state permission.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by checking for location permissions.",
+        "Source Method": "LCz2;->f:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data by checking for location permissions.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates sensitive user personal data through the `hasGeolocationPermission()` API call.",
+        "Source Method": "Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->d:()V",
+        "Reasoning": "The method originates sensitive user personal data through the `hasGeolocationPermission()` API call.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by invoking a sensitive API call to request cell information.",
+        "Source Method": "LJc;->h:(Landroid/telephony/TelephonyManager; Lorg/chromium/base/Callback;)V",
+        "Reasoning": "The method originates user personal data by invoking a sensitive API call to request cell information.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through the <init> constructor of class Lorg/chromium/base/Callback;.",
+        "Source Method": "Lzz2;-><init>:(Lorg/chromium/base/Callback;)V",
+        "Reasoning": "The method originates user personal data through the <init> constructor of class Lorg/chromium/base/Callback;.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by calling the `getAllNetworks()` and `getNetworkCapabilities()` methods on the ConnectivityManager object.",
+        "Source Method": "LCz2;->c:(Landroid/content/Context;)LBk4;",
+        "Reasoning": "The method originates sensitive user personal data by calling the `getAllNetworks()` and `getNetworkCapabilities()` methods on the ConnectivityManager object.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to get phone and wifi information.",
+        "Source Method": "LEk4;->b:(Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to get phone and wifi information.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by using the sensitive API call to get all cell info from the telephony manager.",
+        "Source Method": "LCz2;->b:(Landroid/content/Context; Landroid/telephony/TelephonyManager;)LAk4;",
+        "Reasoning": "The method originates user personal data by using the sensitive API call to get all cell info from the telephony manager.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to check for WiFi state permission.",
+        "Source Method": "LCz2;->e:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data through sensitive API calls to check for WiFi state permission.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by checking for location permissions.",
+        "Source Method": "LCz2;->f:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data by checking for location permissions.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates sensitive user personal data through the `hasGeolocationPermission()` API call.",
+        "Source Method": "Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->d:()V",
+        "Reasoning": "The method originates sensitive user personal data through the `hasGeolocationPermission()` API call.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by invoking a sensitive API call to request cell information.",
+        "Source Method": "LJc;->h:(Landroid/telephony/TelephonyManager; Lorg/chromium/base/Callback;)V",
+        "Reasoning": "The method originates user personal data by invoking a sensitive API call to request cell information.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through the <init> constructor of class Lorg/chromium/base/Callback;.",
+        "Source Method": "Lzz2;-><init>:(Lorg/chromium/base/Callback;)V",
+        "Reasoning": "The method originates user personal data through the <init> constructor of class Lorg/chromium/base/Callback;.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by calling the `getAllNetworks()` and `getNetworkCapabilities()` methods on the ConnectivityManager object.",
+        "Source Method": "LCz2;->c:(Landroid/content/Context;)LBk4;",
+        "Reasoning": "The method originates sensitive user personal data by calling the `getAllNetworks()` and `getNetworkCapabilities()` methods on the ConnectivityManager object.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to get phone and wifi information.",
+        "Source Method": "LEk4;->b:(Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to get phone and wifi information.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by using the sensitive API call to get all cell info from the telephony manager.",
+        "Source Method": "LCz2;->b:(Landroid/content/Context; Landroid/telephony/TelephonyManager;)LAk4;",
+        "Reasoning": "The method originates user personal data by using the sensitive API call to get all cell info from the telephony manager.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to check for WiFi state permission.",
+        "Source Method": "LCz2;->e:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data through sensitive API calls to check for WiFi state permission.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data by checking for location permissions.",
+        "Source Method": "LCz2;->f:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data by checking for location permissions.",
+        "Action": "stored"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->d:()V",
+      "LEk4;->b:(Landroid/content/Context;)V",
+      "LCz2;->c:(Landroid/content/Context;)LBk4;",
+      "LJc;->h:(Landroid/telephony/TelephonyManager; Lorg/chromium/base/Callback;)V",
+      "LCz2;->b:(Landroid/content/Context; Landroid/telephony/TelephonyManager;)LAk4;",
+      "LCz2;->e:(Landroid/content/Context;)Z",
+      "LBc;->a:(Landroid/content/Context; Ljava/lang/String; I I)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lorg/chromium/chrome/browser/omnibox/geo/GeolocationHeader;->d:()V --> ... --> LBc;->a:(Landroid/content/Context; Ljava/lang/String; I I)I]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      },
+      {
+        "dataflow 2": " [LEk4;->b:(Landroid/content/Context;)V --> ... --> LBc;->a:(Landroid/content/Context; Ljava/lang/String; I I)I]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      },
+      {
+        "dataflow 3": " [LCz2;->c:(Landroid/content/Context;)LBk4; --> ... --> LBc;->a:(Landroid/content/Context; Ljava/lang/String; I I)I]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      },
+      {
+        "dataflow 4": " [LJc;->h:(Landroid/telephony/TelephonyManager; Lorg/chromium/base/Callback;)V --> ... --> LBc;->a:(Landroid/content/Context; Ljava/lang/String; I I)I]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      },
+      {
+        "dataflow 5": " [LCz2;->b:(Landroid/content/Context; Landroid/telephony/TelephonyManager;)LAk4; --> ... --> LBc;->a:(Landroid/content/Context; Ljava/lang/String; I I)I]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      },
+      {
+        "dataflow 6": " [LCz2;->e:(Landroid/content/Context;)Z --> ... --> LBc;->a:(Landroid/content/Context; Ljava/lang/String; I I)I]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

@@ -1,0 +1,58 @@
+
+Processing folder: D:\UBCBAPK_Methods\Button4
+Using methods file: D:\UBCBAPK_Methods\Button4\Button4_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V => In the provided method, user personal data (specifically, the IMEI of the device) is originated and stored in the class variable 'imei'. The method retrieves the TelephonyManager service using the system service 'phone', then calls getDeviceId() to obtain the IMEI. This IMEI is subsequently stored in a static field named 'imei' within the same class.
+[SUMMARY] Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V => The method sends an SMS with the IMEI number of the device as its content to a predefined phone number. The IMEI number, which is considered sensitive information, is sourced from a class variable and passed to methods that handle SMS sending.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "IMEI"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve IMEI from TelephonyManager",
+            "Source Method": "Lde/ecspride/Button4;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The method retrieves the TelephonyManager service using 'phone' as the system service name, which is a standard way to access telephony services in Android.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Obtain IMEI from TelephonyManager",
+            "Source Method": "Lde/ecspride/Button4;->getDeviceId()Ljava/lang/String;",
+            "Reasoning": "The method getDeviceId() is called on the retrieved TelephonyManager service, which returns the device's IMEI number.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Store IMEI in static field",
+            "Source Method": "Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The IMEI number is stored in a static field named 'imei' within the same class.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Send SMS with IMEI as content",
+            "Source Method": "Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V",
+            "Reasoning": "The method sends an SMS message which includes the stored IMEI number, considered sensitive information.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V",
+        null
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Lde/ecspride/Button4;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;) --> ... --> Sink Method(Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V)]",
+            "Reasoning": "The IMEI number is retrieved from the TelephonyManager service and stored in a static field during the onCreate method. This tainted data is then used to send an SMS message, which acts as a sink for sensitive information."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Button4\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Button4\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Button4\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Button4\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\Button4\output\sensitive_only.json
+Total time for folder: 139.06 seconds

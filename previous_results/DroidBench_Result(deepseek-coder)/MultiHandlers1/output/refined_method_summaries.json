@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "longitude",
+            "latitude"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieving longitude and latitude from Landroid/location/Location instance",
+                "Source Method": "Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "The method retrieves the longitude and latitude values from an instance of Landroid/location/Location.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Constructing a string containing longitude and latitude information",
+                "Source Method": "Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "The retrieved values are used to construct a string that includes the user's location coordinates.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Passing the constructed string to Lde/ecspride/IDataProvider through its setData method",
+                "Source Method": "Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "The string containing sensitive data is passed as an argument to the setData method of an interface implementation.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/IDataProvider;->setData(Ljava/lang/String;)V",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V --> ... --> Sink Method: Lde/ecspride/IDataProvider;->setData(Ljava/lang/String;)V]",
+                "Reasoning": "The method onLocationChanged retrieves the longitude and latitude from an instance of Landroid/location/Location;, constructs a string containing this information, which is then passed to the setData method of Lde/ecspride/IDataProvider."
+            }
+        ],
+        "Label": "leak"
+    }
+]

@@ -1,0 +1,52 @@
+
+Processing folder: D:\UBCBAPK_Methods\ApplicationModeling1
+Using methods file: D:\UBCBAPK_Methods\ApplicationModeling1\ApplicationModeling1_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V => This method originates user device ID data by calling `getDeviceId()` on a `TelephonyManager`. This data is then stored as `imei` within a `MyApplication` instance. The method then creates a new intent to launch `AnotherActivity`.  The `TelephonyManager` object, which contains the device ID, is a potential sink for sensitive data.
+[SUMMARY] Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V => The method `onCreate` initiates the lifecycle of `AnotherActivity`. It first calls the parent class's `onCreate` method. Then, it sets the layout using `setContentView`. It retrieves the `imei` from a `MyApplication` instance. Critically, it logs this `imei` string to the logcat using `Log.i`. This logging of the `imei` constitutes a real sink for sensitive data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "imei"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Device ID obtained via TelephonyManager.",
+            "Source Method": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The `onCreate` method of `MainActivity` calls `getDeviceId()` on a `TelephonyManager` to retrieve the device ID.",
+            "Action": "Stored as `imei`"
+        },
+        {
+            "Step": "imei retrieved from MyApplication.",
+            "Source Method": "Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The `AnotherActivity`'s `onCreate` method retrieves the `imei` from a `MyApplication` instance.",
+            "Action": "Retrieved"
+        },
+        {
+            "Step": "imei logged to logcat.",
+            "Source Method": "Ledu/mit/application_modeling/AnotherActivity;->Log.i(...)",
+            "Reasoning": "The `AnotherActivity`'s `onCreate` method logs the `imei` string to the logcat using `Log.i`. This constitutes a real sink for sensitive data.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/application_modeling/AnotherActivity;->Log.i(...)",
+        "Ledu/mit/application_modeling/AnotherActivity;->setContentView(I)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "MainActivity->onCreate() --> AnotherActivity->onCreate() --> AnotherActivity->Log.i(...)",
+            "Reasoning": "The device ID is initially obtained from the TelephonyManager within MainActivity's onCreate. This value is then passed to AnotherActivity's onCreate, which subsequently logs the `imei` string to logcat. The `setContentView` methods are irrelevant to the data flow."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ApplicationModeling1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ApplicationModeling1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ApplicationModeling1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ApplicationModeling1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ApplicationModeling1\output\sensitive_only.json
+Total time for folder: 13.62 seconds

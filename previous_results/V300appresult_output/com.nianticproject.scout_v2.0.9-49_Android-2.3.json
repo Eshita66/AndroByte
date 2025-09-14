@@ -1,0 +1,78 @@
+[
+  {
+    "Data Types Collected": [
+      "Location Data (latitude, longitude, accuracy, time, provider)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting location data",
+        "Source Method": "Laa/a;->a:()Lorg/json/JSONObject;",
+        "Reasoning": "The method explicitly collects user location data.",
+        "Action": "Stored in JSONObject"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Laa/a;->a:()Lorg/json/JSONObject; --> [Stored in JSONObject]",
+        "Reasoning": "The collected location data is stored in a JSONObject but not further processed or transmitted."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve longitude from Location object",
+        "Source Method": "Laa/a;->c:()D",
+        "Reasoning": "Method `c()` extracts longitude from `v2`",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected.",
+        "Source Method": "Lab/a;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary mention location data collection.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is sent to wearable devices.",
+        "Source Method": "Lab/a;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary mentions sending data to wearable devices.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Location data is sent to the server.",
+        "Source Method": "Lab/a;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary mentions sending data to the server.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lab/b;->b(Ljava/lang/String;)V",
+      "Lab/c;->c(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lab/a;->a:(Landroid/location/Location;)V --> Lab/b;->b(Ljava/lang/String;)V --> Lab/c;->c(Ljava/lang/String;)V",
+        "Reasoning": "Overall data flow combines all steps from source to sink points."
+      }
+    ],
+    "Label": "leak"
+  }
+]

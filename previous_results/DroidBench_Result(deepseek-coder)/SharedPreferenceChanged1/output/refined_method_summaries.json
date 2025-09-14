@@ -1,0 +1,25 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve IMEI using TelephonyManager",
+                "Source Method": "Ledu/mit/event_context_shared_pref_listener/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "IMEI is retrieved and considered sensitive as it can uniquely identify a mobile device.",
+                "Action": "Stored in SharedPreferences"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/event_context_shared_pref_listener/MainActivity;->getSharedPreferences(Ljava/lang/String; I)Landroid/content/SharedPreferences;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/event_context_shared_pref_listener/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/event_context_shared_pref_listener/MainActivity;->getSharedPreferences(Ljava/lang/String; I)Landroid/content/SharedPreferences;",
+                "Reasoning": "IMEI is retrieved in onCreate and stored in SharedPreferences, which could lead to data leakage if not properly secured."
+            }
+        ],
+        "Label": "leak"
+    }
+]

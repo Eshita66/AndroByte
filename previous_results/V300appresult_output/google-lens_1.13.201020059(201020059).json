@@ -1,0 +1,53 @@
+[
+  {
+    "Data Types Collected": [
+      "android/content/Context",
+      "Landroid/location/LocationManager",
+      "power save mode",
+      "night mode"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get LocationManager from Context",
+        "Source Method": "Ljt;->T:(Landroid/content/Context;)Ljo;",
+        "Reasoning": "Using getSystemService API to get LocationManager",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Pass LocationManager to another method",
+        "Source Method": "Ljt;->T:(Landroid/content/Context;)Ljo;",
+        "Reasoning": "Method invocation to pass data",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Get PowerManager from Context",
+        "Source Method": "Ljm;-><init>:(Ljt; Landroid/content/Context;)V",
+        "Reasoning": "Using getSystemService API to get PowerManager",
+        "Action": "Stored in instance variables"
+      },
+      {
+        "Step": "Store data in instance variable",
+        "Source Method": "Ljm;-><init>:(Ljt; Landroid/content/Context;)V",
+        "Reasoning": "Instance initialization call",
+        "Action": "Stored in instance variable"
+      }
+    ],
+    "All Sinks": [
+      "Ljt;->F:(Landroid/content/Context; I)I",
+      "Ljm;-><init>:(Ljt; Landroid/content/Context;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Ljt;->T:(Landroid/content/Context;)Ljo; --> Ljt;->F:(Landroid/content/Context; I)I",
+        "Reasoning": "LocationManager data is passed to F method, which logs the data"
+      },
+      {
+        "dataflow 2": "Ljm;-><init>:(Ljt; Landroid/content/Context;)V --> Ljm;-><init>:(Ljt; Landroid/content/Context;)V",
+        "Reasoning": "PowerManager data is stored in instance variable"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

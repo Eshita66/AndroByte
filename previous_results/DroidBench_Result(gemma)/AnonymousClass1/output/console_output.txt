@@ -1,0 +1,83 @@
+Processing folder: D:\withoutcallgraphResult\droidBenchApkMethods\AnonymousClass1
+Using methods file: D:\withoutcallgraphResult\droidBenchApkMethods\AnonymousClass1\AnonymousClass1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/AnnonymousClass1$1;->onLocationChanged:(Landroid/location/Location;)V
+Processed summary for Lde/ecspride/AnnonymousClass1$1;->onLocationChanged:(Landroid/location/Location;)V: {
+    "Summary": "The method originates user personal data by invoking the getLatitude() and getLongitude() methods of the Location class, which returns sensitive location information. This data is then stored in registers and passed to static methods access$0(D) and access$1(D) in the AnnonymousClass1 class.",
+    "Next Methods": [
+        "Lde/ecspride/AnnonymousClass1;->getApplicationContext:(Ljava/lang/String;)Landroid/content/Context;",
+        "Lde/ecspride/AnnonymousClass1;->access$0(D)V",
+        "Lde/ecspride/AnnonymousClass1;->access$1(D)V"
+    ]
+}
+Processed summary for Lde/ecspride/AnnonymousClass1;->access$1:(D)V: {
+    "Summary": "The method stores user personal location data in register v0 and passes it to static methods access$0(D) and access$1(D) in the AnnonymousClass1 class.",
+    "Next Methods": [
+        "Lde/ecspride/AnnonymousClass1;->access$0:(D)V",
+        "Lde/ecspride/AnnonymousClass1;->access$1:(D)V"
+    ]
+}
+Processed summary for Lde/ecspride/AnnonymousClass1;->access$0:(D)V: {
+    "Summary": "The method originates user personal data by storing latitude location information in register v0 and passing it to static methods access$0(D) and access$1(D).",
+    "Next Methods": [
+        "Lde/ecspride/AnnonymousClass1;->access$1:(D)V"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\droidBenchApkMethods\AnonymousClass1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\droidBenchApkMethods\AnonymousClass1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\droidBenchApkMethods\AnonymousClass1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "Location"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "onLocationChanged() invoked",
+                "Source Method": "Lde/ecspride/AnnonymousClass1$1;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "Invokes getLatitude() and getLongitude() methods of the Location class.",
+                "Action": "Stored in registers"
+            },
+            {
+                "Step": "access$0(D) called",
+                "Source Method": "Lde/ecspride/AnnonymousClass1;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "Passes location data to access$0(D)",
+                "Action": "Passed"
+            },
+            {
+                "Step": "access$1(D) called",
+                "Source Method": "Lde/ecspride/AnnonymousClass1;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "Passes location data to access$1(D)",
+                "Action": "Passed"
+            },
+            {
+                "Step": "access$0(D) called",
+                "Source Method": "Lde/ecspride/AnnonymousClass1;->access$1:(D)V",
+                "Reasoning": "Stores latitude location information in register v0 and passes it to access$0(D)",
+                "Action": "Stored and passed"
+            },
+            {
+                "Step": "access$1(D) called",
+                "Source Method": "Lde/ecspride/AnnonymousClass1;->access$1:(D)V",
+                "Reasoning": "Stores user personal location data in register v0 and passes it to access$1(D)",
+                "Action": "Stored and passed"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/AnnonymousClass1;->access$0:(D)V",
+            "Lde/ecspride/AnnonymousClass1;->access$1:(D)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/AnnonymousClass1$1;->onLocationChanged:(Landroid/location/Location;)V --> Lde/ecspride/AnnonymousClass1;->access$0:(D)V --> Lde/ecspride/AnnonymousClass1;->access$1:(D)V",
+                "Reasoning": "Data is passed from onLocationChanged() to access$0(D) and then to access$1(D)"
+            }
+        ],
+        "Label": [
+            "sensitive"
+        ]
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\droidBenchApkMethods\AnonymousClass1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\droidBenchApkMethods\AnonymousClass1\output\sensitive_only.json
+Total summary time: 115.51145815849304 seconds

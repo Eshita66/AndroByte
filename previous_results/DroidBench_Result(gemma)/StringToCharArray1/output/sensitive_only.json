@@ -1,0 +1,25 @@
+[
+    {
+        "Data Types Collected": [
+            "device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method calls `getSystemService` with `android.telephony.TelephonyManager` to obtain the device ID using `getDeviceId()`.",
+                "Action": "Retrieval of device ID"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/string_to_char/MainActivity;->Log.i:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/string_to_char/MainActivity;->Log.i:(Ljava/lang/String;)",
+                "Reasoning": "The `getDeviceId()` method returns a string representing the device ID. This string is then used as an argument to the `Log.i` method, resulting in a log message containing the device ID. This creates a direct flow from the sensitive source to the sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]

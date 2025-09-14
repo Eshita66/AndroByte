@@ -1,0 +1,96 @@
+[
+  {
+    "Data Types Collected": [
+      "AccountManager",
+      "android.content.Context",
+      "ReentrantReadWriteLock"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data by calling getAccounts() method of AccountManager class.",
+        "Source Method": "Lc/a/a/b/f;->f:(I Ljava/lang/String;)[Lc/a/a/b/f$a;",
+        "Reasoning": "The data is stored in the v2 register and then propagated to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by invoking the sensitive API call d() from com/apple/movetoios/d.",
+        "Source Method": "Lcom/apple/movetoios/d;->b:()Landroid/content/Context;",
+        "Reasoning": "The data is stored in register v0 and propagated to the next methods via direct invocation.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data using the b field of the current object to access a ReentrantReadWriteLock instance.",
+        "Source Method": "Lcom/apple/movetoios/d;->c:()Landroid/content/Context;",
+        "Reasoning": "The lock is then acquired and released, but the primary purpose is to retrieve an Android Context instance stored in the a field.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by invoking the constructor of com.apple.movetoios.d and storing it in a static field c.",
+        "Source Method": "Lcom/apple/movetoios/d;->d:()Lcom/apple/movetoios/d;",
+        "Reasoning": "The data is then returned as an instance of com.apple.movetoios.d.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by calling the constructor of ReentrantReadWriteLock.",
+        "Source Method": "Lcom/apple/movetoios/d;-><init>:()V",
+        "Reasoning": "The data is stored in the 'b' field of the current object and is propagated to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data reaches a sink point when it is returned as an array of c/a/a/b/f$a objects.",
+        "Source Method": "Lc/a/a/b/f;->f:(I Ljava/lang/String;)[Lc/a/a/b/f$a;",
+        "Reasoning": "This method originates user personal data by calling the getAccounts() method of the AccountManager class.",
+        "Action": "Returned"
+      },
+      {
+        "Step": "Data reaches a sink point when it is returned as an instance of com.apple.movetoios.d.",
+        "Source Method": "Lcom/apple/movetoios/d;->d:()Lcom/apple/movetoios/d;",
+        "Reasoning": "The method originates user personal data by invoking the constructor of com.apple.movetoios.d and storing it in a static field c.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lc/a/a/b/f;->f:(I Ljava/lang/String;)[Lc/a/a/b/f$a;",
+      "Lcom/apple/movetoios/d;->d:()Lcom/apple/movetoios/d;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lc/a/a/b/f;->f:(I Ljava/lang/String;)[Lc/a/a/b/f$a; --> ... --> Lc/a/a/b/f;->f:(I Ljava/lang/String;)[Lc/a/a/b/f$a;",
+        "Reasoning": "The data is stored in the v2 register and then propagated to other methods via method invocations. The data eventually reaches a sink point when it is returned as an array of c/a/a/b/f$a objects."
+      },
+      {
+        "dataflow 2": "Lcom/apple/movetoios/d;->b:()Landroid/content/Context; --> ... --> Lcom/apple/movetoios/d;->d:()Lcom/apple/movetoios/d;",
+        "Reasoning": "The data is stored in register v0 and propagated to the next methods via direct invocation. The method originates user personal data by invoking the constructor of com.apple.movetoios.d and storing it in a static field c."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Call getConnectionInfo() method of WifiManager",
+        "Source Method": "Lcom/apple/movetoios/v/b;->v:()V",
+        "Reasoning": "The method originates user personal data by calling the getConnectionInfo() method of WifiManager, which retrieves the current WiFi connection information.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/apple/movetoios/v/b;->v:()V --> getConnectionInfo() method of WifiManager --> Stored in field of the class",
+        "Reasoning": "The SSID is then extracted from this info and stored in a field of the class."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  }
+]

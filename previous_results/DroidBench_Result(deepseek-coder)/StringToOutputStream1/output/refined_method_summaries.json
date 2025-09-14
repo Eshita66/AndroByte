@@ -1,0 +1,44 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID from TelephonyManager",
+                "Source Method": "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID which is sensitive personal data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Convert device ID to byte array",
+                "Source Method": "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The retrieved device ID is converted to a byte array.",
+                "Action": "Transformed"
+            },
+            {
+                "Step": "Write byte array to ByteArrayOutputStream",
+                "Source Method": "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The byte array is written to a ByteArrayOutputStream.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Log the content of ByteArrayOutputStream",
+                "Source Method": "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The content of the ByteArrayOutputStream is logged using Log.i(...), which is a sink.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Log.i(...)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V) --> ... --> Sink Method(Log.i(...))]",
+                "Reasoning": "The device ID is retrieved from TelephonyManager, converted to a byte array, and then written to a ByteArrayOutputStream before being logged via Log.i(...) using the toString() method."
+            }
+        ],
+        "Label": "leak"
+    }
+]

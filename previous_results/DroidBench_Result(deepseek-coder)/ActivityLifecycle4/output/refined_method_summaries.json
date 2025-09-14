@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/MainActivity;->onResume:()V",
+                "Reasoning": "The method onResume() retrieves the device ID using TelephonyManager and stores it in a static field 'imei'.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send SMS with IMEI value",
+                "Source Method": "Lde/ecspride/MainActivity;->onPause:()V",
+                "Reasoning": "The method onPause() constructs a message containing the stored IMEI value and sends it.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendSMS(Ljava/lang/String;Ljava/lang/String;Landroid/telephony/SmsMessage;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onResume:()V --> Lde/ecspride/MainActivity;->getDeviceId():Ljava/lang/String; --> Lde/ecspride/MainActivity;->onPause:()V --> Lde/ecspride/MainActivity;->sendSMS(Ljava/lang/String;Ljava/lang/String;Landroid/telephony/SmsMessage;)V",
+                "Reasoning": "The Device ID is retrieved in onResume(), stored as 'imei', and then used to construct an SMS message in onPause() before being sent."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

@@ -1,0 +1,129 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is retrieved from shared preferences and location services.",
+        "Source Method": "Lcom/cursus/sky/grabsdk/Grab;->onConnected:(Landroid/os/Bundle;)V",
+        "Reasoning": "Shared preferences and location services are used to retrieve sensitive data.",
+        "Action": "Stored in the `mAirportIdent` field"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/cursus/sky/grabsdk/Grab;->onConnected:(Landroid/os/Bundle;)V --> mAirportIdent",
+        "Reasoning": "Sensitive data is stored in the `mAirportIdent` field."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User location",
+      "Device ID",
+      "Phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User interacts with POI Checkin button",
+        "Source Method": "Lcom/locuslabs/sdk/internal/maps/controller/POICheckinViewController$OnPoiCheckinClickListener;->onClick:(Landroid/view/View;)V",
+        "Reasoning": "User interaction triggers the `onClick` method.",
+        "Action": "Data is passed to other methods."
+      },
+      {
+        "Step": "Data is passed to `access$300` method",
+        "Source Method": "Lcom/locuslabs/sdk/internal/maps/controller/POICheckinViewController$OnPoiCheckinClickListener;->onClick:(Landroid/view/View;)V",
+        "Reasoning": "`access$300` is called from within the `onClick` method.",
+        "Action": "Data is passed to the `checkIn` method."
+      },
+      {
+        "Step": "Data is passed to `checkIn` method",
+        "Source Method": "Lcom/locuslabs/sdk/internal/maps/controller/POICheckinViewController$OnPoiCheckinClickListener;->onClick:(Landroid/view/View;)V",
+        "Reasoning": "`checkIn` is called from within the `access$300` method.",
+        "Action": "Data is potentially logged or transmitted."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/locuslabs/sdk/internal/maps/controller/POICheckinViewController$checkIn;->(Lcom/locuslabs/sdk/internal/maps/model/MapPOI;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/locuslabs/sdk/internal/maps/controller/POICheckinViewController$OnPoiCheckinClickListener;->onClick:(Landroid/view/View;)V --> Lcom/locuslabs/sdk/internal/maps/controller/POICheckinViewController$checkIn;->(Lcom/locuslabs/sdk/internal/maps/model/MapPOI;)V",
+        "Reasoning": "User interaction triggers the `onClick` method, which passes data to the `checkIn` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is received from a Location object.",
+        "Source Method": "Lcom/locuslabs/sdk/location/GooglePlayServicesLocationAdapter;->updateBluedot:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is formatted into a string.",
+        "Source Method": "Lcom/locuslabs/sdk/location/GooglePlayServicesLocationAdapter;->updateBluedot:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Location data is submitted to the FusedLocationProvider_IndoorAtlas_GooglePlayServices class.",
+        "Source Method": "Lcom/locuslabs/sdk/location/GooglePlayServicesLocationAdapter;->updateBluedot:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/locuslabs/sdk/location/GooglePlayServicesLocationAdapter;->submitLocationData(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/locuslabs/sdk/location/GooglePlayServicesLocationAdapter;->updateBluedot(Landroid/location/Location;)V --> Lcom/locuslabs/sdk/location/GooglePlayServicesLocationAdapter;->submitLocationData(Ljava/lang/String;)V",
+        "Reasoning": "Overall data flow analysis"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android_id",
+      "macAddress"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected from settings.",
+        "Source Method": "Ld/a/f/c;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method summary specifies data collection.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Combined identifier is created.",
+        "Source Method": "Ld/a/f/c;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method summary specifies data combination.",
+        "Action": "Transformed"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Ld/a/f/c;->b:(Landroid/content/Context;)Ljava/lang/String; --> [Combined identifier is created] --> [null]",
+        "Reasoning": "Data is collected and transformed, but no sink is specified in the method summary."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

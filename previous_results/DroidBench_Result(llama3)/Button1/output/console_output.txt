@@ -1,0 +1,45 @@
+
+Processing folder: D:\UBCBAPK_Methods\Button1
+Using methods file: D:\UBCBAPK_Methods\Button1\Button1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V => The method originates and stores user personal data (IMEI) in the 'imei' field of the Button1 class.
+[SUMMARY] Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V => The method originates from the imei (device ID) stored in the Button1 class and uses it to send an SMS with the phone number +49.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "imei"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "User personal data is stored in Button1 class.",
+            "Source Method": "Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method originates and stores user personal data (IMEI) in the 'imei' field of the Button1 class.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "IMEI is used to send an SMS with phone number +49.",
+            "Source Method": "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V",
+            "Reasoning": "The method originates from the imei (device ID) stored in the Button1 class and uses it to send an SMS with the phone number +49.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": " Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V --> ... --> Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V",
+            "Reasoning": "IMEI is stored in Button1 class and then used to send an SMS with phone number +49."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Button1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Button1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Button1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Button1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\Button1\output\sensitive_only.json
+Total time for folder: 17.83 seconds

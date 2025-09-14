@@ -1,0 +1,48 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve last known location",
+        "Source Method": "Li0/b/c/q;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "Method returns a Location object",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Li0/b/c/q;->a:(Ljava/lang/String;)Landroid/location/Location; --> null",
+        "Reasoning": "Location is returned but not further processed"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting Device ID",
+        "Source Method": "Lorg/acra/collector/DeviceIdCollector;->collect:(Lorg/acra/ReportField; Landroid/content/Context; Lq0/a/h/g; Lq0/a/e/c; Lq0/a/i/c;)V",
+        "Reasoning": "TelephonyManager is used to retrieve the device ID.",
+        "Action": "Stored in `DEVICE_ID` report field"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/acra/collector/DeviceIdCollector;->collect:(Lorg/acra/ReportField; Landroid/content/Context; Lq0/a/h/g; Lq0/a/e/c; Lq0/a/i/c;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/acra/collector/DeviceIdCollector;->collect(...) --> Lorg/acra/collector/DeviceIdCollector;->collect(...) ",
+        "Reasoning": "The collected device ID is stored in the `DEVICE_ID` report field within the same method."
+      }
+    ],
+    "Label": "leak"
+  }
+]

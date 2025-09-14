@@ -1,0 +1,40 @@
+
+Processing folder: D:\UBCBAPK_Methods\ListAccess1
+Using methods file: D:\UBCBAPK_Methods\ListAccess1\ListAccess1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V => The method initializes a list and adds several strings to it, including 'not tainted', 'phone' which results in fetching the device ID from the TelephonyManager, and 'neutral text'. It then retrieves the default SMS manager and attempts to send an SMS message with one of the strings from the list as the phone number. The device ID is considered sensitive data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "List",
+        "TelephonyManager"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Initialization and addition of strings to list",
+            "Source Method": "Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method initializes a list and adds several strings, including 'not tainted', 'phone' which results in fetching the device ID from the TelephonyManager, and 'neutral text'. The device ID is considered sensitive data.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+        "Log.i(...)",
+        null
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V) --> ... --> Sink Method(Log.i(...))]",
+            "Reasoning": "The device ID is added to the list and eventually logged via Log.i(...) which could log sensitive data."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ListAccess1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ListAccess1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ListAccess1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ListAccess1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ListAccess1\output\sensitive_only.json
+Total time for folder: 199.50 seconds

@@ -1,0 +1,44 @@
+
+Processing folder: D:\UBCBAPK_Methods\UnreachableCode
+Using methods file: D:\UBCBAPK_Methods\UnreachableCode\UnreachableCode_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/UnreachableCode;->unrechable:()V']
+[SUMMARY] Lde/ecspride/UnreachableCode;->unrechable:()V => The method retrieves the device ID from the TelephonyManager obtained from the base context, and then logs this device ID using Log.i with a tag 'INFO'. The device ID contains user personal data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve device ID from TelephonyManager",
+            "Source Method": "Lde/ecspride/UnreachableCode;->getBaseContext()Landroid/content/Context;",
+            "Reasoning": "The base context is used to obtain the TelephonyManager, which in turn provides access to the device ID.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Log device ID using Log.i",
+            "Source Method": "Lde/ecspride/UnreachableCode;->unrechable:()V",
+            "Reasoning": "The method retrieves the device ID and logs it with a tag, indicating that sensitive user information is being processed.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/UnreachableCode;->unrechable:()V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Lde/ecspride/UnreachableCode;->getBaseContext()Landroid/content/Context;) --> Retrieve device ID from TelephonyManager --> Log device ID using Log.i]",
+            "Reasoning": "The base context is used to access the TelephonyManager, which retrieves the device ID. This device ID is then processed and logged using Log.i, indicating a direct flow of personal data into a sink."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\UnreachableCode\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\UnreachableCode\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\UnreachableCode\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\UnreachableCode\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\UnreachableCode\output\sensitive_only.json
+Total time for folder: 870.95 seconds

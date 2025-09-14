@@ -1,0 +1,58 @@
+[
+  {
+    "Data Types Collected": [
+      "location information (accuracy, time stamp, latitude, longitude)",
+      "HashMap of location handlers",
+      "sensitive API call",
+      "log level",
+      "Throwable object"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected by LocationController's fireCompleteForLocation method.",
+        "Source Method": "Lcom/onesignal/LocationController;->fireCompleteForLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data through the 'fireCompleteForLocation' method.",
+        "Action": "stored in registers and variables within the method"
+      },
+      {
+        "Step": "User location data is passed to Log method for logging.",
+        "Source Method": "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String;)V",
+        "Reasoning": "The current method originates user personal data by invoking the Log method with sensitive API call.",
+        "Action": "logged"
+      },
+      {
+        "Step": "HashMap of location handlers is used to propagate user location data.",
+        "Source Method": "Lcom/onesignal/LocationController;->fireComplete:(Lcom/onesignal/LocationController$LocationPoint;)V",
+        "Reasoning": "The method originates user personal data by using the `sget-object` instruction to retrieve a map of location handlers.",
+        "Action": "propagated through method invocations"
+      },
+      {
+        "Step": "Throwable object is used for logging user location data.",
+        "Source Method": "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The current method originates user personal data by using the `sget-object` instruction to retrieve the log level from the OneSignal class.",
+        "Action": "logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String;)V",
+      "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String; Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[LocationController's fireCompleteForLocation method --> Log method] User location data is collected by LocationController's fireCompleteForLocation method and passed to Log method for logging.",
+        "Reasoning": "The data flow starts from the LocationController's fireCompleteForLocation method where user location data is stored in registers and variables. Then, this data is propagated through method invocations to the Log method where it is logged."
+      },
+      {
+        "dataflow 2": "[LocationController's fireComplete method --> HashMap of location handlers] User location data is passed to HashMap of location handlers.",
+        "Reasoning": "The data flow starts from the LocationController's fireComplete method where user location data is stored in registers and variables. Then, this data is propagated through method invocations to the HashMap of location handlers."
+      },
+      {
+        "dataflow 3": "[OneSignal's Log method --> Throwable object] User location data is logged using Throwable object.",
+        "Reasoning": "The data flow starts from the OneSignal's Log method where user location data is stored in registers and variables. Then, this data is propagated through method invocations to the Throwable object where it is logged."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

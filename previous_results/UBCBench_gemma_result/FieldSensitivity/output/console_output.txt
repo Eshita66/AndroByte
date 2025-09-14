@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\FieldSensitivity
+Using methods file: D:\UBCBAPK_Methods\FieldSensitivity\FieldSensitivity_bytecode_instructions.json
+Sensitive method found: Llina/ubc/fieldsensitivity/FieldSensitivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Llina/ubc/fieldsensitivity/FieldSensitivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "This method originates user data by obtaining the device ID using the `getDeviceId()` method of the `TelephonyManager` class. Specifically, it retrieves the device ID as a string and stores it in the `info1` and `info2` fields of the `FieldSensitivity$A` object. This data is then logged using `android.util.Log.e`, which constitutes a sink. Therefore, the device ID is ultimately logged to the system log.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\FieldSensitivity\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\FieldSensitivity\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\FieldSensitivity\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID obtained.",
+                "Source Method": "Llina/ubc/fieldsensitivity/FieldSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method `onCreate` obtains the device ID using `getDeviceId()`.",
+                "Action": "Retrieval"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log.e"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/fieldsensitivity/FieldSensitivity;->onCreate:(Landroid/os/Bundle;)V --> android.util.Log.e",
+                "Reasoning": "The device ID, obtained from `getDeviceId()`, is logged via `android.util.Log.e`. This constitutes a sink."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\FieldSensitivity\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\FieldSensitivity\output\sensitive_only.json
+Total summary time: 7.319685459136963 seconds

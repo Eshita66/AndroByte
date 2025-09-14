@@ -1,0 +1,37 @@
+[
+    {
+        "Data Types Collected": [
+            "device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieving device ID from TelephonyManager",
+                "Source Method": "Ledu/mit/array_copy/MainActivity;->getDeviceId():Ljava/lang/String;",
+                "Reasoning": "The method retrieves the device ID which is user-specific personal data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Storing device ID in an array",
+                "Source Method": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The retrieved device ID is stored temporarily in an array before logging.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging the device ID using Log.i",
+                "Source Method": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The stored device ID is passed to Log.i for logging.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/array_copy/MainActivity;->Log.i(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Ledu/mit/array_copy/MainActivity;->getDeviceId():Ljava/lang/String; --> ... --> Sink Method: Ledu/mit/array_copy/MainActivity;->Log.i(Ljava/lang/String; Ljava/lang/String;)I]",
+                "Reasoning": "The device ID is retrieved from TelephonyManager, stored in an array within the onCreate method, and then logged using Log.i."
+            }
+        ],
+        "Label": "leak"
+    }
+]

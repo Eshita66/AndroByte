@@ -1,0 +1,77 @@
+Processing folder: D:\UBCBAPK_Methods\ContextSensitivity
+Using methods file: D:\UBCBAPK_Methods\ContextSensitivity\ContextSensitivity_bytecode_instructions.json
+Sensitive method found: Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V
+Sensitive method found: Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V
+Processed summary for Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V: {
+    "Summary": "Sensitive data originated from getDeviceId() method, propagated through registers and methods until reaching the sink point at Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I.",
+    "Next Methods": []
+}
+Processed summary for Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V: {
+    "Summary": "Sensitive data originates from the getSimSerialNumber() method call, stored in register v0. It is then passed to the logging method.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ContextSensitivity\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ContextSensitivity\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ContextSensitivity\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive DeviceId value obtained from getDeviceId() method",
+                "Source Method": "getDeviceId()",
+                "Reasoning": "Propagation through registers and methods until sink point",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId() --> ... --> Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I",
+                "Reasoning": "Propagation through registers and methods until sink point"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    },
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originates from getSimSerialNumber() method call",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->getSimSerialNumber:()Ljava/lang/String;",
+                "Reasoning": "The sensitive value is stored in register v0.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sensitive data passed to logging method",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V",
+                "Reasoning": "The sensitive value is passed as an argument to the logging method.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/contextsensitivity/ContextSensitivity;->log:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getSimSerialNumber(...) --> fun2(...) --> log(...)",
+                "Reasoning": "The sensitive data is passed from getSimSerialNumber() to fun2(), and then to the logging method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ContextSensitivity\output\refined_method_summaries.json
+Saved 2 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ContextSensitivity\output\sensitive_only.json
+Total summary time: 33.22840738296509 seconds

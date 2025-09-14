@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "Location Data"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieves location data and logs coordinates",
+                "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Method directly uses sensitive location data from LocationManager and passes it to logging sink without overwriting",
+                "Action": "Transmitted via logging"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;)V",
+                "Reasoning": "Location data is retrieved from LocationManager, passed directly to Log.d without being overwritten by safe constants"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

@@ -1,0 +1,31 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "Latitude",
+            "Longitude"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Extract latitude and longitude from Location object",
+                "Source Method": "Lde/ecspride/MainActivity$1;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "Method summary indicates extraction of sensitive values",
+                "Action": "Stored in MainActivity instance fields"
+            },
+            {
+                "Step": "Extract latitude and longitude from Location object (again)",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Method summary indicates extraction of sensitive values again",
+                "Action": "Stored in MainActivity instance fields"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity$1;->onLocationChanged:(Landroid/location/Location;)V --> Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> null",
+                "Reasoning": "No sink method is actually called with tainted data"
+            }
+        ],
+        "Label": "no leak"
+    }
+]

@@ -1,0 +1,189 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Latitude",
+      "Longitude",
+      "Accuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location Retrieval",
+        "Source Method": "Ladmost/sdk/base/AdMostLocation;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "The method uses the LocationManager API to retrieve location data.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Ladmost/sdk/base/AdMostLocation;-><init>:(Landroid/content/Context;)V --> null",
+        "Reasoning": "The method does not reach any sink points for data logging, transmission, or display."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User data is collected by AppsFlyerLibCore.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u02cb:(Lcom/appsflyer/internal/h;)Ljava/util/Map;",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User data is passed between methods.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u02cb:(Lcom/appsflyer/internal/h;)Ljava/util/Map;",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Passed between methods"
+      }
+    ],
+    "All Sinks": [
+      "Logging"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/AppsFlyerLibCore;->\u02cb:(Lcom/appsflyer/internal/h;)Ljava/util/Map; --> Logging",
+        "Reasoning": "Sensitive API call detected. User data is logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiManager",
+      "NetworkUtils",
+      "g",
+      "h"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected from WifiManager and NetworkUtils.",
+        "Source Method": "Lcom/mobisystems/http_server/HttpServerFragment;->ha:()V",
+        "Reasoning": "Method summary indicates data collection.",
+        "Action": "Stored in g and h"
+      },
+      {
+        "Step": "Collected data is logged to the console.",
+        "Source Method": "Lcom/mobisystems/http_server/HttpServerFragment;->ha:()V",
+        "Reasoning": "Method summary indicates logging.",
+        "Action": "Logged using f"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mobisystems/http_server/HttpServerFragment;->f:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mobisystems/http_server/HttpServerFragment;->ha:()V --> Lcom/mobisystems/http_server/HttpServerFragment;->f:()V",
+        "Reasoning": "Data is collected in HttpServerFragment and then logged using f."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected from the `getLine1Number()` method.",
+        "Source Method": "Lc/l/n/a/e/H;-><init>:(Lc/l/n/a/b/B; Lc/l/n/a/e/T; Ljava/lang/String;)V",
+        "Reasoning": "Method description",
+        "Action": "Stored in the `m` field"
+      },
+      {
+        "Step": "Data is passed to the `V` class.",
+        "Source Method": "Lc/l/n/a/e/H;-><init>:(Lc/l/n/a/b/B; Lc/l/n/a/e/T; Ljava/lang/String;)V",
+        "Reasoning": "Method description",
+        "Action": "Passed as an argument"
+      },
+      {
+        "Step": "Data is logged using the `L()` method.",
+        "Source Method": "Lc/l/n/a/e/H;-><init>:(Lc/l/n/a/b/B; Lc/l/n/a/e/T; Ljava/lang/String;)V",
+        "Reasoning": "Method description",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lc/l/n/a/e/H;->L:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lc/l/n/a/e/H;-><init>:(Lc/l/n/a/b/B; Lc/l/n/a/e/T; Ljava/lang/String;)V --> Lc/l/n/a/e/H;->L:(Ljava/lang/String;)V",
+        "Reasoning": "Data is collected, passed to the `V` class, and then logged in the `L()` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User phone number is retrieved from TelephonyManager.",
+        "Source Method": "Lc/l/n/a/e/ab;->a:(Z)V",
+        "Reasoning": "Method signature and summary mention TelephonyManager.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Phone number is validated.",
+        "Source Method": "Lc/l/n/a/e/ab;->a:(Z)V",
+        "Reasoning": "Method signature and summary mention validation.",
+        "Action": "Validated"
+      },
+      {
+        "Step": "Phone number is set in TextView with ID N.",
+        "Source Method": "Lc/l/n/a/e/ab;->a:(Z)V",
+        "Reasoning": "Method signature and summary mention TextView.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Error message is shown if phone number is invalid.",
+        "Source Method": "Lc/l/n/a/e/ab;->a:(Z)V",
+        "Reasoning": "Method signature and summary mention error message.",
+        "Action": "Displayed"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/l/n/a/e/ab;->a:(Z)V --> Stored --> Validated --> Stored --> Displayed",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Type",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve phone type and device ID",
+        "Source Method": "Lc/l/H/y/j;->l:()Ljava/lang/String;",
+        "Reasoning": "Method `l()` retrieves the phone type and device ID from TelephonyManager.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  }
+]

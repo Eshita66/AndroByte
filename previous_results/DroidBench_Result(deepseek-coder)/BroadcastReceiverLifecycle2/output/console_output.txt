@@ -1,0 +1,39 @@
+
+Processing folder: D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2
+Using methods file: D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2\BroadcastReceiverLifecycle2_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => In the method onCreate of de/ecspride/MainActivity, sensitive data such as the device ID obtained from TelephonyManager is processed and potentially exposed. The device ID is used to create a BroadcastReceiver instance with this information, which could be considered sensitive if not handled securely.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Obtain Device ID from TelephonyManager",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The device ID is obtained and used to create a BroadcastReceiver instance, which could be considered sensitive.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->sendBroadcast(Landroid/content/Intent;)V",
+        "Lde/ecspride/MainActivity;->registerReceiver(Landroid/content/BroadcastReceiver; Landroid/content/IntentFilter;)Landroid/content/Intent;"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Use device ID to create BroadcastReceiver instance --> Potential sink: sendBroadcast or registerReceiver]",
+            "Reasoning": "The device ID is used in a way that could expose it, although the exact method of exposure (sendBroadcast or registerReceiver) cannot be determined without more context."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2\output\sensitive_only.json
+Total time for folder: 128.03 seconds

@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data retrieval and logging",
+                "Source Method": "Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID via getDeviceId() and passes it to Log.e(), which is a sink for user personal data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I",
+                "Reasoning": "The device ID is retrieved from getDeviceId() and directly passed to Log.e() without being overwritten by a non-sensitive value, maintaining taint to the sink."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

@@ -1,0 +1,55 @@
+Processing folder: D:\UBCBAPK_Methods\Exceptions4
+Using methods file: D:\UBCBAPK_Methods\Exceptions4\Exceptions4_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "In the method onCreate of class de.ecspride.Exceptions4, user personal data is originated from the device ID obtained through Landroid/telephony/TelephonyManager. The device ID is stored in register v7 and then used to create a new instance of Ljava/lang/RuntimeException with this ID as its message. This exception is thrown, but during this process, the method also attempts to send an SMS message containing the exception's message (the device ID) via Landroid/telephony/SmsManager. However, no sensitive data is stored or passed to other methods beyond this point.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\Exceptions4\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Exceptions4\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Exceptions4\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "Landroid/os/Bundle;",
+            "Ljava/lang/RuntimeException;",
+            "Landroid/telephony/SmsManager;"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is obtained from TelephonyManager and stored in register v7.",
+                "Source Method": "Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is sourced from the Android TelephonyManager API, which retrieves user-specific information. This data is considered sensitive and should not be handled without proper security measures.",
+                "Action": "Stored in register v7."
+            },
+            {
+                "Step": "A new instance of Ljava/lang/RuntimeException is created with the device ID as its message.",
+                "Source Method": "Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The RuntimeException constructor takes a string argument, which in this case is the device ID. This usage does not overwrite or sanitize the data but rather encapsulates it within an exception object.",
+                "Action": "Used to create a new instance of Ljava/lang/RuntimeException."
+            },
+            {
+                "Step": "The created RuntimeException's message (device ID) is attempted to be sent via SmsManager, which would normally require dangerous permissions and could lead to data exposure if not properly handled.",
+                "Source Method": "Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "This step involves passing the sensitive information contained in the RuntimeException's message directly to an external system (SmsManager) without any additional processing that would normally remove or sanitize the taint. This is a potential leak scenario.",
+                "Action": "Attempted to be transmitted via Landroid/telephony/SmsManager."
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V) --> ... --> Sink Method(Landroid/telephony/SmsManager)]",
+                "Reasoning": "The device ID is sourced from the TelephonyManager, used to create a RuntimeException with it as its message, and then attempted to be sent via SmsManager. The attempt to send the exception's message (device ID) through SmsManager without any intermediate steps that would remove or sanitize the taint indicates a potential data leak."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Exceptions4\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Exceptions4\output\sensitive_only.json
+Total summary time: 236.91458010673523 seconds

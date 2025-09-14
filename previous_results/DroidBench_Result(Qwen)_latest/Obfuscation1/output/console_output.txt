@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\Obfuscation1
+Using methods file: D:\UBCBAPK_Methods\Obfuscation1\Obfuscation1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves the device ID using TelephonyManager.getDeviceId() and stores it in register v3. It then uses SmsManager.sendTextMessage() to send an SMS to the number '+49', potentially transmitting the device ID via network. This constitutes a network transmission sink.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\Obfuscation1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Obfuscation1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Obfuscation1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieved from TelephonyManager",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Method calls TelephonyManager.getDeviceId() to obtain device ID",
+                "Action": "Stored in register v3"
+            },
+            {
+                "Step": "Device ID transmitted via SMS",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Method calls SmsManager.sendTextMessage() with device ID as payload",
+                "Action": "Transmitted over network"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/SmsManager$PendingSendIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/SmsManager$PendingSendIntent;)V ",
+                "Reasoning": "Device ID is retrieved via TelephonyManager.getDeviceId(), stored in register v3, then passed as argument to SmsManager.sendTextMessage() for network transmission"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Obfuscation1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Obfuscation1\output\sensitive_only.json
+Total summary time: 1306.6408653259277 seconds

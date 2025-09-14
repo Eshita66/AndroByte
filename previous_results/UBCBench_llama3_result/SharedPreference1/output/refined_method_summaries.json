@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from getDeviceId() on TelephonyManager.",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId:()Ljava/lang/String;",
+                "Reasoning": "The device ID is obtained directly from the TelephonyManager instance.",
+                "Action": "Stored in SharedPreferences"
+            },
+            {
+                "Step": "Sensitive data stored in SharedPreferences and logged via Landroid/util/Log.",
+                "Source Method": "Llina/ubc/sharedpreference1/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is passed to SharedPreferences and then logged using Log.i().",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;i(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " [Landroid/telephony/TelephonyManager;->getDeviceId:()Ljava/lang/String; --> Llina/ubc/sharedpreference1/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;i(Ljava/lang/String; Ljava/lang/String;)I]",
+                "Reasoning": "[The device ID is obtained from TelephonyManager, stored in SharedPreferences, and then logged using Log.i().]"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

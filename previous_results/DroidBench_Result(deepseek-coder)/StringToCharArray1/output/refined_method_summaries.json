@@ -1,0 +1,37 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieving Device ID",
+                "Source Method": "Ledu/mit/string_to_char/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The method retrieves the TelephonyManager service to access device-specific information.",
+                "Action": "Collected"
+            },
+            {
+                "Step": "Converting Device ID to Character Array",
+                "Source Method": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID string is processed into a character array for further manipulation.",
+                "Action": "Processed"
+            },
+            {
+                "Step": "Logging the Device ID",
+                "Source Method": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The character array is logged using Log.i(...) if its length is greater than zero.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/string_to_char/MainActivity;->Log.i:(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(getSystemService) --> Processed (convert to character array) --> Sink Method(Log.i(...))]",
+                "Reasoning": "The device ID is first collected from the TelephonyManager, then converted into a character array within the MainActivity onCreate method, and finally logged using Log.i(...) which is considered a sink for sensitive information."
+            }
+        ],
+        "Label": "leak"
+    }
+]

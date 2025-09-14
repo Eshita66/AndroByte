@@ -1,0 +1,53 @@
+
+Processing folder: D:\UBCBAPK_Methods\LocationLeak2
+Using methods file: D:\UBCBAPK_Methods\LocationLeak2\LocationLeak2_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V']
+[SUMMARY] Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V => This method retrieves the latitude and longitude from a Location object passed as an argument (v6), converts them to strings, and stores these string representations in member variables of the class instance represented by v5.
+[SUMMARY] Lde/ecspride/LocationLeak2;->onResume:()V => The method 'onResume' in class 'de/ecspride/LocationLeak2' involves retrieving and logging user-specific location information (latitude and longitude) from the instance variables of the same object, then creating and displaying Toast messages with this data. The latitude and longitude values are obtained from fields within the same class instance, which might be considered sensitive if they are directly tied to a user's physical location.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "latitude",
+        "longitude"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve latitude and longitude from Location object",
+            "Source Method": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V",
+            "Reasoning": "The method retrieves latitude and longitude from a Location object passed as an argument.",
+            "Action": "Stored in member variables"
+        },
+        {
+            "Step": "Convert latitude and longitude to strings",
+            "Source Method": "Conversion of latitude and longitude values to strings",
+            "Reasoning": "The retrieved latitude and longitude values are converted to strings for storage.",
+            "Action": "Stored in member variables"
+        },
+        {
+            "Step": "Log the latitude and longitude using Log.i(...)",
+            "Source Method": "Lde/ecspride/LocationLeak2;->onResume:()V",
+            "Reasoning": "The method retrieves the stored latitude and longitude values from member variables and logs them.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/LocationLeak2;->onResume:()V",
+        "Log.i(...)"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V) --> Conversion of latitude and longitude values to strings --> Sink Method(Log.i(...))]",
+            "Reasoning": "The method onLocationChanged retrieves the Location object, extracts latitude and longitude, converts them to strings, and stores these in member variables. In the method onResume, these stored string representations are retrieved from member variables and logged using Log.i(...)."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\LocationLeak2\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\LocationLeak2\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\LocationLeak2\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\LocationLeak2\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\LocationLeak2\output\sensitive_only.json
+Total time for folder: 223.27 seconds

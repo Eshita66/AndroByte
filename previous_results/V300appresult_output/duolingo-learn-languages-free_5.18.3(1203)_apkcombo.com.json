@@ -1,0 +1,283 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "MAC address is retrieved from WifiManager API.",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method `getRawMacAddress()` explicitly retrieves the MAC address from the `WifiManager` API.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> null",
+        "Reasoning": "The data flow ends at the source method without any further processing or storage."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Search Parameters"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location and search parameters are added to a Bundle.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in Bundle"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Stored in Bundle",
+        "Reasoning": "Overall Data Flow entry"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "LocationPackage"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "LocationPackage is passed to PlaceManager",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle;",
+        "Reasoning": "Sensitive data originates from the LocationPackage object",
+        "Action": "Stored in Bundle object"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters(...) --> PlaceManager",
+        "Reasoning": "Sensitive data is passed to the PlaceManager as a Bundle object"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved from the `Location` object.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Passed as a parameter to the `newPlaceSearchRequestForLocation()` method.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Location data is used to construct a `GraphRequest` object.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Passed as an argument to the `GraphRequest.newPlacesSearchRequest()` method.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Location data is sent to the Facebook Graph API.",
+        "Source Method": "Lcom/facebook/GraphRequest;",
+        "Reasoning": "Executed by the `GraphRequest.executeAndWait()` method.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation(...) --> Lcom/facebook/GraphRequest; --> null",
+        "Reasoning": "Location data is passed to the `GraphRequest` object and then sent to the Facebook Graph API."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve last location",
+        "Source Method": "Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "Method returns the last location",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location; --> Stored",
+        "Reasoning": "Location is stored in memory"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data (SSID) is collected in `getConnectedWifi` method.",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "Method summary indicates data collection.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "SSID is passed to `isWifiSsidBlacklisted` method.",
+        "Source Method": "Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "Data is passed between methods.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "SSID is passed back to `WifiScanResult` object.",
+        "Source Method": "Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "Data is passed between methods.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult; --> Lcom/facebook/places/internal/WifiScanResult; --> null",
+        "Reasoning": "Data is collected in `getConnectedWifi` method and passed to `isWifiSsidBlacklisted` method, but no sink points are identified."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve last known location",
+        "Source Method": "Lo1/b/c/u;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "Method returns a Location object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lo1/b/c/u;->a(...) --> null",
+        "Reasoning": "Location is retrieved but not explicitly handled or logged."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data from Location object",
+        "Source Method": "Lb/g/b/d/f/a/s61;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "Method summary specifies extracting location data",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Add location data to JSONObject",
+        "Source Method": "Lb/g/b/d/f/a/s61;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "Method summary specifies adding data to JSONObject",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Add JSONObject to another JSONObject",
+        "Source Method": "Lb/g/b/d/f/a/s61;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "Method summary specifies adding JSONObject to another JSONObject",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lb/g/b/d/f/a/s61;->b:(Ljava/lang/Object;)V --> ... --> null",
+        "Reasoning": "Data is extracted, added to JSONObject, and added to another JSONObject, but there is no mention of logging, network calls, or file writes."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is passed to the `b` method as an argument.",
+        "Source Method": "Lb/g/b/d/f/a/tz0;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "Method summary",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to the `putBundle` method with the `custom_targeting` key.",
+        "Source Method": "Lb/g/b/d/f/a/tz0;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "Method summary",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Data is passed to the `putString` method with the `url` key.",
+        "Source Method": "Lb/g/b/d/f/a/tz0;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "Method summary",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lb/g/b/d/f/a/tz0;->b:(Ljava/lang/Object;)V --> null",
+        "Reasoning": "Sensitive data is passed to the `b` method but no sink is identified."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data from Bundle",
+        "Source Method": "Lb/g/b/d/f/a/u11;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "Method description",
+        "Action": "Stored in new Bundle"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lb/g/b/d/f/a/u11;->b:(Ljava/lang/Object;)V --> null",
+        "Reasoning": "Location data is extracted but not further processed or sent anywhere."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

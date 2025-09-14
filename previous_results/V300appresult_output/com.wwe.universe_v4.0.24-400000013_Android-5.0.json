@@ -1,0 +1,181 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Search Text"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Checks for location or searchText",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method throws an exception if location or searchText is missing",
+        "Action": "Validates Input"
+      },
+      {
+        "Step": "Creates Bundle object with parameters",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Bundle object contains location and searchText",
+        "Action": "Creates Bundle"
+      },
+      {
+        "Step": "Creates GraphRequest object",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "GraphRequest object is initialized with Bundle object",
+        "Action": "Creates GraphRequest"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest;-><init>(...) --> Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...)",
+        "Reasoning": "Location and searchText are passed to GraphRequest object and then to GraphJSONArrayCallback object through the onActivityResult method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Wifi Scan Data",
+      "Bluetooth Scan Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract user location, wifi scan data, and bluetooth scan data.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters(...)",
+        "Reasoning": "Method summary provides details.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Package data into JSON object.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters(...)",
+        "Reasoning": "Method summary provides details.",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Store JSON object in Bundle object.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters(...)",
+        "Reasoning": "Method summary provides details.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/os/Bundle;->putExtras(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters(...) --> Landroid/os/Bundle;->putExtras(...)",
+        "Reasoning": "Overall data flow summarizes the process."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is retrieved from the input parameter.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method takes a Location object as an input parameter.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is included in the GraphRequest object.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The Location object is passed to the GraphRequest constructor.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;->executeAndWait()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation(...) --> Lcom/facebook/GraphRequest;->executeAndWait(...)",
+        "Reasoning": "The Location object is passed from the PlaceManager method to the GraphRequest method and then transmitted to the Facebook Graph API endpoint."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected in `safeRun()` method.",
+        "Source Method": "Lcom/carnival/sdk/RequestRunnable$PostLocationRunnable;->safeRun:(Lcom/carnival/sdk/RequestRunnable$ResponseHandler;)V",
+        "Reasoning": "Sensitive user location data is originated in the `location` field of the `RequestRunnable$PostLocationRunnable` method.",
+        "Action": "Serialized and sent to server via API call"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/carnival/sdk/RequestRunnable$PostLocationRunnable;->safeRun:(Lcom/carnival/sdk/RequestRunnable$ResponseHandler;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/carnival/sdk/RequestRunnable$PostLocationRunnable;->safeRun:(Lcom/carnival/sdk/RequestRunnable$ResponseHandler;)V --> Lcom/carnival/sdk/RequestRunnable$PostLocationRunnable;->safeRun:(Lcom/carnival/sdk/RequestRunnable$ResponseHandler;)V",
+        "Reasoning": "Sensitive user location data is collected in `safeRun()` method and then sent to the server via API call."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract user location",
+        "Source Method": "Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method extracts user location data from the LocationManager.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location; --> Collected",
+        "Reasoning": "The collected location data is returned by the method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi BSSID",
+      "SSID",
+      "RSSI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method call",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The method `getConnectedWifi()` directly accesses user's WiFi BSSID, SSID, and RSSI.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Object creation",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The collected data is used to create a `WifiScanResult` object.",
+        "Action": "Created"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult; --> WifiScanResult object creation",
+        "Reasoning": "The collected WiFi data is used to create a `WifiScanResult` object, which is returned to the caller."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

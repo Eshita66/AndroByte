@@ -1,0 +1,31 @@
+[
+    {
+        "Data Types Collected": [
+            "deviceID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain device ID",
+                "Source Method": "Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method starts with a call to `getSystemService` to get a `TelephonyManager` instance, which then calls `getDeviceId()` to retrieve the device ID.",
+                "Action": "Data Retrieval"
+            },
+            {
+                "Step": "Send SMS with device ID",
+                "Source Method": "Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The retrieved device ID is used as an argument to `sendTextMessage` via `SmsManager`.",
+                "Action": "Data Transmission"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V --> Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)",
+                "Reasoning": "The `getDeviceId()` method returns the `deviceID` string. This string is then directly used as the first argument (`vText`) to the `sendTextMessage` method. This constitutes a direct data flow from the sensitive source to the sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]

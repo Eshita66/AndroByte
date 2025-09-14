@@ -1,0 +1,34 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieves device ID from TelephonyManager and stores it as a field",
+                "Source Method": "Lde/ecspride/ApplicationLifecyle1;->onCreate:()V",
+                "Reasoning": "The method retrieves the device ID using TelephonyManager and stores it in a field, which is considered sensitive data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Uses the stored device ID from the previous step to potentially log or transmit",
+                "Source Method": "Lde/ecspride/MainActivity;->onResume:()V",
+                "Reasoning": "The method uses the same field where the device ID is stored, which was set in the onCreate method.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/SomeOtherClass;->logDeviceId:(Ljava/lang/String;)V",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ApplicationLifecyle1;->onCreate:()V --> Lde/ecspride/MainActivity;->onResume:()V --> Lde/ecspride/SomeOtherClass;->logDeviceId:(Ljava/lang/String;)V",
+                "Reasoning": "The device ID is retrieved and stored in a field during onCreate, which is then used in onResume, ultimately passed to logDeviceId where it might be logged or transmitted."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

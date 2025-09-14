@@ -1,0 +1,59 @@
+
+ Processing folder: D:\UBCBAPK_Methods\Button1
+ Using methods file: D:\UBCBAPK_Methods\Button1\Button1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": [
+        "The method stores the device IMEI in a field (imei) which may be read by sendMessage(Landroid/view/View;)V"
+    ],
+    "Next Methods": [
+        "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V => {
+    "Summary": [
+        "The method leaks device IMEI via Toast and SMS sending, constituting a data leak"
+    ],
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\Button1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\Button1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\Button1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "IMEI is stored in a field (imei) by onCreate",
+                "Source Method": "Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly stores device IMEI in a field which may be accessed later",
+                "Action": "Stored"
+            },
+            {
+                "Step": "IMEI is leaked via Toast and SMS sending",
+                "Source Method": "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The method directly uses the stored IMEI without indication of overwriting or sanitization",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "IMEI is stored in 'imei' field by onCreate, then directly used in sendMessage without overwriting or sanitization"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\Button1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\Button1\output\sensitive_only.json
+Total time for folder: 38.57 seconds

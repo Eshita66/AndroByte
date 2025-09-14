@@ -1,0 +1,37 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain device ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/FieldSensitivity4;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The method getSystemService is used to obtain the TelephonyManager service, which provides access to device-specific information including the ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Store device ID in instance variable",
+                "Source Method": "Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is stored in an instance of Lde/ecspride/FieldSensitivity4$Datacontainer for later use.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Use device ID to send a text message",
+                "Source Method": "Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is used directly for sending a text message without any sanitization or encryption, which could potentially expose sensitive information.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "null"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Lde/ecspride/FieldSensitivity4;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V --> Use of device ID to send a text message]",
+                "Reasoning": "The TelephonyManager service is accessed in onCreate, and the obtained device ID is used directly for sending a text message without any sanitization or encryption."
+            }
+        ],
+        "Label": "leak"
+    }
+]

@@ -1,0 +1,35 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "getDeviceId() returns tainted DeviceId",
+                "Source Method": "Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;",
+                "Reasoning": "The method creates a Datacontainer instance, sets its description and secret fields based on system information, and returns the modified container.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "setDescription() overwrites DeviceId with system information",
+                "Source Method": "Lde/ecspride/Datacontainer;->setDescription(Ljava/lang/String;)V",
+                "Reasoning": "The method creates a Datacontainer instance, sets its description and secret fields based on system information, and returns the modified container.",
+                "Action": "Overwritten"
+            },
+            {
+                "Step": "getDescription() uses tainted DeviceId",
+                "Source Method": "Lde/ecspride/Datacontainer;->getDescription:()Ljava/lang/String;",
+                "Reasoning": "The method creates a Datacontainer instance, sets its description and secret fields based on system information, and returns the modified container.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId() --> setDescription() --> getDescription()",
+                "Reasoning": "The tainted DeviceId is passed from getDeviceId() to setDescription(), which overwrites it with system information. The overwritten value is then used in getDescription()."
+            }
+        ],
+        "Label": "no leak"
+    }
+]

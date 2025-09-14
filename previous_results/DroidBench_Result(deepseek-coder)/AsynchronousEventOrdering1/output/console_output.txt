@@ -1,0 +1,45 @@
+
+Processing folder: D:\UBCBAPK_Methods\AsynchronousEventOrdering1
+Using methods file: D:\UBCBAPK_Methods\AsynchronousEventOrdering1\AsynchronousEventOrdering1_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V']
+[SUMMARY] Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V => The method retrieves the device ID (IMEI) from the TelephonyManager using getDeviceId(), which represents user-specific information. This data is then stored in an instance variable of MainActivity.
+[SUMMARY] Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V => The method retrieves the IMEI number from an instance variable and logs it using Log.i, which can potentially log sensitive information.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "IMEI"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieving and storing IMEI in instance variable",
+            "Source Method": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V",
+            "Reasoning": "The method retrieves the device ID (IMEI) from TelephonyManager and stores it in an instance variable of MainActivity.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Logging stored IMEI using Log.i",
+            "Source Method": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V",
+            "Reasoning": "The method retrieves the IMEI from an instance variable and logs it using Log.i, which can potentially log sensitive information.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V) --> Stored in instance variable --> Source Method(Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V) --> Logged using Log.i]",
+            "Reasoning": "The IMEI is retrieved and stored in an instance variable during onResume, which is then logged during onStop potentially exposing sensitive information."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\sensitive_only.json
+Total time for folder: 111.74 seconds

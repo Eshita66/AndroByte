@@ -1,0 +1,587 @@
+[
+  {
+    "Data Types Collected": [
+      "LatLng",
+      "Object",
+      "Parcel",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access 'a' field of an object stored in register v7.",
+        "Source Method": "Lngp;->e:(Ljava/lang/Object;)V",
+        "Reasoning": "The current method originates user personal data by accessing the 'a' field of an object stored in register v7. The data is then propagated through registers and used to create a LatLng object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Invoke sensitive API calls to access 'a' field from objects of type 'Lagou;' and 'Lagoo;'.",
+        "Source Method": "Lagou;->f:(Lagoo;)V",
+        "Reasoning": "The method originates user personal data by invoking sensitive API calls to access 'a' field from objects of type 'Lagou;' and 'Lagoo;'. The data is stored in registers 'v0' and 'v2', and then passed to the method 'b' of class 'Lagpl;' via an interface invocation.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Invoke sensitive API call to obtain an Android Parcel object.",
+        "Source Method": "Lcnf;->gi:()Landroid/os/Parcel;",
+        "Reasoning": "This method originates user personal data through the invocation of a sensitive API call to obtain an Android Parcel object. The data is then stored in register v0 and propagated to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "`sget-object` instruction retrieves a sensitive object from the class field.",
+        "Source Method": "Lagnu;->j:()Lagpi;",
+        "Reasoning": "The method originates user personal data through the `sget-object` instruction which retrieves a sensitive object from the class field. The data is then stored in register `v0`.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check-cast converts an object to a String.",
+        "Source Method": "Laghr;->n:(Ljava/lang/Object; Ljava/lang/Object;)V",
+        "Reasoning": "The current method 'n' originates user personal data through a sensitive API call to check-cast, which converts an object to a String. The data is stored in register v1 and passed to the constructor of NullPointerException via invoke-direct.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Lagnu;->g:(Lcom/google/android/gms/maps/model/LatLng; F)Lagoo;",
+      "Lngp;->e:(Ljava/lang/Object;)V",
+      "Lcnf;->gi:()Landroid/os/Parcel;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lngp;->e:(Ljava/lang/Object;)V --> Lagnu;->g:(Lcom/google/android/gms/maps/model/LatLng; F)Lagoo;",
+        "Reasoning": "The LatLng object is passed to another method, which may be a sink point for logging or transmission."
+      },
+      {
+        "dataflow 2": " Lcnf;->gi:()Landroid/os/Parcel; --> ...",
+        "Reasoning": "This method originates user personal data through the invocation of a sensitive API call to obtain an Android Parcel object. The data is then stored in register v0 and propagated to other methods via method invocations."
+      },
+      {
+        "dataflow 3": " Lagnu;->j:()Lagpi; --> ...",
+        "Reasoning": "The method originates user personal data through the `sget-object` instruction which retrieves a sensitive object from the class field. The data is then stored in register `v0`."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Invoke Ller class's sensitive API to retrieve location",
+        "Source Method": "Lokn;->c:(Landroid/net/Uri; Lokx; Landroid/content/ContentValues;)V",
+        "Reasoning": "The method originates user personal data by invoking the `Ller` class's sensitive API.",
+        "Action": "Stored in registers and variables, including v5, v6, and v7"
+      },
+      {
+        "Step": "Propagate location to Loij, Loii, and Loiv classes",
+        "Source Method": "Lokn;->c:(Landroid/net/Uri; Lokx; Landroid/content/ContentValues;)V",
+        "Reasoning": "The data is propagated through method invocations to `Loij`, `Loii`, and `Loiv` classes.",
+        "Action": "Passed as parameters"
+      },
+      {
+        "Step": "Reach sinks such as logging and storage",
+        "Source Method": "Lokn;->c:(Landroid/net/Uri; Lokx; Landroid/content/ContentValues;)V",
+        "Reasoning": "The data reaches sinks such as logging and storage.",
+        "Action": "Logged or stored"
+      }
+    ],
+    "All Sinks": [
+      "Loij;->a:(Landroid/net/Uri; Lokx; Landroid/content/ContentValues;)V",
+      "Loii;->b:(Landroid/net/Uri; Lokx; Landroid/content/ContentValues;)V",
+      "Loiv;->c:(Landroid/net/Uri; Lokx; Landroid/content/ContentValues;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lokn;->c:(Landroid/net/Uri; Lokx; Landroid/content/ContentValues;)V --> Loij;->a:(Landroid/net/Uri; Lokx; Landroid/content/ContentValues;)V --> Loii;->b:(Landroid/net/Uri; Lokx; Landroid/content/ContentValues;)V --> Loiv;->c:(Landroid/net/Uri; Lokx; Landroid/content/ContentValues;)V",
+        "Reasoning": "The location is retrieved by the `Lokn` method, then passed to `Loij`, `Loii`, and finally stored in `Loiv`."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "NetworkState",
+      "DnsStatus",
+      "String (WifiSSID)",
+      "Context",
+      "Permission"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get current network state",
+        "Source Method": "Lorg/chromium/net/NetworkChangeNotifierAutoDetect;->getCurrentNetworkState:()Lorg/chromium/net/NetworkChangeNotifierAutoDetect$NetworkState;",
+        "Reasoning": "The method originates user personal data by calling sensitive API to get the current network state.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get DNS status",
+        "Source Method": "Lorg/chromium/net/AndroidNetworkLibrary;->getDnsStatus:(Landroid/net/Network;)Lorg/chromium/net/DnsStatus;",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls to get network status and connectivity information.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Get WifiSSID",
+        "Source Method": "Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method originates sensitive user personal data by invoking the `getWifiSSID()` method of `WifiInfo` class.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Check permission",
+        "Source Method": "Lawed;->c:(Landroid/content/Context; Ljava/lang/String; I I)I",
+        "Reasoning": "The method originates sensitive user personal data through the use of the `checkPermission` API call.",
+        "Action": "Result is then propagated to other methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/chromium/net/NetworkChangeNotifierAutoDetect;->logCurrentNetworkState:(Lorg/chromium/net/NetworkChangeNotifierAutoDetect$NetworkState;)V",
+      "Lorg/chromium/net/AndroidNetworkLibrary;->transmitDnsStatus:(Lorg/chromium/net/DnsStatus;)V",
+      "Lorg/chromium/net/AndroidNetworkLibrary;->storeWifiSSID:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/chromium/net/NetworkChangeNotifierAutoDetect;->getCurrentNetworkState:()Lorg/chromium/net/NetworkChangeNotifierAutoDetect$NetworkState; --> Lorg/chromium/net/NetworkChangeNotifierAutoDetect;->logCurrentNetworkState:(Lorg/chromium/net/NetworkChangeNotifierAutoDetect$NetworkState;)V",
+        "Reasoning": "The data is stored in registers and variables within the method, then passed to the logCurrentNetworkState method"
+      },
+      {
+        "dataflow 2": " Lorg/chromium/net/AndroidNetworkLibrary;->getDnsStatus:(Landroid/net/Network;)Lorg/chromium/net/DnsStatus; --> Lorg/chromium/net/AndroidNetworkLibrary;->transmitDnsStatus:(Lorg/chromium/net/DnsStatus;)V",
+        "Reasoning": "The data is passed to other methods via method invocations, then transmitted"
+      },
+      {
+        "dataflow 3": " Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String; --> Lorg/chromium/net/AndroidNetworkLibrary;->storeWifiSSID:(Ljava/lang/String;)V",
+        "Reasoning": "The data is passed to other methods via method invocations, then stored"
+      },
+      {
+        "dataflow 4": " Lawed;->c:(Landroid/content/Context; Ljava/lang/String; I I)I --> [Result propagated to other methods]",
+        "Reasoning": "The result of the permission check is then propagated to other methods via method invocations"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Context",
+      "Location services",
+      "Application context",
+      "Power manager"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from the context and location services.",
+        "Source Method": "Lpo;->s:(Landroid/content/Context; I)I",
+        "Reasoning": "The method originates user personal data by calling the sensitive API 'Landroid/content/Context;' to retrieve a context, and also gets location services.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Originates user personal data by calling the 'getSystemService' method with 'location' as a parameter.",
+        "Source Method": "Lpo;->Q:(Landroid/content/Context;)Lpj;",
+        "Reasoning": "The method originates user personal data by calling the 'getSystemService' method with 'location' as a parameter.",
+        "Action": "Stored in register v2 and then passed to another method through the constructor of class Lpk"
+      },
+      {
+        "Step": "Originates user personal data from the context's application context and power manager.",
+        "Source Method": "Lph;-><init>:(Lpo; Landroid/content/Context;)V",
+        "Reasoning": "The current method originates user personal data from the context's application context and power manager.",
+        "Action": "Stored in registers v0 and v1"
+      },
+      {
+        "Step": "Originates user personal data from the fields 'b' and 'a', which are stored in registers.",
+        "Source Method": "Lpk;-><init>:(Lpo; Lqb;)V",
+        "Reasoning": "The current method originates user personal data from the fields 'b' and 'a', which are stored in registers.",
+        "Action": "Passed to another method via method invocation"
+      },
+      {
+        "Step": "Originates user personal data from a sensitive API call (Lpo;) in the constructor of class pj.",
+        "Source Method": "Lpj;-><init>:(Lpo;)V",
+        "Reasoning": "The data originates from a sensitive API call (Lpo;) in the constructor of class pj.",
+        "Action": "Stored in register v1 and then passed to another method through the invoke-direct instruction"
+      }
+    ],
+    "All Sinks": [
+      "Lpo;->s:(Landroid/content/Context; I)I",
+      "Lpo;->P:(Landroid/content/Context;)Lpj;",
+      "Lpo;->Q:(Landroid/content/Context;)Lpj;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lph;<init>(...) --> Lpk;<init>(...) --> Lpj;<init>(...)",
+        "Reasoning": "The data is propagated from the constructor of class Lph to the constructor of class Lpk, and then to the constructor of class Lpj."
+      },
+      {
+        "dataflow 2": "Lpo;s(...) --> Lpo;Q(...) --> Lpk;<init>(...)",
+        "Reasoning": "The data is propagated from method s() in class Lpo to method Q() in class Lpo, and then to the constructor of class Lpk."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Invoke LocationRequest class to access location information.",
+        "Source Method": "Lwfq;->e:(Ljava/lang/Object;)V",
+        "Reasoning": "The method originates sensitive user personal data by invoking the `LocationRequest` class and accessing location information.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Call <init> constructor of Ljava/lang/Object; to retrieve user information.",
+        "Source Method": "Lwgc;-><init>:(Lwgj;)V",
+        "Reasoning": "The method originates sensitive user personal data by calling the <init> constructor of Ljava/lang/Object;, which likely retrieves user information.",
+        "Action": "Stored in register v0 and variable 'a' of class wgc"
+      },
+      {
+        "Step": "Retrieve shared preferences using sensitive API call to getSharedPreferences.",
+        "Source Method": "Lwfq;-><init>:(Lwgj;)V",
+        "Reasoning": "The method originates user personal data by calling the sensitive API `Landroid/content/Context;->getSharedPreferences(Ljava/lang/String;)Landroid/content/SharedPreferences;` to retrieve shared preferences.",
+        "Action": "Stored in register v1 as an instance of Lwgj;"
+      },
+      {
+        "Step": "Initialize wgj using sensitive API call and store it in register v1.",
+        "Source Method": "Lwfu;-><init>:(Lwgj;)V",
+        "Reasoning": "The method originates user personal data using the sensitive API call to initialize an instance of wgj.",
+        "Action": "Stored in register v1"
+      }
+    ],
+    "All Sinks": [
+      "Lwfq;->h(Ljava/lang/Exception;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lwfq;->e:(Ljava/lang/Object;)V --> Lwgc;-><init>:(Lwgj;)V --> Lwfq;->h(Ljava/lang/Exception;)V",
+        "Reasoning": "The location information is retrieved by the method Lwfq;->e:(Ljava/lang/Object;)V and stored in registers. This data is then propagated to the method Lwgc;-><init>:(Lwgj;)V, which retrieves user information using the <init> constructor of Ljava/lang/Object;. The sensitive user personal data is finally handled by the sink point at Lwfq;->h(Ljava/lang/Exception;)V."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "LocationResult",
+      "_1822",
+      "LatLng",
+      "Object"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location from LocationResult object",
+        "Source Method": "Lwgd;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The method originates user personal data from the LocationResult object's location.",
+        "Action": "Stored in wgj instance variable 'E'"
+      },
+      {
+        "Step": "Create LatLng object from latitude and longitude",
+        "Source Method": "Lwgd;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The method extracts the latitude and longitude from the LocationResult object.",
+        "Action": "Stored in wgj instance variable 'E'"
+      },
+      {
+        "Step": "Call l() method on wgj instance with LatLng object as argument",
+        "Source Method": "Lwgd;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The method calls the l() method on the wgj instance with the LatLng object as an argument.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Retrieve Object from min instance variable 'F' and cast it to _1822",
+        "Source Method": "L_1822;->k:(Lagnu;)V",
+        "Reasoning": "The method retrieves an Object from the min instance variable 'F' and casts it to _1822.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Call k() method on _1822 object with agnu instance variable 'g' as argument",
+        "Source Method": "L_1822;->k:(Lagnu;)V",
+        "Reasoning": "The method calls the k() method on this _1822 object with the agnu instance variable 'g' as an argument.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Invoke sensitive API call to <init> in class Lagdk",
+        "Source Method": "Lagdo;-><init>:(Lagfb; Lahdr;)V",
+        "Reasoning": "The current method originates user personal data through the invocation of a sensitive API call to <init> in class Lagdk.",
+        "Action": "Stored in register v0 and variable b in class Lagdo"
+      },
+      {
+        "Step": "Call constructor of Object class and store sensitive information in instance variables 'a', 'b' and 'c'",
+        "Source Method": "Lagfh;-><init>:(Lagdp; I Lagcw;)V",
+        "Reasoning": "The current method originates user personal data by calling the constructor of Object class and storing sensitive information in instance variables 'a', 'b' and 'c'.",
+        "Action": "Propagated to other methods via method invocations"
+      },
+      {
+        "Step": "Invoke <init> method of Lagdn with sensitive API call (init(I))",
+        "Source Method": "Lagdk;-><init>:(I Lahdr;)V",
+        "Reasoning": "The method <init> in class Lagdk originates user personal data by invoking the constructor of Lagdj with a sensitive API call (init(I)).",
+        "Action": "Stored in register v2 and variable 'a' of class Lagdk"
+      },
+      {
+        "Step": "Call constructor of Lagdp with sensitive API call (init(I))",
+        "Source Method": "Lagdj;-><init>:(I)V",
+        "Reasoning": "The method originates user personal data using the `Lagdp;-><init>(I)V` constructor.",
+        "Action": "Stored in register v1 and propagated to the next method via the `invoke-direct` instruction"
+      }
+    ],
+    "All Sinks": [
+      "Lwgd;->l:(Lcom/google/android/apps/photos/core/location/LatLng;)V",
+      "L_1822;->k:(Lagnu;)V",
+      "Lagcw;->f:(Lagfb; I)Lahdn;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lwgd;->a:(Lcom/google/android/gms/location/LocationResult;)V --> wgj instance variable 'E' --> Lwgd;->l:(Lcom/google/android/apps/photos/core/location/LatLng;)V",
+        "Reasoning": "The method originates user personal data from the LocationResult object's location. The latitude and longitude are extracted and used to create a LatLng object. This object is then stored in the wgj instance variable 'E'."
+      },
+      {
+        "dataflow 2": " L_1822;->k:(Lagnu;)V --> _1822 object with agnu instance variable 'g' as argument",
+        "Reasoning": "The method originates user personal data by calling sensitive API 'getSimpleName()' on class 'Ljava/lang/Class;' and then passing the result to 'f()' in 'Ahgp'."
+      },
+      {
+        "dataflow 3": " Lagdo;-><init>:(Lagfb; Lahdr;)V --> invoke-direct instruction --> Lagdk;<init>(I)V",
+        "Reasoning": "The current method originates user personal data through the invocation of a sensitive API call to <init> in class Lagdk."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from 'b' field of 'wgn' object and stores it in the 'v0' register.",
+        "Source Method": "Lwgn;->e:(Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data by calling the sensitive API to get the 'b' field of the 'wgn' object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Passes the data to other methods via method invocations, including the 'LocationRequest' class.",
+        "Source Method": "Lwgn;->e:(Ljava/lang/Object;)V",
+        "Reasoning": "The data is then passed to other methods via method invocations.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Originates user personal data by calling the sensitive API 'a()' from class 'Lmin'.",
+        "Source Method": "Lwhh;->B:(Lajof; Lahdn;)V",
+        "Reasoning": "The method originates user personal data by calling the sensitive API.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Passes the data to other methods via method invocations.",
+        "Source Method": "Lwhh;->B:(Lajof; Lahdn;)V",
+        "Reasoning": "The data is then passed to other methods via method invocations.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Originates user personal data by calling the sensitive API in its constructor.",
+        "Source Method": "Lwgn;-><init>:(Lwhh;)V",
+        "Reasoning": "The data is stored in the 'a' field of an instance of 'Lwgn;' and no sinks are identified within this method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive user personal data originates from the constructor method <init> of class wgz.",
+        "Source Method": "Lwgz;-><init>:(Lwhh; Lajvo; Lajof; Lahdn;)V",
+        "Reasoning": "The data is stored in instance variables a, b, c, and d.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data by invoking sensitive API calls to get and set the 'b' field of the current object.",
+        "Source Method": "Lmin;->a:()Ljava/lang/Object;",
+        "Reasoning": "The data is stored in register v0 and variable 'b'.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Passes the data to other methods via method invocations.",
+        "Source Method": "Lmin;->a:()Ljava/lang/Object;",
+        "Reasoning": "The data propagates through registers and variables, passing it to other methods via method invocations.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "A sink point is identified where the data is logged or displayed.",
+        "Source Method": "Lmin;->a:()Ljava/lang/Object;",
+        "Reasoning": "The data reaches a sink point through logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lwgn;->e:(Ljava/lang/Object;)V",
+      "Lwhh;->B:(Lajof; Lahdn;)V",
+      "Lmin;->a:()Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lwgn;->e:(Ljava/lang/Object;)V --> Lwgn;-><init>:(Lwhh;)V --> Lwgz;-><init>:(Lwhh; Lajvo; Lajof; Lahdn;)V ",
+        "Reasoning": "The data originates from the 'b' field of the 'wgn' object, stored in the 'v0' register. It is then passed to other methods via method invocations, including the 'LocationRequest' class."
+      },
+      {
+        "dataflow 2": " Lwhh;->B:(Lajof; Lahdn;)V --> Lmin;->a:()Ljava/lang/Object;",
+        "Reasoning": "The data originates from the sensitive API call to get and set the 'b' field of the current object. It is then passed to other methods via method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "LatLng",
+      "LocationResult"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location information from LocationResult API",
+        "Source Method": "Lwhb;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The method originates user personal data by calling the `LocationResult` API to get location information.",
+        "Action": "Stored in LatLng object"
+      },
+      {
+        "Step": "Extract latitude and longitude from location object",
+        "Source Method": "Lwhb;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The latitude and longitude are extracted from the location object.",
+        "Action": "Stored in LatLng object"
+      },
+      {
+        "Step": "Pass LatLng object to another method for further processing",
+        "Source Method": "Lwhb;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The `LatLng` object is then passed to another method for further processing.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Get user personal data from Class.getSimpleName()",
+        "Source Method": "L_1822;->k:(Lagnu;)V",
+        "Reasoning": "The method originates user personal data from the `getSimpleName()` method of the `Class` class.",
+        "Action": "Propagated through registers and variables"
+      },
+      {
+        "Step": "Pass user personal data to f() method of Ahgp class",
+        "Source Method": "L_1822;->k:(Lagnu;)V",
+        "Reasoning": "The data is then passed to other methods via method invocations, specifically to `f()` method of `Ahgp` class.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Pass user personal data to f() method of Lagcw class",
+        "Source Method": "L_1822;->k:(Lagnu;)V",
+        "Reasoning": "The data is then passed to other methods via method invocations, specifically to `f()` method of `Lagcw` class.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Get user personal data through iget-object instruction",
+        "Source Method": "Lwhh;->m:(Lcom/google/android/apps/photos/core/location/LatLng;)V",
+        "Reasoning": "The method originates sensitive user personal data through the `iget-object` instruction that retrieves a `LatLng` object from a field.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Pass user personal data to invoke-virtual instructions",
+        "Source Method": "Lwhh;->m:(Lcom/google/android/apps/photos/core/location/LatLng;)V",
+        "Reasoning": "The data is propagated to other methods via method invocations, specifically the `invoke-virtual` instructions that call methods on objects.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Get user personal data by invoking 'a()' method of object of type Lmio;",
+        "Source Method": "Lmin;->a:()Ljava/lang/Object;",
+        "Reasoning": "The method originates user personal data by invoking the 'a()' method of an object of type 'Lmio;' when the field 'b' is null.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Pass user personal data to getClass() method",
+        "Source Method": "Lmin;->a:()Ljava/lang/Object;",
+        "Reasoning": "The data is then propagated this data to other methods via method invocations, specifically through the 'getClass()' method.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Get user personal data by accessing sensitive API (iget-object) from object 'b' of class Lakty",
+        "Source Method": "Laktt;->p:(Laktp;)V",
+        "Reasoning": "The method originates user personal data by accessing a sensitive API (iget-object) from the object 'b' of the class 'Lakty'.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Pass user personal data to other methods via method invocations",
+        "Source Method": "Laktt;->p:(Laktp;)V",
+        "Reasoning": "The data is then propagated through register v0 and passed to other methods.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Get user personal data through 'e' method of class Lakty",
+        "Source Method": "Lakty;->f:(Laktp;)V",
+        "Reasoning": "The method originates user personal data through the 'e' method of class 'Lakty', which is invoked with a sensitive parameter 'v0'.",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "Pass user personal data to other methods via method invocations",
+        "Source Method": "Lakty;->f:(Laktp;)V",
+        "Reasoning": "The data is stored in register v1. The data propagation analysis reveals that the data is passed to another method via method invocation.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Get user personal data from 'm' field of object of type Laktp;",
+        "Source Method": "Laktt;->l:(Laktp;)V",
+        "Reasoning": "Sensitive user personal data originates from the 'm' field of the 'Laktp;' object.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Pass user personal data to other methods via method invocations",
+        "Source Method": "Laktt;->l:(Laktp;)V",
+        "Reasoning": "The data propagates to other methods via method invocations, specifically to 'L_1865;->c(Laktp; Laktt;)V'.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Get user personal data by invoking 'z' method of object of type Laktp;",
+        "Source Method": "Lakty;->e:(Laktp; Z)V",
+        "Reasoning": "The method originates user personal data by invoking the 'z' method of 'Laktp;' with a sensitive API call.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Pass user personal data to other methods via method invocations",
+        "Source Method": "Lakty;->e:(Laktp; Z)V",
+        "Reasoning": "The data is stored in register v0 and propagated through registers v2, v3.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Get user personal data from android.content.Context",
+        "Source Method": "Laktp;->z:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data through the sensitive API call to android.content.Context.",
+        "Action": "Stored in register v1"
+      }
+    ],
+    "All Sinks": [
+      "Lwhb;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+      "L_1822;->k:(Lagnu;)V",
+      "Lwhh;->m:(Lcom/google/android/apps/photos/core/location/LatLng;)V",
+      "Lakty;->e:(Laktp; Z)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lwhb;->a:(Lcom/google/android/gms/location/LocationResult;)V --> Lwhh;->m:(Lcom/google/android/apps/photos/core/location/LatLng;)V --> L_1822;->k:(Lagnu;)V",
+        "Reasoning": "The data flow is as follows: The method originates user personal data by calling the `LocationResult` API to get location information. The latitude and longitude are extracted from the location object and stored in a `LatLng` object. The `LatLng` object is then passed to another method for further processing."
+      },
+      {
+        "dataflow 2": "L_1822;->k:(Lagnu;)V --> Lwhh;->m:(Lcom/google/android/apps/photos/core/location/LatLng;)V",
+        "Reasoning": "The data flow is as follows: The method originates user personal data from the `getSimpleName()` method of the `Class` class. The data is then propagated through registers and variables within the method."
+      },
+      {
+        "dataflow 3": "Lwhh;->m:(Lcom/google/android/apps/photos/core/location/LatLng;)V --> L_1822;->k:(Lagnu;)V",
+        "Reasoning": "The data flow is as follows: The method originates sensitive user personal data through the `iget-object` instruction that retrieves a `LatLng` object from a field. The data is stored in registers and variables within the method."
+      },
+      {
+        "dataflow 4": "Lakty;->e:(Laktp; Z)V --> Lwhb;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The data flow is as follows: The method originates user personal data by invoking the 'z' method of 'Laktp;' with a sensitive API call. The data is stored in register v0 and propagated through registers v2, v3."
+      },
+      {
+        "dataflow 5": "Lwhb;->a:(Lcom/google/android/gms/location/LocationResult;)V --> L_1822;->k:(Lagnu;)V",
+        "Reasoning": "The data flow is as follows: The method originates user personal data by calling the `LocationResult` API to get location information. The latitude and longitude are extracted from the location object and stored in a `LatLng` object."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Source Method retrieves DeviceId from TelephonyManager",
+                "Source Method": "Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method onCreate extracts the device ID using TelephonyManager and stores it in a static field called imei.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "DeviceId is passed to sendMessage method",
+                "Source Method": "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The device ID stored in the static field imei of class Lde/ecspride/Button1 is used as an argument for sendMessage method.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The method onCreate extracts the device ID and stores it in a static field, which is then used as an argument for sendMessage."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

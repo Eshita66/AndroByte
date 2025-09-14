@@ -1,0 +1,56 @@
+
+ Processing folder: D:\UBCBAPK_Methods\LocationLeak2
+ Using methods file: D:\UBCBAPK_Methods\LocationLeak2\LocationLeak2_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V']
+[SUMMARY] Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V => {
+    "Summary": "Stores latitude and longitude as strings in fields, which may be accessed by onResume.",
+    "Next Methods": [
+        "Lde/ecspride/LocationLeak2;->onResume:()V"
+    ]
+}
+[SUMMARY] Lde/ecspride/LocationLeak2;->onResume:()V => {
+    "Summary": "Logs and displays latitude/longitude values from fields, which may contain sensitive data. This could lead to a data leak if the fields are tainted.",
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\LocationLeak2\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\LocationLeak2\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\LocationLeak2\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "latitude",
+            "longitude"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data is stored in fields from onLocationChanged",
+                "Source Method": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "Latitude and longitude are stored as strings in fields, which may be accessed by onResume.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sensitive data is logged/displayed in onResume",
+                "Source Method": "Lde/ecspride/LocationLeak2;->onResume:()V",
+                "Reasoning": "Logs and displays latitude/longitude values from fields, which may contain sensitive data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/LocationLeak2;->onResume:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V --> Lde/ecspride/LocationLeak2;->onResume:()V",
+                "Reasoning": "Latitude/longitude are stored in fields by onLocationChanged, then accessed and logged by onResume without taint removal."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\LocationLeak2\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\LocationLeak2\output\sensitive_only.json
+Total time for folder: 1461.64 seconds

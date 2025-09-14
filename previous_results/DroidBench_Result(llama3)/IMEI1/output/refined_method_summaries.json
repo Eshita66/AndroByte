@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get device ID using TelephonyManager",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId:()Ljava/lang/String;",
+                "Reasoning": "Sensitive data originated from getting the device ID",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Use device ID to send text message via SmsManager",
+                "Source Method": "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V",
+                "Reasoning": "The device ID was then used to send a text message via SmsManager.",
+                "Action": "Transmitted"
+            },
+            {
+                "Step": "Log sensitive data using Log.d",
+                "Source Method": "Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "A sink point was identified in the form of logging using Log.d with sensitive data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Landroid/telephony/TelephonyManager;->getDeviceId:()Ljava/lang/String; --> Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V --> Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "Sensitive data originated from getting the device ID using TelephonyManager, then used to send a text message via SmsManager, and finally logged using Log.d."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

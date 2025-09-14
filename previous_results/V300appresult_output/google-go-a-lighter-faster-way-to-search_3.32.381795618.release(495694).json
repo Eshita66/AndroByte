@@ -1,0 +1,91 @@
+[
+  {
+    "Data Types Collected": [
+      "Current time",
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method originates user personal data through sensitive API calls.",
+        "Source Method": "Lnj;->s:(Landroid/content/Context; I)I",
+        "Reasoning": "The method gets the current time and location using sensitive APIs.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Method originates user personal data through sensitive API calls.",
+        "Source Method": "Lnj;->Q:(Landroid/content/Context;)Lne;",
+        "Reasoning": "The method gets the location system service using a sensitive API.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Method originates user personal data using the sensitive API call to get a Context object.",
+        "Source Method": "Lnj;->P:(Landroid/content/Context;)Lne;",
+        "Reasoning": "The method gets a Context object using a sensitive API, but there are no sink points.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Method originates user personal data through the 'b' and 'a' fields of the 'Lnf;' class.",
+        "Source Method": "Lnf;-><init>:(Lnj; Lnw;)V",
+        "Reasoning": "The method passes the 'b' and 'a' fields to the '<init>' constructor of 'Lne;'.",
+        "Action": "Passed to another method"
+      },
+      {
+        "Step": "Method originates user personal data by calling a sensitive API (Lnj;) in the constructor.",
+        "Source Method": "Lne;-><init>:(Lnj;)V",
+        "Reasoning": "The method passes the sensitive API call result to another method through invoke-direct instruction, but there are no sink points.",
+        "Action": "Passed to another method"
+      }
+    ],
+    "All Sinks": [
+      "Lnj;->s:(Landroid/content/Context; I)I",
+      "Lnj;->Q:(Landroid/content/Context;)Lne;",
+      "Lnj;->P:(Landroid/content/Context;)Lne;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lnj;->s:(Landroid/content/Context; I)I --> Lnj;->Q:(Landroid/content/Context;)Lne; --> Lnj;->P:(Landroid/content/Context;)Lne;",
+        "Reasoning": "The data flows from getting the current time and location to propagating through method invocations, ultimately reaching sinks such as data logging and transmission."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get latitude and longitude from Location object",
+        "Source Method": "Landroid/location/Location;->getLatitude:()D",
+        "Reasoning": "User personal data is collected from the `getLatitude()` method of the `Location` object.",
+        "Action": "Stored in registers (`v0`, `v1`)"
+      },
+      {
+        "Step": "Arithmetic operations on latitude and longitude",
+        "Source Method": "Lglj;->z:(Landroid/location/Location;)Landroid/util/Pair;",
+        "Reasoning": "The collected data is then propagated through arithmetic operations.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Create Pair object with latitude and longitude",
+        "Source Method": "Lglj;->z:(Landroid/location/Location;)Landroid/util/Pair;",
+        "Reasoning": "The data is then passed to the `create()` method of `Pair`.",
+        "Action": "Passed to create() method"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Landroid/location/Location;->getLatitude:()D --> Lglj;->z:(Landroid/location/Location;)Landroid/util/Pair; --> null",
+        "Reasoning": "The data is collected from the `getLatitude()` method, propagated through arithmetic operations, and passed to the `create()` method of `Pair`, but there are no sink points identified."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  }
+]

@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved from TelephonyManager.getDeviceId()",
+                "Source Method": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly calls TelephonyManager.getDeviceId() to obtain the device ID",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is passed to network transmission sink",
+                "Source Method": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is passed as third argument to SmsManager.sendTextMessage() which is a network transmission sink",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;)V ",
+                "Reasoning": "Device ID is retrieved via TelephonyManager.getDeviceId() and passed as third argument to SmsManager.sendTextMessage() which is a network transmission sink"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

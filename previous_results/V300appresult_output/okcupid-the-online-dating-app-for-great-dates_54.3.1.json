@@ -1,0 +1,450 @@
+[
+  {
+    "Data Types Collected": [
+      "boolean",
+      "int",
+      "long",
+      "String",
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "isProviderEnabled method call",
+        "Source Method": "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The 'isProviderEnabled' method of the LocationManager class is called.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "getLastKnownLocation method call",
+        "Source Method": "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The 'getLastKnownLocation' method of the LocationManager class is called.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "currentTimeMillis() method call",
+        "Source Method": "Lcom/appboy/support/DateTimeUtils;->nowInMilliseconds:()J",
+        "Reasoning": "The sensitive API `currentTimeMillis()` from `Ljava/lang/System` is called.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "v method call with logged message",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "The static method `Landroid/util/Log;->v(Ljava/lang/String; Ljava/lang/String;)I` to log a message is invoked.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location --> Lcom/appboy/support/DateTimeUtils;->nowInMilliseconds:()J --> Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "The data originates from the 'isProviderEnabled' and 'getLastKnownLocation' methods of the LocationManager class, propagated to the 'currentTimeMillis()' method, and finally logged using the 'v' method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "AFEvent",
+      "Map",
+      "SharedPreferences",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "AppsFlyerLibCore instance creation",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->getInstance:()Lcom/appsflyer/AppsFlyerLibCore;",
+        "Reasoning": "The method originates user personal data using the `getInstance()` method of AppsFlyerLibCore class.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "SharedPreferences retrieval",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->getSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The method originates sensitive user personal data by calling the getInstance() method to get an instance of AppsFlyerLibCore.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "String property retrieval",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getString:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the get() method on a Map instance.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data propagation through method invocations",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Sensitive API calls are used to originate user personal data.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+      "Lcom/appsflyer/AppsFlyerProperties;->getString:(Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "AppsFlyerLibCore.getInstance() --> AppsFlyerLibCore.getSharedPreferences() --> AppsFlyerLibCore.valueOf()",
+        "Reasoning": "The data is propagated through method invocations from AppsFlyerLibCore instance creation to SharedPreferences retrieval and then to valueOf()"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "mSessionID",
+      "mLastEventTime"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from InternalSession object fields",
+        "Source Method": "Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V",
+        "Reasoning": "[The method originates user personal data from the 'mSessionID' and 'mLastEventTime' fields of the InternalSession object.]",
+        "Action": "Stored in JSONObject"
+      },
+      {
+        "Step": "Passes JSONObject to other methods via method invocations",
+        "Source Method": "Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V",
+        "Reasoning": "[The data reaches sinks such as logging and storage.]",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Originates data from sensitive API calls to JSONObject keys() method",
+        "Source Method": "Lcom/mparticle/internal/c0/b;->a:()[Ljava/lang/String;",
+        "Reasoning": "[The method originates data from sensitive API calls to the JSONObject keys() method.]",
+        "Action": "Stored in list and passed to array"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mparticle/internal/c0/a;->a:(Ljava/util/JSONObject;)V",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V --> Stored in JSONObject --> Passed to other methods --> Lcom/mparticle/internal/c0/a;->a:(Ljava/util/JSONObject;)V]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location object's latitude and longitude are stored in registers (v1, v2) and variables (v0)",
+        "Source Method": "Lcom/okcupid/okcupid/data/model/OkLocationKt;->toOkLocation:(Landroid/location/Location;)Lcom/okcupid/okcupid/data/model/OkLocation;",
+        "Reasoning": "The method originates user personal data from the Location object's latitude and longitude.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/okcupid/okcupid/data/model/OkLocationKt;->toOkLocation:(Landroid/location/Location;)Lcom/okcupid/okcupid/data/model/OkLocation; --> ... (no sink found)",
+        "Reasoning": "The method originates user personal data from the Location object's latitude and longitude. The data is stored in registers (v1, v2) and variables (v0). It propagates to other methods via method invocations."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Ad unit ID",
+      "Gender",
+      "Location description",
+      "Latitude",
+      "Longitude",
+      "Accuracy",
+      "Custom targeting information (age, gender)",
+      "Phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get ad unit ID from AdParams object",
+        "Source Method": "Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;->getAdUnitID:()Ljava/lang/String;",
+        "Reasoning": "The current method originates user personal data by calling a sensitive API to get the ad unit ID.",
+        "Action": "Stored in register v0 and then returned as an object"
+      },
+      {
+        "Step": "Get gender from AdParams object",
+        "Source Method": "Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;->getGender:()Ljava/lang/String;",
+        "Reasoning": "The method originates sensitive user personal data by accessing the 'gender' field from the AdParams object.",
+        "Action": "Stored in register v0 and then returned as a String"
+      },
+      {
+        "Step": "Get location description from AdParams object",
+        "Source Method": "Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;->getLocationDescription:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by accessing the location description from AdParams object.",
+        "Action": "Stored in register v0 and passed as a return value"
+      },
+      {
+        "Step": "Get age from CustomTargeting instance",
+        "Source Method": "Lcom/okcupid/okcupid/ui/doubletake/models/CustomTargeting;->getAge:()Ljava/lang/String;",
+        "Reasoning": "The method gets the age from CustomTargeting instance and returns it as a String.",
+        "Action": "Stored in register v0, and propagated through return statement"
+      },
+      {
+        "Step": "Get location (latitude, longitude, accuracy) from AdParams object",
+        "Source Method": "Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;->getLocation:()Landroid/location/Location;",
+        "Reasoning": "The method originates sensitive user personal data by accessing the 'location' field of AdParams object.",
+        "Action": "Stored in register v0 and then returned as an Android Location object"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;->getAdUnitID:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;->getAdUnitID:()Ljava/lang/String; --> Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;-><init>:(Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;)V --> Ad unit ID is stored in instance variable",
+        "Reasoning": "The data flow starts from the getAdUnitID method, where the ad unit ID is retrieved. This value is then passed to the <init> method of AdInfo class, where it is stored as an instance variable."
+      },
+      {
+        "dataflow 2": " Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;->getGender:()Ljava/lang/String; --> Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;-><init>:(Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;)V --> Gender is stored in instance variable",
+        "Reasoning": "The data flow starts from the getGender method, where the gender is retrieved. This value is then passed to the <init> method of AdInfo class, where it is stored as an instance variable."
+      },
+      {
+        "dataflow 3": " Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;->getLocationDescription:()Ljava/lang/String; --> Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;-><init>:(Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;)V --> Location description is stored in instance variable",
+        "Reasoning": "The data flow starts from the getLocationDescription method, where the location description is retrieved. This value is then passed to the <init> method of AdInfo class, where it is stored as an instance variable."
+      },
+      {
+        "dataflow 4": " Lcom/okcupid/okcupid/ui/doubletake/models/CustomTargeting;->getAge:()Ljava/lang/String; --> Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;-><init>:(Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;)V --> Age is stored in instance variable",
+        "Reasoning": "The data flow starts from the getAge method of CustomTargeting class, where the age is retrieved. This value is then passed to the <init> method of AdInfo class, where it is stored as an instance variable."
+      },
+      {
+        "dataflow 5": " Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;->getLocation:()Landroid/location/Location; --> Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;-><init>:(Lcom/okcupid/okcupid/ui/doubletake/models/AdParams;)V --> Location is stored in instance variable",
+        "Reasoning": "The data flow starts from the getLocation method, where the location (latitude, longitude, accuracy) is retrieved. This value is then passed to the <init> method of AdInfo class, where it is stored as an instance variable."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location collected",
+        "Source Method": "Lcom/mparticle/kits/AppsFlyerKit;->setLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data by calling the `logLocation` method of `AppsFlyerLib`, which takes a `Context` and two `double` values representing latitude and longitude.",
+        "Action": "Stored in registers v2, v4"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "LocationListener",
+      "android.location.LocationManager API"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get instance of FirebaseCrashlytics",
+        "Source Method": "Lcom/google/firebase/crashlytics/FirebaseCrashlytics;->getInstance:()Lcom/google/firebase/crashlytics/FirebaseCrashlytics;",
+        "Reasoning": "The method originates user personal data by invoking the getInstance() method of FirebaseApp.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Get instance of FirebaseApp",
+        "Source Method": "Lcom/google/firebase/FirebaseApp;->getInstance:()Lcom/google/firebase/FirebaseApp;",
+        "Reasoning": "The method originates user personal data by getting the default FirebaseApp instance.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Get LocationListener",
+        "Source Method": "Lcom/okcupid/okcupid/util/LocationUtil;->access$100:()Landroid/location/LocationListener;",
+        "Reasoning": "The method originates user personal data by accessing a LocationListener instance.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get LocationManager API",
+        "Source Method": "Lcom/okcupid/okcupid/util/LocationUtil;->removeUpdates:(Landroid/location/LocationListener;)V",
+        "Reasoning": "The method originates user personal data through the use of the android.location.LocationManager API.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Record exception using Firebase Crashlytics",
+        "Source Method": "Lcom/google/firebase/crashlytics/FirebaseCrashlytics;->recordException:(Ljava/lang/Throwable;)V",
+        "Reasoning": "This method records an exception using Firebase Crashlytics.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Write non-fatal exception to CrashlyticsController",
+        "Source Method": "Lcom/google/firebase/crashlytics/internal/common/CrashlyticsCore;->logException:(Ljava/lang/Throwable;)V",
+        "Reasoning": "The method originates user personal data by invoking a sensitive API call to the CrashlyticsController's writeNonFatalException method.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Submit task to CrashlyticsBackgroundWorker",
+        "Source Method": "Lcom/google/firebase/crashlytics/internal/common/CrashlyticsBackgroundWorker;->submit:(Ljava/lang/Runnable;)Lcom/google/android/gms/tasks/Task;",
+        "Reasoning": "The method originates user personal data through the submission of a Runnable task to the CrashlyticsBackgroundWorker.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Ignore result from task in CrashlyticsBackgroundWorker",
+        "Source Method": "Lcom/google/firebase/crashlytics/internal/common/CrashlyticsBackgroundWorker;->ignoreResult:(Lcom/google/android/gms/tasks/Task;)Lcom/google/android/gms/tasks/Task;",
+        "Reasoning": "The method uses the `iget-object` instruction to retrieve an instance of `Ljava/util/concurrent/Executor;` from a field in the current object.",
+        "Action": "Passed to other methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/google/firebase/crashlytics/FirebaseCrashlytics;->recordException:(Ljava/lang/Throwable;)V",
+      "Lcom/google/firebase/crashlytics/internal/common/CrashlyticsCore;->logException:(Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/okcupid/okcupid/util/LocationUtil$GetLastLocation;->run:()V --> Lcom/google/firebase/crashlytics/FirebaseCrashlytics;->getInstance:()Lcom/google/firebase/crashlytics/FirebaseCrashlytics; --> Lcom/google/firebase/crashlytics/FirebaseCrashlytics;->recordException:(Ljava/lang/Throwable;)V",
+        "Reasoning": "The data flow starts from the LocationUtil$GetLastLocation;->run:()V method, which accesses the FirebaseCrashlytics instance. This instance is then used to record an exception using the recordException method."
+      },
+      {
+        "dataflow 2": " Lcom/okcupid/okcupid/util/LocationUtil;->access$100:()Landroid/location/LocationListener; --> Lcom/google/firebase/crashlytics/FirebaseCrashlytics;->getInstance:()Lcom/google/firebase/crashlytics/FirebaseCrashlytics; --> Lcom/google/firebase/crashlytics/FirebaseCrashlytics;->recordException:(Ljava/lang/Throwable;)V",
+        "Reasoning": "The data flow starts from the LocationUtil;access$100:()Landroid/location/LocationListener; method, which accesses a LocationListener instance. This instance is then used to get the FirebaseCrashlytics instance, which is used to record an exception."
+      },
+      {
+        "dataflow 3": " Lcom/google/firebase/crashlytics/FirebaseCrashlytics;->getInstance:()Lcom/google/firebase/crashlytics/FirebaseCrashlytics; --> Lcom/google/firebase/crashlytics/internal/common/CrashlyticsCore;->logException:(Ljava/lang/Throwable;)V",
+        "Reasoning": "The data flow starts from the FirebaseCrashlytics instance, which is used to log an exception using the logException method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "altitude",
+      "course",
+      "accuracy",
+      "speed",
+      "timestamp"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location API invoked to get location data",
+        "Source Method": "Lcom/okcupid/okcupid/util/LocationUtil;->buildLocationJSONString:(Landroid/location/Location;)Ljava/lang/String;",
+        "Reasoning": "The method uses the Location API to get latitude, longitude, altitude, course, accuracy, speed, and timestamp.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Data passed to other methods via method invocations",
+        "Source Method": "Lcom/okcupid/okcupid/util/LocationUtil;->buildLocationJSONString:(Landroid/location/Location;)Ljava/lang/String;",
+        "Reasoning": "The data is then passed to other methods via method invocations.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Data returned as JSON string",
+        "Source Method": "Lcom/okcupid/okcupid/util/LocationUtil;->buildLocationJSONString:(Landroid/location/Location;)Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point, which is the return statement that returns the JSON string.",
+        "Action": "Returned as JSON string"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/okcupid/okcupid/util/LocationUtil;->buildLocationJSONString:(Landroid/location/Location;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/okcupid/okcupid/util/LocationUtil;->buildLocationJSONString:(Landroid/location/Location;)Ljava/lang/String;(--> Location API invoked to get location data --> Stored in registers and variables within the method --> Passed via method invocation --> Data returned as JSON string) ",
+        "Reasoning": "The data is propagated from the Location API, stored in registers and variables, passed to other methods, and finally returned as a JSON string."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String",
+      "java/lang/Object",
+      "java/lang/Throwable"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get last location from context",
+        "Source Method": "Lcom/okcupid/okcupid/util/LocationUtil;->getLastLocation:(Landroid/content/Context;)Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data from the getLastLocation() method call.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass location to other methods",
+        "Source Method": "Lcom/okcupid/okcupid/util/LocationUtil;->getLastLocation:(Landroid/content/Context;)Landroid/location/Location;",
+        "Reasoning": "The data is stored in a Location object and passed to other methods via method invocations.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Log location using Timber library",
+        "Source Method": "Ltimber/log/Timber;->d:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The current method d() of class Timber uses the sensitive API call sget-object to retrieve a reference to TREE_OF_SOULS.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Prepare log using Timber library",
+        "Source Method": "Ltimber/log/Timber$Tree;->prepareLog:(I Ljava/lang/Throwable; Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data from the Timber library's loggable API.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Format message using String.format() API",
+        "Source Method": "Ltimber/log/Timber$Tree;->formatMessage:(Ljava/lang/String; [Ljava/lang/Object;)Ljava/lang/String;",
+        "Reasoning": "The current method uses the `String.format()` API to originate user personal data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get tag from ThreadLocal variable",
+        "Source Method": "Ltimber/log/Timber$Tree;->getTag:()Ljava/lang/String;",
+        "Reasoning": "The current method is using the Timber library to get a tag from a ThreadLocal variable.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Get stack trace string",
+        "Source Method": "Ltimber/log/Timber$Tree;->getStackTraceString:(Ljava/lang/Throwable;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by invoking the `getStackTraceString` method of the `Timber$Tree` class.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Check if loggable",
+        "Source Method": "Ltimber/log/Timber$Tree;->isLoggable:(Ljava/lang/String; I)Z",
+        "Reasoning": "The data origin is from the Timber logging API.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Ltimber/log/Timber;->d:(Ljava/lang/String; [Ljava/lang/Object;)V",
+      "Ltimber/log/Timber$Tree;->prepareLog:(I Ljava/lang/Throwable; Ljava/lang/String; [Ljava/lang/Object;)V",
+      "Ltimber/log/Timber$Tree;->getStackTraceString:(Ljava/lang/Throwable;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/okcupid/okcupid/util/LocationUtil;->getLastLocation:(Landroid/content/Context;)Landroid/location/Location; --> Ltimber/log/Timber$Tree;->prepareLog:(I Ljava/lang/Throwable; Ljava/lang/String; [Ljava/lang/Object;)V --> Ltimber/log/Timber;->d:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The data is passed from LocationUtil to Timber's prepareLog method, which logs the data using Timber's d method."
+      },
+      {
+        "dataflow 2": "Lcom/okcupid/okcupid/util/LocationUtil;->getLastLocation:(Landroid/content/Context;)Landroid/location/Location; --> Ltimber/log/Timber$Tree;->getStackTraceString:(Ljava/lang/Throwable;)Ljava/lang/String;",
+        "Reasoning": "The data is passed from LocationUtil to Timber's getStackTraceString method, which logs the data."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

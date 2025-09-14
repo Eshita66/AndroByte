@@ -1,0 +1,174 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number",
+      "String value from a static field",
+      "HashMap",
+      "Lcom/onesignal/j1$e0 object",
+      "Landroid/content/Context; J"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data using Location object",
+        "Source Method": "Lcom/onesignal/v;->c:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data from the provided Location object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data through sensitive API calls to sget-object",
+        "Source Method": "Lcom/onesignal/v;->a:(J)V",
+        "Reasoning": "The current method originates user personal data by calling the sensitive API sget-object to retrieve a string value from a static field.",
+        "Action": "Passed as parameter"
+      },
+      {
+        "Step": "Originate user personal data through API calls to myPid() and myUid()",
+        "Source Method": "Lcom/onesignal/g;->a:(Landroid/content/Context;Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data through API calls to myPid() and myUid().",
+        "Action": "Passed as parameter"
+      },
+      {
+        "Step": "Originate user personal data using sget-boolean",
+        "Source Method": "Lcom/onesignal/j1;->S:()Z",
+        "Reasoning": "The current method originates user personal data using the sensitive API call sget-boolean.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data through invocation of `sget-object` instruction",
+        "Source Method": "Lcom/onesignal/s1;->a:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Object;)V",
+        "Reasoning": "The current method originates sensitive user personal data using the `sget-object` instruction to retrieve a HashMap from the class's static field.",
+        "Action": "Passed as parameter"
+      },
+      {
+        "Step": "Originate user personal data through invocation of `Lcom/onesignal/j1;->a(Lcom/onesignal/j1$e0; Ljava/lang/String;)V`",
+        "Source Method": "Lcom/onesignal/j1;->a:(Lcom/onesignal/j1$e0; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the invocation of sensitive API call `Lcom/onesignal/j1;->a(Lcom/onesignal/j1$e0; Ljava/lang/String;)V`.",
+        "Action": "Passed as parameter"
+      },
+      {
+        "Step": "Originate user personal data through invocation of `sget-object` instruction",
+        "Source Method": "Lcom/onesignal/w1;->a:(Landroid/content/Context; J)V",
+        "Reasoning": "The method originates user personal data using the `sget-object` instruction to retrieve a sensitive object from a class.",
+        "Action": "Passed as parameter"
+      },
+      {
+        "Step": "Originate user personal data through invocation of `java.lang.System.currentTimeMillis()` API call",
+        "Source Method": "Lcom/onesignal/s1$a;->a:()V",
+        "Reasoning": "The method originates user personal data by invoking the `java.lang.System.currentTimeMillis()` API call to get the current time in milliseconds.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data through invocation of `Lcom/onesignal/s1$a$a;-><init>(Lcom/onesignal/s1$a;)V`",
+        "Source Method": "Lcom/onesignal/s1$a$a;-><init>:(Lcom/onesignal/s1$a;)V",
+        "Reasoning": "This method originates user personal data by directly accessing the 'a' field of an instance of com.onesignal.s1$a.",
+        "Action": "Passed as parameter"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/onesignal/w1;->d(Landroid/content/Context;J)V",
+      "Lcom/onesignal/g;->a:(Landroid/content/Context;Ljava/lang/String;)I",
+      "Lcom/onesignal/j1;->a(Lcom/onesignal/j1$e0; Ljava/lang/String; Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/onesignal/v;->c:(Landroid/location/Location;)V --> Lcom/onesignal/w1;->a:(Landroid/content/Context; J)V --> Lcom/onesignal/j1;->a(Lcom/onesignal/j1$e0; Ljava/lang/String;)V]",
+        "Reasoning": "The data is propagated through various operations, including `get`, `put`, and `check-cast`. Finally, the data reaches a sink point via the `invoke-static` instruction calling `Lcom/onesignal/w1;->d(Landroid/content/Context;J)V`."
+      },
+      {
+        "dataflow 2": " [Lcom/onesignal/v;->a:(J)V --> Lcom/onesignal/s1;->a:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Object;)V --> Lcom/onesignal/j1;->a(Lcom/onesignal/j1$e0; Ljava/lang/String;)V]",
+        "Reasoning": "The data is passed as a parameter to another method via invoke-static instruction."
+      },
+      {
+        "dataflow 3": " [Lcom/onesignal/g;->a:(Landroid/content/Context;Ljava/lang/String;)I --> Lcom/onesignal/j1;->a(Lcom/onesignal/j1$e0; Ljava/lang/String;)V]",
+        "Reasoning": "The data is passed as a parameter to another method via invoke-static instruction."
+      },
+      {
+        "dataflow 4": " [Lcom/onesignal/s1$a;->a:()V --> Lcom/onesignal/j1;->a(Lcom/onesignal/j1$e0; Ljava/lang/String;)V]",
+        "Reasoning": "The data is propagated through method invocations."
+      },
+      {
+        "dataflow 5": " [Lcom/onesignal/s1$a$a;-><init>(Lcom/onesignal/s1$a;)V --> Lcom/onesignal/j1;->a(Lcom/onesignal/j1$e0; Ljava/lang/String;)V]",
+        "Reasoning": "The data is passed as a parameter to another method via constructor call."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WifiInfo"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from WifiManager",
+        "Source Method": "Ld/a/d/b/a;->f:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The current method originates sensitive user personal data by invoking the getConnectionInfo() method of WifiManager.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Propagate data through registers",
+        "Source Method": "Ld/a/d/b/a;->f:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The data is propagated through registers.",
+        "Action": "No change"
+      },
+      {
+        "Step": "Pass to getBSSID() method of WifiInfo class",
+        "Source Method": "Ld/a/d/b/a;->b:()Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point through the return statement.",
+        "Action": "Passed as argument"
+      }
+    ],
+    "All Sinks": [
+      "Ld/a/d/b/a;->b:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Ld/a/d/b/a;->f:(...) --> Ld/a/d/b/a;->b:(...) ",
+        "Reasoning": "The data originates from WifiManager, propagated through registers, and passed to the getBSSID() method of WifiInfo class."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "SSID",
+      "WifiInfo"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get SSID from WifiInfo",
+        "Source Method": "Ld/a/d/b/a;->d:()Ljava/lang/String;",
+        "Reasoning": "The current method originates user personal data from the 'getSSID()' method of WifiInfo.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Replace using regular expression",
+        "Source Method": "Ld/a/d/b/a;->d:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in register v0 and then passed to a regular expression replacement operation using 'replaceAll().'",
+        "Action": "Processed"
+      },
+      {
+        "Step": "Get WifiInfo",
+        "Source Method": "Ld/a/d/b/a;->f:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The method originates sensitive user personal data by invoking WifiManager.getConnectionInfo().",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Ld/a/d/b/a;->d:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Ld/a/d/b/a;->f:()Landroid/net/wifi/WifiInfo; --> Ld/a/d/b/a;->d:()Ljava/lang/String; --> Ld/a/d/b/a;->d:()Ljava/lang/String;",
+        "Reasoning": "The method originates sensitive user personal data by invoking WifiManager.getConnectionInfo(). The data is stored in register v0 and passed to the return statement. However, there are no sink points like logging, network transmission, or storage."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

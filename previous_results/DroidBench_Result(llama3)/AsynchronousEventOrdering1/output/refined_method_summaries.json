@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "device ID",
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID and IMEI retrieved from Android system.",
+                "Source Method": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V",
+                "Reasoning": "The `onResume` method uses `getSystemService` to obtain a `TelephonyManager` instance and then calls `getDeviceId()` to retrieve the device ID and IMEI.",
+                "Action": "Stored as `imei`"
+            },
+            {
+                "Step": "IMEI logged using Log.i.",
+                "Source Method": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V",
+                "Reasoning": "The `onStop` method retrieves the `imei` variable and logs it using `Log.i`. This represents a direct output of the sensitive data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log.i(Ljava/lang/String; Ljava/lang/String;)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V --> Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V",
+                "Reasoning": "The `onResume` method retrieves the device ID and IMEI. The `onStop` method then retrieves this `imei` and logs it. This creates a direct flow of the IMEI from the device to a logging sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]

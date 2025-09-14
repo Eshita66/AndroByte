@@ -1,0 +1,209 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access device's location",
+        "Source Method": "LX/02r;->A01:()I",
+        "Reasoning": "The current method A01()I in class LX/02r originates sensitive user personal data by accessing the device's location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Propagate location data to other methods",
+        "Source Method": "LX/02r;->A01:()I",
+        "Reasoning": "The data is propagated to other methods via method invocations, specifically to the static method in java.lang.System for getting the current time.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Store location data in LX/034 instance",
+        "Source Method": "LX/02r;->A01:()I",
+        "Reasoning": "The data reaches a sink point, which is the storage of the location data in the LX/034 instance.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "LX/034;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "LX/02r;->A01:()I --> ... --> LX/034;",
+        "Reasoning": "The data is accessed in A01()I, propagated to other methods via method invocations, and finally stored in the LX/034 instance."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "java.lang.Object",
+      "java.lang.String",
+      "android.os.Looper"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data by calling sensitive API to get the length of a string",
+        "Source Method": "LX/0RE;->A0D:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the 'sget-object' instruction which loads a sensitive API from the class LX/0RE.",
+        "Action": "Stored in register v1 and later passed to another method via method invocation"
+      },
+      {
+        "Step": "Originate user personal data by calling sensitive API to check if it is called on the main thread",
+        "Source Method": "LX/0Ne;->A01:()V",
+        "Reasoning": "The method originates user personal data by calling a sensitive API (LX/0Ne;->A04()Z) to check if it is called on the main thread.",
+        "Action": "Logged an error message using another sensitive API (LX/0RE;->A0D(Ljava/lang/String; Ljava/lang/String;)V)"
+      },
+      {
+        "Step": "Originate user personal data by calling sensitive API to retrieve a reference to an object",
+        "Source Method": "LX/0RE;->A06:(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The current method originates sensitive user personal data by using the `sget-object` instruction to retrieve a reference to an object.",
+        "Action": "Passed as arguments to the `StringFormatUtil.formatStrLocaleSafe` method"
+      },
+      {
+        "Step": "Originate user personal data by calling sensitive API to get the length of a string and then iterating over its characters",
+        "Source Method": "Lcom/facebook/common/stringformat/StringFormatUtil;->A02:(Ljava/lang/String; I)I",
+        "Reasoning": "The method originates user personal data by calling sensitive API to get the length of a string and then iterating over its characters.",
+        "Action": "Stored in registers v5 (length) and v6 (string)"
+      },
+      {
+        "Step": "Originate user personal data by calling sensitive API to retrieve an instance of LX/0Me",
+        "Source Method": "LX/0RE;->A0B:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "Sensitive user personal data originates from the 'sget-object' instruction which retrieves an instance of LX/0Me.",
+        "Action": "Passed to the 'invoke-interface' instructions"
+      }
+    ],
+    "All Sinks": [
+      "LX/0RE;->A0D:(Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/facebook/common/stringformat/StringFormatUtil;->A04:(Ljava/lang/String; Ljava/lang/StringBuilder; [Ljava/lang/Object;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[LX/0RE;->A0D(Ljava/lang/String; Ljava/lang/String;)V --> LX/0Ne;->A01()V --> LX/0RE;->A06(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/String;)V]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      },
+      {
+        "dataflow 2": "[LX/0Ne;->A01()V --> LX/0RE;->A06(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/String;)V]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      },
+      {
+        "dataflow 3": "[Lcom/facebook/common/stringformat/StringFormatUtil;->A02(Ljava/lang/String; I)I --> LX/0RE;->A06(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/String;)V]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      },
+      {
+        "dataflow 4": "[LX/0RE;->A0B(Ljava/lang/String; Ljava/lang/String;)V --> LX/0Ne;->A01()V --> LX/0RE;->A06(Ljava/lang/Object; Ljava/lang/Object; Ljava/lang/String; Ljava/lang/String;)V]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "java.lang.String",
+      "I (Integer)",
+      "LX/16t;",
+      "LX/0TD;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data through sensitive API calls to retrieve an instance of LX/16t.",
+        "Source Method": "LX/0Ze;->A02:()LX/16t;",
+        "Reasoning": "The method originates sensitive user personal data by calling the `sget-object` instruction to retrieve an instance of LX/16t.",
+        "Action": "Stored in register v2"
+      },
+      {
+        "Step": "Originate user personal data through sensitive API calls (sget-object) to retrieve an instance of LX/0TD.",
+        "Source Method": "LX/0Ze;->A01:()LX/0TD;",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls (sget-object) to retrieve an instance of LX/0TD.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Originate user personal data by invoking sensitive API calls to get an object from MultiBufferLogger.",
+        "Source Method": "LX/2NS;->A00:(I I J I)I",
+        "Reasoning": "The method originates user personal data by calling a sensitive API to get an object from MultiBufferLogger.",
+        "Action": "Passed to the writeStandardEntry method of MultiBufferLogger"
+      },
+      {
+        "Step": "Originate user personal data through the invocation of a sensitive API (writeBytesEntry) which logs user information.",
+        "Source Method": "LX/2NS;->A01:(Ljava/lang/String; I I)I",
+        "Reasoning": "The method originates user personal data through the invocation of a sensitive API (writeBytesEntry) which logs user information.",
+        "Action": "Passed between methods via return statements"
+      },
+      {
+        "Step": "Originate user personal data by checking if a provider is enabled.",
+        "Source Method": "Lcom/facebook/profilo/core/TraceEvents;->isEnabled:(I)Z",
+        "Reasoning": "The method Lcom/facebook/profilo/core/TraceEvents;->isEnabled:(I)Z originates user personal data by checking if a provider is enabled.",
+        "Action": "Propagated to the next instruction based on its value"
+      },
+      {
+        "Step": "Originate user personal data from sensitive API calls to `ensureLoaded()` and uses it in the native function call.",
+        "Source Method": "Lcom/facebook/profilo/logger/MultiBufferLogger;->writeStandardEntry:(I I J I I I J)I",
+        "Reasoning": "The method originates user personal data from sensitive API calls to `ensureLoaded()` and uses it in the native function call.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Originate user personal data using the sget-object instruction to retrieve the application context.",
+        "Source Method": "LX/0NP;->A01:()Landroid/content/Context;",
+        "Reasoning": "The method originates user personal data using the sget-object instruction to retrieve the application context.",
+        "Action": "Propagated through method invocations"
+      }
+    ],
+    "All Sinks": [
+      "LX/2NS;->A00:(I I J I)I",
+      "LX/2NS;->A01:(Ljava/lang/String; I I)I",
+      "Lcom/facebook/profilo/logger/MultiBufferLogger;->writeStandardEntry:(I I J I I I J)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [LX/0Ze;->A02:()LX/16t; --> LX/2NS;->A00:(I I J I)I] --> Lcom/facebook/profilo/logger/MultiBufferLogger;->writeStandardEntry:(I I J I I I J)I",
+        "Reasoning": "The data is propagated from LX/0Ze;->A02:()LX/16t; to LX/2NS;->A00:(I I J I)I, then passed to Lcom/facebook/profilo/logger/MultiBufferLogger;->writeStandardEntry:(I I J I I I J)I"
+      },
+      {
+        "dataflow 1": " [LX/0Ze;->A01:()LX/0TD; --> LX/2NS;->A00:(I I J I)I] --> Lcom/facebook/profilo/logger/MultiBufferLogger;->writeStandardEntry:(I I J I I I J)I",
+        "Reasoning": "The data is propagated from LX/0Ze;->A01:()LX/0TD; to LX/2NS;->A00:(I I J I)I, then passed to Lcom/facebook/profilo/logger/MultiBufferLogger;->writeStandardEntry:(I I J I I I J)I"
+      },
+      {
+        "dataflow 1": " [LX/0NP;->A01:()Landroid/content/Context; --> LX/2NS;->A00:(I I J I)I] --> Lcom/facebook/profilo/logger/MultiBufferLogger;->writeStandardEntry:(I I J I I I J)I",
+        "Reasoning": "The data is propagated from LX/0NP;->A01:()Landroid/content/Context; to LX/2NS;->A00:(I I J I)I, then passed to Lcom/facebook/profilo/logger/MultiBufferLogger;->writeStandardEntry:(I I J I I I J)I"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WifiSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getWifiSSID() method called",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data through the getSSID() method of WifiInfo.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Data passed to other methods via return statements",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point as it is being returned as a String.",
+        "Action": "Returned as a String"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> Stored in register v0 --> Returned as a String by Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The data is collected, stored, and then returned to other methods."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

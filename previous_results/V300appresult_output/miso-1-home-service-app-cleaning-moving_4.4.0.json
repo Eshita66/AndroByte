@@ -1,0 +1,137 @@
+[
+  {
+    "Data Types Collected": [
+      "Lcom/facebook/AccessToken;",
+      "Landroid/location/Location;",
+      "Ljava/lang/String;",
+      "Lcom/facebook/HttpMethod;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from AccessToken",
+        "Source Method": "Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod; Lcom/facebook/GraphRequest$Callback;)V",
+        "Reasoning": "The method originates user personal data from the AccessToken object and stores it in registers v0-v6.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Stores location in a register or variable within the method",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The data is then passed to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Passes search text to the constructor of GraphRequest",
+        "Source Method": "Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod; Lcom/facebook/GraphRequest$Callback;)V",
+        "Reasoning": "The data is then passed to the constructor of GraphRequest, which may involve sensitive operations such as network transmission or storage.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Passes location and search text to newPlacesSearchRequest method",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The data is then passed to other methods via method invocations.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Logs exception with message indicating that either location or search text must be specified",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "A sink point is identified as a logging exception with a message indicating that either location or search text must be specified.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Logs callback",
+        "Source Method": "Lcom/facebook/GraphRequest;->setCallback:(Lcom/facebook/GraphRequest$Callback;)V",
+        "Reasoning": "A sink point is identified as a logging behavior enabled for GRAPH_API_DEBUG_INFO or GRAPH_API_DEBUG_WARNING.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+      "Lcom/facebook/GraphRequest;->setCallback:(Lcom/facebook/GraphRequest$Callback;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod; Lcom/facebook/GraphRequest$Callback;)V --> Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The data is then passed to other methods via method invocations. The data is then passed to newPlacesSearchRequest method."
+      },
+      {
+        "dataflow 2": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The data is then passed to other methods via method invocations. The data is then logged as an exception."
+      },
+      {
+        "dataflow 3": "Lcom/facebook/GraphRequest;->setCallback:(Lcom/facebook/GraphRequest$Callback;)V --> Lcom/facebook/GraphRequest;->setCallback:(Lcom/facebook/GraphRequest$Callback;)V",
+        "Reasoning": "The data is then logged as a callback."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Mac Address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get Mac address from getMacAddressSync method",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The method calls the getMacAddressSync and getWifiInfo methods to collect user personal data.",
+        "Action": "Stored in registers (v0, v1) within the method"
+      },
+      {
+        "Step": "Pass Mac address to other methods via getReactApplicationContext",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The data is passed to other methods via method invocations.",
+        "Action": "Passed to other methods"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String; --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getReactApplicationContext:()Ljava/lang/Object;",
+        "Reasoning": "The data is collected from the getMacAddressSync method and passed to other methods via the getReactApplicationContext method."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get phone number from TelephonyManager",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "Checking for permissions and using the TelephonyManager to get the phone number.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Propagate through registers",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "Data is stored in registers or variables within the method.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Log when TelephonyManager is null",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point, which is logging when the TelephonyManager is null.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String; --> Stored in registers or variables within the method --> Passed to other methods via method invocations --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The data originates from the getPhoneNumberSync method, is stored and propagated through registers, and finally logged when TelephonyManager is null."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

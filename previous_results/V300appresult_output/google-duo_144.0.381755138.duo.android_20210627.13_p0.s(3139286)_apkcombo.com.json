@@ -1,0 +1,178 @@
+[
+  {
+    "Data Types Collected": [
+      "location information",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates location information from Context object",
+        "Source Method": "Lma;->t:(Landroid/content/Context; I)I",
+        "Reasoning": "Using ACCESS_COARSE_LOCATION and ACCESS_FINE_LOCATION permissions to access location information",
+        "Action": "Stored in variables v4, v5, and v6"
+      },
+      {
+        "Step": "Originates user personal data from Context object's getApplicationContext() and getSystemService() methods",
+        "Source Method": "Llt;-><init>:(Lma; Landroid/content/Context;)V",
+        "Reasoning": "Using sensitive API calls to Context object",
+        "Action": "Stored in registers v0 and v1"
+      },
+      {
+        "Step": "Originates user personal data from 'v1' object using a sensitive API call to 'Lma'",
+        "Source Method": "Llv;-><init>:(Lma;)V",
+        "Reasoning": "Using sensitive API calls to 'Lma'",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Passes user personal data between methods via method invocations",
+        "Source Method": "P: (Landroid/content/Context;) Llv;",
+        "Reasoning": "Using method invocations to propagate data",
+        "Action": "Passed to other methods"
+      }
+    ],
+    "All Sinks": [
+      "Lma;->t:(Landroid/content/Context; I)I",
+      "P: (Landroid/content/Context;) Llv;",
+      "Llt;-><init>:(Lma; Landroid/content/Context;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lma;->t:(Landroid/content/Context; I)I --> ... --> Lma;->P:(Landroid/content/Context;)Llv]",
+        "Reasoning": "Location information is accessed, stored in variables v4, v5, and v6, then passed to method P: (Landroid/content/Context;) Llv;"
+      },
+      {
+        "dataflow 2": "[Llt;-><init>:(Lma; Landroid/content/Context;)V --> ... --> Llt;-><init>:(Lma; Landroid/content/Context;)V]",
+        "Reasoning": "User personal data is originated from Context object's getApplicationContext() and getSystemService() methods, stored in registers v0 and v1, then passed to other methods"
+      },
+      {
+        "dataflow 3": "[Llv;-><init>:(Lma;)V --> ... --> Llv;-><init>:(Lma;)V]",
+        "Reasoning": "User personal data is originated from 'v1' object using a sensitive API call to 'Lma', stored in register v0, then passed to other methods"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "java.lang.String",
+      "java.lang.Object"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "The current method originates user personal data by calling the `getLine1Number()` method of the `TelephonyManager`.",
+        "Source Method": "Lkco;->a:()Lpqn;",
+        "Reasoning": "The data is stored in register `v0` and then passed to other methods.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "The current method originates user personal data by invoking a sensitive API call to `java.lang.Object.getClass()` which returns the class of the object.",
+        "Source Method": "Lpqn;->i:(Ljava/lang/Object;)Lpqn;",
+        "Reasoning": "The data is stored in register v1 and then passed to another method via method invocation.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "The method originates user personal data from the sensitive API call 'Lpqn;<init>:(Ljava/lang/Object;)V'.",
+        "Source Method": "Lpqz;-><init>:(Ljava/lang/Object;)V",
+        "Reasoning": "The data is stored in the register 'v1' and variable 'a' of class 'pqz'. The data is propagated to other methods via method invocations.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lkco;->a:()Lpqn; --> Lpqn;->i:(Ljava/lang/Object;)Lpqn; --> Lpqz;-><init>:(Ljava/lang/Object;)V",
+        "Reasoning": "The data flow originates from the `TelephonyManager` method, then passed to another method via method invocation, and finally propagated to other methods via method invocations."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "user personal data",
+      "DNS status information",
+      "Network handle"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data through sensitive API calls",
+        "Source Method": "Lorg/chromium/net/DnsStatus;-><init>:(Ljava/util/List; Z Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to store DNS status information.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data by accessing a sensitive API",
+        "Source Method": "Lorg/chromium/base/ApplicationStatus;->getStateForApplication:()I",
+        "Reasoning": "The current method originates user personal data by accessing a sensitive API (getStateForApplication) and stores it in the 'v0' register.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data from Network object's getNetworkHandle() and toString() methods",
+        "Source Method": "Lunb;->b:(Landroid/net/Network;)J",
+        "Reasoning": "The method originates user personal data from the Network object's getNetworkHandle() and toString() methods.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Propagates DNS status information to other methods via method invocations",
+        "Source Method": "Lorg/chromium/net/DnsStatus;-><init>:(Ljava/util/List; Z Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The current method originates user personal data through sensitive API calls to store DNS status information. It propagates to other methods via method invocations, potentially reaching sinks like logging or transmission.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Returns DNS status as an instance of org/chromium/net/DnsStatus",
+        "Source Method": "Lorg/chromium/net/AndroidNetworkLibrary;->getDnsStatus:(Landroid/net/Network;)Lorg/chromium/net/DnsStatus;",
+        "Reasoning": "The method originates user personal data through the `getDnsStatus` method, which uses sensitive APIs to retrieve DNS status. The data is stored in registers and variables within the method. It propagates the data to other methods via method invocations. The data reaches a sink point when it is returned as an instance of `org/chromium/net/DnsStatus`. ",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/chromium/net/AndroidNetworkLibrary;->getDnsStatus:(Landroid/net/Network;)Lorg/chromium/net/DnsStatus;",
+      "Lorg/chromium/net/DnsStatus;-><init>:(Ljava/util/List; Z Ljava/lang/String; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lunb;->b:(Landroid/net/Network;)J --> Lorg/chromium/base/ApplicationStatus;->getStateForApplication:()I --> Lorg/chromium/net/DnsStatus;-><init>:(Ljava/util/List; Z Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data flow starts from the `b` method of class `Lunb`, where it originates user personal data. This data is then propagated to the `getStateForApplication` method of class `Lorg/chromium/base/ApplicationStatus`, which stores it in a register. Finally, this data reaches the sink point when it is stored in the constructor of class `Lorg/chromium/net/DnsStatus`. "
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get network connection type",
+        "Source Method": "Luyc;->i:(Luxx;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the sensitive API `Lorg/webrtc/NetworkChangeDetector$ConnectionType;->f(Luxx;)Lorg/webrtc/NetworkChangeDetector$ConnectionType;`",
+        "Action": "Stored in register v4"
+      },
+      {
+        "Step": "Pass to other methods via method invocations",
+        "Source Method": "Luyc;->i:(Luxx;)Ljava/lang/String;",
+        "Reasoning": "The data is then passed to other methods via method invocations.",
+        "Action": "Transmitted to other methods"
+      },
+      {
+        "Step": "Network transmission by registering a broadcast receiver",
+        "Source Method": "Luyc;->i:(Luxx;)Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point through network transmission by registering a broadcast receiver with the intent filter `android.net.wifi.STATE_CHANGE`.",
+        "Action": "Logged via broadcast receiver"
+      }
+    ],
+    "All Sinks": [
+      "Luyc;->i:(Luxx;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Luyc;->i:(Luxx;)Ljava/lang/String; --> ... --> Luyc;->i:(Luxx;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the sensitive API `Lorg/webrtc/NetworkChangeDetector$ConnectionType;->f(Luxx;)Lorg/webrtc/NetworkChangeDetector$ConnectionType;` and storing it in register v4. The data is then passed to other methods via method invocations, reaching a sink point through network transmission by registering a broadcast receiver with the intent filter `android.net.wifi.STATE_CHANGE`."
+      }
+    ],
+    "Label": "leak"
+  }
+]

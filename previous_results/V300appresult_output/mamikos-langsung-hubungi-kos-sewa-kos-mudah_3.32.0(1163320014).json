@@ -1,0 +1,995 @@
+[
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from location",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data from the location and search text, stores it in registers and variables",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data from search text",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data from the location and search text, stores it in registers and variables",
+        "Action": "stored"
+      },
+      {
+        "Step": "Originates user personal data from AccessToken object",
+        "Source Method": "Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod; Lcom/facebook/GraphRequest$Callback;)V",
+        "Reasoning": "The method originates user personal data from the 'Lcom/facebook/AccessToken' object, stores it in registers v0-v6",
+        "Action": "stored"
+      },
+      {
+        "Step": "Passes personal data to other methods via direct invocation",
+        "Source Method": "Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod; Lcom/facebook/GraphRequest$Callback;)V",
+        "Reasoning": "The data is not logged or transmitted.",
+        "Action": "passed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;->execute:(Lcom/facebook/GraphRequest; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> ... --> Lcom/facebook/GraphRequest;->execute:(Lcom/facebook/GraphRequest; Ljava/lang/String;)V ",
+        "Reasoning": "The data is stored in registers and variables, then passed to other methods via direct invocation, and finally logged or transmitted."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "java.lang.String",
+      "android.accounts.AccountManager",
+      "android.content.SharedPreferences"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device email from AccountManager",
+        "Source Method": "Lcom/git/template/app/GITApplication;->getDeviceEmail:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the `getAccounts()` method of the `AccountManager` class.",
+        "Action": "Stored in string variable v0"
+      },
+      {
+        "Step": "Save device email to SharedPreferences",
+        "Source Method": "Lcom/git/template/app/SessionManager;->saveDeviceEmail:(Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data from a string parameter (email) and stores it in SharedPreferences.",
+        "Action": "Stored in SharedPreferences"
+      },
+      {
+        "Step": "Get SessionManager instance",
+        "Source Method": "Lcom/git/template/app/GITApplication;->getSessionManager:()Lcom/git/template/app/SessionManager;",
+        "Reasoning": "The method originates user personal data through the `getSessionManager()` method call.",
+        "Action": "Stored in register v0 and variable e of class GITApplication"
+      },
+      {
+        "Step": "Initialize SessionManager with Context",
+        "Source Method": "Lcom/git/template/app/SessionManager;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "The current method is using sensitive API calls to originate user personal data.",
+        "Action": "Passed to other methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/git/template/app/GITApplication;->getDeviceEmail:()Ljava/lang/String;",
+      "Lcom/git/template/app/SessionManager;->saveDeviceEmail:(Ljava/lang/String;)V",
+      "Lcom/git/template/app/GITApplication;->getSessionManager:()Lcom/git/template/app/SessionManager;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/git/template/app/GITApplication;->getDeviceEmail:()Ljava/lang/String; --> Lcom/git/template/app/GITApplication;->getSessionManager:()Lcom/git/template/app/SessionManager; --> Lcom/git/template/app/SessionManager;->saveDeviceEmail:(Ljava/lang/String;)V",
+        "Reasoning": "The device email is obtained from AccountManager and stored in SessionManager, which then saves it to SharedPreferences."
+      },
+      {
+        "dataflow 2": " Lcom/git/template/app/GITApplication;->getSessionManager:()Lcom/git/template/app/SessionManager; --> Lcom/git/template/app/SessionManager;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "The SessionManager instance is obtained and used to initialize the SessionManager with Context, which involves sensitive API calls."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "java.lang.String",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get email address from session manager",
+        "Source Method": "Lcom/mamikos/pay/apps/SessionManager;->getEmailDevice:()Ljava/lang/String;",
+        "Reasoning": "The data is then stored in register v0 and propagated to the return statement if it's not null.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check if email address is valid",
+        "Source Method": "Lcom/mamikos/pay/apps/MamiApp;->getDeviceEmail:()Ljava/lang/String;",
+        "Reasoning": "It checks if the email address is valid and contains Gmail in its name.",
+        "Action": "Checked"
+      },
+      {
+        "Step": "Return email address",
+        "Source Method": "Lcom/mamikos/pay/apps/MamiApp;->getDeviceEmail:()Ljava/lang/String;",
+        "Reasoning": "If it does, it returns the email address.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mamikos/pay/apps/SessionManager;->getEmailDevice:()Ljava/lang/String;",
+      "Lcom/mamikos/pay/apps/MamiApp;->getDeviceEmail:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mamikos/pay/apps/SessionManager;->getEmailDevice:(...) --> Lcom/mamikos/pay/apps/MamiApp;->getDeviceEmail:(...) --> Lcom/mamikos/pay/apps/MamiApp;->getDeviceEmail:()Ljava/lang/String;",
+        "Reasoning": "The email address is retrieved from the session manager, checked for validity and then returned."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Landroid/location/Location",
+      "LatLng"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access device location",
+        "Source Method": "Lcom/git/dabang/fragments/AddKostUserOneFragment;->c:()V",
+        "Reasoning": "Method originates user personal data by accessing the device's location (Landroid/location/Location) and storing it in a LatLng object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass location to other methods",
+        "Source Method": "Lcom/git/dabang/fragments/AddKostUserOneFragment;->c:()V",
+        "Reasoning": "The data is then passed to other methods for further processing.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/git/dabang/fragments/AddKostUserOneFragment;->c:()V --> ... --> No sink found",
+        "Reasoning": "Data originates from accessing device location, then passed to other methods but no sinks identified."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "EditTexts",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User enters personal data into EditTexts.",
+        "Source Method": "Lcom/git/dabang/fragments/AddKostUserOneFragment;->d:()V",
+        "Reasoning": "The method originates user personal data from EditTexts in TextInputLayouts.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is propagated through registers and variables within the method.",
+        "Source Method": "Lcom/git/dabang/fragments/AddKostUserOneFragment;->d:()V",
+        "Reasoning": "The data is propagated through registers and variables within the method.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Data is checked for empty strings and shows an error message or requests focus if necessary.",
+        "Source Method": "Lcom/git/dabang/fragments/AddKostUserOneFragment;->d:()V",
+        "Reasoning": "It checks for empty strings and shows an error message or requests focus if necessary.",
+        "Action": "Checked"
+      },
+      {
+        "Step": "Data is valid, it creates a Bundle with the data and posts it to EventBus.",
+        "Source Method": "Lcom/git/dabang/fragments/AddKostUserOneFragment;->d:()V",
+        "Reasoning": "If the data is valid, it creates a Bundle with the data and posts it to EventBus.",
+        "Action": "Posted"
+      },
+      {
+        "Step": "EventBus originates user personal data by invoking the constructor of EventBus with an EventBusBuilder object.",
+        "Source Method": "Lorg/greenrobot/eventbus/EventBus;-><init>:()V",
+        "Reasoning": "The method originates user personal data by invoking the constructor of EventBus with an EventBusBuilder object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/git/dabang/fragments/AddKostUserOneFragment;->d:()V --> Lorg/greenrobot/eventbus/EventBus;->post:(Ljava/lang/Object;)V",
+        "Reasoning": "The data entered by the user is propagated through registers and variables within the method, checked for empty strings and error messages or focus requests are shown if necessary. If valid, it creates a Bundle with the data and posts it to EventBus."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "LatLng",
+      "GoogleMap"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from 'r' field and 'd' field of AddMarketFragment class.",
+        "Source Method": "Lcom/git/dabang/fragments/AddMarketFragment;->m:()V",
+        "Reasoning": "The method originates user personal data from the `r` field and the `d` field of the `AddMarketFragment` class.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Pass user personal data to create a new instance of LatLng.",
+        "Source Method": "Lcom/git/dabang/fragments/AddMarketFragment;->m:()V",
+        "Reasoning": "The method checks if the `GoogleMap` object is not null before setting an on-map-loaded callback, and it reaches a sink point when it is used to create a new instance of `LatLng`.",
+        "Action": "Passed as argument to LatLng constructor"
+      },
+      {
+        "Step": "Originate user personal data from 'latitude' field of MarketEntity class.",
+        "Source Method": "Lcom/git/dabang/entities/MarketEntity;->getLatitude:()D",
+        "Reasoning": "The method originates user personal data from the 'latitude' field of the MarketEntity class.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Originate user personal data from 'longitude' field of MarketEntity class.",
+        "Source Method": "Lcom/git/dabang/entities/MarketEntity;->getLongitude:()D",
+        "Reasoning": "The method originates user personal data from the 'longitude' field of MarketEntity.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/git/dabang/fragments/AddMarketFragment;->m:()V",
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/git/dabang/fragments/AddMarketFragment;->m:()V --> LatLng --> null ",
+        "Reasoning": "The method originates user personal data from the `r` field and the `d` field of the `AddMarketFragment` class, passes it to create a new instance of `LatLng`, but there is no further sink for this data flow."
+      },
+      {
+        "dataflow 2": " Lcom/git/dabang/entities/MarketEntity;->getLatitude:()D --> null ",
+        "Reasoning": "The method originates user personal data from the 'latitude' field of MarketEntity, but there is no further sink for this data flow."
+      },
+      {
+        "dataflow 3": " Lcom/git/dabang/entities/MarketEntity;->getLongitude:()D --> null ",
+        "Reasoning": "The method originates user personal data from the 'longitude' field of MarketEntity, but there is no further sink for this data flow."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location collected from device",
+        "Source Method": "Lcom/git/dabang/fragments/AddVacancyOneFragment;->e:()V",
+        "Reasoning": "Method e collects location data",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Device ID collected from device",
+        "Source Method": "Lcom/git/dabang/fragments/AddVacancyOneFragment;->e:()V",
+        "Reasoning": "Method e collects device ID data",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Phone Number collected from user input",
+        "Source Method": "Lcom/git/dabang/fragments/AddVacancyOneFragment;->onCreateView(Landroid/view/LayoutInflater;)V",
+        "Reasoning": "Method onCreateView collects phone number data",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/git/dabang/services/VacancyService;->postVacancy(Ljava/util/Map;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/git/dabang/fragments/AddVacancyOneFragment;->e:()V --> Lcom/git/dabang/services/VacancyService;->postVacancy(Ljava/util/Map;)V ",
+        "Reasoning": "Location and device ID are stored, then logged. Phone number is stored."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Landroid/location/Location",
+      "LatLng"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data from 'd' field of type Landroid/location/Location",
+        "Source Method": "Lcom/git/dabang/fragments/AddVacancyOneFragment;->f:()V",
+        "Reasoning": "The method originates user personal data from the `d` field of type `Landroid/location/Location`, which is used to create a `LatLng` object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Extract latitude and longitude from LatLng object",
+        "Source Method": "Lcom/git/dabang/fragments/AddVacancyOneFragment;->f:()V",
+        "Reasoning": "The latitude and longitude are extracted from the location object, and these values are stored in registers.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass data to other methods via method invocations",
+        "Source Method": "Lcom/git/dabang/fragments/AddVacancyOneFragment;->f:()V",
+        "Reasoning": "The data is then passed to other methods via method invocations, specifically to the `startActivityForResult` method.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/content/Intent;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/git/dabang/fragments/AddVacancyOneFragment;->f:()V --> startActivityForResult(...) --> Landroid/content/Intent;",
+        "Reasoning": "The data is stored in an intent and then passed to other methods via method invocations."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "String (h)",
+      "String (g)",
+      "String (i)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Intent object's extras contain user personal data",
+        "Source Method": "Lcom/git/dabang/fragments/AddVacancyOneFragment;->onActivityResult:(I I Landroid/content/Intent;)V",
+        "Reasoning": "The method originates user personal data from the Intent object's extras.",
+        "Action": "Stored in AddVacancyOneFragment instance"
+      },
+      {
+        "Step": "Data is used to update GoogleMap and add a marker at the location specified by the Intent object",
+        "Source Method": "Lcom/git/dabang/fragments/AddVacancyOneFragment;->onActivityResult:(I I Landroid/content/Intent;)V",
+        "Reasoning": "The data is also used to update the GoogleMap and add a marker at the location specified by the Intent object.",
+        "Action": "Used to update GoogleMap"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/git/dabang/fragments/AddVacancyOneFragment;->onActivityResult:(I I Landroid/content/Intent;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/git/dabang/fragments/AddVacancyOneFragment;->onActivityResult:(I I Landroid/content/Intent;)V --> Stored in AddVacancyOneFragment instance --> Used to update GoogleMap",
+        "Reasoning": "The data is originated from the Intent object's extras, stored in the AddVacancyOneFragment instance, and then used to update the GoogleMap."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location (Lcom/google/android/gms/maps/model/LatLng)",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access device location using Location API",
+        "Source Method": "Lcom/git/dabang/SearchPointActivity;->O:()V",
+        "Reasoning": "The method originates user personal data by accessing the device's location using the Location API.",
+        "Action": "Stored in variables v1 and v2"
+      },
+      {
+        "Step": "Create Pair object with sensitive information",
+        "Source Method": "Lcom/git/dabang/SearchPointActivity;->c:(Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data by creating a Pair object with sensitive information (interface and mobile-android), and then adds it to an ArrayList.",
+        "Action": "Stored in the ArrayList"
+      },
+      {
+        "Step": "Invoke Geocoder API to get address list from location",
+        "Source Method": "Lcom/git/dabang/SearchPointActivity;->b:(Lcom/google/android/gms/maps/model/LatLng;)Ljava/util/List;",
+        "Reasoning": "The method originates user personal data by invoking the Geocoder API to get address list from location.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Call showInfoLog function with sensitive parameters",
+        "Source Method": "Lcom/git/dabang/helper/extensions/ActivityKt;->showInfoLog:(Landroid/app/Activity; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the 'checkParameterIsNotNull' function calls for parameters '$this$showInfoLog' and 'message'.",
+        "Action": "Stored in registers v0 and v2"
+      },
+      {
+        "Step": "Call getBoolean() method on RemoteConfig instance",
+        "Source Method": "Lcom/git/dabang/lib/core/library/RemoteConfig;->getBoolean:(Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data by calling the getDabangConfig() method which returns a FirebaseRemoteConfigValue object.",
+        "Action": "Propagated through registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/git/template/app/GITApplication;->sendNewEventToFirebase:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/git/dabang/SearchPointActivity;->P:()Landroid/content/Intent;",
+      "Lcom/git/dabang/helper/extensions/ActivityKt;->showInfoLog:(Landroid/app/Activity; Ljava/lang/String;)V",
+      "Lcom/git/template/app/GITApplication;->setTypeConnection:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/git/dabang/SearchPointActivity;->O:()V --> Lcom/git/dabang/SearchPointActivity;->P:()Landroid/content/Intent --> Lcom/git/template/app/GITApplication;->sendNewEventToFirebase:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is passed to other methods via method invocations, including P(), S(), b(Lcom/google/android/gms/maps/model/LatLng;), and c(Ljava/lang/String;). The data reaches a sink point when it is logged using the Firebase API in the line iget-object v4, v7, Lcom/git/dabang/SearchPointActivity;->app Lcom/git/template/app/GITApplication; const-string v5, \"Current_Location\" const-string v6, \"Find Location\" invoke-virtual v4, v5, v6, v2, Lcom/git/template/app/GITApplication;->sendNewEventToFirebase(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V."
+      },
+      {
+        "dataflow 2": "Lcom/git/dabang/SearchPointActivity;->c:(Ljava/lang/String;)V --> Lcom/git/dabang/lib/core/tracker/CoreTracking;->trackEvent:(Lcom/git/dabang/lib/core/tracker/data/TrackingEvent; Ljava/util/List;)Lkotlinx/coroutines/Job;",
+        "Reasoning": "The data is stored in the ArrayList and passed to another method via the trackEvent() function, which is likely a sink for logging or transmission."
+      },
+      {
+        "dataflow 3": "Lcom/git/dabang/SearchPointActivity;->b:(Lcom/google/android/gms/maps/model/LatLng;)Ljava/util/List --> Lcom/git/template/app/GITApplication;->sendNewEventToFirebase:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in register v0 and propagated through registers and variables within the method. The data reaches a sink point, which is sending an event to Firebase."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method Lcom/git/dabang/ui/activities/DashboardOwnerActivity;->onLocationChanged:(Landroid/location/Location;)V originates location data.",
+        "Source Method": "Lcom/git/dabang/ui/activities/DashboardOwnerActivity;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "android.location.Location.getLatitude() and android.location.Location.getLongitude() API calls store data in variables v2 and v1, which are then passed to the logIfDebug function.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Method Lcom/git/dabang/core/utils/AnyExtensionKt;->logIfDebug:(Ljava/lang/Object; Ljava/lang/String;)V originates phone number data through checkParameterIsNotNull API calls.",
+        "Source Method": "Lcom/git/dabang/core/utils/AnyExtensionKt;->logIfDebug:(Ljava/lang/Object; Ljava/lang/String;)V",
+        "Reasoning": "Data is stored in registers v0 and v1 before being passed to other methods via method invocations.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/git/dabang/core/utils/AnyExtensionKt;->logIfDebug:(Ljava/lang/Object; Ljava/lang/String;)V",
+      "Lcom/git/dabang/ui/activities/DashboardOwnerActivity;->onLocationChanged:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/git/dabang/ui/activities/DashboardOwnerActivity;->onLocationChanged:(Landroid/location/Location;)V --> Lcom/git/dabang/core/utils/AnyExtensionKt;->logIfDebug:(Ljava/lang/Object; Ljava/lang/String;)V",
+        "Reasoning": "The location data is passed from onLocationChanged to logIfDebug function."
+      },
+      {
+        "dataflow 2": "Lcom/git/dabang/core/utils/AnyExtensionKt;->logIfDebug:(Ljava/lang/Object; Ljava/lang/String;)V --> null",
+        "Reasoning": "The phone number data is stored in registers v0 and v1 before being passed to other methods via method invocations."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get latitude from Location API",
+        "Source Method": "Lcom/git/dabang/helper/GPSTracker;->getLatitude:()D",
+        "Reasoning": "The latitude is obtained through the getLatitude() method of the GPSTracker class.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/git/dabang/helper/GPSTracker;->getLatitude:()D --> Stored in GPSTracker class field --> Lcom/git/dabang/helper/GPSTracker;->returnLatitude:()D",
+        "Reasoning": "The latitude is stored in a register and then stored in a field of the GPSTracker class. The data reaches a sink point through a return statement, which returns the stored latitude."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "android.util.Log.d()"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location from network provider",
+        "Source Method": "Lcom/git/dabang/helper/GPSTracker;->getLocation:(Landroid/content/Context;)Landroid/location/Location;",
+        "Reasoning": "The method uses API calls to get the location and network provider status.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Pass location to next method",
+        "Source Method": "Lcom/git/dabang/helper/GPSTracker;->getLocation:(Landroid/content/Context;)Landroid/location/Location;",
+        "Reasoning": "The data is propagated through method invocations.",
+        "Action": "Passed to the next method"
+      },
+      {
+        "Step": "Log location",
+        "Source Method": "Lcom/git/dabang/helper/LogHelper;->d:(Ljava/lang/String;)V",
+        "Reasoning": "The method uses the sensitive API android.util.Log.d() to originate user personal data.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/git/dabang/helper/LogHelper;->d:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/git/dabang/helper/GPSTracker;->getLocation:(Landroid/content/Context;)Landroid/location/Location; --> Lcom/git/dabang/helper/GPSTracker;->getLocation:(Landroid/content/Context;)Landroid/location/Location; --> Lcom/git/dabang/helper/LogHelper;->d:(Ljava/lang/String;)V ",
+        "Reasoning": "The location data is first stored in registers and variables within the GPSTracker method, then passed to LogHelper for logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get longitude using Location API",
+        "Source Method": "Lcom/git/dabang/helper/GPSTracker;->getLongitude:()D",
+        "Reasoning": "The method uses the Location API to get the longitude.",
+        "Action": "Stored in registers and variables"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/git/dabang/helper/GPSTracker;->getLongitude:()D --> Lcom/git/dabang/helper/GPSTracker;->(no sinks found)",
+        "Reasoning": "The longitude is stored in registers and variables within the method, but no sinks like logging, network transmission, or storage are identified."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location from user",
+        "Source Method": "Lcom/git/dabang/helper/LocationHelper;->a:(Landroid/location/Location;)Lcom/google/android/gms/maps/model/LatLng;",
+        "Reasoning": "The current method, a from LocationHelper class, originates user personal data by using the getLatitude and getLongitude methods of android.location.Location.",
+        "Action": "Stored in registers v1 and v3 before being passed to the LatLng constructor"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/git/dabang/helper/LocationHelper;->a:(Landroid/location/Location;)Lcom/google/android/gms/maps/model/LatLng; --> Stored in registers v1 and v3 before being passed to the LatLng constructor",
+        "Reasoning": "The current method, a from LocationHelper class, originates user personal data by using the getLatitude and getLongitude methods of android.location.Location. The data is then returned as an instance of LatLng."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Call getLastKnownLocation API",
+        "Source Method": "Lcom/git/dabang/helper/LocationHelper;->getUserLocation:(Landroid/content/Context; Lkotlin/jvm/functions/Function1;)V",
+        "Reasoning": "The method originates user personal data by calling the getLastKnownLocation API to retrieve the current location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Generate LocationRequest using sensitive API calls",
+        "Source Method": "Lcom/git/dabang/helper/LocationHelper;->generateLocationRequest:()Lcom/google/android/gms/location/LocationRequest;",
+        "Reasoning": "The method generates a LocationRequest using sensitive API calls.",
+        "Action": "Propagated"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/git/dabang/helper/LocationHelper;->getUserLocation:(Landroid/content/Context; Lkotlin/jvm/functions/Function1;)V --> Lcom/git/dabang/helper/LocationHelper;->generateLocationRequest:()Lcom/google/android/gms/location/LocationRequest;",
+        "Reasoning": "The location data is stored in a Location object and passed to the onSuccessListener function, which then generates a LocationRequest using sensitive API calls."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "com/google/android/gms/maps/model/Marker"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get current location from instance variable 'd'",
+        "Source Method": "Lcom/git/dabang/fragments/AddVacancyOneFragment;->access$getCurrentLocation$p:(Lcom/git/dabang/fragments/AddVacancyOneFragment;)Landroid/location/Location;",
+        "Reasoning": "The data is stored in register v1 and passed to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass location to onMapLoaded()",
+        "Source Method": "Lcom/git/dabang/fragments/AddVacancyOneFragment;->access$getCurrentLocation$p:(Lcom/git/dabang/fragments/AddVacancyOneFragment;)Landroid/location/Location;",
+        "Reasoning": "The data is passed to onMapLoaded() method via method invocations.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Add marker to Google Map with location",
+        "Source Method": "Lcom/git/dabang/fragments/AddVacancyOneFragment$e;->onMapLoaded:()V",
+        "Reasoning": "The data is stored in the 'a' field of AddVacancyOneFragment and passed to other methods via method invocations.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/git/dabang/fragments/AddVacancyOneFragment$e;->onMapLoaded:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/git/dabang/fragments/AddVacancyOneFragment;->access$getCurrentLocation$p:(Lcom/git/dabang/fragments/AddVacancyOneFragment;)Landroid/location/Location; --> Lcom/git/dabang/fragments/AddVacancyOneFragment$e;->onMapLoaded:()V --> Lcom/google/android/gms/maps/model/Marker ",
+        "Reasoning": "The current location is accessed, passed to onMapLoaded(), and then used to add a marker to the Google Map."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location from Geocoder",
+        "Source Method": "Lcom/git/dabang/fragments/AddVacancyOneFragment$doAnko$1;->invoke:(Lorg/jetbrains/anko/AnkoAsyncContext;)V",
+        "Reasoning": "The `getFromLocation` method of the `Geocoder` class is invoked to get user location.",
+        "Action": "Stored in element field of Ref$ObjectRef object"
+      },
+      {
+        "Step": "Get address from geolocation",
+        "Source Method": "Lcom/git/dabang/fragments/AddVacancyOneFragment;->access$getAddressGeocoder$p:(Lcom/git/dabang/fragments/AddVacancyOneFragment;)Landroid/location/Geocoder;",
+        "Reasoning": "The method originates user personal data from the 'a' field of the current object.",
+        "Action": "Passed to next methods via method invocations"
+      },
+      {
+        "Step": "Check parameter is not null",
+        "Source Method": "Lorg/jetbrains/anko/AsyncKt;->uiThread:(Lorg/jetbrains/anko/AnkoAsyncContext; Lkotlin/jvm/functions/Function1;)Z",
+        "Reasoning": "The data is stored in registers and variables within the method.",
+        "Action": "Propagated to other methods via method invocations"
+      },
+      {
+        "Step": "Get weak reference",
+        "Source Method": "Lorg/jetbrains/anko/AnkoAsyncContext;->getWeakRef:()Ljava/lang/ref/WeakReference;",
+        "Reasoning": "The current method uses the getWeakRef() sensitive API to originate user personal data stored in the 'v0' register.",
+        "Action": "Returned without any further processing or storage"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/jetbrains/anko/AsyncKt;->uiThread:(Lorg/jetbrains/anko/AnkoAsyncContext; Lkotlin/jvm/functions/Function1;)Z",
+      "Lorg/jetbrains/anko/d;->getHandler:()Landroid/os/Handler;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/git/dabang/fragments/AddVacancyOneFragment$doAnko$1;->invoke:(Lorg/jetbrains/anko/AnkoAsyncContext;)V --> Lcom/git/dabang/fragments/AddVacancyOneFragment;->access$getAddressGeocoder$p:(Lcom/git/dabang/fragments/AddVacancyOneFragment;)Landroid/location/Geocoder; --> Lorg/jetbrains/anko/AsyncKt;->uiThread:(Lorg/jetbrains/anko/AnkoAsyncContext; Lkotlin/jvm/functions/Function1;)Z",
+        "Reasoning": "The data is propagated from `AddVacancyOneFragment` to `AsyncKt` via method invocations."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Landroid/location/Location;",
+      "Lcom/google/android/gms/maps/model/LatLng;",
+      "Lcom/git/dabang/entities/GeocodeApiEntity;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location from Location object",
+        "Source Method": "Lcom/git/dabang/ui/activities/createkost/MapsActivity$b;->onSuccess:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data from the Location object's latitude and longitude.",
+        "Action": "Stored in LatLng object"
+      },
+      {
+        "Step": "Get camera location (LatLng) using Google Maps API",
+        "Source Method": "Lcom/git/dabang/ui/activities/createkost/MapsActivity;->o:()V",
+        "Reasoning": "The method originates user personal data by accessing the location using Google Maps API.",
+        "Action": "Stored in registers v0 and v2"
+      },
+      {
+        "Step": "Get geocode entity from Intent extra",
+        "Source Method": "Lcom/git/dabang/viewModels/createkost/MapsViewModel;->extraIntentGeocode:(Landroid/content/Intent;)Lcom/git/dabang/entities/GeocodeApiEntity;",
+        "Reasoning": "The method originates user personal data by checking if the intent has an extra 'extra_goecode_entity' and retrieving it as a GeocodeApiEntity.",
+        "Action": "Stored in register v3"
+      },
+      {
+        "Step": "Set current location (LatLng) using MapsActivity",
+        "Source Method": "Lcom/git/dabang/ui/activities/createkost/MapsActivity;->access$setCurrentLocation$p:(Lcom/git/dabang/ui/activities/createkost/MapsActivity; Lcom/google/android/gms/maps/model/LatLng;)V",
+        "Reasoning": "Sensitive user personal data originates from the `setCurrentLocation$p` method.",
+        "Action": "Stored in register v0 and variable `i` of type `Lcom/google/android/gms/maps/model/LatLng`"
+      },
+      {
+        "Step": "Set camera location (LatLng) using MapsActivity",
+        "Source Method": "Lcom/git/dabang/ui/activities/createkost/MapsActivity;->access$setCameraLatLng$p:(Lcom/git/dabang/ui/activities/createkost/MapsActivity; Lcom/google/android/gms/maps/model/LatLng;)V",
+        "Reasoning": "Data originates from a sensitive API call to get the camera's location (LatLng) in MapsActivity.",
+        "Action": "Stored in register v0 and variable c of type LatLng"
+      },
+      {
+        "Step": "Update marker and reverse geocode using MapsActivity",
+        "Source Method": "Lcom/git/dabang/ui/activities/createkost/MapsActivity;->access$updateMarkerAndReveseGeocode:(Lcom/git/dabang/ui/activities/createkost/MapsActivity;)V",
+        "Reasoning": "The method originates user personal data by calling the 'g()' method which is likely to be a getter for a sensitive field.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Get current location (LatLng) using MapsActivity",
+        "Source Method": "Lcom/git/dabang/ui/activities/createkost/MapsActivity;->g:()V",
+        "Reasoning": "The method originates sensitive user personal data by invoking the 'o()' method of MapsActivity.",
+        "Action": "Passed to AsyncTask's execute() method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/git/dabang/ui/activities/createkost/MapsActivity;->g:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/git/dabang/ui/activities/createkost/MapsActivity$b;->onSuccess:(Landroid/location/Location;)V --> Lcom/git/dabang/ui/activities/createkost/MapsActivity;->access$setCurrentLocation$p:(Lcom/git/dabang/ui/activities/createkost/MapsActivity; Lcom/google/android/gms/maps/model/LatLng;)V --> Lcom/git/dabang/ui/activities/createkost/MapsActivity;->g:()V",
+        "Reasoning": "The data flow originates from the `onSuccess` method, which stores the user location in a LatLng object. This object is then passed to the `setCurrentLocation$p` method, where it is stored in register v0 and variable `i`. Finally, this data is passed to the `g()` method of MapsActivity."
+      },
+      {
+        "dataflow 2": " Lcom/git/dabang/ui/activities/createkost/MapsActivity;->o:()V --> Lcom/git/dabang/ui/activities/createkost/MapsActivity;->access$setCameraLatLng$p:(Lcom/git/dabang/ui/activities/createkost/MapsActivity; Lcom/google/android/gms/maps/model/LatLng;)V",
+        "Reasoning": "The data flow originates from the `o()` method, which accesses the camera location using Google Maps API. This location is then stored in register v0 and variable c of type LatLng."
+      },
+      {
+        "dataflow 3": " Lcom/git/dabang/viewModels/createkost/MapsViewModel;->extraIntentGeocode:(Landroid/content/Intent;)Lcom/git/dabang/entities/GeocodeApiEntity; --> Lcom/git/dabang/ui/activities/createkost/MapsActivity;->access$updateMarkerAndReveseGeocode:(Lcom/git/dabang/ui/activities/createkost/MapsActivity;)V",
+        "Reasoning": "The data flow originates from the `extraIntentGeocode` method, which retrieves a geocode entity from an Intent extra. This entity is then passed to the `updateMarkerAndReveseGeocode` method of MapsActivity."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get application context",
+        "Source Method": "Lcom/mamikos/pay/ui/dialogs/PhoneChoiceDialog;->b:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by invoking the `getContext()` method from the `PhoneChoiceDialog` class to get the application context.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get TelephonyManager",
+        "Source Method": "Lcom/mamikos/pay/ui/dialogs/PhoneChoiceDialog;->b:()Ljava/lang/String;",
+        "Reasoning": "The method uses the context to get the TelephonyManager.",
+        "Action": "Retrieved phone number"
+      },
+      {
+        "Step": "Retrieve phone number",
+        "Source Method": "Lcom/mamikos/pay/ui/dialogs/PhoneChoiceDialog;->b:()Ljava/lang/String;",
+        "Reasoning": "The method uses `getLine1Number()` to retrieve the phone number.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mamikos/pay/ui/dialogs/PhoneChoiceDialog;->b:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mamikos/pay/ui/dialogs/PhoneChoiceDialog;->b:()Ljava/lang/String; --> register v0 --> Lcom/mamikos/pay/ui/dialogs/PhoneChoiceDialog;->b:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by invoking the `getContext()` method from the `PhoneChoiceDialog` class to get the application context. It then uses this context to get the TelephonyManager and retrieve the phone number using `getLine1Number()`. If a phone number is found, it is stored in register v0."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.os.Bundle",
+      "java.lang.Object"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve sensitive user personal data from Intent extras",
+        "Source Method": "Lcom/stfalcon/smsverifycatcher/a;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "The method uses the `getExtras()` and `get()` methods to retrieve sensitive user personal data from the Intent.",
+        "Action": "Stored in register v5 as an android.os.Bundle object"
+      },
+      {
+        "Step": "Pass retrieved data to a(Ljava/lang/Object; Landroid/os/Bundle;)Landroid/telephony/SmsMessage method",
+        "Source Method": "Lcom/stfalcon/smsverifycatcher/a;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "The data is passed to the `a(Ljava/lang/Object; Landroid/os/Bundle;)Landroid/telephony/SmsMessage` method via method invocation.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Originate user personal data through getString method call",
+        "Source Method": "Lcom/stfalcon/smsverifycatcher/a;->a:(Ljava/lang/Object; Landroid/os/Bundle;)Landroid/telephony/SmsMessage;",
+        "Reasoning": "The method originates user personal data through the `getString` method call on an instance of `Landroid/os/Bundle`.",
+        "Action": "Stored in register v4"
+      },
+      {
+        "Step": "Pass originated data to createFromPdu method",
+        "Source Method": "Lcom/stfalcon/smsverifycatcher/a;->a:(Ljava/lang/Object; Landroid/os/Bundle;)Landroid/telephony/SmsMessage;",
+        "Reasoning": "The data is passed to the `createFromPdu` method.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/stfalcon/smsverifycatcher/a;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/stfalcon/smsverifycatcher/a;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V --> ... --> Lcom/stfalcon/smsverifycatcher/a;->a(Ljava/lang/Object; Landroid/os/Bundle;)Landroid/telephony/SmsMessage]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "String",
+      "Network information",
+      "WiFi connection details"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get network information and WiFi connection details",
+        "Source Method": "Lcom/xiaomi/push/cq;->f:()Ljava/lang/String;",
+        "Reasoning": "This method originates user personal data through API calls.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Propagate network information and WiFi connection details to string representation",
+        "Source Method": "Lcom/xiaomi/push/cq;->f:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers and variables within the method, and it propagates through method invocations.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/xiaomi/push/cq;->f:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/xiaomi/push/cq;->f:()Ljava/lang/String; --> string representation of WiFi SSID or network type",
+        "Reasoning": "The final sink point is a string representation of the WiFi SSID or network type."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "device ID",
+      "IMEI/MEID",
+      "region information from system properties and locale",
+      "current thread's ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data by calling sensitive APIs to get device ID and IMEI/MEID.",
+        "Source Method": "Lcom/xiaomi/push/i;->g:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to get device ID and IMEI/MEID. The data is stored in the 'a' field of the current class and passed between methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data from system properties and locale.",
+        "Source Method": "Lcom/xiaomi/push/l;->b:()Ljava/lang/String;",
+        "Reasoning": "This method originates user personal data by calling sensitive APIs to retrieve region information from system properties and locale. The data is stored in registers and variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data using the `android.os.SystemProperties` API to get system properties.",
+        "Source Method": "Lcom/xiaomi/push/s;->a:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data using the `android.os.SystemProperties` API to get system properties. The data is stored in register `v8` and then passed to the `Lcom/xiaomi/channel/commonutils/logger/b;->a(Ljava/lang/String;)V` method, which likely logs the data.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Originates user personal data by getting the current thread's ID using the `Thread.getId()` API call.",
+        "Source Method": "Lcom/xiaomi/channel/commonutils/logger/b;->c:()Ljava/lang/String;",
+        "Reasoning": "The current method originates user personal data by getting the current thread's ID using the `Thread.getId()` API call. This data is then stored in a `StringBuilder` object and propagated to the return statement.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/xiaomi/channel/commonutils/logger/b;->a:(Ljava/lang/String;)V",
+      "Lcom/xiaomi/push/i;->g:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/xiaomi/channel/commonutils/logger/b;->f:(Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/xiaomi/push/s;->a:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String; --> Lcom/xiaomi/channel/commonutils/logger/b;->a(Ljava/lang/String;)V",
+        "Reasoning": "The data is propagated from the `Lcom/xiaomi/push/s;->a:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;` method to the `Lcom/xiaomi/channel/commonutils/logger/b;->a(Ljava/lang/String;)V` method, which likely logs the data."
+      },
+      {
+        "dataflow 2": " Lcom/xiaomi/push/i;->g:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/xiaomi/push/i;->g:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated from the `Lcom/xiaomi/push/i;->g:(Landroid/content/Context;)Ljava/lang/String;` method to itself, where it is stored in the 'a' field of the current class."
+      },
+      {
+        "dataflow 3": " Lcom/xiaomi/channel/commonutils/logger/b;->c:()Ljava/lang/String; --> Lcom/xiaomi/channel/commonutils/logger/b;->c:()Ljava/lang/String;",
+        "Reasoning": "The data is propagated from the `Lcom/xiaomi/channel/commonutils/logger/b;->c:()Ljava/lang/String;` method to itself, where it is stored in a StringBuilder object and propagated to the return statement."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "onComplete method called with GeoLocation object containing latitude and longitude",
+        "Source Method": "Lcom/moengage/geofence/internal/GeofenceController$3;->onComplete:(Lcom/google/android/gms/tasks/Task;)V",
+        "Reasoning": "The onComplete method is called with a Task object, which contains the GeoLocation object.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "GeoLocation object's latitude and longitude passed to GeofenceController class' a method",
+        "Source Method": "Lcom/moengage/geofence/internal/GeofenceController$3;->onComplete:(Lcom/google/android/gms/tasks/Task;)V",
+        "Reasoning": "The GeoLocation object is passed to the a method of GeofenceController class.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "GeofenceController class' a method logs location using Logger.v method",
+        "Source Method": "Lcom/moengage/geofence/internal/GeofenceController;->a(Lcom/moengage/geofence/internal/GeoLocation;)V",
+        "Reasoning": "The a method of GeofenceController class calls the Logger.v method to log the location.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/moengage/geofence/internal/GeofenceController;->a(Lcom/moengage/geofence/internal/GeoLocation;)V",
+      "Lcom/google/android/gms/tasks/Task;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/moengage/geofence/internal/GeofenceController$3;->onComplete:(Lcom/google/android/gms/tasks/Task;)V --> Lcom/moengage/geofence/internal/GeofenceController;->a(Lcom/moengage/geofence/internal/GeoLocation;)V --> Logger.v ",
+        "Reasoning": "The data flows from the onComplete method to the a method of GeofenceController class, which logs the location using Logger.v method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "GeofenceController originates user personal data through sensitive API calls to determine geofence status.",
+        "Source Method": "Lcom/moengage/geofence/internal/GeofenceController;->a:(I)Ljava/lang/String;",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data, which is stored in registers and variables within the method. It propagates the data through method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "GeofenceController passes the originated data to other methods via method invocations.",
+        "Source Method": "Lcom/moengage/geofence/internal/GeofenceController;->a:(I)Ljava/lang/String;",
+        "Reasoning": "The method invokes other methods with the originated user personal data, which is then stored in registers and variables within those methods.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "MoEGeofenceHelper originates user personal data by invoking the getInstance() method of MoEGeofenceHelper$Companion class.",
+        "Source Method": "Lcom/moengage/geofence/MoEGeofenceHelper;->getInstance:()Lcom/moengage/geofence/MoEGeofenceHelper;",
+        "Reasoning": "The method invokes the getInstance() method to originate user personal data, which is stored in register v0 and propagated to the return statement.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "GeofenceInjector originates sensitive user personal data by invoking the SdkConfig class to retrieve the configuration.",
+        "Source Method": "Lcom/moengage/geofence/internal/GeofenceInjector;->getRepository:(Landroid/content/Context;)Lcom/moengage/geofence/internal/repository/LocationRepository;",
+        "Reasoning": "The method invokes the SdkConfig class to originate sensitive user personal data, which is stored in the 'b' field of the GeofenceInjector object and propagated through registers.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "LocationRepository initializes two instance variables 'a' and 'b' with LocalRepository and RemoteRepository instances respectively.",
+        "Source Method": "Lcom/moengage/geofence/internal/repository/LocationRepository;-><init>:(Lcom/moengage/geofence/internal/repository/LocalRepository; Lcom/moengage/geofence/internal/repository/RemoteRepository;)V",
+        "Reasoning": "The constructor initializes instance variables 'a' and 'b' with LocalRepository and RemoteRepository instances respectively.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/moengage/core/MoEngage;->logEvent:(Ljava/lang/String;)V",
+      "Lcom/moengage/geofence/internal/GeofenceController;->a:(I)Ljava/lang/String;",
+      "Lcom/moengage/geofence/internal/repository/LocationRepository;->storeLocation:(Ljava/util/List<Ljava/lang/Object;>;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/moengage/geofence/internal/GeofenceController;->a:(I)Ljava/lang/String; --> Lcom/moengage/core/MoEngage;->logEvent:(Ljava/lang/String;)V ",
+        "Reasoning": "The method GeofenceController originates user personal data through sensitive API calls to determine geofence status. The data is then passed to MoEngage class, which logs the event."
+      },
+      {
+        "dataflow 2": " Lcom/moengage/geofence/internal/GeofenceInjector;->getRepository:(Landroid/content/Context;)Lcom/moengage/geofence/internal/repository/LocationRepository; --> Lcom/moengage/geofence/internal/repository/LocationRepository;->storeLocation:(Ljava/util/List<Ljava/lang/Object;>;)V ",
+        "Reasoning": "The method GeofenceInjector originates sensitive user personal data by invoking the SdkConfig class to retrieve the configuration. The data is then stored in LocationRepository, which stores the location."
+      }
+    ],
+    "Label": "leak"
+  }
+]

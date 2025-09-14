@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Initialization and device info retrieval",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The onCreate method initializes the UI and retrieves device information via TelephonyManager, which is a known source of DeviceId.",
+                "Action": "Collected"
+            },
+            {
+                "Step": "SMS transmission",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method sends an SMS using SmsManager, which is a potential sink for exfiltrating sensitive data.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app.PendingIntent;Landroid/app.PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/telephony/TelephonyManager;->getDeviceId:()Ljava/lang/String; --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app.PendingIntent;Landroid/app.PendingIntent;)V",
+                "Reasoning": "The DeviceId is retrieved from TelephonyManager and directly used as an argument in the SmsManager's sendTextMessage method without explicit overwriting, maintaining taint."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

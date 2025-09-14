@@ -1,0 +1,504 @@
+[
+  {
+    "Data Types Collected": [
+      "WifiManager.ConnectionInfo",
+      "WifiManager.DhcpInfo"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WifiManager.getConnectionInfo() and WifiManager.getDhcpInfo() are called",
+        "Source Method": "Lcom/amazon/frank/provisioning/impl/ConnectivityUtil;->dumpCurrentNetworkStatus:()V",
+        "Reasoning": "Sensitive user data is originated in this method",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Collected data is logged using PLog.i()",
+        "Source Method": "Lcom/amazon/frank/provisioning/impl/ConnectivityUtil;->dumpCurrentNetworkStatus:()V",
+        "Reasoning": "Collected data is logged",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/frank/provisioning/impl/PLog;->i:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/frank/provisioning/impl/ConnectivityUtil;->dumpCurrentNetworkStatus:()V --> Lcom/amazon/frank/provisioning/impl/PLog;->i:(Ljava/lang/String;)V",
+        "Reasoning": "Collected data is logged in PLog.i() method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is originated from the `connectToDeviceAccessPoint()` method.",
+        "Source Method": "Lcom/amazon/frank/provisioning/impl/DeviceConnectManagerImpl;->connectToDeviceAccessPoint:(Ljava/lang/String; Lcom/amazon/frank/provisioning/DeviceConnectManager$DeviceAccessPointConnectCallback;)I",
+        "Reasoning": "Method summary provides the flow.",
+        "Action": "Stored in WifiConnectHelper class"
+      },
+      {
+        "Step": "Data is passed to the `connect()` method of the `WifiManager` class.",
+        "Source Method": "Lcom/amazon/frank/provisioning/impl/WifiConnectHelper;->connect:(Ljava/lang/String; Lcom/amazon/frank/provisioning/DeviceConnectManager$DeviceAccessPointConnectCallback;)V",
+        "Reasoning": "Method summary provides the flow.",
+        "Action": "Stored in WifiManager class"
+      },
+      {
+        "Step": "Data is finally reached the `connect()` method of the `DeviceConnectManagerImpl` class.",
+        "Source Method": "Lcom/amazon/frank/provisioning/impl/DeviceConnectManagerImpl;->connect:(Ljava/lang/String; Lcom/amazon/frank/provisioning/DeviceConnectManager$DeviceAccessPointConnectCallback;)I",
+        "Reasoning": "Method summary provides the flow.",
+        "Action": "Stored in DeviceConnectManagerImpl class"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/frank/provisioning/impl/DeviceConnectManagerImpl;->connectToDeviceAccessPoint(...) --> Lcom/amazon/frank/provisioning/impl/WifiConnectHelper;->connect(...) --> Lcom/amazon/frank/provisioning/impl/DeviceConnectManagerImpl;->connect(...)",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected in `mSSID`.",
+        "Source Method": "Lcom/amazon/frank/provisioning/impl/DeviceConnectManagerImplV29$ConnectToDeviceAccessPointRunnable;->run:()V",
+        "Reasoning": "Sensitive user personal data is originated in `mSSID`.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "User personal data is passed through `run()` method.",
+        "Source Method": "Lcom/amazon/frank/provisioning/impl/DeviceConnectManagerImplV29$ConnectToDeviceAccessPointRunnable;->run:()V",
+        "Reasoning": "Sensitive user personal data is passed through `run()` method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "User personal data is potentially reached logging.",
+        "Source Method": "Lcom/amazon/frank/provisioning/impl/DeviceConnectManagerImplV29$ConnectToDeviceAccessPointRunnable;->run:()V",
+        "Reasoning": "Sensitive user personal data is potentially reached logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/frank/provisioning/impl/DeviceConnectManagerImplV29$ConnectToDeviceAccessPointRunnable;->run:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/frank/provisioning/impl/DeviceConnectManagerImplV29$ConnectToDeviceAccessPointRunnable;->run:()V --> Lcom/amazon/frank/provisioning/impl/DeviceConnectManagerImplV29$ConnectToDeviceAccessPointRunnable;->run:()V --> Lcom/amazon/frank/provisioning/impl/DeviceConnectManagerImplV29$ConnectToDeviceAccessPointRunnable;->run:()V",
+        "Reasoning": "Sensitive user personal data is collected in `mSSID`, passed through `run()` method, and potentially reaches logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " WifiConnectHelperV16(...) --> disconnectFromNetworkAndRemove(...) --> null",
+        "Reasoning": "The method disconnects from the network but does not store, log, or transmit any sensitive data."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiNetwork"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected from WifiManager",
+        "Source Method": "Lcom/amazon/whisperjoin/deviceprovisioningservice/wifi/CurrentWifiNetworkProvider;->getCurrentWifiNetwork:()Lcom/amazon/whisperjoin/common/sharedtypes/provisioning/data/wifi/WifiNetwork;",
+        "Reasoning": "Method documentation specifies data source",
+        "Action": "Stored in WifiNetwork object"
+      },
+      {
+        "Step": "WifiNetwork object is returned as result",
+        "Source Method": "Lcom/amazon/whisperjoin/deviceprovisioningservice/wifi/CurrentWifiNetworkProvider;->getCurrentWifiNetwork:()Lcom/amazon/whisperjoin/common/sharedtypes/provisioning/data/wifi/WifiNetwork;",
+        "Reasoning": "Method documentation specifies data return type",
+        "Action": "Transmitted as result"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/whisperjoin/deviceprovisioningservice/wifi/CurrentWifiNetworkProvider;->getCurrentWifiNetwork:()Lcom/amazon/whisperjoin/common/sharedtypes/provisioning/data/wifi/WifiNetwork; --> Lcom/amazon/whisperjoin/deviceprovisioningservice/wifi/CurrentWifiNetworkProvider;->getCurrentWifiNetwork:()Lcom/amazon/whisperjoin/common/sharedtypes/provisioning/data/wifi/WifiNetwork;",
+        "Reasoning": "Data is returned as method result"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Radio ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Radio ID",
+        "Source Method": "Lcom/amazon/whispersync/dcp/framework/AmazonDeviceInfo;->getRadioId:()Ljava/lang/String;",
+        "Reasoning": "Method `getRadioId()` accesses the `WifiManager` and retrieves the MAC address of the connected WiFi network.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [
+      "Lcom/amazon/bison/FclManager;->logNetworkStatus(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieving Wi-Fi SSID",
+        "Source Method": "Lcom/amazon/bison/connectivity/NetworkManager;->getCurrentWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method `getCurrentWifiSSID` explicitly retrieves the SSID.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Stripping quotes",
+        "Source Method": "Lcom/amazon/bison/connectivity/NetworkManager;->stripQuotes(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method `stripQuotes` is called on the retrieved SSID.",
+        "Action": "Transformed"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/bison/connectivity/NetworkManager;->getCurrentWifiSSID:()Ljava/lang/String; --> Lcom/amazon/bison/connectivity/NetworkManager;->stripQuotes(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The SSID is first retrieved and then stripped of quotes before being returned."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieving WifiSSID",
+        "Source Method": "Lcom/amazon/bison/oobe/frank/FrankPhaseListener;->getCurrentWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "Method description",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/bison/oobe/frank/FrankPhaseListener;->getCurrentWifiSSID:()Ljava/lang/String; --> Stored",
+        "Reasoning": "The method `getCurrentWifiSSID()` retrieves the SSID of the connected WiFi network using the `WifiManager` API and strips quotes from the result."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is extracted from the Location object.",
+        "Source Method": "Lcom/amazon/bison/oobe/frank/antennasetup/AntennaDirectionController;->getCardinalDirection:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Location data is used to calculate cardinal direction.",
+        "Source Method": "Lcom/amazon/bison/oobe/frank/antennasetup/AntennaDirectionController;->getCardinalDirection:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Cardinal direction is sent to IBCSServer.",
+        "Source Method": "Lcom/amazon/bison/oobe/frank/antennasetup/AntennaDirectionController;->getCardinalDirection:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/bison/oobe/frank/antennasetup/IBCSSender;->request(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/bison/oobe/frank/antennasetup/AntennaDirectionController;->getCardinalDirection:(Landroid/location/Location;)V --> Lcom/amazon/bison/oobe/frank/antennasetup/IBCSSender;->request(Ljava/lang/String;)V",
+        "Reasoning": "Overall Data Flow analysis."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected.",
+        "Source Method": "Lcom/amazon/bison/oobe/frank/antennasetup/SystemLocationProvider;->startListenForLocation:(Lcom/amazon/bison/util/IObjectCallback;)V",
+        "Reasoning": "Sensitive API call `requestLocationUpdates()`.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "User location is passed to MyLocationListener.",
+        "Source Method": "Lcom/amazon/bison/oobe/frank/antennasetup/SystemLocationProvider;->startListenForLocation:(Lcom/amazon/bison/util/IObjectCallback;)V",
+        "Reasoning": "Passed via IObjectCallback.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "User location is passed to onCallback().",
+        "Source Method": "Lcom/amazon/bison/oobe/frank/antennasetup/SystemLocationProvider;->startListenForLocation:(Lcom/amazon/bison/util/IObjectCallback;)V",
+        "Reasoning": "Passed via IObjectCallback.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/bison/oobe/frank/antennasetup/SystemLocationProvider;->startListenForLocation:(Lcom/amazon/bison/util/IObjectCallback;)V --> MyLocationListener --> onCallback()",
+        "Reasoning": "User location is passed to MyLocationListener and then to onCallback()."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wifi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Wifi SSID",
+        "Source Method": "Lcom/amazon/bison/oobe/frank/wifisetup/ManuallyConnectToFrankScreen;->getCurrentWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "Method `getCurrentWifiSSID` explicitly retrieves the Wifi SSID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " ManuallyConnectToFrankScreen(...) --> Stored",
+        "Reasoning": "The Wifi SSID is retrieved and stored within the application."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Network Name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user's network name",
+        "Source Method": "Lcom/amazon/storm/lightning/client/pairing/DevicePickerFragment;->getNetworkName:()Ljava/lang/String;",
+        "Reasoning": "Method documentation specifies the method obtains the user's network name",
+        "Action": "Stored in variable `v1`"
+      },
+      {
+        "Step": "Return network name",
+        "Source Method": "Lcom/amazon/storm/lightning/client/pairing/DevicePickerFragment;->getNetworkName:()Ljava/lang/String;",
+        "Reasoning": "Method documentation specifies the method returns the user's network name",
+        "Action": "Returned as result"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/storm/lightning/client/pairing/DevicePickerFragment;->getNetworkName:()Ljava/lang/String; --> Return",
+        "Reasoning": "Data flows from the source method to the return statement"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve BSSID",
+        "Source Method": "Lcom/amazon/communication/wifi/WifiManagerWrapperImpl;->getBssid:()Ljava/lang/String;",
+        "Reasoning": "The `getBssid()` method retrieves the BSSID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " WifiManagerWrapperImpl.getBssid() --> null",
+        "Reasoning": "The BSSID is retrieved but not logged, transmitted, or written to any files."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi MAC address",
+      "SHA-1 hash of WiFi MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WiFi MAC address is hashed",
+        "Source Method": "Lcom/amazon/device/ads/identity/DeviceInfo;->setMacAddress:()V",
+        "Reasoning": "Method sets the `sha1_mac` field to the SHA-1 hash of the WiFi MAC address.",
+        "Action": "Stored in `sha1_mac` field"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/identity/DeviceInfo;->setMacAddress:()V --> sha1_mac",
+        "Reasoning": "The WiFi MAC address is hashed and stored in the `sha1_mac` field."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain Device ID",
+        "Source Method": "Lcom/amazon/identity/auth/device/eb;->getDeviceId:()Ljava/lang/String;",
+        "Reasoning": "Method `getDeviceId()` retrieves the device ID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/auth/device/eb;->getDeviceId() --> Stored",
+        "Reasoning": "The device ID is obtained and stored in the register `v0`."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve phone number",
+        "Source Method": "Lcom/amazon/identity/auth/device/eb;->getLine1Number:()Ljava/lang/String;",
+        "Reasoning": "Method `getLine1Number()` explicitly retrieves the phone number.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/auth/device/eb;->getLine1Number:()Ljava/lang/String; --> Stored",
+        "Reasoning": "Phone number is retrieved and stored within the application."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieving MAC address",
+        "Source Method": "Lcom/amazon/identity/auth/device/eh;->dQ:()Ljava/lang/String;",
+        "Reasoning": "Method description",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/auth/device/eh;->dQ:()Ljava/lang/String; --> Stored",
+        "Reasoning": "MAC address is retrieved and stored"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User's phone number is collected.",
+        "Source Method": "Lcom/amazon/identity/frc/FrcCookiesManager/c;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `c` explicitly collects user's phone number.",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Phone number is passed to method `g`.",
+        "Source Method": "Lcom/amazon/identity/frc/FrcCookiesManager/c;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `c` calls method `g` with the collected phone number.",
+        "Action": "Passed as argument"
+      },
+      {
+        "Step": "Method `g` returns phone number.",
+        "Source Method": "Lcom/amazon/identity/frc/FrcCookiesManager/c;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `g` is called with user's phone number.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/frc/FrcCookiesManager/c;->f:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/amazon/identity/frc/FrcCookiesManager/c;->g:(Ljava/lang/String;)Ljava/lang/String; --> null",
+        "Reasoning": "Method `c` collects user's phone number, passes it to method `g`, and returns it. No sensitive API calls are detected in method `g`. Therefore, no data is sent outside the application."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

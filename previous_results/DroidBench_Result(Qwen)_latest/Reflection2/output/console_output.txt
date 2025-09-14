@@ -1,0 +1,39 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\Reflection2
+Using methods file: D:\withoutcallgraphResult\TestAcessess\Reflection2\Reflection2_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method originates user data by retrieving the device IMEI via TelephonyManager.getDeviceId(), which is stored in a BaseClass instance. This data is then used in an SMS send operation via SmsManager.sendTextMessage, which constitutes a network transmission sink. No further methods are passed as the data reaches a sink.",
+    "Next Methods": []
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\Reflection2\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\Reflection2\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\Reflection2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data originates from TelephonyManager.getDeviceId()",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves device IMEI via TelephonyManager.getDeviceId() and stores it in BaseClass",
+                "Action": "Data is passed to SmsManager.sendTextMessage"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V",
+                "Reasoning": "DeviceId is passed to network transmission sink without being overwritten"
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\Reflection2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\Reflection2\output\sensitive_only.json
+Total summary time: 18.65852642059326 seconds

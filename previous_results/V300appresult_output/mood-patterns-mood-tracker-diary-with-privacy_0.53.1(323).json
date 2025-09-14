@@ -1,0 +1,54 @@
+[
+  {
+    "Data Types Collected": [
+      "Location (android/location/Location)",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access device's location using Location API",
+        "Source Method": "Linfo/moodpatterns/moodpatterns/survey/SurveyActivity$i;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates sensitive user personal data by accessing the device's location using the Location API.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Invoke L0 with sensitive field f J and array of doubles d [D",
+        "Source Method": "Linfo/moodpatterns/moodpatterns/survey/SurveyActivity;->F0:()V",
+        "Reasoning": "The method originates user personal data by invoking the `L0` method with a sensitive field `f J` and an array of doubles `d [D`. The data is stored in registers `v0`, `v1`, and `v2`.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Create new instance of SurveyActivity$o with context, database object, and array of doubles",
+        "Source Method": "Linfo/moodpatterns/moodpatterns/survey/SurveyActivity;->L0:(J [D)V",
+        "Reasoning": "The method originates user personal data by creating a new instance of SurveyActivity$o with sensitive user information (context, database object, and array of doubles). The data is stored in registers v0, v1, v3, and v5.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Use API call to load SQLite database libraries",
+        "Source Method": "Linfo/moodpatterns/moodpatterns/database/a;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "The method <init> in class a of package info/moodpatterns/moodpatterns/database originates user personal data by using the sensitive API call to load SQLite database libraries.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Use DefaultDatabaseErrorHandler constructor",
+        "Source Method": "Lnet/sqlcipher/database/SQLiteOpenHelper;-><init>:(Landroid/content/Context; Ljava/lang/String; Lnet/sqlcipher/database/SQLiteDatabase$CursorFactory; I Lnet/sqlcipher/database/SQLiteDatabaseHook;)V",
+        "Reasoning": "The current method originates user personal data through the use of sensitive API calls, specifically the `DefaultDatabaseErrorHandler` constructor.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Linfo/moodpatterns/moodpatterns/survey/SurveyActivity;->F0:()V",
+      "Lnet/sqlcipher/database/SQLiteOpenHelper;-><init>:(Landroid/content/Context; Ljava/lang/String; Lnet/sqlcipher/database/SQLiteDatabase$CursorFactory; I Lnet/sqlcipher/database/SQLiteDatabaseHook;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Linfo/moodpatterns/moodpatterns/survey/SurveyActivity$i;->a:(Landroid/location/Location;)V --> Linfo/moodpatterns/moodpatterns/survey/SurveyActivity;->F0:()V --> Lnet/sqlcipher/database/SQLiteOpenHelper;-><init>:(Landroid/content/Context; Ljava/lang/String; Lnet/sqlcipher/database/SQLiteDatabase$CursorFactory; I Lnet/sqlcipher/database/SQLiteDatabaseHook;)V",
+        "Reasoning": "The data flows from the SurveyActivity$i method, which accesses the device's location, to the F0 method, which invokes L0 with sensitive field f J and array of doubles d [D. The data is then stored in registers v0, v1, and v2."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

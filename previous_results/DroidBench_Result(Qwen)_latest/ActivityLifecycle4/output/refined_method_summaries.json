@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID (IMEI) is retrieved and stored in a field by onResume",
+                "Source Method": "Lde/ecspride/MainActivity;->onResume:()V",
+                "Reasoning": "The onResume method explicitly retrieves the device ID and stores it in a field, indicating data collection.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Stored device ID is transmitted via SMS to a hardcoded number by onPause",
+                "Source Method": "Lde/ecspride/MainActivity;->onPause:()V",
+                "Reasoning": "The onPause method sends the device IMEI via SMS, which is a potential data leak of sensitive device information.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->onPause:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onResume:()V --> Lde/ecspride/MainActivity;->onPause:()V",
+                "Reasoning": "The device ID (IMEI) is first stored in a field by onResume, then transmitted via SMS to a hardcoded number by onPause without being overwritten with a non-sensitive value."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

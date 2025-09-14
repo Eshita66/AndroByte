@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "subscriber ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Stores subscriber ID in field 's'",
+                "Source Method": "Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V",
+                "Reasoning": "Summary explicitly states subscriber ID is stored in field 's' for potential use in onRestoreInstanceState",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sends subscriber ID via SMS",
+                "Source Method": "Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V",
+                "Reasoning": "Summary explicitly identifies this as a potential data leak via SMS transmission",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V",
+                "Reasoning": "Subscriber ID stored in field 's' by onSaveInstanceState is read and transmitted via SMS by onRestoreInstanceState. No overwriting or taint removal is mentioned in summaries."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

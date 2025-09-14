@@ -1,0 +1,356 @@
+[
+  {
+    "Data Types Collected": [
+      "network information",
+      "traffic statistics",
+      "device details",
+      "user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data through API calls and method invocations.",
+        "Source Method": "Lcom/forter/mobile/fortersdk/integrationkit/EventsManager$5;->run:()V",
+        "Reasoning": "The summaries indicate that sensitive data is originated within the method, stored in registers and variables, and propagated through method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Passes user personal data to other methods via method invocations.",
+        "Source Method": "Lcom/forter/mobile/fortersdk/api/ForterClientProxy;->sendEvent:(Lcom/forter/mobile/fortersdk/interfaces/IForterEvent; Z)Z",
+        "Reasoning": "The summaries indicate that sensitive data is passed to other methods via method invocations.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Transmits user personal data through network calls.",
+        "Source Method": "Lcom/forter/mobile/fortersdk/api/ForterClientProxy;->sendEvent:(Lcom/forter/mobile/fortersdk/interfaces/IForterEvent; Z)Z",
+        "Reasoning": "The summaries indicate that sensitive data is transmitted through network calls.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/forter/mobile/fortersdk/api/ForterClientProxy;->sendEvent:(Lcom/forter/mobile/fortersdk/interfaces/IForterEvent; Z)Z",
+      "Lcom/forter/mobile/fortersdk/integrationkit/EventsManager$5;->run:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/forter/mobile/fortersdk/integrationkit/EventsManager$5;->run:(...) --> Lcom/forter/mobile/fortersdk/api/ForterClientProxy;->sendEvent:(Lcom/forter/mobile/fortersdk/interfaces/IForterEvent; Z)Z --> Network Call",
+        "Reasoning": "The data is originated within the method, stored in registers and variables, passed to other methods via method invocations, and transmitted through network calls."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain current location using getLastKnownLocation()",
+        "Source Method": "Lbo/app/j1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The method calls the sensitive API to get the last known GPS location.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Call isProviderEnabled() to check if provider is enabled",
+        "Source Method": "Lbo/app/j1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The method calls the sensitive API to check if the GPS provider is enabled.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Get current system time using currentTimeMillis()",
+        "Source Method": "Lcom/appboy/support/DateTimeUtils;->nowInMilliseconds:()J",
+        "Reasoning": "The method calls the sensitive API to get the current system time.",
+        "Action": "Stored in register v0 as a long value"
+      }
+    ],
+    "All Sinks": [
+      "Lbo/app/j1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/appboy/support/DateTimeUtils;->nowInMilliseconds:()J --> Lbo/app/j1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The current system time is stored in register v0 and then passed to the method Lbo/app/j1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;, which stores it in registers and variables. Finally, it reaches a sink point through logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/Double"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location data from API calls",
+        "Source Method": "Lbo/app/i2;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data by invoking sensitive API calls to get the location's latitude, longitude, altitude, and accuracy.",
+        "Action": "Stored in registers v1-v6"
+      },
+      {
+        "Step": "Validate location data using isValidLocation",
+        "Source Method": "Lcom/appboy/support/ValidationUtils;->isValidLocation:(D D)Z",
+        "Reasoning": "The method originates user personal data from the 'location' parameter.",
+        "Action": "Stored in registers v3 and v5"
+      },
+      {
+        "Step": "Pass validated location data to constructor",
+        "Source Method": "Lbo/app/i2;-><init>:(D D Ljava/lang/Double; Ljava/lang/Double;)V",
+        "Reasoning": "The current method originates user personal data through the use of sensitive API calls to `isValidLocation` in `ValidationUtils`.",
+        "Action": "Passed to constructor"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbo/app/i2;-><init>:(Landroid/location/Location;)V --> Lcom/appboy/support/ValidationUtils;->isValidLocation:(D D)Z --> Lbo/app/i2;-><init>:(D D Ljava/lang/Double; Ljava/lang/Double;)V",
+        "Reasoning": "The location data is first obtained, then validated using `isValidLocation`, and finally passed to the constructor of `Lbo/app/i2`."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Latitude and longitude extracted from Location object",
+        "Source Method": "Lcom/instacart/client/location/current/-$$Lambda$ICCurrentLocationUseCase$gzOUY8MgLdxRjcfj_3BbNtXKXbM;->apply:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "The method originates user personal data from the 'Location' object's latitude and longitude.",
+        "Action": "Stored in variables 'v3' and 'v5'"
+      },
+      {
+        "Step": "Latitude and longitude passed to fetch$1",
+        "Source Method": "Lcom/instacart/client/location/current/-$$Lambda$ICCurrentLocationUseCase$gzOUY8MgLdxRjcfj_3BbNtXKXbM;->apply:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "The data is then passed to other methods via method invocations, specifically 'fetch$1'.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Latitude and longitude passed to mapContent$1",
+        "Source Method": "Lcom/instacart/client/location/current/-$$Lambda$ICCurrentLocationUseCase$gzOUY8MgLdxRjcfj_3BbNtXKXbM;->apply:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "The data is then passed to other methods via method invocations, specifically 'mapContent$1'.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/instacart/client/location/current/-$$Lambda$ICCurrentLocationUseCase$gzOUY8MgLdxRjcfj_3BbNtXKXbM;->fetch$1:(Ljava/lang/Object;)V",
+      "Lcom/instacart/client/location/current/-$$Lambda$ICCurrentLocationUseCase$gzOUY8MgLdxRjcfj_3BbNtXKXbM;->mapContent$1:(Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/instacart/client/location/current/-$$Lambda$ICCurrentLocationUseCase$gzOUY8MgLdxRjcfj_3BbNtXKXbM;->apply:(Ljava/lang/Object;)Ljava/lang/Object --> Lcom/instacart/client/location/current/-$$Lambda$ICCurrentLocationUseCase$gzOUY8MgLdxRjcfj_3BbNtXKXbM;->fetch$1:(Ljava/lang/Object;)V",
+        "Reasoning": "Latitude and longitude extracted from Location object, stored in variables 'v3' and 'v5', then transmitted to fetch$1 method."
+      },
+      {
+        "dataflow 2": "Lcom/instacart/client/location/current/-$$Lambda$ICCurrentLocationUseCase$gzOUY8MgLdxRjcfj_3BbNtXKXbM;->apply:(Ljava/lang/Object;)Ljava/lang/Object --> Lcom/instacart/client/location/current/-$$Lambda$ICCurrentLocationUseCase$gzOUY8MgLdxRjcfj_3BbNtXKXbM;->mapContent$1:(Ljava/lang/Object;)V",
+        "Reasoning": "Latitude and longitude extracted from Location object, stored in variables 'v3' and 'v5', then transmitted to mapContent$1 method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data retrieved from device",
+        "Source Method": "Lcom/instacart/client/pickup/live/-$$Lambda$ICLiveTrackingUseCase$kzlf5Lxq87o8_MkrJN6EBVvgW9k;->apply:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Location data is retrieved from the device's location services",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Device ID collected for tracking purposes",
+        "Source Method": "Lcom/instacart/client/pickup/live/-$$Lambda$ICLiveTrackingUseCase$kzlf5Lxq87o8_MkrJN6EBVvgW9k;->apply:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Device ID is collected for tracking purposes",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Phone number retrieved from device contact list",
+        "Source Method": "Lcom/instacart/client/pickup/live/-$$Lambda$ICLiveTrackingUseCase$kzlf5Lxq87o8_MkrJN6EBVvgW9k;->apply:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Phone number is retrieved from the device's contact list",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/instacart/client/pickup/live/-$$Lambda$ICLiveTrackingUseCase$kzlf5Lxq87o8_MkrJN6EBVvgW9k;->onLocationChanged:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/instacart/client/pickup/live/-$$Lambda$ICLiveTrackingUseCase$kzlf5Lxq87o8_MkrJN6EBVvgW9k;->apply:(Ljava/lang/Object;)Ljava/lang/Object() --> Lcom/instacart/client/pickup/live/-$$Lambda$ICLiveTrackingUseCase$kzlf5Lxq87o8_MkrJN6EBVvgW9k;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Location data is retrieved from the device's location services and stored in the use case object, then passed to onLocationChanged method for further processing"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get latitude and longitude from Location object",
+        "Source Method": "Lcom/instacart/client/location/current/ICCurrentLocationUseCase$currentLocationOld$1$1;->invoke:()Lio/reactivex/rxjava3/core/Single;",
+        "Reasoning": "The current method originates user personal data through the use of sensitive API calls.",
+        "Action": "Stored in registers v1 and v3"
+      },
+      {
+        "Step": "Pass latitude and longitude as parameters to findSingleAddressWithZipOption",
+        "Source Method": "Lcom/instacart/client/location/current/ICCurrentLocationUseCase$currentLocationOld$1$1;->invoke:()Lio/reactivex/rxjava3/core/Single;",
+        "Reasoning": "The data is passed as parameters to the findSingleAddressWithZipOption method of the ICRxGeocoder interface.",
+        "Action": "Passed as parameters"
+      }
+    ],
+    "All Sinks": [
+      "Lio/reactivex/rxjava3/core/Single;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/instacart/client/location/current/ICCurrentLocationUseCase$currentLocationOld$1$1;->invoke:()Lio/reactivex/rxjava3/core/Single; --> Lio/reactivex/rxjava3/core/Observable; --> Lio/reactivex/rxjava3/core/Single;",
+        "Reasoning": "The data is passed from the invoke method to an Observable, which then returns a Single object containing the result of the geocoding operation."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieving TelephonyManager instance",
+        "Source Method": "Lap;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "getSystemService API is used to retrieve the TelephonyManager instance.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Retrieving IMEI and device ID",
+        "Source Method": "Lap;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "IMEI and device ID are retrieved from the TelephonyManager instance.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Returning IMEI if SDK version is 26 or higher",
+        "Source Method": "Lap;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "If the SDK version is 26 or higher, only the IMEI is returned.",
+        "Action": "Returned"
+      },
+      {
+        "Step": "Returning both IMEI and device ID if SDK version is lower than 26",
+        "Source Method": "Lap;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "If the SDK version is lower than 26, both IMEI and device ID are returned.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lap;->a:(Landroid/content/Context;)Ljava/lang/String;(...) --> TelephonyManager instance(IMEI, device ID) --> Stored",
+        "Reasoning": "The method retrieves the TelephonyManager instance using the getSystemService API, then retrieves IMEI and device ID from this instance. If the SDK version is 26 or higher, only the IMEI is returned; otherwise, both IMEI and device ID are returned."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Android ID",
+      "Serial number",
+      "Manufacturer",
+      "Model",
+      "Device name",
+      "Anonymous ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Android ID using Settings$Secure.getString()",
+        "Source Method": "Lcom/segment/analytics/AnalyticsContext;->putDevice:(Landroid/content/Context; Z)V",
+        "Reasoning": "The method uses the `Settings$Secure.getString()` method to retrieve the Android ID.",
+        "Action": "Stored in string variable v4"
+      },
+      {
+        "Step": "Check if retrieved Android ID matches certain known values",
+        "Source Method": "Lcom/segment/analytics/AnalyticsContext;->putDevice:(Landroid/content/Context; Z)V",
+        "Reasoning": "The method checks if the retrieved ID matches certain known values.",
+        "Action": "Proceed to retrieve other device information"
+      },
+      {
+        "Step": "Retrieve serial number, manufacturer, model, and device name",
+        "Source Method": "Lcom/segment/analytics/AnalyticsContext;->putDevice:(Landroid/content/Context; Z)V",
+        "Reasoning": "The method retrieves other device information.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Get anonymous ID using a sensitive API",
+        "Source Method": "Lcom/segment/analytics/Traits;->anonymousId:()Ljava/lang/String;",
+        "Reasoning": "The method calls a sensitive API to get the anonymous ID.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Check if CharSequence is null or empty",
+        "Source Method": "Lcom/instacart/snacks/R$style;->isNullOrEmpty:(Ljava/lang/CharSequence;)Z",
+        "Reasoning": "The method checks if the CharSequence is null or empty.",
+        "Action": "Stored in registers v7 and v2"
+      },
+      {
+        "Step": "Get string value from ValueMap",
+        "Source Method": "Lcom/segment/analytics/ValueMap;->getString:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method gets the string value from ValueMap.",
+        "Action": "Stored in register v2"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/segment/analytics/AnalyticsContext;->putDevice:(Landroid/content/Context; Z)V --> Lcom/segment/analytics/Traits;->anonymousId:()Ljava/lang/String;",
+        "Reasoning": "The Android ID is retrieved and stored in a string variable, then the anonymous ID is retrieved from a sensitive API and stored in register v0."
+      },
+      {
+        "dataflow 2": "Lcom/segment/analytics/Traits;->anonymousId:()Ljava/lang/String --> Lcom/instacart/snacks/R$style;->isNullOrEmpty:(Ljava/lang/CharSequence;)Z",
+        "Reasoning": "The anonymous ID is passed to the `isNullOrEmpty` function on a CharSequence object."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "account information",
+      "process ID",
+      "UID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access account information using AccountManager API.",
+        "Source Method": "Lbe;->h:(Landroid/content/Context;)Lorg/json/JSONArray;",
+        "Reasoning": "The method originates user personal data by accessing account information using the AccountManager API.",
+        "Action": "Stored in JSONArray"
+      },
+      {
+        "Step": "Get process ID and UID from sensitive APIs.",
+        "Source Method": "Lbe;->a:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "[This method originates user personal data by calling sensitive APIs to get the process ID and UID.]",
+        "Action": "Stored in registers (v0, v1)"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbe;->h:(Landroid/content/Context;)Lorg/json/JSONArray; --> Lorg/json/JSONArray; (propagated via return statements) --> null",
+        "Reasoning": "The data is stored in a JSONArray and propagated to other methods via return statements, but no sink points are found."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

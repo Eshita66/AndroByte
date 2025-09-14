@@ -1,0 +1,51 @@
+
+Processing folder: D:\UBCBAPK_Methods\ConservativeModel3
+Using methods file: D:\UBCBAPK_Methods\ConservativeModel3\ConservativeModel3_bytecode_instructions.json
+Source methods with sensitive calls: ['Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V => In the given method, sensitive user personal data (IMEI) is obtained from the TelephonyManager using getDeviceId(). This data is then stored in an instance variable of the MainActivity class and subsequently logged via Log.v() with a tag 'TAG'.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "IMEI"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Obtain IMEI from TelephonyManager",
+            "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method retrieves the device ID using getDeviceId() which is a way to obtain IMEI.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Store IMEI in instance variable",
+            "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The retrieved IMEI is stored as an instance variable of the MainActivity class.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Log IMEI using Log.v()",
+            "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The logged data is considered a form of storage since it is recorded for future reference with a tag 'TAG'.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ljunbin/ubc/MainActivity;->Log.v(Ljava/lang/String; Ljava/lang/String;)V",
+        
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Stored in instance variable --> Logged using Log.v() --> Sink Method: Ljunbin/ubc/MainActivity;->Log.v(Ljava/lang/String; Ljava/lang/String;)V]",
+            "Reasoning": "The IMEI is first obtained from the TelephonyManager, stored as an instance variable of the MainActivity class, and then logged using Log.v(). This sequence constitutes a data flow that ends at the logging sink."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ConservativeModel3\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ConservativeModel3\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ConservativeModel3\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ConservativeModel3\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ConservativeModel3\output\sensitive_only.json
+Total time for folder: 57.40 seconds

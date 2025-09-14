@@ -1,0 +1,52 @@
+
+Processing folder: D:\UBCBAPK_Methods\MultiHandlers1
+Using methods file: D:\UBCBAPK_Methods\MultiHandlers1\MultiHandlers1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V']
+[SUMMARY] Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V => The method onLocationChanged in class MyLocationListener1 retrieves the longitude and latitude from an instance of Landroid/location/Location;, constructs a string containing this information, and then passes this string to an implementation of Lde/ecspride/IDataProvider through its setData method. The sensitive data here is the user's location coordinates.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "longitude",
+        "latitude"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieving longitude and latitude from Landroid/location/Location instance",
+            "Source Method": "Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V",
+            "Reasoning": "The method retrieves the longitude and latitude values from an instance of Landroid/location/Location.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Constructing a string containing longitude and latitude information",
+            "Source Method": "Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V",
+            "Reasoning": "The retrieved values are used to construct a string that includes the user's location coordinates.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Passing the constructed string to Lde/ecspride/IDataProvider through its setData method",
+            "Source Method": "Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V",
+            "Reasoning": "The string containing sensitive data is passed as an argument to the setData method of an interface implementation.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/IDataProvider;->setData(Ljava/lang/String;)V",
+   
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V --> ... --> Sink Method: Lde/ecspride/IDataProvider;->setData(Ljava/lang/String;)V]",
+            "Reasoning": "The method onLocationChanged retrieves the longitude and latitude from an instance of Landroid/location/Location;, constructs a string containing this information, which is then passed to the setData method of Lde/ecspride/IDataProvider."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\MultiHandlers1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\MultiHandlers1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\MultiHandlers1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\MultiHandlers1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\MultiHandlers1\output\sensitive_only.json
+Total time for folder: 58.97 seconds

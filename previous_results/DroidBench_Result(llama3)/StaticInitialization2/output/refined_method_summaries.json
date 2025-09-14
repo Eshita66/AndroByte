@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "device ID",
+            "phone number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID obtained via TelephonyManager",
+                "Source Method": "Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V",
+                "Reasoning": "The method obtains the device ID using `getSystemService(Ljava/lang/String;)Ljava/lang/Object;` and `getDeviceId()`.",
+                "Action": "Stored as static field `im`"
+            },
+            {
+                "Step": "SMS message initiated with phone number",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method sends an SMS message containing the phone number \"+49 1234\".",
+                "Action": "Transmitted via SMS"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V --> Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID obtained in `MainActivity$StaticInitClass1.<clinit>()` is used as input to `MainActivity.onCreate()`, which then sends an SMS message containing the phone number. This represents a direct flow of sensitive data from a static field to a potentially exposed sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]

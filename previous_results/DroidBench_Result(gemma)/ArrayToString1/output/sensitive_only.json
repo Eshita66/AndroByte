@@ -1,0 +1,28 @@
+[
+    {
+        "Data Types Collected": [
+            "deviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID",
+                "Source Method": "Ledu/mit/to_string/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method calls `getSystemService` to obtain a `TelephonyManager` object, which then calls `getDeviceId()` to retrieve the device ID.",
+                "Action": "Store deviceId"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/to_string/MainActivity;->Log.i(Ljava/lang/String;Ljava/lang/String;Z)",
+            "Ledu/mit/to_string/MainActivity;->Log.i(Ljava/lang/String;Ljava/lang/String;Z)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/to_string/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/to_string/MainActivity;->getSystemService(Ljava/lang/String;)Ljava.lang.Object; --> Ledu/mit/to_string/MainActivity;->Arrays.toString(Ljava/lang/Object;)Ljava/util/Arrays; --> Ledu/mit/to_string/MainActivity;->Log.i(Ljava/lang/String;Ljava/lang/String;Z)",
+                "Reasoning": "The `onCreate` method first gets a `TelephonyManager` object. `getDeviceId()` retrieves the device ID, which is then converted to a string using `Arrays.toString()`. This tainted string is then logged using `Log.i` with the message \"DroidBench\"."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID from TelephonyManager",
+                "Source Method": "Ledu/mit/non_sink_argument_flow/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "Device ID is retrieved via the 'getSystemService' method which returns an object of type TelephonyManager.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Use Device ID in ProcessBuilder",
+                "Source Method": "Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Device ID is used to construct a command through ProcessBuilder, potentially passing it to external processes.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Ljava/lang/ProcessBuilder;->start()Ljava/lang/Process;",
+            "Ljava/lang/ProcessBuilder;->command([Ljava/lang/String;)Ljava/lang/ProcessBuilder;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/non_sink_argument_flow/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljava/lang/ProcessBuilder;->command([Ljava/lang/String;)Ljava/lang/ProcessBuilder;",
+                "Reasoning": "The device ID is retrieved in 'onCreate' and used to construct a command through ProcessBuilder, which could be considered a potential sink if executed."
+            }
+        ],
+        "Label": "leak"
+    }
+]

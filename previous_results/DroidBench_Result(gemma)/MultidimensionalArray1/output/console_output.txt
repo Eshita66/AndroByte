@@ -1,0 +1,41 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\MultidimensionalArray1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\MultidimensionalArray1\MultidimensionalArray1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method first calls `invoke-super` to initialize the `Activity`. Then, it retrieves the device ID using `getDeviceId` from the `TelephonyManager`. This is achieved through `invoke-virtual v2, Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;`. The `getDeviceId` call is the sink. The `TelephonyManager` object is then used to access the `getDeviceId` method. The result of `getDeviceId` is then used to populate an array. Finally, `Log.i` is called with the device ID as the argument. The key evidence for the leak is the `invoke-virtual` call to `getDeviceId` which directly uses a sensitive API.  The `const/4 v5, 1` instruction sets the value of `v5` to 1, and the `const/4 v6, 0` instruction sets the value of `v6` to 0. These constants are used in the subsequent `invoke-virtual` call to `getDeviceId`.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\MultidimensionalArray1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\MultidimensionalArray1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\MultidimensionalArray1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "device_id"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method calls `getDeviceId` through `TelephonyManager`.",
+                "Action": "Data stored as `device_id`"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/array_slice/MainActivity;->Log.i:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/array_slice/MainActivity;->getDeviceId:(Landroid/telephony/TelephonyManager;)Ljava/lang/String;",
+                "Reasoning": "The `onCreate` method initiates the flow by calling `getDeviceId` on the `TelephonyManager`. The result, `device_id`, is then passed as an argument to the `Log.i` method."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\MultidimensionalArray1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\MultidimensionalArray1\output\sensitive_only.json
+Total summary time: 27.27233099937439 seconds

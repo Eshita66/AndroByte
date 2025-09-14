@@ -1,0 +1,629 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Read MAC address from file",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method loads the MAC address from a file in /sys/class/net/, reads it line by line, and returns the last non-empty line as a string.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass MAC address to getRawMacAddress",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the loadAddress method with a string parameter.",
+        "Action": "Propagated"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The MAC address is read from a file and then passed to the getRawMacAddress method, where it is propagated further."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "LatLng",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain Location object from AbstractMapFragment",
+        "Source Method": "Lcom/mercadolibre/g57;->X:(I Landroid/os/Parcel; Landroid/os/Parcel; I)Z",
+        "Reasoning": "The method X() of class com.mercadolibre.g57 originates sensitive user personal data by invoking the method u1() of class AbstractMapFragment to obtain a Location object.",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Extract latitude and longitude from Location object",
+        "Source Method": "Lcom/mercadolibre/g57;->X:(I Landroid/os/Parcel; Landroid/os/Parcel; I)Z",
+        "Reasoning": "The method X() of class com.mercadolibre.g57 originates sensitive user personal data by invoking the method u1() of class AbstractMapFragment to obtain a Location object.",
+        "Action": "Extracted"
+      },
+      {
+        "Step": "Create LatLng object using latitude and longitude",
+        "Source Method": "Lcom/mercadolibre/g57;->X:(I Landroid/os/Parcel; Landroid/os/Parcel; I)Z",
+        "Reasoning": "The method X() of class com.mercadolibre.g57 originates sensitive user personal data by invoking the method u1() of class AbstractMapFragment to obtain a Location object.",
+        "Action": "Created"
+      },
+      {
+        "Step": "Pass LatLng object to r47.b()",
+        "Source Method": "Lcom/mercadolibre/g57;->X:(I Landroid/os/Parcel; Landroid/os/Parcel; I)Z",
+        "Reasoning": "The method X() of class com.mercadolibre.g57 originates sensitive user personal data by invoking the method u1() of class AbstractMapFragment to obtain a Location object.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Invoke r1() multiple times",
+        "Source Method": "Lcom/mercadolibre/g57;->X:(I Landroid/os/Parcel; Landroid/os/Parcel; I)Z",
+        "Reasoning": "The method X() of class com.mercadolibre.g57 originates sensitive user personal data by invoking the method u1() of class AbstractMapFragment to obtain a Location object.",
+        "Action": "Invoked"
+      },
+      {
+        "Step": "Call c1() API",
+        "Source Method": "Lcom/mercadolibre/mercadoenvios/calculator/AgencySelectMapFragment;->k1:()V",
+        "Reasoning": "The method originates user personal data by calling sensitive API 'c1()' which returns an instance of 'Lcom/mercadolibre/activities/AbstractActivity'.",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Pass data to G3() method",
+        "Source Method": "Lcom/mercadolibre/mercadoenvios/calculator/AgencySelectMapFragment;->k1:()V",
+        "Reasoning": "The method originates user personal data by calling sensitive API 'c1()' which returns an instance of 'Lcom/mercadolibre/activities/AbstractActivity'.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Invoke G3() method",
+        "Source Method": "Lcom/mercadolibre/activities/AbstractActivity;->G3:()V",
+        "Reasoning": "The method G3() in AbstractActivity originates user personal data by calling the sensitive API com.mercadolibre.activities.AbstractActivity.M.",
+        "Action": "Invoked"
+      },
+      {
+        "Step": "Call findViewById() API",
+        "Source Method": "Lcom/mercadolibre/activities/AbstractActivity;->A3:()Landroid/view/ViewGroup;",
+        "Reasoning": "The current method A3() in class AbstractActivity originates user personal data by calling findViewById() from AppCompatActivity which retrieves a View object.",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Call findViewById() API",
+        "Source Method": "Lcom/mercadolibre/activities/AbstractActivity;->D3:()Landroid/view/ViewGroup;",
+        "Reasoning": "Sensitive user personal data originates from findViewById API call.",
+        "Action": "Stored in register"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mercadolibre/activities/AbstractActivity;->Z3:()V",
+      "Lcom/mercadolibre/activities/AbstractActivity;->G3:()V",
+      "Lcom/mercadolibre/activities/AbstractActivity;->A3:()Landroid/view/ViewGroup;",
+      "Lcom/mercadolibre/activities/AbstractActivity;->D3:()Landroid/view/ViewGroup;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/mercadolibre/g57;->X:(I Landroid/os/Parcel; Landroid/os/Parcel; I)Z --> Lcom/mercadolibre/activities/AbstractActivity;->G3:()V",
+        "Reasoning": "The method X() of class com.mercadolibre.g57 originates sensitive user personal data by invoking the method u1() of class AbstractMapFragment to obtain a Location object, which is then passed to the G3() method in AbstractActivity."
+      },
+      {
+        "dataflow 2": "Lcom/mercadolibre/mercadoenvios/calculator/AgencySelectMapFragment;->k1:()V --> Lcom/mercadolibre/activities/AbstractActivity;->G3:()V",
+        "Reasoning": "The method k1() in AgencySelectMapFragment originates user personal data by calling the sensitive API c1(), which is then passed to the G3() method in AbstractActivity."
+      },
+      {
+        "dataflow 3": "Lcom/mercadolibre/activities/AbstractActivity;->A3:()Landroid/view/ViewGroup; --> Lcom/mercadolibre/activities/AbstractActivity;->D3:()Landroid/view/ViewGroup;",
+        "Reasoning": "The method A3() in AbstractActivity originates user personal data by calling findViewById(), which is then passed to the D3() method in AbstractActivity."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "java/lang/Object",
+      "android/os/Bundle",
+      "java/lang/String",
+      "java/util/List",
+      "java/lang/Integer",
+      "java/lang/Boolean"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data by calling sensitive API putInt() from Bundle class.",
+        "Source Method": "Lcom/mercadolibre/b02;->x1:(Landroid/os/Bundle; Ljava/lang/String; Ljava/lang/Integer; Z)V",
+        "Reasoning": "The method originates user personal data by calling the putInt() method on a Bundle object.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Originate user personal data from sensitive API calls (e.g., `booleanValue()`).",
+        "Source Method": "Lcom/mercadolibre/b02;->w1:(Landroid/os/Bundle; Ljava/lang/String; Ljava/lang/Boolean; Z)V",
+        "Reasoning": "The method originates user personal data by calling the booleanValue() method.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Originate user personal data by calling sensitive API putStringArrayList method on a Bundle object.",
+        "Source Method": "Lcom/mercadolibre/b02;->y1:(Landroid/os/Bundle; Ljava/lang/String; Ljava/util/List;)V",
+        "Reasoning": "The method originates user personal data by calling the putStringArrayList() method on a Bundle object.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Originate user personal data and stores it in an instance of Landroid/os/Bundle.",
+        "Source Method": "Lcom/mercadolibre/md4;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data and stores it in a Bundle object.",
+        "Action": "Stored in instance of Landroid/os/Bundle"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mercadolibre/b02;->x1:(Landroid/os/Bundle; Ljava/lang/String; Ljava/lang/Integer; Z)V",
+      "Lcom/mercadolibre/b02;->w1:(Landroid/os/Bundle; Ljava/lang/String; Ljava/lang/Boolean; Z)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/mercadolibre/md4;->b:(Ljava/lang/Object;)V --> Lcom/mercadolibre/b02;->x1:(Landroid/os/Bundle; Ljava/lang/String; Ljava/lang/Integer; Z)V --> Lcom/mercadolibre/b02;->w1:(Landroid/os/Bundle; Ljava/lang/String; Ljava/lang/Boolean; Z)V]",
+        "Reasoning": "[The data originates from method b() in class md4, then passes to method x1() in class b02, and finally reaches the sink point through method w1().]"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "device location",
+      "process ID",
+      "UID",
+      "java.lang.Math"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access device location permissions and get last known location",
+        "Source Method": "Lcom/mercadolibre/vd;->c:()I",
+        "Reasoning": "The current method originates user personal data by accessing the device's location permissions and getting the last known location.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Call getLastKnownLocation() API to get device location",
+        "Source Method": "Lcom/mercadolibre/me;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by calling the getLastKnownLocation() API.",
+        "Action": "Stored in register v3 and passed to return statement"
+      },
+      {
+        "Step": "Get process ID and UID through sensitive API calls",
+        "Source Method": "Lcom/mercadolibre/vr;->i:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls to get the process ID and UID.",
+        "Action": "Passed as parameters to another method (h)"
+      },
+      {
+        "Step": "Use sensitive API calls to java.lang.Math",
+        "Source Method": "Lcom/mercadolibre/ke;->a:(J D D)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to `java.lang.Math`.",
+        "Action": "Stored in registers or variables"
+      },
+      {
+        "Step": "Invoke checkPermission API call from Context and store permission",
+        "Source Method": "Lcom/mercadolibre/vr;->h:(Landroid/content/Context; Ljava/lang/String; I I Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data by invoking the checkPermission API call from Context.",
+        "Action": "Stored in register v5 and propagated through conditional statements"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mercadolibre/vd;->c:()I",
+      "Lcom/mercadolibre/me;->a:(Ljava/lang/String;)Landroid/location/Location;",
+      "Lcom/mercadolibre/ke;->a:(J D D)V",
+      "Lcom/mercadolibre/vr;->h:(Landroid/content/Context; Ljava/lang/String; I I Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/mercadolibre/vd;->c:()I --> Lcom/mercadolibre/me;->a:(Ljava/lang/String;)Landroid/location/Location; --> Lcom/mercadolibre/vr;->h:(Landroid/content/Context; Ljava/lang/String; I I Ljava/lang/String;)I]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      },
+      {
+        "dataflow 2": "[Lcom/mercadolibre/vr;->i:(Landroid/content/Context; Ljava/lang/String;)I --> Lcom/mercadolibre/ke;->a:(J D D)V]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "longitude",
+      "latitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from location API.",
+        "Source Method": "Lcom/mercadolibre/k4e;->a:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The longitude and latitude are stored in registers and then appended to a StringBuilder.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls.",
+        "Source Method": "Lcom/mercadolibre/hr0;->w1:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)Ljava/lang/StringBuilder;",
+        "Reasoning": "The data is stored in registers (v0) and propagated by appending the strings to a StringBuilder object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/mercadolibre/k4e;->a:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String; --> Lcom/mercadolibre/hr0;->w1:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)Ljava/lang/StringBuilder;",
+        "Reasoning": "The longitude and latitude are stored in registers and then appended to a StringBuilder, which is propagated by the method Lcom/mercadolibre/hr0;->w1:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)Ljava/lang/StringBuilder;"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID (Base Station Identifier)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WifiManager instance",
+        "Source Method": "Lcom/mercadolibre/o4d;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Calling getSystemService method with string parameter 'wifi'",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Get WifiInfo object",
+        "Source Method": "Lcom/mercadolibre/o4d;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Retrieved from WifiManager instance",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Extract BSSID",
+        "Source Method": "Lcom/mercadolibre/o4d;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Calling getBSSID method on WifiInfo object",
+        "Action": "Stored in register"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "device information",
+      "location",
+      "phone number",
+      "file paths",
+      "block sizes"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data by calling sensitive APIs to retrieve device information.",
+        "Source Method": "Lcom/mercadolibre/dbk;->h:(I Lcom/mercadolibre/wak;)V",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to retrieve device information. The data is stored in registers and variables within the method, then passed to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data by accessing sensitive Android API calls (e.g., Build.MANUFACTURER, Build.MODEL).",
+        "Source Method": "Lcom/mercadolibre/dbk;->m:()Lorg/json/JSONObject;",
+        "Reasoning": "This method originates user personal data by accessing sensitive Android API calls and stores it in a JSONObject.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data by calling sensitive APIs such as `android.os.Environment.getDataDirectory()` and `com.mercadolibre.abk.a(I)J`.",
+        "Source Method": "Lcom/mercadolibre/dbk;->k:()Lorg/json/JSONObject;",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs such as `android.os.Environment.getDataDirectory()` and `com.mercadolibre.abk.a(I)J`. The data is stored in registers and variables within the method, including `v1` and `v3`, which hold file paths and block sizes.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data from the 'sget-boolean' instruction.",
+        "Source Method": "Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V",
+        "Reasoning": "The method originates user personal data from the 'sget-boolean' instruction and stores it in register v0.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data by accessing the file system and checking for external storage.",
+        "Source Method": "Lcom/mercadolibre/abk;->a:(I)J",
+        "Reasoning": "The method originates user personal data by accessing the file system and checking for external storage. It propagates this data through registers and variables within the method, and passes it to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data from the result of several instance-of checks and casts to various primitive types.",
+        "Source Method": "Lcom/mercadolibre/abk;->b:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "The method originates user personal data from the result of several instance-of checks and casts to various primitive types. The data is propagated through registers and variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data ultimately reaches a sink point, which is the return statement that passes the populated `JSONObject` to the caller.",
+        "Source Method": "Lcom/mercadolibre/dbk;->k:()Lorg/json/JSONObject;",
+        "Reasoning": "The data ultimately reaches a sink point, which is the return statement that passes the populated `JSONObject` to the caller.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Data is passed to other methods via method invocations, specifically `com.mercadolibre.abk.b(Ljava/lang/Object;)Ljava/lang/Object;` and `Lorg/json/JSONObject;->put(Ljava/lang/String; Ljava/lang/Object;)Lorg/json/JSONObject;`.",
+        "Source Method": "Lcom/mercadolibre/dbk;->k:()Lorg/json/JSONObject;",
+        "Reasoning": "The data is passed to other methods via method invocations, specifically `com.mercadolibre.abk.b(Ljava/lang/Object;)Ljava/lang/Object;` and `Lorg/json/JSONObject;->put(Ljava/lang/String; Ljava/lang/Object;)Lorg/json/JSONObject;`.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is propagated through registers and variables within the method, then passed to other methods via method invocations.",
+        "Source Method": "Lcom/mercadolibre/dbk;->h:(I Lcom/mercadolibre/wak;)V",
+        "Reasoning": "The data is propagated through registers and variables within the method, then passed to other methods via method invocations.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is propagated through registers and variables within the method, including `v1` and `v3`, which hold file paths and block sizes.",
+        "Source Method": "Lcom/mercadolibre/dbk;->k:()Lorg/json/JSONObject;",
+        "Reasoning": "The data is propagated through registers and variables within the method, including `v1` and `v3`, which hold file paths and block sizes.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is passed to methods that log data using Android's logging API.",
+        "Source Method": "Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V",
+        "Reasoning": "The data is passed to methods that log data using Android's logging API.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Data ultimately reaches a sink point in the form of logging.",
+        "Source Method": "Lcom/mercadolibre/abk;->a:(I)J",
+        "Reasoning": "The data ultimately reaches a sink point in the form of logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mercadolibre/dbk;->k:()Lorg/json/JSONObject;",
+      "Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V",
+      "Lcom/mercadolibre/abk;->a:(I)J"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/mercadolibre/dbk;->h:(I Lcom/mercadolibre/wak;)V --> Lcom/mercadolibre/dbk;->m:()Lorg/json/JSONObject; --> Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V]",
+        "Reasoning": "The data flow starts from `Lcom/mercadolibre/dbk;->h:(I Lcom/mercadolibre/wak;)V`, which originates user personal data by calling sensitive APIs to retrieve device information. The data is stored in registers and variables within the method, then passed to other methods via method invocations."
+      },
+      {
+        "dataflow 2": " [Lcom/mercadolibre/dbk;->m:()Lorg/json/JSONObject; --> Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V]",
+        "Reasoning": "The data flow starts from `Lcom/mercadolibre/dbk;->m:()Lorg/json/JSONObject;`, which originates user personal data by accessing sensitive Android API calls (e.g., Build.MANUFACTURER, Build.MODEL). The data is stored in a JSONObject and passed to other methods via method invocations."
+      },
+      {
+        "dataflow 3": " [Lcom/mercadolibre/dbk;->k:()Lorg/json/JSONObject; --> Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V]",
+        "Reasoning": "The data flow starts from `Lcom/mercadolibre/dbk;->k:()Lorg/json/JSONObject;`, which originates user personal data by calling sensitive APIs such as `android.os.Environment.getDataDirectory()` and `com.mercadolibre.abk.a(I)J`. The data is stored in registers and variables within the method, including `v1` and `v3`, which hold file paths and block sizes."
+      },
+      {
+        "dataflow 4": " [Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V --> Lcom/mercadolibre/dbk;->a:(I)J]",
+        "Reasoning": "The data flow starts from `Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V`, which originates user personal data from the 'sget-boolean' instruction and stores it in register v0. The data is passed to other methods via method invocations."
+      },
+      {
+        "dataflow 5": " [Lcom/mercadolibre/dbk;->a:(I)J --> Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V]",
+        "Reasoning": "The data flow starts from `Lcom/mercadolibre/dbk;->a:(I)J`, which originates user personal data by accessing the file system and checking for external storage. The data is propagated through registers and variables within the method, and passed to other methods via method invocations."
+      },
+      {
+        "dataflow 6": " [Lcom/mercadolibre/dbk;->a:(I)J --> Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V]",
+        "Reasoning": "The data flow starts from `Lcom/mercadolibre/dbk;->a:(I)J`, which originates user personal data by accessing the file system and checking for external storage. The data is propagated through registers and variables within the method, and passed to other methods via method invocations."
+      },
+      {
+        "dataflow 7": " [Lcom/mercadolibre/dbk;->b:(I Lcom/mercadolibre/wak;)V --> Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V]",
+        "Reasoning": "The data flow starts from `Lcom/mercadolibre/dbk;->b:(I Lcom/mercadolibre/wak;)V`, which originates user personal data by calling sensitive APIs to retrieve device information. The data is stored in registers and variables within the method, then passed to other methods via method invocations."
+      },
+      {
+        "dataflow 8": " [Lcom/mercadolibre/dbk;->b:(I Lcom/mercadolibre/wak;)V --> Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V]",
+        "Reasoning": "The data flow starts from `Lcom/mercadolibre/dbk;->b:(I Lcom/mercadolibre/wak;)V`, which originates user personal data by calling sensitive APIs to retrieve device information. The data is stored in registers and variables within the method, then passed to other methods via method invocations."
+      },
+      {
+        "dataflow 9": " [Lcom/mercadolibre/dbk;->b:(I Lcom/mercadolibre/wak;)V --> Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V]",
+        "Reasoning": "The data flow starts from `Lcom/mercadolibre/dbk;->b:(I Lcom/mercadolibre/wak;)V`, which originates user personal data by calling sensitive APIs to retrieve device information. The data is stored in registers and variables within the method, then passed to other methods via method invocations."
+      },
+      {
+        "dataflow 10": " [Lcom/mercadolibre/dbk;->b:(I Lcom/mercadolibre/wak;)V --> Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V]",
+        "Reasoning": "The data flow starts from `Lcom/mercadolibre/dbk;->b:(I Lcom/mercadolibre/wak;)V`, which originates user personal data by calling sensitive APIs to retrieve device information. The data is stored in registers and variables within the method, then passed to other methods via method invocations."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location data from Location object",
+        "Source Method": "Lcom/mercadolibre/ebk;->m:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "The method originates user personal data by calling the getLatitude(), getLongitude(), getAccuracy(), and getTime() methods of the Location object.",
+        "Action": "Stored in a StringBuilder instance"
+      },
+      {
+        "Step": "Pass location data to r1 parameter",
+        "Source Method": "Lcom/mercadolibre/hr0;->r1:(Ljava/lang/String;)Ljava/lang/StringBuilder;",
+        "Reasoning": "The method originates user personal data through the `r1` parameter of type `Ljava/lang/String;`, which is then stored in register `v0`.",
+        "Action": "Passed to constructor of `Ljava/lang/StringBuilder;`"
+      },
+      {
+        "Step": "Append location data to StringBuilder",
+        "Source Method": "Lcom/mercadolibre/hr0;->r1:(Ljava/lang/String;)Ljava/lang/StringBuilder;",
+        "Reasoning": "The method originates user personal data through the `r1` parameter of type `Ljava/lang/String;`, which is then stored in register `v0`. The data is propagated by passing it to the constructor of `Ljava/lang/StringBuilder;` and then appended to the builder.",
+        "Action": "Appended to StringBuilder"
+      },
+      {
+        "Step": "Log location data",
+        "Source Method": "Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to `Lcom/mercadolibre/hr0;r1(Ljava/lang/String;)Ljava/lang/StringBuilder;` and stores it in registers or variables. The data is propagated to other methods via method invocations, ultimately reaching sinks such as logging (e.g., `Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I`, `Landroid/util/Log;->w(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I`, `Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I`, and `Landroid/util/Log;->d(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I`).",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V",
+      "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I",
+      "Landroid/util/Log;->w(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I",
+      "Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I",
+      "Landroid/util/Log;->d(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/mercadolibre/ebk;->m:(Landroid/location/Location;)Lorg/json/JSONObject --> Lcom/mercadolibre/hr0;->r1:(Ljava/lang/String;)Ljava/lang/StringBuilder --> Lcom/mercadolibre/zak;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V",
+        "Reasoning": "The method originates user personal data by calling the getLatitude(), getLongitude(), getAccuracy(), and getTime() methods of the Location object. The data is stored in a StringBuilder instance, which is then passed to the r1 parameter of type `Ljava/lang/String;`. The data is propagated by passing it to the constructor of `Ljava/lang/StringBuilder;` and then appended to the builder. Finally, the data is logged through method invocations."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "network information",
+      "device details",
+      "BitSet object",
+      "Context",
+      "static instance of Lcom/mercadolibre/tak;",
+      "instances of com.mercadolibre.gbk and com.mercadolibre.hbk"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from sensitive API calls.",
+        "Source Method": "Lcom/mercadolibre/ebk;->n:(I Lcom/mercadolibre/wak;)V",
+        "Reasoning": "The current method originates user personal data from sensitive API calls, specifically network information and device details.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Access a BitSet object stored in the class's instance variable 'a'.",
+        "Source Method": "Lcom/mercadolibre/vbk;->c:(I)Z",
+        "Reasoning": "The method originates user personal data by accessing a BitSet object stored in the class's instance variable 'a'.",
+        "Action": "Passed to get() method of BitSet"
+      },
+      {
+        "Step": "Call the 'b' field of the current object, which is a Context.",
+        "Source Method": "Lcom/mercadolibre/wak;->a:()Landroid/content/Context;",
+        "Reasoning": "The method originates sensitive user personal data by calling the 'b' field of the current object, which is a Context.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Use the `sget-object` instruction to retrieve a static instance of Lcom/mercadolibre/tak;.",
+        "Source Method": "Lcom/mercadolibre/tak;->b:()Lcom/mercadolibre/tak;",
+        "Reasoning": "The method originates user personal data by using the `sget-object` instruction to retrieve a static instance of Lcom/mercadolibre/tak;.",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "Instantiate and store instances of com.mercadolibre.gbk and com.mercadolibre.hbk in static fields c and i respectively.",
+        "Source Method": "Lcom/mercadolibre/tak;-><init>:()V",
+        "Reasoning": "This method initializes an instance of com.mercadolibre.tak. It uses sensitive API calls to originate user personal data, specifically by instantiating and storing instances of com.mercadolibre.gbk and com.mercadolibre.hbk in static fields c and i respectively.",
+        "Action": "Passed to current instance through iput-object instructions"
+      },
+      {
+        "Step": "Invoke the <init> constructor of Lcom/mercadolibre/abk;, which likely contains API calls to access user information.",
+        "Source Method": "Lcom/mercadolibre/hbk;-><init>:()V",
+        "Reasoning": "The current method originates sensitive user personal data by invoking the <init> constructor of Lcom/mercadolibre/abk;, which likely contains API calls to access user information.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Invoke a sensitive API call to `Lcom/mercadolibre/abk;<init>()V`.",
+        "Source Method": "Lcom/mercadolibre/gbk;-><init>:()V",
+        "Reasoning": "Sensitive data originates from the invocation of a sensitive API call to `Lcom/mercadolibre/abk;<init>()V`.",
+        "Action": "Stored in registers and variables"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mercadolibre/ebk;->n:(I Lcom/mercadolibre/wak;)V --> Lcom/mercadolibre/vbk;->c:(I)Z --> null",
+        "Reasoning": "The data is passed from method n of com.mercadolibre.ebk to method c of com.mercadolibre.vbk, but there are no sink points like logging, network transmission, or storage."
+      },
+      {
+        "dataflow 2": " Lcom/mercadolibre/wak;->a:()Landroid/content/Context; --> null",
+        "Reasoning": "The data is stored in register v0 and propagated to the return statement, but there are no sink points like logging, network transmission, or storage."
+      },
+      {
+        "dataflow 3": " Lcom/mercadolibre/tak;->b:()Lcom/mercadolibre/tak; --> null",
+        "Reasoning": "The data is stored in register v1 and propagated to the return statement, but there are no sink points like logging, network transmission, or storage."
+      },
+      {
+        "dataflow 4": " Lcom/mercadolibre/tak;-><init>:()V --> null",
+        "Reasoning": "The data is passed to the current instance through iput-object instructions, but there are no sink points like logging, network transmission, or storage."
+      },
+      {
+        "dataflow 5": " Lcom/mercadolibre/hbk;-><init>:()V --> null",
+        "Reasoning": "The data is stored in registers and variables, but there are no sink points like logging, network transmission, or storage."
+      },
+      {
+        "dataflow 6": " Lcom/mercadolibre/gbk;-><init>:()V --> null",
+        "Reasoning": "The data is stored in registers and variables, but there are no sink points like logging, network transmission, or storage."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location information is retrieved from android.location.Location API.",
+        "Source Method": "Lcom/mercadolibre/olj;->Y:(Landroid/hardware/Camera$Parameters;)Z",
+        "Reasoning": "The current method uses the android.location.Location API to retrieve location information.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Location information is passed to other methods via method invocations.",
+        "Source Method": "Lcom/mercadolibre/olj;->Y:(Landroid/hardware/Camera$Parameters;)Z",
+        "Reasoning": "The data is then passed to other methods via method invocations.",
+        "Action": "Passed via method invocations"
+      },
+      {
+        "Step": "Location information reaches a sink point, which is the setGpsLatitude(), setGpsLongitude(), setGpsAltitude(), setGpsTimestamp(), and setGpsProcessingMethod() methods of the Camera$Parameters class.",
+        "Source Method": "Lcom/mercadolibre/olj;->Y:(Landroid/hardware/Camera$Parameters;)Z",
+        "Reasoning": "The data reaches a sink point, which is the setGpsLatitude(), setGpsLongitude(), setGpsAltitude(), setGpsTimestamp(), and setGpsProcessingMethod() methods of the Camera$Parameters class.",
+        "Action": "Logged/Transmitted via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "setGpsLatitude(), setGpsLongitude(), setGpsAltitude(), setGpsTimestamp(), and setGpsProcessingMethod() methods of the Camera$Parameters class."
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mercadolibre/olj;->Y:(Landroid/hardware/Camera$Parameters;)Z --> android.location.Location --> setGpsLatitude(), setGpsLongitude(), setGpsAltitude(), setGpsTimestamp(), and setGpsProcessingMethod() methods of the Camera$Parameters class.",
+        "Reasoning": "Location information is retrieved from android.location.Location API, stored in registers and variables within the method, passed to other methods via method invocations, and reaches a sink point, which is the setGpsLatitude(), setGpsLongitude(), setGpsAltitude(), setGpsTimestamp(), and setGpsProcessingMethod() methods of the Camera$Parameters class."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get latitude and longitude from Location object",
+        "Source Method": "Lcom/mercadolibre/mercadoenvios/calculator/AgencySelectMapFragment;->onConnected:(Landroid/os/Bundle;)V",
+        "Reasoning": "The method originates user personal data through the getLatitude and getLongitude methods of the Location object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Create LatLng object with latitude and longitude values",
+        "Source Method": "Lcom/mercadolibre/mercadoenvios/calculator/AgencySelectMapFragment;->onConnected:(Landroid/os/Bundle;)V",
+        "Reasoning": "The latitude and longitude values are then used to create a LatLng object, which is passed to the i method of the r47 class.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Access s field of AgencySelectMapFragment object containing d22 instance",
+        "Source Method": "Lcom/mercadolibre/mercadoenvios/calculator/AgencySelectMapFragment;->onConnected:(Landroid/os/Bundle;)V",
+        "Reasoning": "Additionally, the method accesses the s field of the AgencySelectMapFragment object, which contains an instance of the d22 class.",
+        "Action": "Accessed"
+      },
+      {
+        "Step": "Check for nullity of 'g' field in AbstractMapFragment and call method on MapView instance",
+        "Source Method": "Lcom/mercadolibre/mercadoenvios/calculator/AbstractMapFragment;->u1:()Lcom/mercadolibre/r47;",
+        "Reasoning": "The method originates user personal data by invoking the 'g' field of AbstractMapFragment and storing it in register v0. The data is then checked for nullity using if-nez instruction.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mercadolibre/mercadoenvios/calculator/AgencySelectMapFragment;->onConnected:(Landroid/os/Bundle;)V",
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mercadolibre/mercadoenvios/calculator/AgencySelectMapFragment;->onConnected:(Landroid/os/Bundle;)V --> ... --> Lcom/mercadolibre/r47;",
+        "Reasoning": "The latitude and longitude values are passed to the i method of the r47 class."
+      },
+      {
+        "dataflow 2": " Lcom/mercadolibre/mercadoenvios/calculator/AbstractMapFragment;->u1:()Lcom/mercadolibre/r47; --> ... --> MapView instance",
+        "Reasoning": "The 'g' field of AbstractMapFragment is passed to the method on MapView instance"
+      }
+    ],
+    "Label": "leak"
+  }
+]

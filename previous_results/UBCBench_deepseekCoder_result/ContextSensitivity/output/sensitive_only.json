@@ -1,0 +1,60 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieval of Device ID",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V",
+                "Reasoning": "The method retrieves device ID from TelephonyManager to uniquely identify the user's phone.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging of Device ID",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V",
+                "Reasoning": "The retrieved device ID is logged via Log.e(), potentially exposing sensitive information.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/contextsensitivity/ContextSensitivity;->Log.e()"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()) --> Log.e() (Sink)]",
+                "Reasoning": "The method fun1 retrieves the device ID and directly logs it using Log.e(), which is a real sink for logging sensitive information."
+            }
+        ],
+        "Label": "leak"
+    },
+    {
+        "Data Types Collected": [
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieval of SIM serial number from TelephonyManager",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V",
+                "Reasoning": "The method retrieves the SIM serial number which contains user personal data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging of SIM serial number to logcat with tag 'ContextSensitivity2'",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V",
+                "Reasoning": "The retrieved SIM serial number is logged using Log.i(...) which can be considered a sink for sensitive information.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/contextsensitivity/ContextSensitivity;->log(String, int)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V --> TelephonyManager retrieval of SIM serial number --> Logging to logcat with tag 'ContextSensitivity2']",
+                "Reasoning": "The method retrieves the SIM serial number, which is considered personal data, and logs it using Log.i(...) that can be seen as a sink for sensitive information."
+            }
+        ],
+        "Label": "leak"
+    }
+]

@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "Location",
+            "String",
+            "android.location.Location"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Location object received from getDeviceId.",
+                "Source Method": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "The summary states that this method receives a Location object.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Latitude and longitude extracted and stored.",
+                "Source Method": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "The summary explicitly states that latitude and longitude are extracted and stored.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Latitude and longitude displayed as Toast messages.",
+                "Source Method": "Lde/ecspride/LocationLeak2;->onResume:()V",
+                "Reasoning": "The summary states that these values are displayed as Toast messages.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/LocationLeak2;->onResume:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V --> Lde/ecspride/LocationLeak2;->onResume:()V",
+                "Reasoning": "The onLocationChanged method receives a Location object, extracts latitude and longitude, and stores them. The onResume method then receives the same Location object (potentially with the same latitude and longitude) and displays them as Toast messages."
+            }
+        ],
+        "Label": "leak"
+    }
+]

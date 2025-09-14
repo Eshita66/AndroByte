@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data retrieval and transmission",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves device ID from TelephonyManager.getDeviceId() (source) and sends it via HttpPost (sink) without overwriting.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/net/http/HttpPost;->execute:(Lorg/apache/http/client/methods/HttpMethod;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/net/http/HttpPost;->execute:(Lorg/apache/http/client/methods/HttpMethod;)V",
+                "Reasoning": "Device ID is retrieved as a source, passed to HttpPost's execute method as a tainted argument, and transmitted over HTTP."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

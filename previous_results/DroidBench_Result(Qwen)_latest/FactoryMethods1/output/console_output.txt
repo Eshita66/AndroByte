@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\FactoryMethods1
+Using methods file: D:\UBCBAPK_Methods\FactoryMethods1\FactoryMethods1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves location data using android.location.LocationManager and logs the latitude and longitude via android.util.Log.d. Sensitive data (location coordinates) is directly sent to a logging sink, indicating data exfiltration through logging.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\FactoryMethods1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\FactoryMethods1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\FactoryMethods1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "Location Data"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieves location data and logs coordinates",
+                "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Method directly uses sensitive location data from LocationManager and passes it to logging sink without overwriting",
+                "Action": "Transmitted via logging"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;)V",
+                "Reasoning": "Location data is retrieved from LocationManager, passed directly to Log.d without being overwritten by safe constants"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\FactoryMethods1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\FactoryMethods1\output\sensitive_only.json
+Total summary time: 754.2377684116364 seconds

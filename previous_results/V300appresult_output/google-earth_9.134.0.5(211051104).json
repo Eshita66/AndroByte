@@ -1,0 +1,77 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location information from a provider",
+        "Source Method": "Lcfk;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The current method originates sensitive user personal data by calling the `g()` method on an instance of `UserLocationManager`.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Pass location information to other methods via invocations",
+        "Source Method": "Lcfk;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The data is then passed to other methods via method invocations, specifically `g()`, `e()`, and `disableOverlay()` on an instance of `MyLocationPresenterBase`.",
+        "Action": "Propagated through method calls"
+      },
+      {
+        "Step": "Log location information",
+        "Source Method": "Lcfk;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The data reaches a sink point in the form of logging with the line `invoke-static v0, v1, 15, Lbtd;->e(Ljava/lang/Object; Ljava/lang/String; I)V`.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Invoke MyLocationPresenterJNI class's disableOverlay method",
+        "Source Method": "Lcom/google/geo/earth/valen/swig/MyLocationPresenterBase;->disableOverlay:()V",
+        "Reasoning": "The method originates user personal data by invoking the MyLocationPresenterJNI class's disableOverlay method, which likely accesses sensitive location information.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      "Lcfk;->a:(Landroid/location/Location;)V",
+      "Lcom/google/geo/earth/valen/swig/MyLocationPresenterBase;->disableOverlay:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcfk;->a:(Landroid/location/Location;)V --> MyLocationPresenterBase.g() --> invoke-static v0, v1, 15, Lbtd;->e(Ljava/lang/Object; Ljava/lang/String; I)V",
+        "Reasoning": "The location information is retrieved from a provider and stored in registers. It is then passed to other methods via invocations, specifically `g()`, `e()`, and `disableOverlay()` on an instance of `MyLocationPresenterBase`. The data reaches a sink point in the form of logging with the line `invoke-static v0, v1, 15, Lbtd;->e(Ljava/lang/Object; Ljava/lang/String; I)V`."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method invocation",
+        "Source Method": "Llv;->I:(Landroid/content/Context; I)I",
+        "Reasoning": "The current method originates user personal data through sensitive API calls to ACCESS_COARSE_LOCATION and ACCESS_FINE_LOCATION.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Method invocation",
+        "Source Method": "Llv;->I:(Landroid/content/Context; I)I",
+        "Reasoning": "The data is passed to other methods via method invocations.",
+        "Action": "Passed to other methods"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Llv;->I:(Landroid/content/Context; I)I --> android.util.Log.d(...) ",
+        "Reasoning": "The data is stored in registers and variables within the method, passed to other methods via method invocations, and logged using Log.d()."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

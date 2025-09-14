@@ -1,0 +1,69 @@
+
+ Processing folder: D:\UBCBAPK_Methods\RegisterGlobal2
+ Using methods file: D:\UBCBAPK_Methods\RegisterGlobal2\RegisterGlobal2_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MyApplication$1;->onLowMemory:()V']
+[SUMMARY] Lde/ecspride/MyApplication$1;->onLowMemory:()V => {
+    "Summary": [
+        "This method retrieves the device ID using TelephonyManager's getDeviceId() method after getting the TelephonyManager service from the system.",
+        "The method reads a field (imei) of type java.lang.String which is defined in the same class and modifies it with the retrieved device ID."
+    ],
+    "Next Methods": [
+        "Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V => {
+    "Summary": [
+        "This method retrieves the device ID using TelephonyManager's getDeviceId() method after getting the TelephonyManager service from the system. The method reads a field (imei) of type java.lang.String which is defined in the same class and modifies it with the retrieved device ID."
+    ],
+    "Next Methods": [
+        "Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\RegisterGlobal2\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\RegisterGlobal2\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\RegisterGlobal2\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "java.lang.String"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieves device ID from TelephonyManager using getDeviceId() method",
+                "Source Method": "Lde/ecspride/MyApplication$1;->onLowMemory:()V",
+                "Reasoning": "The method retrieves the device ID and overwrites a field (imei) of type java.lang.String with this value.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Overwrites imei field with retrieved device ID",
+                "Source Method": "Lde/ecspride/MyApplication$1;->onLowMemory:()V",
+                "Reasoning": "The method reads the imei field and modifies it with the retrieved device ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Passes tainted imei to sink methods",
+                "Source Method": "Lde/ecspride/MyApplication$1;->onLowMemory:()V",
+                "Reasoning": "The method passes the modified imei field (now containing a device ID) to subsequent methods without overwriting.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MyApplication$1;->onLowMemory:()V --> Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V",
+                "Reasoning": "The method onLowMemory stores the tainted imei field, which is then passed to onConfigurationChanged without modification."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\RegisterGlobal2\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\RegisterGlobal2\output\sensitive_only.json
+Total time for folder: 299.50 seconds

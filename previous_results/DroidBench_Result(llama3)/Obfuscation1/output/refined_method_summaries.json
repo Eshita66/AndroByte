@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data (device ID) originated from getDeviceId()",
+                "Source Method": "Lde/ecspride/MainActivity;->getDeviceId:()Ljava/lang/String;",
+                "Reasoning": "The device ID is obtained through the getDeviceId() method.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Passed to sendTextMessage()",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is passed as an argument to the sendTextMessage() method.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->getDeviceId:()Ljava/lang/String; --> Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;)V",
+                "Reasoning": "The device ID obtained through getDeviceId() is passed to sendTextMessage()."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

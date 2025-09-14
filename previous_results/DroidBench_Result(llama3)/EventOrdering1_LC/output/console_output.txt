@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\EventOrdering1_LC
+Using methods file: D:\UBCBAPK_Methods\EventOrdering1_LC\EventOrdering1_LC_bytecode_instructions.json
+Sensitive method found: Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V
+Processed summary for Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V: {
+    "Summary": "The method onLowMemory() calls the sensitive API getDeviceId() and stores it in the field imei. The device ID is then passed as an argument to Log.i(), which is a leak.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\EventOrdering1_LC\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\EventOrdering1_LC\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\EventOrdering1_LC\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "getDeviceId() is called and stored in imei",
+                "Source Method": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V",
+                "Reasoning": "The method onLowMemory() calls the sensitive API getDeviceId()",
+                "Action": "Stored"
+            },
+            {
+                "Step": "imei is passed to Log.i() as an argument",
+                "Source Method": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V",
+                "Reasoning": "The device ID is then passed as an argument to Log.i(), which is a leak.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId() (MainActivity.onLowMemory()) --> imei (MainActivity.onLowMemory()) --> Log.i()",
+                "Reasoning": "The method onLowMemory() calls the sensitive API getDeviceId(), stores it in imei, and then passes it to Log.i()."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\EventOrdering1_LC\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\EventOrdering1_LC\output\sensitive_only.json
+Total summary time: 12.265424251556396 seconds

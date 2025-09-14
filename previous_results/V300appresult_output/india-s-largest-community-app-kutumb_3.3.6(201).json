@@ -1,0 +1,304 @@
+[
+  {
+    "Data Types Collected": [
+      "Current time",
+      "Location",
+      "Device ID (myPid())",
+      "User ID (myUid())"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access current time and location",
+        "Source Method": "Lc2/b/a/l$h;->c:()I",
+        "Reasoning": "[This method originates user personal data by accessing the current time and location.]",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Get device ID and User ID",
+        "Source Method": "Lb2/a/b/a/a;->h:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "[The current method originates user personal data from the `myPid()` and `myUid()` sensitive API calls.]",
+        "Action": "Stored in registers (v0 and v1) and variables (v2)"
+      },
+      {
+        "Step": "Calculate Math.sin and Math.cos values",
+        "Source Method": "Lc2/b/a/u;->a:(J D D)V",
+        "Reasoning": "[The method originates user personal data using sensitive API calls to Math.sin and Math.cos.]",
+        "Action": "Stored in registers and variables"
+      }
+    ],
+    "All Sinks": [
+      "Lb2/a/b/a/a;->noteProxyOpNoThrow:(I)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc2/b/a/l$h;->c:()I --> Lc2/b/a/u;->a:(J D D)V --> Lb2/a/b/a/a;->noteProxyOpNoThrow:(I)V",
+        "Reasoning": "[The data from the first method is passed to the second method, which calculates Math.sin and Math.cos values. The final result is logged in the third method.]"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "phone number",
+      "sim serial number",
+      "advertising ID",
+      "build unique ID",
+      "device manufacturer",
+      "model"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check for READ_PHONE_STATE permission and retrieve device attributes.",
+        "Source Method": "Lcom/razorpay/BaseUtils;->getDeviceAttributes:(Landroid/content/Context;)Ljava/util/Map;",
+        "Reasoning": "The method originates user personal data by checking for READ_PHONE_STATE permission and retrieving device attributes such as phone number, sim serial number, advertising ID, build unique ID, device manufacturer, and model.",
+        "Action": "Stored in a HashMap"
+      },
+      {
+        "Step": "Get the sim serial number from TelephonyManager if available.",
+        "Source Method": "Lcom/razorpay/BaseUtils;->getDeviceAttributes:(Landroid/content/Context;)Ljava/util/Map;",
+        "Reasoning": "If SDK_INT is 28 or higher, it tries to get the sim serial number from TelephonyManager if available.",
+        "Action": "Stored in a HashMap"
+      },
+      {
+        "Step": "Get the advertising ID from SharedPreferences.",
+        "Source Method": "Lcom/razorpay/BaseConfig;->getAdvertisingId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is then stored in register `v2` and passed to the `getString` method of `SharedPreferences` interface.",
+        "Action": "Passed to getString method"
+      },
+      {
+        "Step": "Get the private prefs from SharedPreferences.",
+        "Source Method": "Lcom/razorpay/SharedPreferenceUtil;->getPrivatePrefs:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The method originates user personal data through a sensitive API call to getSharedPreferences.",
+        "Action": "Stored in the 'privatePrefs' register"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/razorpay/BaseUtils;->getDeviceAttributes:(Landroid/content/Context;)Ljava/util/Map;",
+      "Lcom/razorpay/BaseConfig;->getAdvertisingId:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/razorpay/SharedPreferenceUtil;->getPrivatePrefs:(Landroid/content/Context;)Landroid/content/SharedPreferences;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/razorpay/BaseUtils;->getDeviceAttributes:(Landroid/content/Context;)Ljava/util/Map; --> Stored in a HashMap --> Lcom/razorpay/BaseConfig;->getAdvertisingId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated and transformed through the methods, eventually reaching a sink point."
+      },
+      {
+        "dataflow 2": " Lcom/razorpay/SharedPreferenceUtil;->getPrivatePrefs:(Landroid/content/Context;)Landroid/content/SharedPreferences; --> Stored in SharedPreferences",
+        "Reasoning": "The data is propagated and transformed through the methods, eventually reaching a sink point."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WiFi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access WiFi SSID through API calls",
+        "Source Method": "Lcom/razorpay/BaseUtils;->getWifiSSID:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The current method originates user personal data by accessing the WiFi SSID.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Pass WiFi SSID to other methods",
+        "Source Method": "Lcom/razorpay/BaseUtils;->getWifiSSID:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is passed to other methods via method invocations.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Network transmission of WiFi SSID",
+        "Source Method": "Lcom/razorpay/BaseUtils;->getWifiSSID:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point in the form of network transmission.",
+        "Action": "Transmitted over network"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/razorpay/BaseUtils;->getWifiSSID:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/razorpay/BaseUtils;->getWifiSSID:(Landroid/content/Context;)Ljava/lang/String;(--> Stored in registers and variables --> Passed via method invocation --> Transmitted over network)",
+        "Reasoning": "The WiFi SSID is accessed through API calls, stored in registers and variables, passed to other methods, and finally transmitted over the network."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "AccountManager"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getAccounts method called",
+        "Source Method": "Lcom/razorpay/BaseUtils;->getAccounts:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The getAccounts method is used to retrieve account information.",
+        "Action": "Stored in StringBuilder"
+      },
+      {
+        "Step": "StringBuilder converted to String",
+        "Source Method": "Lcom/razorpay/BaseUtils;->getAccounts:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The retrieved account information is stored in a StringBuilder and then converted to a String.",
+        "Action": "Returned as String"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/razorpay/BaseUtils;->getAccounts:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/razorpay/BaseUtils;->getAccounts:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The getAccounts method retrieves account information, stores it in a StringBuilder, and then returns it as a String."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "java.lang.String",
+      "android.content.Intent"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "SMS message received",
+        "Source Method": "Lcom/razorpay/SmsReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "The method originates user personal data from the SMS message.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Data propagated to SmsAgent",
+        "Source Method": "Lcom/razorpay/SmsReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "The data is propagated to other methods via method invocations.",
+        "Action": "Method invocation"
+      },
+      {
+        "Step": "Data stored in SmsAgent",
+        "Source Method": "Lcom/razorpay/SmsAgent;->postSms:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls to post SMS.",
+        "Action": "Stored in registers v0 and v1"
+      },
+      {
+        "Step": "Data transmitted over network",
+        "Source Method": "Lcom/razorpay/SmsAgent;->postSms:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data reaches a sink point through network transmission.",
+        "Action": "Network transmission"
+      },
+      {
+        "Step": "Data logged",
+        "Source Method": "Lcom/razorpay/Logger;->i(Ljava/lang/String;)V",
+        "Reasoning": "The data is propagated to other methods via method invocations, specifically to Lcom/razorpay/SmsAgent;->postSms(Ljava/lang/String;Ljava/lang/String;)V and Landroid/content/Context;->sendBroadcast(Landroid/content/Intent;)V.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/razorpay/Logger;->i(Ljava/lang/String;)V",
+      "Lcom/razorpay/SmsAgent;->postSms:(Ljava/lang/String; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/razorpay/SmsReceiver;->onReceive(Landroid/content/Context; Landroid/content/Intent;)V --> Lcom/razorpay/SmsAgent;->postSms(Ljava/lang/String;Ljava/lang/String;)V --> Lcom/razorpay/Logger;->i(Ljava/lang/String;)V ",
+        "Reasoning": "The data is propagated from SmsReceiver to SmsAgent and then logged."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Subscriber ID",
+      "Line 1 number",
+      "Sim operator name",
+      "Sim operator",
+      "Sim country ISO",
+      "Device ID",
+      "Sim serial number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get subscriber ID and line 1 number from sensitive APIs",
+        "Source Method": "Ld/u/c/k0;->b:(I)Ld/u/c/n0;",
+        "Reasoning": "The method calls sensitive APIs to get subscriber ID and line 1 number.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get sim operator name, sim operator, sim country ISO, device ID, and sim serial number from sensitive APIs",
+        "Source Method": "Ld/u/c/k0;->b:(I)Ld/u/c/n0;",
+        "Reasoning": "The method calls sensitive APIs to get additional personal data.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Initialize object using constructor",
+        "Source Method": "Ld/u/c/n0;-><init>:(I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Z)V",
+        "Reasoning": "The method uses the constructor to initialize an object with sensitive data.",
+        "Action": "Stored in fields of the class"
+      },
+      {
+        "Step": "Return personal data from method",
+        "Source Method": "Ld/u/c/k0;->b:(I)Ld/u/c/n0;",
+        "Reasoning": "The method returns the collected personal data.",
+        "Action": "Returned from the method"
+      }
+    ],
+    "All Sinks": [
+      "Ld/u/c/k0;->b:(I)Ld/u/c/n0;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Ld/u/c/k0;->b:(I)Ld/u/c/n0; --> ... --> Ld/u/c/k0;->b:(I)Ld/u/c/n0;",
+        "Reasoning": "The data is collected from sensitive APIs, stored in registers and variables within the method, and then returned from the method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected through API calls to TelephonyManager.",
+        "Source Method": "Ld/u/c/o0;->a:()Ljava/util/List;",
+        "Reasoning": "The method originates user personal data by using sensitive API calls.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "User personal data is propagated through registers and variables to a sink point.",
+        "Source Method": "Ld/u/c/o0;->a:()Ljava/util/List;",
+        "Reasoning": "The data reaches a sink point by being returned as a List.",
+        "Action": "Returned as a List"
+      },
+      {
+        "Step": "User personal data is collected through API calls to initialize instance fields.",
+        "Source Method": "Ld/u/c/n0;-><init>:(I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Z)V",
+        "Reasoning": "The method originates user personal data by using sensitive API calls to initialize instance fields.",
+        "Action": "Stored in instance fields"
+      }
+    ],
+    "All Sinks": [
+      "Ld/u/c/o0;->a:()Ljava/util/List;",
+      "Ld/u/c/n0;-><init>:(I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Z)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Ld/u/c/n0;-><init>:(I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Z)V --> Ld/u/c/o0;->a:()Ljava/util/List;",
+        "Reasoning": "The user personal data collected through API calls to initialize instance fields is propagated to the method that originates user personal data by using sensitive API calls, and then returned as a List."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

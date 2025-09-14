@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieved from TelephonyManager",
+                "Source Method": "Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Method directly calls TelephonyManager.getDeviceId() to obtain device ID",
+                "Action": "Stored in register v1"
+            },
+            {
+                "Step": "Device ID passed to SMS sending",
+                "Source Method": "Ledu/mit/parcel/MainActivity;->writeParcel:(Ljava/lang/String;)V",
+                "Reasoning": "Receives String parameter from onCreate() and uses it as destination address in SMS",
+                "Action": "Transmitted via SmsManager.sendTextMessage"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/parcel/MainActivity;->writeParcel:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/parcel/MainActivity;->writeParcel:(Ljava/lang/String;)V",
+                "Reasoning": "Device ID is passed from onCreate() to writeParcel() as String parameter, then used as destination address in SMS send operation"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

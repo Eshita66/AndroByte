@@ -1,0 +1,68 @@
+[
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get current location",
+        "Source Method": "Lcom/duckduckmoosedesign/frameworkV3/utils/LocationHelper$MyLocationListner;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data through the use of sensitive APIs such as `getProvider`, `getLatitude`, and `getLongitude` from the `android/location/Location` class.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Update location",
+        "Source Method": "Lcom/duckduckmoosedesign/frameworkV3/utils/LocationHelper;->access$202:(Lcom/duckduckmoosedesign/frameworkV3/utils/LocationHelper; Landroid/location/Location;)Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by accessing the current location using a sensitive API call.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Notify on location changed",
+        "Source Method": "Lcom/duckduckmoosedesign/frameworkV3/utils/LocationHelper;->notifyOnLocationChanged:()V",
+        "Reasoning": "The method originates user personal data from the instance of DDMActivity using a sensitive API call.",
+        "Action": "Propagated to runOnUiThread method which may lead to display or logging sinks."
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/duckduckmoosedesign/frameworkV3/utils/LocationHelper$MyLocationListner;->onLocationChanged:(Landroid/location/Location;)V --> Lcom/duckduckmoosedesign/frameworkV3/utils/LocationHelper;->access$202:(Lcom/duckduckmoosedesign/frameworkV3/utils/LocationHelper; Landroid/location/Location;)Landroid/location/Location; --> Lcom/duckduckmoosedesign/frameworkV3/utils/LocationHelper;->notifyOnLocationChanged:()V",
+        "Reasoning": "The data is propagated from the listener method to the update location method and then to the notify on location changed method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "locationManager",
+      "currentLocation",
+      "gpsListener"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get LocationManager instance using getSystemService API",
+        "Source Method": "Lcom/duckduckmoosedesign/frameworkV3/utils/LocationHelper;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data by using the `getSystemService` API to retrieve the LocationManager instance.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get current location from LocationManager instance",
+        "Source Method": "Lcom/duckduckmoosedesign/frameworkV3/utils/LocationHelper;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "The data is propagated through method invocations, specifically when calling `getLastKnownLocation` on the LocationManager instance.",
+        "Action": "Stored in registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/duckduckmoosedesign/frameworkV3/utils/LocationHelper;-><init>:(Landroid/content/Context;)V --> ... --> null ",
+        "Reasoning": "The data is stored in registers and variables within the method, but there are no sink points like logging, network transmission, or storage."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

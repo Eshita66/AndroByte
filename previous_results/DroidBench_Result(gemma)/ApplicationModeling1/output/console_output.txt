@@ -1,0 +1,42 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\ApplicationModeling1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\ApplicationModeling1\ApplicationModeling1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method first invokes the superclass constructor. Then, it calls `getSystemService` with the string \"phone\", which returns a `TelephonyManager` object. Subsequently, `getDeviceId()` is called on this `TelephonyManager` object, retrieving a `String` representing the device ID. Finally, this device ID is stored in the `imei` field of the `MyApplication` instance, which is obtained via `getApplication()`. This chain of events represents a clear flow of sensitive data \u2013 the device ID \u2013 from the `TelephonyManager` to the `MyApplication` instance, confirming a leak.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\ApplicationModeling1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\ApplicationModeling1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\ApplicationModeling1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "device ID",
+            "imei"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain device ID from TelephonyManager",
+                "Source Method": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method calls `getSystemService` to retrieve a `TelephonyManager` object, and then calls `getDeviceId()` on this object to obtain the device ID.",
+                "Action": "Retrieve"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/application_modeling/MainActivity;->saveImei:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/application_modeling/MainActivity;->saveImei:(Ljava/lang/String;)V",
+                "Reasoning": "The `onCreate` method obtains the device ID from the `TelephonyManager` and stores it in the `imei` field of the `MyApplication` instance. This constitutes a direct flow of the device ID."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\ApplicationModeling1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\ApplicationModeling1\output\sensitive_only.json
+Total summary time: 8.977384090423584 seconds

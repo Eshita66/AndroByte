@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved from TelephonyManager",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+                "Reasoning": "The method directly accesses the device ID, which is a sensitive source.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is logged",
+                "Source Method": "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I",
+                "Reasoning": "The device ID is passed to the Log.e method, which is identified as a sink. The value is not overwritten with a non-sensitive constant.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String; --> Llina/ubc/fieldsensitivity/FieldSensitivity$A;->info1 Ljava/lang/String; --> Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I",
+                "Reasoning": "The device ID is retrieved from TelephonyManager, stored in info1, and then passed to Log.e without being overwritten by a non-sensitive value."
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

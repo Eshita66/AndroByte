@@ -1,0 +1,38 @@
+
+Processing folder: D:\UBCBAPK_Methods\ObjectSensitivity
+Using methods file: D:\UBCBAPK_Methods\ObjectSensitivity\ObjectSensitivity_bytecode_instructions.json
+Source methods with sensitive calls: ['Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the device ID from TelephonyManager and logs it using Log.i, which can potentially expose sensitive information.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve device ID from TelephonyManager",
+            "Source Method": "Llina/ubc/objectsensitivity/ObjectSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The system service 'TELEPHONY_SERVICE' is retrieved to get the TelephonyManager instance.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+        "Llina/ubc/objectsensitivity/ObjectSensitivity;->Log.i(Ljava/lang/String;Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Llina/ubc/objectsensitivity/ObjectSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Llina/ubc/objectsensitivity/ObjectSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Llina/ubc/objectsensitivity/ObjectSensitivity;->Log.i(Ljava/lang/String;Ljava/lang/String;)I",
+            "Reasoning": "The device ID is retrieved from TelephonyManager and stored in the system service registry. When logging, it directly goes to Log.i which can be accessed by developers or through logs."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ObjectSensitivity\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ObjectSensitivity\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ObjectSensitivity\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ObjectSensitivity\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ObjectSensitivity\output\sensitive_only.json
+Total time for folder: 138.60 seconds

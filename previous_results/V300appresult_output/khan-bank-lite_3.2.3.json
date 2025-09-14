@@ -1,0 +1,41 @@
+[
+  {
+    "Data Types Collected": [
+      "device ID",
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve device ID and IMEI from sensitive APIs",
+        "Source Method": "Lmn/slide/khaanbank/KhanBankApplication;->o:()Ljava/lang/String;",
+        "Reasoning": "The method calls sensitive APIs to retrieve device ID and IMEI.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Store sensitive information in SharedPreferences object",
+        "Source Method": "Lmn/slide/khaanbank/c/c;->d:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method uses the `b` function from `Lb/d/b/j` to store sensitive information in SharedPreferences object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Retrieve and return stored sensitive data",
+        "Source Method": "Lmn/slide/khaanbank/c/c;->d:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method retrieves the stored sensitive data and returns it.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lmn/slide/khaanbank/KhanBankApplication;->o:()Ljava/lang/String;",
+      "Lmn/slide/khaanbank/c/c;->d:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lmn/slide/khaanbank/KhanBankApplication;->o:()Ljava/lang/String; --> Lmn/slide/khaanbank/c/c;->d:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String; --> Lmn/slide/khaanbank/c/c;->d:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The device ID and IMEI retrieved from sensitive APIs are stored in SharedPreferences object by the `b` function, then retrieved and returned."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

@@ -1,0 +1,53 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ArrayAccess1
+ Using methods file: D:\UBCBAPK_Methods\ArrayAccess1\ArrayAccess1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/ArrayAccess1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/ArrayAccess1;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": [
+        "The method onCreate: initializes an array of strings, sets a content view from resources, retrieves system services, manipulates the array with tainted data, and sends an SMS message."
+    ],
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ArrayAccess1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ArrayAccess1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ArrayAccess1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Initialization of array with tainted data",
+                "Source Method": "Lde/ecspride/ArrayAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method initializes an array of strings and manipulates it with tainted data retrieved from a source.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Manipulation of array elements",
+                "Source Method": "Lde/ecspride/ArrayAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The tainted data in the array is manipulated, potentially leading to taint propagation.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sending SMS with potential leak",
+                "Source Method": "Lde/ecspride/ArrayAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method sends an SMS message, potentially containing the tainted data from the array.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ArrayAccess1;->onCreate:(Landroid/os/Bundle;)V --> array manipulation --> potential SMS sending",
+                "Reasoning": "The tainted data from the initialization step is manipulated within the method and potentially passed to a sink when an SMS is sent."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ArrayAccess1\output\refined_method_summaries.json
+Saved 0 'leak' subgraphs to D:\UBCBAPK_Methods\ArrayAccess1\output\sensitive_only.json
+Total time for folder: 90.79 seconds

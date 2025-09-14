@@ -1,0 +1,53 @@
+Processing folder: D:\UBCBAPK_Methods\SharedPreference1
+Using methods file: D:\UBCBAPK_Methods\SharedPreference1\SharedPreference1_bytecode_instructions.json
+Sensitive method found: Llina/ubc/sharedpreference1/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Llina/ubc/sharedpreference1/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method originates the device ID via the TelephonyManager.getDeviceId() API. The device ID is stored in SharedPreferences under the key 'deviceId' and then retrieved and logged using Log.i(). This constitutes a logging sink where sensitive user data is exposed.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\SharedPreference1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\SharedPreference1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\SharedPreference1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is obtained via TelephonyManager.getDeviceId()",
+                "Source Method": "Llina/ubc/sharedpreference1/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method directly calls TelephonyManager.getDeviceId() to retrieve the device ID, which is a sensitive source.",
+                "Action": "Collected"
+            },
+            {
+                "Step": "Device ID is stored in SharedPreferences",
+                "Source Method": "Llina/ubc/sharedpreference1/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is explicitly stored in SharedPreferences under the key 'deviceId'.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is retrieved and logged",
+                "Source Method": "Llina/ubc/sharedpreference1/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is retrieved from SharedPreferences and passed to Log.i(), which is a logging sink.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log;->i:(Ljava/lang/String;Ljava/lang/Object;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/sharedpreference1/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> android.util.Log;->i:(Ljava/lang/String;Ljava/lang/Object;)V",
+                "Reasoning": "The device ID is first obtained via TelephonyManager.getDeviceId(), stored in SharedPreferences, then retrieved and passed to Log.i() as a sensitive argument."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\SharedPreference1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\SharedPreference1\output\sensitive_only.json
+Total summary time: 18.315060138702393 seconds

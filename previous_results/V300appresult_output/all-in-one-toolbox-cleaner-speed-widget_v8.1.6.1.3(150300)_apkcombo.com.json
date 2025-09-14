@@ -1,0 +1,184 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "Lcom/moat/analytics/mobile/sma/o;->f:()Landroid/location/Location;",
+        "Reasoning": "getLastKnownLocation() method is used to retrieve user location",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass location to b() method",
+        "Source Method": "Lcom/moat/analytics/mobile/sma/o;->f:()Landroid/location/Location;",
+        "Reasoning": "Location is passed to b() method as an argument",
+        "Action": "Passed as argument"
+      },
+      {
+        "Step": "Return location from b() method",
+        "Source Method": "Lcom/moat/analytics/mobile/sma/o;->b(Landroid/location/Location;)V",
+        "Reasoning": "b() method returns the location",
+        "Action": "Returned"
+      },
+      {
+        "Step": "Return location from f() method",
+        "Source Method": "Lcom/moat/analytics/mobile/sma/o;->f:()Landroid/location/Location;",
+        "Reasoning": "f() method returns the location",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/moat/analytics/mobile/sma/o;->f:()Landroid/location/Location; --> Lcom/moat/analytics/mobile/sma/o;->b(Landroid/location/Location;)V --> Lcom/moat/analytics/mobile/sma/o;->f:()Landroid/location/Location;",
+        "Reasoning": "Location is retrieved, passed to b() method, and finally returned by f() method"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "timestamp",
+      "horizontal accuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data",
+        "Source Method": "Lcom/moat/analytics/mobile/sma/z;->b:(Landroid/location/Location;)Ljava/util/Map;",
+        "Reasoning": "Method extracts latitude, longitude, timestamp, and horizontal accuracy from Location object",
+        "Action": "Stored in HashMap"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Location object --> HashMap",
+        "Reasoning": "Location data is extracted and stored in a HashMap"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location received",
+        "Source Method": "Lcom/smaato/soma/internal/requests/settings/j;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method receives location object",
+        "Action": "Stored in private fields a and b"
+      },
+      {
+        "Step": "Data passed to method d",
+        "Source Method": "Lcom/smaato/soma/internal/requests/settings/j;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method calls d() method",
+        "Action": "Passed to method d"
+      },
+      {
+        "Step": "Data not stored",
+        "Source Method": "Lcom/smaato/soma/internal/requests/settings/j;->d:()V",
+        "Reasoning": "Method does not store data",
+        "Action": "Not stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/smaato/soma/internal/requests/settings/j;->onLocationChanged:(Landroid/location/Location;)V --> Lcom/smaato/soma/internal/requests/settings/j;->d:()V",
+        "Reasoning": "Location received in onLocationChanged method is passed to d method, but no data is stored in d method"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WifiManager API calls collect user location, device ID, and phone number.",
+        "Source Method": "Limoblife/toolbox/full/wifi/e;->handleMessage:(Landroid/os/Message;)V",
+        "Reasoning": "Sensitive user personal data is originated in handleMessage() method via WifiManager API calls.",
+        "Action": "Stored in local variables"
+      },
+      {
+        "Step": "Data is passed to WifiAnalysisActivity$a thread.",
+        "Source Method": "Limoblife/toolbox/full/wifi/e;->handleMessage:(Landroid/os/Message;)V",
+        "Reasoning": "Data is passed to WifiAnalysisActivity$a thread.",
+        "Action": "Passed to WifiAnalysisActivity$a thread"
+      },
+      {
+        "Step": "Data is used to update a text view.",
+        "Source Method": "WifiAnalysisActivity$a",
+        "Reasoning": "Data is used to update a text view.",
+        "Action": "Updated text view"
+      },
+      {
+        "Step": "Data is logged to the console.",
+        "Source Method": "WifiAnalysisActivity$a",
+        "Reasoning": "Data is logged to the console.",
+        "Action": "Logged to console"
+      }
+    ],
+    "All Sinks": [
+      "Limoblife/toolbox/full/wifi/WifiAnalysisActivity$a"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Limoblife/toolbox/full/wifi/e;->handleMessage:(Landroid/os/Message;)V --> WifiAnalysisActivity$a",
+        "Reasoning": "Sensitive user personal data is collected in handleMessage(), passed to WifiAnalysisActivity$a, and used to update a text view and log to console."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi SSID",
+      "Wi-Fi Network ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Wi-Fi network information",
+        "Source Method": "Limoblife/toolbox/full/wifi/WifiDetectActivity;->E:()I",
+        "Reasoning": "Method signature matches",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Check SSID match",
+        "Source Method": "Limoblife/toolbox/full/wifi/WifiDetectActivity;->E:()I",
+        "Reasoning": "Code analysis",
+        "Action": "Processed"
+      },
+      {
+        "Step": "Log result",
+        "Source Method": "Limoblife/toolbox/full/wifi/WifiDetectActivity;->E:()I",
+        "Reasoning": "Code analysis",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Limoblife/toolbox/full/wifi/WifiDetectActivity;->E:()I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " WifiDetectActivity(...) --> WifiDetectActivity(...) --> WifiDetectActivity(...)",
+        "Reasoning": "Data is collected, processed, and logged within the same method."
+      }
+    ],
+    "Label": "leak"
+  }
+]

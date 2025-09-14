@@ -1,0 +1,45 @@
+
+Processing folder: D:\UBCBAPK_Methods\StartProcessWithSecret1
+Using methods file: D:\UBCBAPK_Methods\StartProcessWithSecret1\StartProcessWithSecret1_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method 'onCreate' in 'MainActivity' retrieves the device ID from TelephonyManager, which is considered sensitive information. This ID is then used to construct and execute a command through ProcessBuilder, potentially passing this sensitive information to external processes or commands.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve Device ID from TelephonyManager",
+            "Source Method": "Ledu/mit/non_sink_argument_flow/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "Device ID is retrieved via the 'getSystemService' method which returns an object of type TelephonyManager.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Use Device ID in ProcessBuilder",
+            "Source Method": "Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "Device ID is used to construct a command through ProcessBuilder, potentially passing it to external processes.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Ljava/lang/ProcessBuilder;->start()Ljava/lang/Process;",
+        "Ljava/lang/ProcessBuilder;->command([Ljava/lang/String;)Ljava/lang/ProcessBuilder;"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Ledu/mit/non_sink_argument_flow/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljava/lang/ProcessBuilder;->command([Ljava/lang/String;)Ljava/lang/ProcessBuilder;",
+            "Reasoning": "The device ID is retrieved in 'onCreate' and used to construct a command through ProcessBuilder, which could be considered a potential sink if executed."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\StartProcessWithSecret1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\StartProcessWithSecret1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\StartProcessWithSecret1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\StartProcessWithSecret1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\StartProcessWithSecret1\output\sensitive_only.json
+Total time for folder: 786.54 seconds

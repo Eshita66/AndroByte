@@ -1,0 +1,111 @@
+[
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "Geocoder instance",
+      "Activity context",
+      "Locale instance",
+      "String address",
+      "java.lang.Object",
+      "java.lang.String",
+      "Throwable object"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data collected from sensitive API calls.",
+        "Source Method": "Lcom/crimson/jade/f/h$b;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Data originates from the Location object's latitude and longitude using sensitive API calls.",
+        "Action": "Stored in registers v1 (latitude) and v3 (longitude)"
+      },
+      {
+        "Step": "User personal data collected through Geocoder API.",
+        "Source Method": "Lcom/crimson/jade/f/h;->h:(D D)V",
+        "Reasoning": "The method originates user personal data by invoking the Geocoder API to get addresses from locations.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "User personal data collected through sensitive API calls.",
+        "Source Method": "Lg/s/b/d;->d:(Ljava/lang/Object; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the 'd' method which is called with a 'Ljava/lang/Object;' and a 'Ljava/lang/String;'.",
+        "Action": "Stored in register 'v1' as a NullPointerException"
+      },
+      {
+        "Step": "User personal data collected from exception message.",
+        "Source Method": "Lg/s/b/d;->i:(Ljava/lang/Throwable;)Ljava/lang/Throwable;",
+        "Reasoning": "[This method originates user personal data from the exception message and propagates it through registers.]",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "User personal data collected using sensitive API call.",
+        "Source Method": "Lg/v/n;->s:(Ljava/lang/CharSequence; C I Z I Ljava/lang/Object;)I",
+        "Reasoning": "The method originates user personal data by invoking a sensitive API call to `Lg/v/n;->s(Ljava/lang/CharSequence; C I Z I Ljava/lang/Object;)I`.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "User personal data collected from getStackTrace() and getClassName(), getMethodName() methods.",
+        "Source Method": "Lg/s/b/d;->h:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "This method originates user personal data from the getStackTrace() and getClassName(), getMethodName() methods.",
+        "Action": "Stored in registers (v0, v1) and variables (StringBuilder)"
+      }
+    ],
+    "All Sinks": [
+      "Lg/s/b/d;->d:(Ljava/lang/Object; Ljava/lang/String;)V",
+      "Lg/s/b/d;->h:(Ljava/lang/String;)Ljava/lang/String;",
+      "Lcom/crimson/jade/f/h;->h:(D D)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/crimson/jade/f/h$b;->a(Landroid/location/Location;)V --> Lcom/crimson/jade/f/h;->b(D D)V --> Lg/s/b/d;->h(Ljava/lang/String;)Ljava/lang/String;]",
+        "Reasoning": "Data flows from location data to user personal data and finally reaches a sink point for logging."
+      },
+      {
+        "dataflow 2": "[Lcom/crimson/jade/f/h;->h(D D)V --> Lg/s/b/d;->d(Ljava/lang/Object; Ljava/lang/String;)V --> Lg/s/b/d;->h(Ljava/lang/String;)Ljava/lang/String;]",
+        "Reasoning": "Data flows from Geocoder API to exception message and finally reaches a sink point for logging."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access location data from Android Location object",
+        "Source Method": "Lcom/crimson/jade/f/o$b;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data by accessing the location's latitude and longitude.",
+        "Action": "Stored in registers (v1, v3) and variables (v0)"
+      },
+      {
+        "Step": "Retrieve address from location using Geocoder class",
+        "Source Method": "Lcom/crimson/jade/f/o;->e:(D D)V",
+        "Reasoning": "The method originates user personal data by using the `getFromLocation` method of the `Geocoder` class to retrieve a list of addresses from the device's location.",
+        "Action": "Extracted address and locality"
+      },
+      {
+        "Step": "Pass extracted address and locality to other methods",
+        "Source Method": "Lcom/crimson/jade/f/o;->e:(D D)V",
+        "Reasoning": "The method then extracts the first address and its locality, and stores them in variables.",
+        "Action": "Passed to com.crimson.jade.f/o$a.a(D D Ljava/lang/String;)V"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/crimson/jade/f/o$b;->a:(Landroid/location/Location;)V",
+      "Lcom/crimson/jade/f/o;->e:(D D)V",
+      "com/crimson/jade/f/o$a.a(D D Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/crimson/jade/f/o$b;->a(Landroid/location/Location;)V --> Lcom/crimson/jade/f/o;->e(D D)V --> com/crimson/jade/f/o$a.a(D D Ljava/lang/String;)V]",
+        "Reasoning": "The location data is accessed by the method Lcom/crimson/jade/f/o$b;->a(Landroid/location/Location;)V, then passed to method Lcom/crimson/jade/f/o;->e(D D)V which uses Geocoder class to retrieve address. The extracted address and locality are then passed to com/crimson/jade/f/o$a.a(D D Ljava/lang/String;)V"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

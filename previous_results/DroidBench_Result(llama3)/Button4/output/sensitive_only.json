@@ -1,0 +1,31 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Store user personal data (IMEI) in 'imei' static field",
+                "Source Method": "Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method originates and stores the IMEI in a static field.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Retrieve sensitive user data (IMEI) to send an SMS message",
+                "Source Method": "Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The method retrieves the IMEI from the static field and uses it to send an SMS message.",
+                "Action": "Retrieved"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V]",
+                "Reasoning": "The IMEI is stored in the 'imei' static field by onCreate, and then retrieved by sendMessage to send an SMS message."
+            }
+        ],
+        "Label": "leak"
+    }
+]

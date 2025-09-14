@@ -1,0 +1,50 @@
+
+Processing folder: D:\UBCBAPK_Methods\StaticInitialization2
+Using methods file: D:\UBCBAPK_Methods\StaticInitialization2\StaticInitialization2_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V']
+[SUMMARY] Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V => The method retrieves the device ID from the system service TelephonyManager, which is obtained through the context of the application. The retrieved device ID is then stored in a static field of MainActivity as a sensitive piece of information.
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method 'onCreate' in 'de/ecspride/MainActivity' initializes the activity, sets its content view to a predefined resource ID, and sends an SMS message containing a hardcoded phone number. The sensitive data being processed is the phone number '+49 1234', which is directly used in the 'sendTextMessage' method call without any sanitization or encryption.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID",
+        "Phone number"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Initialization of static fields with sensitive data",
+            "Source Method": "Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V",
+            "Reasoning": "The method retrieves device ID from TelephonyManager using the application context and stores it in a static field of MainActivity, which is considered sensitive.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Sending SMS with hardcoded phone number",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method sends an SMS message containing a hardcoded phone number (sensitive data) directly to the default SMS application without any sanitization or encryption.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "null"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V --> MainActivity static field --> potentially accessible by other parts of the app or through debugging tools",
+            "Reasoning": "The device ID is retrieved and stored in a static field, which could be accessed later by any part of the application if not properly secured."
+        },
+        {
+            "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> sendTextMessage(String, String, PendingIntent) --> default SMS application",
+            "Reasoning": "The hardcoded phone number is sent directly to the SMS sending API without any data handling best practices applied, potentially exposing it to unintended recipients."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\StaticInitialization2\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\StaticInitialization2\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\StaticInitialization2\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\StaticInitialization2\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\StaticInitialization2\output\sensitive_only.json
+Total time for folder: 812.53 seconds

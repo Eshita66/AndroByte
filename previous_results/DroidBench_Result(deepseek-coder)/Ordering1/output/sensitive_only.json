@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "latitude",
+            "longitude"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Extracting latitude and longitude from location object",
+                "Source Method": "Lde/ecspride/MainActivity$1;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "The method extracts latitude and longitude from a Location object using getLatitude() and getLongitude(), which are user-generated content.",
+                "Action": "Stored in instance variables of MainActivity"
+            },
+            {
+                "Step": "Logging latitude and longitude to logcat",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the stored latitude and longitude from instance variables and logs them using Log.d(), potentially exposing sensitive information.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Lde/ecspride/MainActivity$1;->onLocationChanged:(Landroid/location/Location;)V --> Stored in instance variables of MainActivity --> Logged to Logcat using Log.d() in onCreate method]",
+                "Reasoning": "The latitude and longitude values are extracted from the location object within onLocationChanged, stored in instance variables of MainActivity, and then logged using Log.d() during the onCreate method."
+            }
+        ],
+        "Label": "leak"
+    }
+]

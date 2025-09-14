@@ -1,0 +1,193 @@
+[
+  {
+    "Data Types Collected": [
+      "WifiManager API"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected from WifiManager API.",
+        "Source Method": "Lcom/adjust/sdk/plugin/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method returns user's Wifi MAC address.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user location from LeanplumInternal$7$1 class",
+        "Source Method": "Lcom/leanplum/internal/LeanplumInternal$7$1;->doInBackground:([Ljava/lang/Void;)Ljava/lang/Void;",
+        "Reasoning": "Summary",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Send user location to Leanplum",
+        "Source Method": "Lcom/leanplum/internal/LeanplumInternal$7$1;->doInBackground:([Ljava/lang/Void;)Ljava/lang/Void;",
+        "Reasoning": "Summary",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Leanplum"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LeanplumInternal$7$1 -> Leanplum",
+        "Reasoning": "Overall Data Flow"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain WiFi MAC address",
+        "Source Method": "Lcom/leanplum/internal/Util;->getWifiMacAddressHash:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `getWifiMacAddressHash()` explicitly retrieves the user's WiFi MAC address.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Hash WiFi MAC address",
+        "Source Method": "Lcom/leanplum/internal/Util;->getWifiMacAddressHash:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `getWifiMacAddressHash()` uses MD5 hashing to transform the collected WiFi MAC address.",
+        "Action": "Transformed"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location from LocationManager",
+        "Source Method": "Lorg/mozilla/gecko/GeckoAppShell;->getLastKnownLocation:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "Method signature and summary description",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check for accuracy",
+        "Source Method": "Lorg/mozilla/gecko/GeckoAppShell;->getLastKnownLocation:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "Method signature and summary description",
+        "Action": "N/A"
+      }
+    ],
+    "All Sinks": [
+      "N/A"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " getLastKnownLocation(...) --> Stored",
+        "Reasoning": "Data is retrieved from the LocationManager and stored in a Location object"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "GPS position",
+      "Pressure",
+      "Phone type",
+      "Cell data",
+      "Wifi scan results"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Data collection from various sources",
+        "Source Method": "Lorg/mozilla/mozstumbler/service/stumblerthread/datahandling/StumblerBundle;->toMLSJSON:()Lorg/json/JSONObject;",
+        "Reasoning": "Data originates from GPS position, pressure, phone type, cell data, and wifi scan results.",
+        "Action": "Stored in JSONObject"
+      }
+    ],
+    "All Sinks": [
+      "Logging"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "StumblerBundle -> JSONObject -> Logging",
+        "Reasoning": "Data is collected from various sources, transformed into a JSONObject, and then logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is originated from GPS sensor.",
+        "Source Method": "Lorg/mozilla/mozstumbler/service/stumblerthread/scanners/GPSScanner;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary",
+        "Action": "Stored in mLocation field"
+      },
+      {
+        "Step": "Sensitive user location data is originated in reportNewLocationReceived method.",
+        "Source Method": "Lorg/mozilla/mozstumbler/service/stumblerthread/scanners/GPSScanner;->reportNewLocationReceived:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary",
+        "Action": "Broadcasted via LocalBroadcastManager"
+      },
+      {
+        "Step": "Location data is sent to guiLogInfo method in AppGlobals class.",
+        "Source Method": "Lorg/mozilla/mozstumbler/service/stumblerthread/scanners/GPSScanner;->sendToLogActivity:(Ljava/lang/String;)V",
+        "Reasoning": "Method summary",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/mozilla/mozstumbler/service/stumblerthread/scanners/GPSScanner;->guiLogInfo:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/mozilla/mozstumbler/service/stumblerthread/scanners/GPSScanner;->onLocationChanged:(Landroid/location/Location;)V --> Lorg/mozilla/mozstumbler/service/stumblerthread/scanners/GPSScanner;->sendToLogActivity:(Ljava/lang/String;)V --> Lorg/mozilla/mozstumbler/service/stumblerthread/scanners/GPSScanner;->guiLogInfo:(Ljava/lang/String;)V",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected.",
+        "Source Method": "Lorg/mozilla/gecko/GeckoAppShell$DefaultListeners;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "onLocationChanged() method receives Location object as argument.",
+        "Action": "Stored in registers and variables."
+      },
+      {
+        "Step": "Location is passed to GeckoAppShell.onLocationChanged() method.",
+        "Source Method": "Lorg/mozilla/gecko/GeckoAppShell$DefaultListeners;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "onLocationChanged() method is called with Location object.",
+        "Action": "Passed to GeckoAppShell.onLocationChanged() method."
+      }
+    ],
+    "All Sinks": [
+      "Lorg/mozilla/gecko/GeckoAppShell;->onLocationChanged:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/mozilla/gecko/GeckoAppShell$DefaultListeners;->onLocationChanged:(Landroid/location/Location;)V --> Lorg/mozilla/gecko/GeckoAppShell;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "onLocationChanged() method in GeckoAppShell receives Location object and passes it further to itself."
+      }
+    ],
+    "Label": "leak"
+  }
+]

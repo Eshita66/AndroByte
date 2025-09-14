@@ -1,0 +1,53 @@
+
+ Processing folder: D:\UBCBAPK_Methods\LocationLeak2
+ Using methods file: D:\UBCBAPK_Methods\LocationLeak2\LocationLeak2_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V']
+[SUMMARY] Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V => {
+    "Summary": "The onLocationChanged method may leak location data to other parts of the app through field-based readers.",
+    "Next Methods": [
+        "Lde/ecspride/LocationLeak2;->onResume:()V"
+    ]
+}
+[SUMMARY] Lde/ecspride/LocationLeak2;->onResume:()V => {
+    "Summary": "The onLocationChanged method may leak location data to other parts of the app through field-based readers.",
+    "Next Methods": [
+        "Landroid/util/Log;->d(Ljava/lang/String; Ljava/lang/String;)I",
+        "Landroid/widget/Toast;->makeText(Landroid/content/Context; Ljava/lang/CharSequence; I)Landroid/widget/Toast;",
+        "Landroid/widget/Toast;->show()V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\LocationLeak2\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\LocationLeak2\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\LocationLeak2\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "location"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Location data passed from onLocationChanged to onResume",
+                "Source Method": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "Summary of onLocationChanged indicates that location data is tainted.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/LocationLeak2;->onResume:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V --> Lde/ecspride/LocationLeak2;->onResume:()V",
+                "Reasoning": "Location data is passed directly from onLocationChanged to onResume."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\LocationLeak2\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\LocationLeak2\output\sensitive_only.json
+Total time for folder: 13.73 seconds

@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved from TelephonyManager",
+                "Source Method": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly calls TelephonyManager to obtain the device ID, which is a sensitive data source.",
+                "Action": "Stored in memory"
+            },
+            {
+                "Step": "Device ID is logged using Log.i",
+                "Source Method": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The Log.i method is a sink that directly receives the device ID without any overwriting or taint removal mentioned in the summary.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The device ID is retrieved via TelephonyManager (source), passed to Log.i (sink) without being overwritten or sanitized, resulting in a sensitive data leak."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

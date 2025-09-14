@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "Context",
+            "TelephonyManager",
+            "String"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve TelephonyManager from Context",
+                "Source Method": "Lde/ecspride/ConcreteClass;->foo:(Landroid/content/Context;)Ljava/lang/String;",
+                "Reasoning": "The method accesses the 'phone' system service which includes TelephonyManager, providing access to device ID.",
+                "Action": "Stored in memory as part of method return value."
+            },
+            {
+                "Step": "Access Device ID through TelephonyManager",
+                "Source Method": "Lde/ecspride/ConcreteClass;->foo:(Landroid/content/Context;)Ljava/lang/String;",
+                "Reasoning": "TelephonyManager provides access to device-specific information including the device ID.",
+                "Action": "Used directly in method return value."
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ConcreteClass;->logDeviceID:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ConcreteClass;->foo:(Landroid/content/Context;)Ljava/lang/String; --> TelephonyManager.getDeviceId() --> Log.i(...)",
+                "Reasoning": "The method retrieves the device ID through TelephonyManager and directly logs it using Log.i(...), indicating a potential leak."
+            }
+        ],
+        "Label": "leak"
+    }
+]

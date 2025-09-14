@@ -1,0 +1,40 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "String"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "onCreate method initializes Activity and sets up Datacontainer to send SMS using TelephonyManager.",
+                "Source Method": "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive data is collected from the Bundle passed to onCreate.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "setSecret method overwrites DeviceId with a safe constant, removing taint.",
+                "Source Method": "Lde/ecspride/Datacontainer;->setSecret(Ljava/lang/String;)V",
+                "Reasoning": "Sensitive data is overwritten with a non-sensitive value, removing taint.",
+                "Action": "Logged"
+            },
+            {
+                "Step": "setDescription method overwrites DeviceId with a safe constant, removing taint.",
+                "Source Method": "Lde/ecspride/Datacontainer;->setDescription(Ljava/lang/String;)V",
+                "Reasoning": "Sensitive data is overwritten with a non-sensitive value, removing taint.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/FieldSensitivity3;->sendSMS:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Datacontainer;->setSecret(Ljava/lang/String;)V --> Lde/ecspride/FieldSensitivity3;->sendSMS:(Ljava/lang/String;)V",
+                "Reasoning": "Sensitive data is collected from the Bundle passed to onCreate, overwritten in setSecret, and then sent via SMS."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

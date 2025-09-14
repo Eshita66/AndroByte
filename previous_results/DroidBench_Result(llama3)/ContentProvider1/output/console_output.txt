@@ -1,0 +1,102 @@
+
+Processing folder: D:\UBCBAPK_Methods\ContentProvider1
+Using methods file: D:\UBCBAPK_Methods\ContentProvider1\ContentProvider1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MyContentProvider;->onCreate:()Z', 'Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MyContentProvider;->onCreate:()Z => This method originates user personal data by obtaining the device ID using `getDeviceId()` from the `TelephonyManager`. This ID is then checked for the presence of the string '0000'. If the device ID contains '0000', a boolean flag `isEmulator` is set to true. This suggests the method is designed to detect if the code is running on an emulator, potentially using the device ID as a characteristic. The method itself doesn't explicitly pass this data to a known sink, but the `isEmulator` flag could be used to trigger further actions that might involve sensitive data.
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => This method potentially exposes user data by attempting to send an SMS message with a hardcoded phone number (+49 1234) and by logging the device ID to logcat. The device ID is likely to contain sensitive information such as the IMEI or Android ID, which can be used for tracking and identification. The SMS sending operation itself is a potential sink as it transmits data to a third-party service (the SMS provider). The `Log.v` call also represents a potential sink, as it logs the device ID to logcat, which could be accessed by an attacker.
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => This method potentially exposes user data by attempting to send an SMS message with a hardcoded phone number ("+49 1234"). The `getDeviceId()` call from the `TelephonyManager` could also expose device identifiers, which are considered sensitive. The `Log.v` call also represents a potential sink for sensitive data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "device ID",
+        "SMS message (hardcoded phone number)"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Device ID obtained via TelephonyManager.",
+            "Source Method": "Lde/ecspride/MyContentProvider;->onCreate:()Z",
+            "Reasoning": "The method uses `getDeviceId()` from `TelephonyManager` to obtain the device ID.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Device ID and hardcoded phone number used in SMS message.",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The `onCreate` method attempts to send an SMS message with a hardcoded phone number and logs the device ID.",
+            "Action": "Transmitted (SMS), Logged"
+        },
+        {
+            "Step": "Device ID logged to logcat.",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The `Log.v` call logs the device ID to logcat.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+        "Lde/ecspride/MainActivity;->getSupportFragmentManager()Landroid/support/v4/app/FragmentManager;",
+        "Lde/ecspride/MainActivity;->setContentView(I)V",
+        "Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z",
+        "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/MyContentProvider;->onCreate:()Z --> Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The `MyContentProvider`'s `onCreate` method obtains the device ID, which is then used in the `MainActivity`'s `onCreate` method. This initiates the flow of sensitive data."
+        }
+    ],
+    "Label": "leak"
+}
+
+[REFINED SUBGRAPH #2]:
+{
+    "Data Types Collected": [
+        "device ID",
+        "phone number"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "MainActivity::onCreate receives Bundle",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The `onCreate` method receives a Bundle, which could potentially contain user data.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Attempt to send SMS with hardcoded number",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method attempts to send an SMS message with a hardcoded phone number (\"+49 1234\"). This is a direct attempt to transmit sensitive data.",
+            "Action": "Transmitted"
+        },
+        {
+            "Step": "getDeviceId() call exposes device ID",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The `getDeviceId()` call from the `TelephonyManager` could expose device identifiers, which are considered sensitive.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Log.v call logs sensitive data",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The `Log.v` call represents a potential sink for sensitive data (device ID and phone number).",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> getDeviceId() --> Log.v -->  onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The `onCreate` method receives a Bundle.  The `getDeviceId()` call extracts a device ID from the TelephonyManager. This device ID is then logged via `Log.v`. The hardcoded phone number is also transmitted in the SMS attempt, and potentially logged."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ContentProvider1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ContentProvider1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ContentProvider1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ContentProvider1\output\visited_graph
+Saved 2 'leak' subgraphs to: D:\UBCBAPK_Methods\ContentProvider1\output\sensitive_only.json
+Total time for folder: 23.91 seconds

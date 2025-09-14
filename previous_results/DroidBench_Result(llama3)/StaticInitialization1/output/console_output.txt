@@ -1,0 +1,53 @@
+
+Processing folder: D:\UBCBAPK_Methods\StaticInitialization1
+Using methods file: D:\UBCBAPK_Methods\StaticInitialization1\StaticInitialization1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => This method initiates the lifecycle of the MainActivity. Critically, it retrieves the device ID using `TelephonyManager.getDeviceId()`, storing it as a static field `MainActivity.im`. This represents the origin of user personal data. The `TelephonyManager` itself is a potential sink, as it exposes device identifiers, which are considered personal data.  The `MainActivity.im` field then stores this data, making it accessible throughout the application's lifecycle.
+[SUMMARY] Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V => This method initiates the sending of an SMS message containing the phone number "+49 1234". The method directly uses `SmsManager` to send this message. This represents a significant risk as it involves transmitting a phone number, which is considered personal data. The phone number is hardcoded into the application, making it a potential source of sensitive data. The method does not perform any sanitization or validation of the phone number before sending it, further increasing the risk.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID",
+        "Phone Number (+49 1234)"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "MainActivity initializes with onCreate, retrieving device ID via TelephonyManager and storing it in static field MainActivity.im.",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The `onCreate` method initiates the lifecycle and immediately retrieves the device ID using `TelephonyManager.getDeviceId()`. This is the initial collection of personal data.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "StaticInitClass1 sends SMS message with hardcoded phone number (+49 1234).",
+            "Source Method": "Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V",
+            "Reasoning": "The `StaticInitClass1` method directly uses `SmsManager` to send an SMS containing the phone number. This represents a significant risk due to the hardcoded nature of the phone number.",
+            "Action": "Transmitted"
+        },
+        {
+            "Step": "Data flows from device ID to MainActivity lifecycle.",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The device ID retrieved in `onCreate` is now stored in the `MainActivity.im` field, making it accessible throughout the application's lifecycle.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Lde/ecspride/MainActivity;->setContentView(I)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; and Lde/ecspride/MainActivity;->setContentView(I)V",
+            "Reasoning": "The `onCreate` method retrieves the device ID. This data is then stored in `MainActivity.im`. The `getSystemService` and `setContentView` methods are called, but they do not directly process the device ID. They are likely part of the UI initialization and do not represent a sink in this specific data flow."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\StaticInitialization1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\StaticInitialization1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\StaticInitialization1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\StaticInitialization1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\StaticInitialization1\output\sensitive_only.json
+Total time for folder: 12.54 seconds

@@ -1,0 +1,31 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID (IMEI/MEID)"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID",
+                "Source Method": "Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+                "Reasoning": "The method calls TelephonyManager.getDeviceId() to obtain the device ID, which is a personal data type.",
+                "Action": "Retrieved but not used"
+            },
+            {
+                "Step": "Attempt to send SMS",
+                "Source Method": "Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+                "Reasoning": "The method attempts to send an SMS to a fixed number but fails to set the message content, resulting in incomplete parameters.",
+                "Action": "Incomplete transmission"
+            }
+        ],
+        "All Sinks": [
+            "null"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V --> TelephonyManager.getDeviceId() (retrieved device ID) --> SMS send attempt (incomplete parameters)",
+                "Reasoning": "The device ID is retrieved but not used, and the SMS send attempt lacks message content, so no sensitive data reaches a real sink."
+            }
+        ],
+        "Label": "no leak"
+    }
+]

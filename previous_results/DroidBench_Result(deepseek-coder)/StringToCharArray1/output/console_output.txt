@@ -1,0 +1,50 @@
+
+Processing folder: D:\UBCBAPK_Methods\StringToCharArray1
+Using methods file: D:\UBCBAPK_Methods\StringToCharArray1\StringToCharArray1_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the device ID from the TelephonyManager using getDeviceId(), which represents user-specific information such as the unique identifier for the mobile phone device. This data is then processed by converting each character of the device ID into a character array, and finally, it logs this potentially sensitive information to the logcat with Log.i(...) if its length is greater than zero.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieving Device ID",
+            "Source Method": "Ledu/mit/string_to_char/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The method retrieves the TelephonyManager service to access device-specific information.",
+            "Action": "Collected"
+        },
+        {
+            "Step": "Converting Device ID to Character Array",
+            "Source Method": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The device ID string is processed into a character array for further manipulation.",
+            "Action": "Processed"
+        },
+        {
+            "Step": "Logging the Device ID",
+            "Source Method": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The character array is logged using Log.i(...) if its length is greater than zero.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/string_to_char/MainActivity;->Log.i:(Ljava/lang/String; Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(getSystemService) --> Processed (convert to character array) --> Sink Method(Log.i(...))]",
+            "Reasoning": "The device ID is first collected from the TelephonyManager, then converted into a character array within the MainActivity onCreate method, and finally logged using Log.i(...) which is considered a sink for sensitive information."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\StringToCharArray1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\StringToCharArray1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\StringToCharArray1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\StringToCharArray1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\StringToCharArray1\output\sensitive_only.json
+Total time for folder: 852.29 seconds

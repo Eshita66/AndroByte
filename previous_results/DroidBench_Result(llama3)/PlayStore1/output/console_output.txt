@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\PlayStore1
+Using methods file: D:\UBCBAPK_Methods\PlayStore1\PlayStore1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive data originated from getDeviceId() and was passed to sendTextMessage(). A sink was identified for this sensitive data.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\PlayStore1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\PlayStore1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\PlayStore1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from getDeviceId()",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "getDeviceId() is a source of sensitive data.",
+                "Action": "Passed to sendTextMessage()"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/sendTextMessage;->sendTextMessage:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> getDeviceId() --> sendTextMessage(Ljava/lang/String;)V",
+                "Reasoning": "Sensitive data from getDeviceId() is passed to sendTextMessage()."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\PlayStore1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\PlayStore1\output\sensitive_only.json
+Total summary time: 11.70090126991272 seconds

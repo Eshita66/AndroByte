@@ -1,0 +1,263 @@
+[
+  {
+    "Data Types Collected": [
+      "device's location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from device's location",
+        "Source Method": "Lcom/leanplum/internal/LeanplumInternal$7$1;->run:()V",
+        "Reasoning": "This method originates user personal data from the device's location and stores it in a HashMap.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Passes data to onResponse or onError methods of Request class",
+        "Source Method": "Lcom/leanplum/internal/LeanplumInternal$7$1;->run:()V",
+        "Reasoning": "The data is then passed to the `onResponse` or `onError` methods of the `Request` class, which may lead to sinks such as logging or network transmission.",
+        "Action": "passed"
+      },
+      {
+        "Step": "Invokes Object constructor and stores data in register v0",
+        "Source Method": "Lcom/leanplum/internal/LeanplumInternal$7$1$2;-><init>:(Lcom/leanplum/internal/LeanplumInternal$7$1;)V",
+        "Reasoning": "The method originates user personal data through the invocation of the Object constructor. The data is stored in register v0 and passed to other methods via method invocations.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Passes data to constructor of java.lang.Object",
+        "Source Method": "Lcom/leanplum/internal/LeanplumInternal$7$1$1;-><init>:(Lcom/leanplum/internal/LeanplumInternal$7$1;)V",
+        "Reasoning": "The method originates user personal data from the sensitive API call 'Lcom/leanplum/internal/LeanplumInternal$7$1;' and stores it in register v0. The data is then passed to the constructor of java.lang.Object.",
+        "Action": "passed"
+      }
+    ],
+    "All Sinks": [
+      "onResponse",
+      "onError"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/leanplum/internal/LeanplumInternal$7$1;->run:()V --> Lcom/leanplum/internal/LeanplumInternal$7$1;->run:()V --> onResponse/onError",
+        "Reasoning": "The data flow starts from the run method of LeanplumInternal$7$1, where user personal data is originated and stored in a HashMap. The data is then passed to the onResponse or onError methods of the Request class."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WifiMacAddressHash",
+      "MD5 hash of string",
+      "Device ID",
+      "Phone number",
+      "UUID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get Wifi Mac Address Hash",
+        "Source Method": "Lcom/leanplum/internal/Util;->getWifiMacAddressHash:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the getMacAddress() function of WifiInfo.",
+        "Action": "Stored in register v5"
+      },
+      {
+        "Step": "Compute MD5 Hash",
+        "Source Method": "Lcom/leanplum/internal/Util;->md5:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "This method originates user personal data by computing the MD5 hash of a string using the `getInstance` and `digest` methods from `java.security.MessageDigest`.",
+        "Action": "Stored in registers v0, v1, and v6"
+      },
+      {
+        "Step": "Check Device ID",
+        "Source Method": "Lcom/leanplum/internal/Util;->checkDeviceId:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data from the `v3` register and stores it in `v2`.",
+        "Action": "Stored in v2"
+      },
+      {
+        "Step": "Log Sensitive Data",
+        "Source Method": "Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LogType; Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The method log from com.leanplum.internal.Log originates user personal data through sensitive API calls to formatTag and formatString.",
+        "Action": "Logged using the e, i, or d methods from android.util.Log"
+      },
+      {
+        "Step": "Create Request with Sensitive Data",
+        "Source Method": "Lcom/leanplum/internal/RequestFactory;->createRequest:(Ljava/lang/String; Ljava/lang/String; Lcom/leanplum/internal/Request$RequestType; Ljava/util/Map;)Lcom/leanplum/internal/Request;",
+        "Reasoning": "The method originates user personal data through the 'createRequest' method, which takes sensitive information such as strings and a map.",
+        "Action": "Passed to the 'return-object' instruction"
+      },
+      {
+        "Step": "Generate UUID",
+        "Source Method": "Lcom/leanplum/internal/Request;-><init>:(Ljava/lang/String; Ljava/lang/String; Lcom/leanplum/internal/Request$RequestType; Ljava/util/Map;)V",
+        "Reasoning": "The method originates user personal data through the invocation of sensitive API calls to generate a UUID and its string representation.",
+        "Action": "Stored in registers (v0, v1) and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LogType; Ljava/lang/String; [Ljava/lang/Object;)V",
+      "Lcom/leanplum/internal/Util;->checkDeviceId:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;",
+      "Lcom/leanplum/internal/RequestFactory;->createRequest:(Ljava/lang/String; Ljava/lang/String; Lcom/leanplum/internal/Request$RequestType; Ljava/util/Map;)Lcom/leanplum/internal/Request;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/leanplum/internal/Util;->getWifiMacAddressHash:(Landroid/content/Context;)Ljava/lang/String; --> Stored in register v5 --> Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LogType; Ljava/lang/String; [Ljava/lang/Object;)V]",
+        "Reasoning": "The data is stored in register v5 and then passed to the logging method."
+      },
+      {
+        "dataflow 2": "[Lcom/leanplum/internal/Util;->md5:(Ljava/lang/String;)Ljava/lang/String; --> Stored in registers v0, v1, and v6 --> No sinks found]",
+        "Reasoning": "The data is stored in registers but no sinks are identified."
+      },
+      {
+        "dataflow 3": "[Lcom/leanplum/internal/Util;->checkDeviceId:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String; --> Stored in v2 --> Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LogType; Ljava/lang/String; [Ljava/lang/Object;)V]",
+        "Reasoning": "The data is stored in v2 and then passed to the logging method."
+      },
+      {
+        "dataflow 4": "[Lcom/leanplum/internal/RequestFactory;->createRequest:(Ljava/lang/String; Ljava/lang/String; Lcom/leanplum/internal/Request$RequestType; Ljava/util/Map;)Lcom/leanplum/internal/Request; --> Passed to the 'return-object' instruction]",
+        "Reasoning": "The data is passed to the return statement but no sinks are identified."
+      },
+      {
+        "dataflow 5": "[Lcom/leanplum/internal/Request;-><init>:(Ljava/lang/String; Ljava/lang/String; Lcom/leanplum/internal/Request$RequestType; Ljava/util/Map;)V --> Stored in registers (v0, v1) and variables within the method]",
+        "Reasoning": "The data is stored in registers but no sinks are identified."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "com.mparticle.internal.InternalSession"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "InternalSession and Location objects are used to store user personal data.",
+        "Source Method": "Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V",
+        "Reasoning": "The method originates user personal data from the InternalSession and Location objects.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is propagated to other methods via method invocations.",
+        "Source Method": "Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V",
+        "Reasoning": "The data reaches a sink point when it is put into a JSON object.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "JSONObject's keys() method is used to iterate over a JSON object's keys.",
+        "Source Method": "Lcom/mparticle/internal/c0/b;->a:()[Ljava/lang/String;",
+        "Reasoning": "The data is stored in an ArrayList and then converted to a String array before being returned.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V",
+      "Lcom/mparticle/internal/c0/b;->a:()[Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mparticle/internal/c0/a;<init>(...)--->JSONObject---> Lcom/mparticle/internal/c0/b;a([...])",
+        "Reasoning": "Data is stored in InternalSession and Location objects, then put into a JSON object. The JSONObject's keys() method is used to iterate over the JSON object's keys, storing the data in an ArrayList and converting it to a String array."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "com.appsflyer.AFEvent",
+      "java.util.Map"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from context and AFEvent",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->eventDataCollector:(Landroid/content/Context;)Lcom/appsflyer/internal/EventDataCollector;",
+        "Reasoning": "The method originates user personal data by calling sensitive API getApplicationContext() and storing it in the 'values' field.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data through getInstance() method of AppsFlyerLibCore class",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->getInstance:()Lcom/appsflyer/AppsFlyerLibCore;",
+        "Reasoning": "The method originates user personal data through the getInstance() method of AppsFlyerLibCore class.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by calling sensitive API getApplicationContext()",
+        "Source Method": "Lcom/appsflyer/internal/EventDataCollector;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data by calling sensitive API getApplicationContext() and storing it in the 'values' field.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by using sensitive API calls to get device information and app settings",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "The method originates user personal data by using sensitive API calls to get device information and app settings.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data through getInstance() method of AppsFlyerProperties class",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties;",
+        "Reasoning": "The method originates user personal data by calling the static method valueOf() from AppsFlyerProperties class.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by accessing SharedPreferences",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->getSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The method originates user personal data by calling the getInstance() method of AppsFlyerLibCore and then accessing the afInfoLog SharedPreferences.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AppsFlyerLibCore;->logEvent:(Ljava/lang/String;)V",
+      "Lcom/appsflyer/internal/EventDataCollector;->sendEventToServer(Ljava/util/Map;)Z",
+      "Landroid/content/SharedPreferences;->edit()Landroid/content/SharedPreferences$Editor;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/AppsFlyerLibCore;->eventDataCollector:(Landroid/content/Context;)Lcom/appsflyer/internal/EventDataCollector; --> Lcom/appsflyer/internal/EventDataCollector;-><init>:(Landroid/content/Context;)V --> Lcom/appsflyer/internal/EventDataCollector;->sendEventToServer(Ljava/util/Map;)Z ",
+        "Reasoning": "The data is propagated to the sendEventToServer() method of EventDataCollector class."
+      },
+      {
+        "dataflow 2": " Lcom/appsflyer/AppsFlyerLibCore;->getInstance:()Lcom/appsflyer/AppsFlyerLibCore; --> Lcom/appsflyer/AppsFlyerLibCore;->getSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences; --> Landroid/content/SharedPreferences;->edit()Landroid/content/SharedPreferences$Editor;",
+        "Reasoning": "The data is propagated to the edit() method of SharedPreferences class."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "AppsFlyerLib instance invoked",
+        "Source Method": "Lcom/mparticle/kits/AppsFlyerKit;->setLocation:(Landroid/location/Location;)V",
+        "Reasoning": "User personal data collection initiated by invoking AppsFlyerLib instance.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data stored in registers v0, v1, v2, and v4",
+        "Source Method": "Lcom/mparticle/kits/AppsFlyerKit;->setLocation:(Landroid/location/Location;)V",
+        "Reasoning": "User personal data is temporarily stored in registers before being passed to the logLocation method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data logged by logLocation method",
+        "Source Method": "Lcom/mparticle/kits/AppsFlyerKit;->logLocation:(Ljava/lang/String;)V",
+        "Reasoning": "User personal data is passed to the logLocation method for logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mparticle/kits/AppsFlyerKit;->logLocation:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mparticle/kits/AppsFlyerKit;->setLocation:(Landroid/location/Location;)V --> AppsFlyerLib instance invoked --> Lcom/mparticle/kits/AppsFlyerKit;->logLocation:(Ljava/lang/String;)V ",
+        "Reasoning": "User personal data (location) is collected by invoking the AppsFlyerLib instance and stored in registers. The data is then passed to the logLocation method for logging."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {}
+]

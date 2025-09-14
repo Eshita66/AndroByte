@@ -1,0 +1,401 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address",
+      "User ID (from phone number)",
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get MAC Address from WifiManager",
+        "Source Method": "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data by calling the `getMacAddress` function from the `WifiManager`, which is then used to generate a SHA1 hash.",
+        "Action": "Stored in sha1_mac field"
+      },
+      {
+        "Step": "Get User ID (from phone number)",
+        "Source Method": "Lcom/amazon/device/ads/DtbLog;->info:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "This method originates user personal data from sensitive API calls to determine the log level and log a message if the androidLogAvailable flag is true.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Get Location",
+        "Source Method": "Lcom/amazon/device/ads/DtbCommonUtils;->getURLEncodedString:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "[This method originates user personal data from the input string. The data is then propagated through registers and variables within the method.]",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/device/ads/DtbLog;->info:(Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/amazon/device/ads/DtbLog;->postMessageToListener:(Ljava/lang/String; Lcom/amazon/device/ads/DTBLogLevel; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V --> Lcom/amazon/device/ads/DtbCommonUtils;->getURLEncodedString:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/amazon/device/ads/DtbLog;->info:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The MAC address is obtained from the WifiManager, then used to get a URL-encoded string, which is finally logged."
+      },
+      {
+        "dataflow 2": "Lcom/amazon/device/ads/DtbLog;->info:(Ljava/lang/String; Ljava/lang/String;)V --> Lcom/amazon/device/ads/DtbCommonUtils;->getURLEncodedString:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The user ID (from phone number) is logged, then used to get a URL-encoded string."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getLocation() method called from DtbGeoLocation class",
+        "Source Method": "Lcom/amazon/device/ads/DtbGeoLocation;->getLocation:()Landroid/location/Location;",
+        "Reasoning": "The data is stored in registers and variables within the method, and it propagates to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "getLastLocation() method called from DtbGeoLocation class",
+        "Source Method": "Lcom/amazon/device/ads/DtbGeoLocation;->getLastLocation:(Landroid/content/Context; Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The data is stored in register v2 and then passed to the getLastKnownLocation method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "getCallerInfo() static call from DtbLog class",
+        "Source Method": "Lcom/amazon/device/ads/DtbLog;->getCallerInfo:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers and variables within the method, and it propagates through method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "intValue() API call from DTBLogLevel class",
+        "Source Method": "Lcom/amazon/device/ads/DtbLog;->debug:(Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in registers v0 and v1.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "getLastLocation() method called from DtbGeoLocation class (permission check)",
+        "Source Method": "Lcom/amazon/device/ads/DtbGeoLocation;->getLastLocation:(Landroid/content/Context; Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The data is stored in register v2 and then passed to the getLastKnownLocation method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "getLocation() method called from DtbGeoLocation class (permission check)",
+        "Source Method": "Lcom/amazon/device/ads/DtbGeoLocation;->getLocation:()Landroid/location/Location;",
+        "Reasoning": "The data is stored in registers and variables within the method, and it propagates to other methods via method invocations.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/device/ads/DtbLog;->debug:(Ljava/lang/String;)V",
+      "Lcom/amazon/device/ads/DtbLog;->getTag:()Ljava/lang/String;",
+      "Lcom/amazon/device/ads/DtbGeoLocation;->getLastLocation:(Landroid/content/Context; Ljava/lang/String;)Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/amazon/device/ads/DtbGeoLocation;->getLocation:()Landroid/location/Location; --> Lcom/amazon/device/ads/DtbLog;->debug:(Ljava/lang/String;)V",
+        "Reasoning": "The getLocation() method is called from DtbGeoLocation class, and the data is stored in registers and variables within the method. The data propagates to other methods via method invocations and reaches a sink point when it is passed as an argument to the debug() method of DtbLog."
+      },
+      {
+        "dataflow 2": "Lcom/amazon/device/ads/DtbGeoLocation;->getLastLocation:(Landroid/content/Context; Ljava/lang/String;)Landroid/location/Location; --> Lcom/amazon/device/ads/DtbLog;->debug:(Ljava/lang/String;)V",
+        "Reasoning": "The getLastLocation() method is called from DtbGeoLocation class, and the data is stored in register v2 and then passed to the getLastKnownLocation method. The data propagates through method invocations and reaches a sink point when it is logged using debug() method of DtbLog."
+      },
+      {
+        "dataflow 3": "Lcom/amazon/device/ads/DtbLog;->getCallerInfo:()Ljava/lang/String; --> Lcom/amazon/device/ads/DtbLog;->debug:(Ljava/lang/String;)V",
+        "Reasoning": "The getCallerInfo() static call is made from DtbLog class, and the data is stored in registers and variables within the method. The data propagates through method invocations and reaches a sink point when it is logged using debug() method of DtbLog."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Mac Address",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getMacAddress() call",
+        "Source Method": "Lcom/amazon/device/ads/legacy/DeviceInfo;->setMacAddress:()V",
+        "Reasoning": "The method originates user personal data through the 'getMacAddress()' call.",
+        "Action": "Stored in sha1_mac field of DeviceInfo object"
+      },
+      {
+        "Step": "SHA-1 hashing",
+        "Source Method": "Lcom/amazon/device/ads/legacy/StringUtils;->sha1:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data through the sensitive API call to SHA-1 hashing.",
+        "Action": "Stored in register v0 and variable v4"
+      },
+      {
+        "Step": "getURLEncodedString() call",
+        "Source Method": "Lcom/amazon/device/ads/legacy/WebUtils;->getURLEncodedString:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data through the `getURLEncodedString` method call.",
+        "Action": "Stored in register v3"
+      },
+      {
+        "Step": "formatAndSplit() method",
+        "Source Method": "Lcom/amazon/device/ads/legacy/MobileAdsLogger;->formatAndSplit:(Ljava/lang/String; [Ljava/lang/Object;)Ljava/lang/Iterable;",
+        "Reasoning": "Sensitive user personal data is originated from the `formatAndSplit` method, which uses the `String.format` function to format a string with object parameters.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "getProperty() method",
+        "Source Method": "Lcom/amazon/device/ads/legacy/DebugProperties;->getDebugPropertyAsBoolean:(Ljava/lang/String; Ljava/lang/Boolean;)Ljava/lang/Boolean;",
+        "Reasoning": "The method originates user personal data through the `getProperty` method of a Properties object.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "split() method",
+        "Source Method": "Lcom/amazon/device/ads/legacy/MobileAdsLogger;->split:(Ljava/lang/String; I)Ljava/lang/Iterable;",
+        "Reasoning": "The current method originates sensitive user personal data by using the `split` method on a string.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "canLog() method",
+        "Source Method": "Lcom/amazon/device/ads/legacy/MobileAdsLogger;->canLog:()Z",
+        "Reasoning": "The method originates personal data by invoking the getBoolean() method of Settings class and getDebugPropertyAsBoolean() method of DebugProperties class.",
+        "Action": "Stored in registers v2 and v0 respectively"
+      },
+      {
+        "Step": "e() method",
+        "Source Method": "Lcom/amazon/device/ads/legacy/MobileAdsLogger;->e:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data using the sensitive API call to log error messages with parameters.",
+        "Action": "Stored in registers and variables"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/device/ads/legacy/MobileAdsLogger;->d:(Ljava/lang/String; [Ljava/lang/Object;)V",
+      "Lcom/amazon/device/ads/legacy/MobileAdsLogger;->log:(Lcom/amazon/device/ads/legacy/MobileAdsLogger$Level; Ljava/lang/String; [Ljava/lang/Object;)V",
+      "Lcom/amazon/device/ads/legacy/MobileAdsLogger;->doLog:(Z Lcom/amazon/device/ads/legacy/MobileAdsLogger$Level; Ljava/lang/String; [Ljava/lang/Object;)V",
+      "Lcom/amazon/device/ads/legacy/MobileAdsLogger;->e:(Ljava/lang/String; [Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/amazon/device/ads/legacy/DeviceInfo;->setMacAddress:()V --> Lcom/amazon/device/ads/legacy/WebUtils;->getURLEncodedString:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/amazon/device/ads/legacy/MobileAdsLogger;->e:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The data flow starts from the getMacAddress() call in DeviceInfo, then passes through WebUtils' getURLEncodedString() method and finally reaches the e() method of MobileAdsLogger."
+      },
+      {
+        "dataflow 2": "Lcom/amazon/device/ads/legacy/StringUtils;->sha1:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/amazon/device/ads/legacy/MobileAdsLogger;->formatAndSplit:(Ljava/lang/String; [Ljava/lang/Object;)Ljava/lang/Iterable;",
+        "Reasoning": "The data flow starts from the SHA-1 hashing in StringUtils, then passes through MobileAdsLogger's formatAndSplit() method."
+      },
+      {
+        "dataflow 3": "Lcom/amazon/device/ads/legacy/DebugProperties;->getDebugPropertyAsBoolean:(Ljava/lang/String; Ljava/lang/Boolean;)Ljava/lang/Boolean; --> Lcom/amazon/device/ads/legacy/MobileAdsLogger;->e:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The data flow starts from the getProperty() method of DebugProperties, then passes through MobileAdsLogger's e() method."
+      },
+      {
+        "dataflow 4": "Lcom/amazon/device/ads/legacy/MobileAdsLogger;->canLog:()Z --> Lcom/amazon/device/ads/legacy/MobileAdsLogger;->formatAndSplit:(Ljava/lang/String; [Ljava/lang/Object;)Ljava/lang/Iterable;",
+        "Reasoning": "The data flow starts from the canLog() method of MobileAdsLogger, then passes through its formatAndSplit() method."
+      },
+      {
+        "dataflow 5": "Lcom/amazon/device/ads/legacy/MobileAdsLogger;->split:(Ljava/lang/String; I)Ljava/lang/Iterable; --> Lcom/amazon/device/ads/legacy/MobileAdsLogger;->e:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The data flow starts from the split() method of MobileAdsLogger, then passes through its e() method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "canCollectPersonalInformation() called",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->D:()V",
+        "Reasoning": "[This method originates user personal data by calling canCollectPersonalInformation() and uses it to construct a URL with location information.]",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "canCollectPersonalInformation() called",
+        "Source Method": "Lcom/mopub/common/BaseUrlGenerator;->b:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the `android/text/TextUtils` class's `isEmpty()` method.",
+        "Action": "Stored in a StringBuilder object"
+      },
+      {
+        "Step": "getLastKnownLocation() called",
+        "Source Method": "Lcom/mopub/common/LocationService;->getLastKnownLocation:(Landroid/content/Context;)Landroid/location/Location;",
+        "Reasoning": "[The method originates personal data by calling the canCollectPersonalInformation() API.]",
+        "Action": "Stored in register v0 and variable c of class LocationService"
+      },
+      {
+        "Step": "canCollectPersonalInformation() called",
+        "Source Method": "Lcom/mopub/common/privacy/PersonalInfoManager;->gdprApplies:()Ljava/lang/Boolean;",
+        "Reasoning": "[This method originates sensitive user personal data through the `isForceGdprApplies()` and `g()` methods of class `Lcom/mopub/common/privacy/d`.]",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "getPersonalInfoConsentStatus() called",
+        "Source Method": "Lcom/mopub/common/privacy/PersonalInfoManager;->getPersonalInfoConsentStatus:()Lcom/mopub/common/privacy/ConsentStatus;",
+        "Reasoning": "[The method originates user personal data by invoking the `d()` method on an object of type `Lcom/mopub/common/privacy/d;` stored in register v0.]",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "getInstance() called",
+        "Source Method": "Lcom/mopub/common/ClientMetadata;->getInstance:(Landroid/content/Context;)Lcom/mopub/common/ClientMetadata;",
+        "Reasoning": "[The method originates user personal data through the getInstance method, which uses a synchronized block to ensure thread safety.]",
+        "Action": "Stored in the s field of ClientMetadata class"
+      },
+      {
+        "Step": "getLastKnownLocation() called",
+        "Source Method": "Lcom/mopub/common/LocationService;->k:(Landroid/location/Location; I)V",
+        "Reasoning": "[The method originates user personal data through sensitive API calls to android.location.Location.]",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "getAdvertisingInfo() called",
+        "Source Method": "Lcom/mopub/common/privacy/MoPubIdentifier;->getAdvertisingInfo:()Lcom/mopub/common/privacy/AdvertisingId;",
+        "Reasoning": "[The method originates sensitive user personal data by using the Advertising ID API.]",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "d() called",
+        "Source Method": "Lcom/mopub/common/privacy/d;->d:()Lcom/mopub/common/privacy/ConsentStatus;",
+        "Reasoning": "[The current method d() in class com.mopub.common.privacy.d is retrieving a ConsentStatus object from the instance field d.]",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "<init> called",
+        "Source Method": "Lcom/mopub/common/ClientMetadata;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "[The current method is using sensitive APIs to originate user personal data.]",
+        "Action": "Stored in instance variables of the ClientMetadata class"
+      },
+      {
+        "Step": "<init> called",
+        "Source Method": "Lcom/mopub/common/LocationService;-><init>:()V",
+        "Reasoning": "[The LocationService class originates user personal data by using the sget-object instruction to retrieve a constant value from MoPub$LocationAwareness.]",
+        "Action": "Stored in instance variables c, d, and e"
+      },
+      {
+        "Step": "safeExecuteOnExecutor() called",
+        "Source Method": "Lcom/mopub/common/util/AsyncTasks;->safeExecuteOnExecutor:(Landroid/os/AsyncTask; [Ljava/lang/Object;)V",
+        "Reasoning": "[This method originates user personal data from the AsyncTask object.]",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "a() called",
+        "Source Method": "Lcom/mopub/common/ClientMetadata;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "[The method originates user personal data from the Android Context using getPackageName() and getPackageManager().]",
+        "Action": "Stored in registers (v1) and variables (v3)"
+      },
+      {
+        "Step": "<init> called",
+        "Source Method": "Lcom/mopub/common/privacy/MoPubIdentifier;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "[The method originates user personal data from the context (v2) and stores it in register v1.]",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "<init> called",
+        "Source Method": "Lcom/mopub/common/privacy/MoPubIdentifier;-><init>:(Landroid/content/Context; Lcom/mopub/common/privacy/MoPubIdentifier$AdvertisingIdChangeListener;)V",
+        "Reasoning": "[This method originates user personal data through the Advertising ID.]",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "<init> called",
+        "Source Method": "Lcom/mopub/common/privacy/AdvertisingId;-><init>:(Ljava/lang/String; Ljava/lang/String; Z)V",
+        "Reasoning": "[The AdvertisingId class originates user personal data through the constructor <init> which takes two string parameters and a boolean.]",
+        "Action": "Stored in instance variables e, f, and g"
+      },
+      {
+        "Step": "getSharedPreferences() called",
+        "Source Method": "Lcom/mopub/common/SharedPreferencesHelper;->getSharedPreferences:(Landroid/content/Context; Ljava/lang/String;)Landroid/content/SharedPreferences;",
+        "Reasoning": "[The method originates user personal data through the getSharedPreferences() API call.]",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "checkNotNull() called",
+        "Source Method": "Lcom/mopub/common/Preconditions;->checkNotNull:(Ljava/lang/Object;)V",
+        "Reasoning": "[The current method originates user personal data by calling a sensitive API (checkNotNull) to check for null objects.]",
+        "Action": "Stored in registers v1 and v2"
+      },
+      {
+        "Step": "b() called",
+        "Source Method": "Lcom/mopub/common/privacy/AdvertisingId;->b:()Ljava/lang/String;",
+        "Reasoning": "[The method originates user personal data by invoking the `randomUUID()` method from the `java.util.UUID` class.]",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "<init> called",
+        "Source Method": "Lcom/mopub/common/privacy/MoPubIdentifier;-><init>:(Landroid/content/Context; Lcom/mopub/common/privacy/MoPubIdentifier$AdvertisingIdChangeListener;)V",
+        "Reasoning": "[This method originates user personal data through the Advertising ID.]",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "<init> called",
+        "Source Method": "Lcom/mopub/common/privacy/AdvertisingId;-><init>:(Ljava/lang/String; Ljava/lang/String; Z)V",
+        "Reasoning": "[The AdvertisingId class originates user personal data through the constructor <init> which takes two string parameters and a boolean.]",
+        "Action": "Stored in instance variables e, f, and g"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V",
+      "Lcom/mopub/common/LocationService;->k:(Landroid/location/Location; I)V",
+      "Lcom/mopub/common/SharedPreferencesHelper;->getSharedPreferences:(Landroid/content/Context; Ljava/lang/String;)Landroid/content/SharedPreferences"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Source Method(Lcom/mopub/common/AdUrlGenerator;->D:()V) --> Stored in register v0 --> Sink Method(Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V)]",
+        "Reasoning": "[This method originates user personal data by calling canCollectPersonalInformation() and uses it to construct a URL with location information.]"
+      },
+      {
+        "dataflow 2": "[Source Method(Lcom/mopub/common/BaseUrlGenerator;->b:(Ljava/lang/String; Ljava/lang/String;)V) --> Stored in a StringBuilder object --> Sink Method(Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V)]",
+        "Reasoning": "[The method originates user personal data through the `android/text/TextUtils` class's `isEmpty()` method.]"
+      },
+      {
+        "dataflow 3": "[Source Method(Lcom/mopub/common/LocationService;->getLastKnownLocation:(Landroid/content/Context;)Landroid/location/Location;) --> Stored in register v0 and variable c of class LocationService --> Sink Method(Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V)]",
+        "Reasoning": "[The method originates personal data by calling the canCollectPersonalInformation() API.]"
+      },
+      {
+        "dataflow 4": "[Source Method(Lcom/mopub/common/privacy/d;->d:()Lcom/mopub/common/privacy/ConsentStatus;) --> Stored in register v0 --> Sink Method(Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V)]",
+        "Reasoning": "[The current method d() in class com.mopub.common.privacy.d is retrieving a ConsentStatus object from the instance field d.]"
+      },
+      {
+        "dataflow 5": "[Source Method(Lcom/mopub/common/ClientMetadata;-><init>:(Landroid/content/Context;)V) --> Stored in instance variables of the ClientMetadata class --> Sink Method(Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V)]",
+        "Reasoning": "[The current method is using sensitive APIs to originate user personal data.]"
+      },
+      {
+        "dataflow 6": "[Source Method(Lcom/mopub/common/LocationService;-><init>:()V) --> Stored in instance variables c, d, and e --> Sink Method(null)]",
+        "Reasoning": "[The LocationService class originates user personal data by using the sget-object instruction to retrieve a constant value from MoPub$LocationAwareness.]"
+      },
+      {
+        "dataflow 7": "[Source Method(Lcom/mopub/common/util/AsyncTasks;->safeExecuteOnExecutor:(Landroid/os/AsyncTask; [Ljava/lang/Object;)V) --> Stored in registers and variables within the method --> Sink Method(Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V)]",
+        "Reasoning": "[This method originates user personal data from the AsyncTask object.]"
+      },
+      {
+        "dataflow 8": "[Source Method(Lcom/mopub/common/ClientMetadata;->a:(Landroid/content/Context;)Ljava/lang/String;) --> Stored in registers (v1) and variables (v3) --> Sink Method(Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V)]",
+        "Reasoning": "[The method originates user personal data from the Android Context using getPackageName() and getPackageManager.]"
+      },
+      {
+        "dataflow 9": "[Source Method(Lcom/mopub/common/privacy/MoPubIdentifier;-><init>:(Landroid/content/Context;)V) --> Stored in register v1 --> Sink Method(null)]",
+        "Reasoning": "[The method originates user personal data from the context (v2) and stores it in register v1.]"
+      },
+      {
+        "dataflow 10": "[Source Method(Lcom/mopub/common/privacy/MoPubIdentifier;-><init>:(Landroid/content/Context; Lcom/mopub/common/privacy/MoPubIdentifier$AdvertisingIdChangeListener;)V) --> Stored in registers and variables within the method --> Sink Method(null)]",
+        "Reasoning": "[This method originates user personal data through the Advertising ID.]"
+      },
+      {
+        "dataflow 11": "[Source Method(Lcom/mopub/common/privacy/AdvertisingId;-><init>:(Ljava/lang/String; Ljava/lang/String; Z)V) --> Stored in instance variables e, f, and g --> Sink Method(null)]",
+        "Reasoning": "[The AdvertisingId class originates user personal data through the constructor <init> which takes two string parameters and a boolean.]"
+      },
+      {
+        "dataflow 12": "[Source Method(Lcom/mopub/common/SharedPreferencesHelper;->getSharedPreferences:(Landroid/content/Context; Ljava/lang/String;)Landroid/content/SharedPreferences) --> Stored in register v1 --> Sink Method(null)]",
+        "Reasoning": "[The method originates user personal data through the getSharedPreferences() API call.]"
+      },
+      {
+        "dataflow 13": "[Source Method(Lcom/mopub/common/Preconditions;->checkNotNull:(Ljava/lang/Object;)V) --> Stored in registers v1 and v2 --> Sink Method(null)]",
+        "Reasoning": "[The current method originates user personal data by calling a sensitive API (checkNotNull) to check for null objects.]"
+      },
+      {
+        "dataflow 14": "[Source Method(Lcom/mopub/common/privacy/AdvertisingId;->b:()Ljava/lang/String;) --> Stored in register v0 --> Sink Method(null)]",
+        "Reasoning": "[The method originates user personal data by invoking the `randomUUID()` method from the `java.util.UUID` class.]"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

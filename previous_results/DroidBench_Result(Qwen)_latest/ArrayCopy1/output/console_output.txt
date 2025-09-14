@@ -1,0 +1,53 @@
+Processing folder: D:\UBCBAPK_Methods\ArrayCopy1
+Using methods file: D:\UBCBAPK_Methods\ArrayCopy1\ArrayCopy1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive data originated via TelephonyManager.getDeviceId() (device ID). The data was stored in a String array, copied to another array via System.arraycopy, and then passed to Log.i as a log message (sink). No further method calls are relevant due to sink detection.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ArrayCopy1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ArrayCopy1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ArrayCopy1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from TelephonyManager.getDeviceId",
+                "Source Method": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "DeviceId is captured as source",
+                "Action": "Stored in String array"
+            },
+            {
+                "Step": "Data copied to second array",
+                "Source Method": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "System.arraycopy operation",
+                "Action": "Copied to secondary array"
+            },
+            {
+                "Step": "Data logged via Log.i",
+                "Source Method": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sink detected in Log.i call",
+                "Action": "Logged as log message"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;[Ljava/lang/Object;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> TelephonyManager.getDeviceId() --> String array --> System.arraycopy --> Log.i",
+                "Reasoning": "DeviceId is captured from TelephonyManager.getDeviceId(), stored in String array, copied via System.arraycopy to another array, and then passed to Log.i as a log message"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ArrayCopy1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ArrayCopy1\output\sensitive_only.json
+Total summary time: 341.2952833175659 seconds

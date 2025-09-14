@@ -1,0 +1,54 @@
+Processing folder: D:\UBCBAPK_Methods\LocationFieldSensitivity
+Using methods file: D:\UBCBAPK_Methods\LocationFieldSensitivity\LocationFieldSensitivity_bytecode_instructions.json
+Sensitive method found: Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves location data using LocationManager, constructs a string with the location time, and logs it via android.util.Log. Sensitive data (latitude and time) is passed to a logging sink (Log.d).",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\LocationFieldSensitivity\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\LocationFieldSensitivity\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\LocationFieldSensitivity\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "latitude",
+            "time"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Location data is retrieved using LocationManager",
+                "Source Method": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly retrieves location data (latitude and time) via LocationManager",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sensitive data is formatted into a string",
+                "Source Method": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method constructs a string combining location data and time",
+                "Action": "Processed"
+            },
+            {
+                "Step": "Sensitive data is logged via android.util.Log",
+                "Source Method": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method calls Log.d with the constructed string containing sensitive data",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log;->d:(Ljava/lang/String;Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> android.util.Log;->d:(Ljava/lang/String;Ljava/lang/String;)V",
+                "Reasoning": "Location data (latitude and time) is retrieved, formatted into a string, and passed to the Log.d sink method without being overwritten by non-sensitive values"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\LocationFieldSensitivity\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\LocationFieldSensitivity\output\sensitive_only.json
+Total summary time: 17.803897857666016 seconds

@@ -1,0 +1,46 @@
+[
+  {
+    "Data Types Collected": [
+      "Android ID",
+      "Device information",
+      "Unique installation ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "API call to collect Android ID and device info",
+        "Source Method": "Lcom/appsflyer/internal/ah;->AFKeystoreWrapper:(Lcom/appsflyer/internal/h;)Ljava/util/Map;",
+        "Reasoning": "Sensitive user personal data originates from API calls",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "API call to get unique installation ID",
+        "Source Method": "Lcom/appsflyer/internal/an;->AFKeystoreWrapper:(Ljava/lang/ref/WeakReference;)Ljava/lang/String;",
+        "Reasoning": "The method AFKeystoreWrapper in class an of package com/appsflyer/internal originates user personal data through sensitive API calls to get the unique installation ID",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Invocation of `getSharedPreferences` method with hardcoded key 'appsflyer-data'",
+        "Source Method": "Lcom/appsflyer/internal/ah;->values:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The method originates sensitive user personal data by invoking the `getSharedPreferences` method",
+        "Action": "Passed to other methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/internal/an;->AFKeystoreWrapper:(Ljava/lang/ref/WeakReference;)Ljava/lang/String;",
+      "Lcom/appsflyer/internal/ah;->values:(Landroid/content/Context;)Landroid/content/SharedPreferences;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/internal/ah;->AFKeystoreWrapper:(Lcom/appsflyer/internal/h;)Ljava/util/Map; --> ... --> Lcom/appsflyer/internal/an;->AFKeystoreWrapper:(Ljava/lang/ref/WeakReference;)Ljava/lang/String;",
+        "Reasoning": "Data is propagated through method invocations and stored in registers and variables"
+      },
+      {
+        "dataflow 2": " Lcom/appsflyer/internal/an;->AFKeystoreWrapper:(Ljava/lang/ref/WeakReference;)Ljava/lang/String; --> ... --> Lcom/appsflyer/internal/ah;->values:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "Data is passed to other methods via method invocations and stored in SharedPreferences"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

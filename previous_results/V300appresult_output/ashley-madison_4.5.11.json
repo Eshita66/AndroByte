@@ -1,0 +1,168 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve last known location",
+        "Source Method": "Lb0;->c:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method calls `getLastKnownLocation()` which retrieves the user's last known location.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lb0;->c:(Ljava/lang/String;)Landroid/location/Location; --> null",
+        "Reasoning": "The method does not perform any logging, network calls, or file writes with the retrieved location data."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Sunrise",
+      "Sunset",
+      "Time",
+      "Flag"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data from Location object",
+        "Source Method": "Lb0;->f:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature analysis",
+        "Action": "Stored in La0 object"
+      },
+      {
+        "Step": "Calculate sunrise, sunset, and related times",
+        "Source Method": "Lb0;->f:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature analysis",
+        "Action": "Stored in La0 object"
+      },
+      {
+        "Step": "Set flags for night status",
+        "Source Method": "Lb0;->f:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature analysis",
+        "Action": "Stored in La0 object"
+      },
+      {
+        "Step": "Store timestamps for sunrise, sunset, and next update",
+        "Source Method": "Lb0;->f:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature analysis",
+        "Action": "Stored in La0 object"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lb0;->f:(Landroid/location/Location;)V --> La0 object",
+        "Reasoning": "Data is stored in La0 object throughout the method"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected in `onLocationChanged()` method.",
+        "Source Method": "Lcom/almlabs/ashleymadison/activities/AMApplication;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Sensitive user location data is originated in `onLocationChanged()` method.",
+        "Action": "Stored in latitude and longitude variables"
+      },
+      {
+        "Step": "Location data is passed to `J()` method.",
+        "Source Method": "Lcom/almlabs/ashleymadison/activities/AMApplication;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Data is passed to `J()` method.",
+        "Action": "Passed to J() method"
+      },
+      {
+        "Step": "Location data is passed to `k()` method.",
+        "Source Method": "Lcom/almlabs/ashleymadison/activities/AMApplication;->J(Ljava/lang/String;)V",
+        "Reasoning": "Data is passed to k() method.",
+        "Action": "Passed to k() method"
+      },
+      {
+        "Step": "Location data is checked if location updates are enabled.",
+        "Source Method": "Lcom/almlabs/ashleymadison/activities/AMApplication;->k()V",
+        "Reasoning": "Location updates are checked.",
+        "Action": "Checked if location updates are enabled"
+      },
+      {
+        "Step": "Location data is logged using `J()` method.",
+        "Source Method": "Lcom/almlabs/ashleymadison/activities/AMApplication;->k()V",
+        "Reasoning": "Location data is logged.",
+        "Action": "Logged using J() method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/almlabs/ashleymadison/activities/AMApplication;->J(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/almlabs/ashleymadison/activities/AMApplication;->onLocationChanged:(Landroid/location/Location;)V --> Lcom/almlabs/ashleymadison/activities/AMApplication;->J(Ljava/lang/String;)V",
+        "Reasoning": "Location data is collected in `onLocationChanged()` method, passed to `J()` method, and then logged using `J()` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user emails",
+      "user ID",
+      "event name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Data Collection",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u0269:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Sensitive API call detected",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Logging",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u0269:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Sensitive API call detected",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AFLogger;->afErrorLog:(Ljava/lang/String; Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/AppsFlyerLibCore;->\u0269:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; --> Lcom/appsflyer/AFLogger;->afErrorLog:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "Sensitive API call detected and logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data",
+        "Source Method": "Lu00$a;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method extracts latitude and longitude from Location object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  }
+]

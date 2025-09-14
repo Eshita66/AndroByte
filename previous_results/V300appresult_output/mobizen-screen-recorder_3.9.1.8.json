@@ -1,0 +1,346 @@
+[
+  {
+    "Data Types Collected": [
+      "WiFi information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method originates WiFi information",
+        "Source Method": "Lcom/umeng/commonsdk/internal/utils/a;->d:(Landroid/content/Context;)V",
+        "Reasoning": "API calls to get WiFi information",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "WiFi information passed to other methods",
+        "Source Method": "Lcom/umeng/commonsdk/internal/utils/a;->d:(Landroid/content/Context;)V",
+        "Reasoning": "Method invocations",
+        "Action": "Passed via method invocations"
+      },
+      {
+        "Step": "WiFi information stored in SharedPreferences",
+        "Source Method": "Lcom/umeng/commonsdk/internal/utils/f;->a:(Landroid/content/Context; Lcom/umeng/commonsdk/internal/utils/a$b;)V",
+        "Reasoning": "getSharedPreferences() method to retrieve SharedPreferences",
+        "Action": "Stored in SharedPreferences"
+      },
+      {
+        "Step": "WiFi information persisted via commit() method",
+        "Source Method": "Lcom/umeng/commonsdk/internal/utils/f;->a:(Landroid/content/Context; Lcom/umeng/commonsdk/internal/utils/a$b;)V",
+        "Reasoning": "commit() method of SharedPreferences.Editor",
+        "Action": "Persisted via commit() method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/umeng/commonsdk/internal/utils/f;->a:(Landroid/content/Context; Lcom/umeng/commonsdk/internal/utils/a$b;)V",
+      "Lcom/umeng/commonsdk/internal/utils/a;->d:(Landroid/content/Context;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/umeng/commonsdk/internal/utils/a;->d:(Landroid/content/Context;)V --> Lcom/umeng/commonsdk/internal/utils/f;->a:(Landroid/content/Context; Lcom/umeng/commonsdk/internal/utils/a$b;)V --> Lcom/umeng/commonsdk/internal/utils/f;->a:(Landroid/content/Context; Lcom/umeng/commonsdk/internal/utils/a$b;)V]",
+        "Reasoning": "WiFi information originated in d() method, passed to a() method via method invocation, then stored and persisted in SharedPreferences"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "IMEI",
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get IMEI from device",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/DeviceConfig;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data from the IMEI using a sensitive API call.",
+        "Action": "Stored in register v0 and variable sImei"
+      },
+      {
+        "Step": "Log IMEI",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/MLog;->w:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The method originates user personal data through the invocation of the print() method, which takes a string and potentially sensitive information.",
+        "Action": "Passed to next method"
+      },
+      {
+        "Step": "Get Location from device",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/MLog;->i:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls to log messages.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Log Location",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/MLog;->i:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The method originates sensitive user personal data through the `sget-boolean` instruction, which loads a boolean value from a static field.",
+        "Action": "Passed to print method"
+      },
+      {
+        "Step": "Get Stack Trace",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/MLog;->getStackTrace:(Ljava/lang/Throwable;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the getStackTrace method on a Throwable object.",
+        "Action": "Passed to next method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/umeng/commonsdk/statistics/common/MLog;->w:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+      "Lcom/umeng/commonsdk/statistics/common/MLog;->i:(Ljava/lang/String; [Ljava/lang/Object;)V",
+      "Lcom/umeng/commonsdk/statistics/common/MLog;->e:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/umeng/commonsdk/statistics/common/DeviceConfig;->getIMEI:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/umeng/commonsdk/statistics/common/MLog;->w:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data is propagated from DeviceConfig to MLog through a series of method invocations."
+      },
+      {
+        "dataflow 2": " Lcom/umeng/commonsdk/statistics/common/MLog;->i:(Ljava/lang/String; [Ljava/lang/Object;)V --> Lcom/umeng/commonsdk/statistics/common/MLog;->e:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data is propagated from MLog to another method through a series of method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "IMEI",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getImei() method called",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/DeviceConfig;->getImei:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in register v3 and passed to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "checkSelfPermission() method called",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/DeviceConfig;->checkPermission:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The data is stored in register `v6` and propagated to other methods via reflection.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "TAG field of MLog class accessed",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/MLog;->w:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data is then passed to another method w() via static invocation, which likely logs the message.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "sget-boolean instruction executed",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/MLog;->w:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data is then stored in register v0 and propagated to other methods via method invocations.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "sensitive API calls made",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/MLog;->print:(I Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data is stored in registers and variables within the method, and it is passed to other methods via method invocations.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/umeng/commonsdk/statistics/common/MLog;->w:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+      "Lcom/umeng/commonsdk/statistics/common/MLog;->print:(I Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[getImei() method called --> Stored in register v3 --> Propagated to other methods via method invocations] --> [Logged by MLog.w()]",
+        "Reasoning": "The IMEI value is collected and stored in a register, then propagated to other methods. Finally, it's logged using the MLog.w() method."
+      },
+      {
+        "dataflow 2": "[checkSelfPermission() method called --> Stored in register v6 --> Propagated to other methods via reflection] --> [Logged by MLog.print()]",
+        "Reasoning": "The phone number is checked for permission and stored in a register. It's then propagated to other methods using reflection. Finally, it's logged using the MLog.print() method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "IMEI",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve IMEI from sget-object instruction",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/DeviceConfig;->getImeiNew:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data through the sget-object instruction to retrieve the IMEI.",
+        "Action": "Stored in register v5"
+      },
+      {
+        "Step": "Retrieve device ID from TelephonyManager",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/DeviceConfig;->getImeiNew:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method retrieves the device ID if the IMEI is empty.",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Retrieve string tag from sget-object instruction",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/MLog;->w:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The method originates user personal data through the `sget-object` instruction, which retrieves a string tag.",
+        "Action": "Passed to w method"
+      },
+      {
+        "Step": "Invoke getStackTrace method of MLog class",
+        "Source Method": "Lcom/umeng/commonsdk/statistics/common/MLog;->getStackTrace:(Ljava/lang/Throwable;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by invoking the getStackTrace method of MLog class.",
+        "Action": "Stored in registers and variables"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/util/Log;->e",
+      "Landroid/util/Log;->w",
+      "Landroid/util/Log;->i",
+      "Landroid/util/Log;->d",
+      "Landroid/util/Log;->v"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/umeng/commonsdk/statistics/common/DeviceConfig;->getImeiNew:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/umeng/commonsdk/statistics/common/MLog;->w:(Ljava/lang/String; Ljava/lang/Throwable;)V --> Landroid/util/Log;->e ",
+        "Reasoning": "The IMEI is retrieved from the DeviceConfig class and passed to the MLog class, which then logs it using the Log class."
+      },
+      {
+        "dataflow 2": " Lcom/umeng/commonsdk/statistics/common/MLog;->getStackTrace:(Ljava/lang/Throwable;)Ljava/lang/String; --> Landroid/util/Log;->e ",
+        "Reasoning": "The stack trace is retrieved from the MLog class and logged using the Log class."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "MAC address",
+      "user location (context)",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get MAC address from Context",
+        "Source Method": "Lcom/umeng/commonsdk/utils/UMUtils;->getMac:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "[This method originates user personal data by calling sensitive API to get MAC address.]",
+        "Action": "Stored in register v5"
+      },
+      {
+        "Step": "Check permission for accessing location",
+        "Source Method": "Lcom/umeng/commonsdk/utils/UMUtils;->checkPermission:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "[The method originates user personal data through the use of the `checkSelfPermission` method.]",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Report crash with location and device ID",
+        "Source Method": "Lcom/umeng/commonsdk/internal/crash/UMCrashManager;->reportCrash:(Landroid/content/Context; Ljava/lang/Throwable;)V",
+        "Reasoning": "[This method originates sensitive user personal data by invoking the `reportCrash` method, which likely logs or transmits crash reports.]",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Print stack trace with location and device ID",
+        "Source Method": "Lcom/umeng/commonsdk/internal/crash/a;->a:(Ljava/lang/Throwable;)Ljava/lang/String;",
+        "Reasoning": "[The current method originates user personal data by calling the printStackTrace() method on a Throwable object.]",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get device ID from Context",
+        "Source Method": "Lcom/umeng/commonsdk/internal/b;->a:(Landroid/content/Context;)Lcom/umeng/commonsdk/internal/b;",
+        "Reasoning": "[The method originates user personal data using the Context's getApplicationContext() method.]",
+        "Action": "Stored in register v1 and variable b of class Lcom/umeng/commonsdk/internal/b"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/umeng/commonsdk/utils/UMUtils;->getMac:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/umeng/commonsdk/utils/UMUtils;->checkPermission:(Landroid/content/Context; Ljava/lang/String;)Z",
+      "Lcom/umeng/commonsdk/internal/crash/UMCrashManager;->reportCrash:(Landroid/content/Context; Ljava/lang/Throwable;)V",
+      "Lcom/umeng/commonsdk/internal/crash/a;->a:(Ljava/lang/Throwable;)Ljava/lang/String;",
+      "Lcom/umeng/commonsdk/internal/b;->a:(Landroid/content/Context;)Lcom/umeng/commonsdk/internal/b;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/umeng/commonsdk/utils/UMUtils;->getMac:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/umeng/commonsdk/internal/crash/UMCrashManager;->reportCrash:(Landroid/content/Context; Ljava/lang/Throwable;)V]",
+        "Reasoning": "[The MAC address is passed to the reportCrash method, which likely logs or transmits crash reports.]"
+      },
+      {
+        "dataflow 2": "[Lcom/umeng/commonsdk/utils/UMUtils;->checkPermission:(Landroid/content/Context; Ljava/lang/String;)Z --> Lcom/umeng/commonsdk/internal/crash/UMCrashManager;->reportCrash:(Landroid/content/Context; Ljava/lang/Throwable;)V]",
+        "Reasoning": "[The permission check result is passed to the reportCrash method, which likely logs or transmits crash reports.]"
+      },
+      {
+        "dataflow 3": "[Lcom/umeng/commonsdk/internal/crash/a;->a:(Ljava/lang/Throwable;)Ljava/lang/String; --> Lcom/umeng/commonsdk/internal/b;->a:(Landroid/content/Context;)Lcom/umeng/commonsdk/internal/b;]",
+        "Reasoning": "[The stack trace is passed to the getApplicationContext method, which stores it in a variable.]"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "getLastKnownLocation()",
+      "getAdvertisingInfo()",
+      "getMoPubIdentifier()",
+      "gdprApplies()",
+      "getPackageName() and getPackageManager() API calls"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get last known location from getLastKnownLocation() call.",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->setLocation:()V",
+        "Reasoning": "The method originates user personal data by calling the getLastKnownLocation() method.",
+        "Action": "Stored in 'v0' register and passed to addParam() method of BaseUrlGenerator."
+      },
+      {
+        "Step": "Get advertising info from getAdvertisingInfo() call.",
+        "Source Method": "Lcom/mopub/common/privacy/MoPubIdentifier;->getAdvertisingInfo:()Lcom/mopub/common/privacy/AdvertisingId;",
+        "Reasoning": "The method originates user personal data by calling the sensitive API `getAdvertisingInfo()`",
+        "Action": "Stored in register 'v0' and then propagated to the next method via a return statement."
+      },
+      {
+        "Step": "Get MoPub identifier from getMoPubIdentifier() call.",
+        "Source Method": "Lcom/mopub/common/ClientMetadata;->getMoPubIdentifier:()Lcom/mopub/common/privacy/MoPubIdentifier;",
+        "Reasoning": "The method originates user personal data by calling the getMoPubIdentifier() method.",
+        "Action": "Stored in register 'v0' and propagated to the return statement."
+      },
+      {
+        "Step": "Check if GDPR applies from gdprApplies() call.",
+        "Source Method": "Lcom/mopub/common/privacy/PersonalInfoManager;->gdprApplies:()Ljava/lang/Boolean;",
+        "Reasoning": "The method originates user personal data by calling the isForceGdprApplies() method on an instance of b51.",
+        "Action": "Stored in register 'v0' and propagated to other methods via return statements."
+      },
+      {
+        "Step": "Get package name from getPackageName() API call.",
+        "Source Method": "Lcom/mopub/common/ClientMetadata;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data through the getPackageName() and getPackageManager() API calls.",
+        "Action": "Stored in registers (v1) and variables (v3)."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V",
+      "Lcom/mopub/common/ClientMetadata;-><init>:(Landroid/content/Context;)V",
+      "Lcom/mopub/common/util/AsyncTasks;->safeExecuteOnExecutor:(Landroid/os/AsyncTask; [Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mopub/common/AdUrlGenerator;->setLocation:()V --> Lcom/mopub/common/BaseUrlGenerator;->addParam:(Ljava/lang/String; Ljava/lang/String;)V --> Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V",
+        "Reasoning": "The location is then stored in the 'v0' register and passed to the addParam() method of BaseUrlGenerator. The latitude, longitude, accuracy, and staleness are extracted and added as parameters to the URL."
+      },
+      {
+        "dataflow 2": " Lcom/mopub/common/privacy/MoPubIdentifier;->getAdvertisingInfo:()Lcom/mopub/common/privacy/AdvertisingId; --> Lcom/mopub/common/ClientMetadata;->getMoPubIdentifier:()Lcom/mopub/common/privacy/MoPubIdentifier;",
+        "Reasoning": "The data is stored in register 'v0' and then propagated to the next method via a return statement."
+      },
+      {
+        "dataflow 3": " Lcom/mopub/common/ClientMetadata;->getMoPubIdentifier:()Lcom/mopub/common/privacy/MoPubIdentifier; --> Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V",
+        "Reasoning": "The data is stored in register 'v0' and propagated to the return statement."
+      },
+      {
+        "dataflow 4": " Lcom/mopub/common/privacy/PersonalInfoManager;->gdprApplies:()Ljava/lang/Boolean; --> Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V",
+        "Reasoning": "The result is stored in register 'v0' and propagated to other methods via return statements."
+      },
+      {
+        "dataflow 5": " Lcom/mopub/common/ClientMetadata;->a:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V",
+        "Reasoning": "The data is stored in registers (v1) and variables (v3)."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

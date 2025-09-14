@@ -1,0 +1,89 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collect user location and device ID from Context.",
+        "Source Method": "Lcom/instabug/library/internal/a/b;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "Method signature indicates initialization of a class with a Context parameter.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "Extract phone number from user data.",
+        "Source Method": "Lcom/instabug/library/internal/a/b;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "Method signature indicates initialization of a class with a Context parameter, implying access to user data.",
+        "Action": "Extracted and stored in registers and variables within the method."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/instabug/library/internal/a/b;->logUserLocation:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/instabug/library/internal/a/b;-><init>:(Landroid/content/Context;)V --> Lcom/instabug/library/internal/a/b;->extractPhoneNumber:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/instabug/library/internal/a/b;->logUserLocation:(Ljava/lang/String;)V",
+        "Reasoning": "Data flows from the initialization method to an extraction method and finally logged using a sink method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Android ID",
+      "Device ID",
+      "Serial Number",
+      "WiFi MAC Address",
+      "Bluetooth MAC Address",
+      "Advertising ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve device information",
+        "Source Method": "Lio/a/a/a/a/b/o;->g:()Ljava/util/Map;",
+        "Reasoning": "The method calls sensitive APIs to retrieve device information.",
+        "Action": "Stored in a HashMap"
+      },
+      {
+        "Step": "Pass data to other methods",
+        "Source Method": "Lio/a/a/a/a/b/o;->g:()Ljava/util/Map;",
+        "Reasoning": "The data is stored in a HashMap and then passed to other methods via method invocations.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Store data in instance variables",
+        "Source Method": "Lio/a/a/a/a/b/c;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "The data is stored in the instance variables `a` and `b`.",
+        "Action": "Stored in instance variables"
+      },
+      {
+        "Step": "Call put() method of Map interface",
+        "Source Method": "Lio/a/a/a/a/b/o;->a:(Ljava/util/Map; Lio/a/a/a/a/b/o$a; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in registers and variables within the method.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Set context with Fabric.with() method call",
+        "Source Method": "Lio/a/a/a/a/f/c;-><init>:(Landroid/content/Context; Ljava/lang/String;)V",
+        "Reasoning": "The sensitive user personal data is stored in registers and variables within the method.",
+        "Action": "Stored in registers and variables"
+      }
+    ],
+    "All Sinks": [
+      "Lio/a/a/a/a/f/c;-><init>:(Landroid/content/Context; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lio/a/a/a/a/b/o;->g:()Ljava/util/Map; --> Lio/a/a/a/a/b/c;-><init>:(Landroid/content/Context;)V --> Lio/a/a/a/a/f/c;-><init>:(Landroid/content/Context; Ljava/lang/String;)V]",
+        "Reasoning": "The data is propagated from the first method to the second and then to the third method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

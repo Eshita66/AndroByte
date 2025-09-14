@@ -1,0 +1,39 @@
+Processing folder: D:\UBCBAPK_Methods\EventOrderingTest
+Using methods file: D:\UBCBAPK_Methods\EventOrderingTest\EventOrderingTest_bytecode_instructions.json
+Sensitive method found: Llina/ubc/eventorderingtest/ActivityWithFlow;->assignSensitivityInfo:()V
+Processed summary for Llina/ubc/eventorderingtest/ActivityWithFlow;->assignSensitivityInfo:()V: {
+    "Summary": "Sensitive data originated from getDeviceId() on an instance of Landroid/telephony/TelephonyManager;, which is obtained via getSystemService(). The device ID is stored in a static field of the class. No sinks were identified for this sensitive data.",
+    "Next Methods": [
+        "Llina/ubc/eventorderingtest/ActivityWithFlow;->getSystemService(Ljava/lang/String;)Ljava/lang/Object"
+    ]
+}
+Method summaries saved to D:\UBCBAPK_Methods\EventOrderingTest\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\EventOrderingTest\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\EventOrderingTest\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from getDeviceId()",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId():I",
+                "Reasoning": "The device ID is obtained via getSystemService().",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Landroid/telephony/TelephonyManager;->getDeviceId():I --> Llina/ubc/eventorderingtest/ActivityWithFlow;->assignSensitivityInfo:()V --> ?",
+                "Reasoning": "The device ID is obtained via getSystemService(). It is then stored in a static field of the class. No sinks were identified for this sensitive data."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\EventOrderingTest\output\refined_method_summaries.json
+Saved 0 'sensitive' subgraphs to: D:\UBCBAPK_Methods\EventOrderingTest\output\sensitive_only.json
+Total summary time: 14.398591041564941 seconds

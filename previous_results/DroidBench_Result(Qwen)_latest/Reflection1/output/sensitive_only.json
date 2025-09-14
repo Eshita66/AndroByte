@@ -1,0 +1,25 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data is retrieved from TelephonyManager's getDeviceId()",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method directly accesses the IMEI via getDeviceId() and stores it in BaseClass's imei field.",
+                "Action": "Tainted data is passed to SmsManager's sendTextMessage"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V",
+                "Reasoning": "The IMEI (tainted DeviceId) is directly passed to the network transmission sink without being overwritten or sanitized."
+            }
+        ],
+        "Label": "leak"
+    }
+]

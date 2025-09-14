@@ -1,0 +1,218 @@
+[
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve SSID",
+        "Source Method": "Lcom/comscore/utils/Connectivity;->getCurrentSSID:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method summary specifies retrieving the SSID",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Source Method(...) --> ... --> Sink Method(...)]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is received from a Location object.",
+        "Source Method": "Lbbc/mobile/news/v3/common/fetchers/LocatorFetcher;->a:(Landroid/location/Location; Luk/co/bbc/colca/source/okhttp/FetchOptions; Ljava/lang/Boolean;)Lio/reactivex/ObservableSource;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is used to construct a URL for the LOCATOR endpoint.",
+        "Source Method": "Lbbc/mobile/news/v3/common/fetchers/LocatorFetcher;->a:(Landroid/location/Location; Luk/co/bbc/colca/source/okhttp/FetchOptions; Ljava/lang/Boolean;)Lio/reactivex/ObservableSource;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Location data is passed to the Repository's fetch method with fetch options.",
+        "Source Method": "Lbbc/mobile/news/v3/common/fetchers/LocatorFetcher;->a:(Landroid/location/Location; Luk/co/bbc/colca/source/okhttp/FetchOptions; Ljava/lang/Boolean;)Lio/reactivex/ObservableSource;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lbbc/mobile/news/v3/common/fetchers/LocatorFetcher;->a:(Landroid/location/Location; Luk/co/bbc/colca/source/okhttp/FetchOptions; Ljava/lang/Boolean;)Lio/reactivex/ObservableSource;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lbbc/mobile/news/v3/common/fetchers/LocatorFetcher;->a:(Landroid/location/Location; Luk/co/bbc/colca/source/okhttp/FetchOptions; Ljava/lang/Boolean;)Lio/reactivex/ObservableSource; --> Lbbc/mobile/news/v3/common/fetchers/LocatorFetcher;->a:(Landroid/location/Location; Luk/co/bbc/colca/source/okhttp/FetchOptions; Ljava/lang/Boolean;)Lio/reactivex/ObservableSource; --> Lbbc/mobile/news/v3/common/fetchers/LocatorFetcher;->a:(Landroid/location/Location; Luk/co/bbc/colca/source/okhttp/FetchOptions; Ljava/lang/Boolean;)Lio/reactivex/ObservableSource;",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "LocationDetail",
+      "LocalNewsModel"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract user location information",
+        "Source Method": "Lbbc/mobile/news/v3/common/local/LocalNewsRegionBroker;->f(...)",
+        "Reasoning": "Input parameter",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Extract location details",
+        "Source Method": "Lbbc/mobile/news/v3/common/local/LocalNewsRegionBroker;->f(...)",
+        "Reasoning": "Input parameter",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Create LocalNewsModel object",
+        "Source Method": "Lbbc/mobile/news/v3/common/local/LocalNewsRegionBroker;->f(...)",
+        "Reasoning": "Method logic",
+        "Action": "Created"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbbc/mobile/news/v3/common/local/LocalNewsRegionBroker;->f(...) --> Created LocalNewsModel object",
+        "Reasoning": "Method logic"
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location from database cache",
+        "Source Method": "Lbbc/mobile/news/v3/common/local/location/LocationCache;->a:(Landroid/location/Location; J)Ljava/util/List;",
+        "Reasoning": "Method receives location from database cache",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass location to AppConfigurationProvider",
+        "Source Method": "Lbbc/mobile/news/v3/common/local/location/LocationCache;->a:(Landroid/location/Location; J)Ljava/util/List;",
+        "Reasoning": "Location is passed between LocationCache and AppConfigurationProvider",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Pass location to DatabaseManager",
+        "Source Method": "Lbbc/mobile/news/v3/common/local/location/LocationCache;->a:(Landroid/location/Location; J)Ljava/util/List;",
+        "Reasoning": "Location is passed between LocationCache and DatabaseManager",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Pass location to BBCLog",
+        "Source Method": "Lbbc/mobile/news/v3/common/local/location/LocationCache;->a:(Landroid/location/Location; J)Ljava/util/List;",
+        "Reasoning": "Location is passed between LocationCache and BBCLog",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lbbc/mobile/news/v3/common/local/location/BBCLog;->a(Ljava/lang/String;Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LocationCache(...) --> AppConfigurationProvider --> DatabaseManager --> BBCLog(...)",
+        "Reasoning": "Location is passed between these classes and logged in BBCLog"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u03b9:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "User personal data is passed to the logging method.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u03b9:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AppsFlyerLibCore;->\u03b9:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/AppsFlyerLibCore;->\u03b9:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; --> Lcom/appsflyer/AppsFlyerLibCore;->\u03b9:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Sensitive API call detected. User personal data is passed between methods before reaching the sink of logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "device ID",
+      "advertising ID",
+      "unique ID",
+      "android ID",
+      "advertising ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain sensitive user data from device.",
+        "Source Method": "Lde/spring/mobile/SpringStreams;->generateEventObject:(Ljava/util/Map; Ljava/util/Map; Z)Ljava/lang/Object;",
+        "Reasoning": "Method reads device ID, advertising ID, and unique ID.",
+        "Action": "Stored in fields."
+      },
+      {
+        "Step": "Retrieve Android ID and Advertising ID.",
+        "Source Method": "Lde/spring/mobile/SpringStreams;->generateEventObject:(Ljava/util/Map; Ljava/util/Map; Z)Ljava/lang/Object;",
+        "Reasoning": "Calls `getAndroidId()` and `getAdvertisingId()` methods.",
+        "Action": "Stored in fields."
+      },
+      {
+        "Step": "Include sensitive data in Map object.",
+        "Source Method": "Lde/spring/mobile/SpringStreams;->generateEventObject:(Ljava/util/Map; Ljava/util/Map; Z)Ljava/lang/Object;",
+        "Reasoning": "Fields containing sensitive data are added to the Map.",
+        "Action": "Stored in Map object."
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lde/spring/mobile/SpringStreams;->generateEventObject(...) --> Map object",
+        "Reasoning": "Sensitive data is included in the Map object returned by the method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {}
+]

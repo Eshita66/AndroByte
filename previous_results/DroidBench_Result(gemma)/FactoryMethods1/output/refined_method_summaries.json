@@ -1,0 +1,26 @@
+[
+    {
+        "Data Types Collected": [
+            "Latitude",
+            "Longitude"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Latitude and Longitude",
+                "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method obtains the last known location, including latitude and longitude.",
+                "Action": "Stored as variables"
+            }
+        ],
+        "All Sinks": [
+            "android/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;[Z)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V --> android/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;[Z)V",
+                "Reasoning": "The `onCreate` method retrieves latitude and longitude. The `arraycopy` instruction propagates the string \"Latitude\" and \"Longtitude\" to the `Log.d` calls.  The `Log.d` calls pass the strings \"Latitude\" and \"Longtitude\" as arguments."
+            }
+        ],
+        "Label": "leak"
+    }
+]

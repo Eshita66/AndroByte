@@ -1,0 +1,548 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected in the `Lcom/adcolony/sdk/n;->a` method.",
+        "Source Method": "Lcom/adcolony/sdk/n;->a:(Landroid/location/Location;)Lcom/adcolony/sdk/n;",
+        "Reasoning": "Method signature and summary mention user location data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is logged using `adc_longitude`, `adc_latitude`, and `adc_altitude` strings.",
+        "Source Method": "Lcom/adcolony/sdk/n;->a:(Landroid/location/Location;)Lcom/adcolony/sdk/n;",
+        "Reasoning": "Logging strings indicate sensitive data.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adcolony/sdk/n;->a:(Landroid/location/Location;)Lcom/adcolony/sdk/n;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adcolony/sdk/n;->a --> adc_longitude, adc_latitude, adc_altitude",
+        "Reasoning": "Logging of sensitive user location data."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected in k$d method.",
+        "Source Method": "Lcom/millennialmedia/internal/k$d;->location:(Ljava/lang/String;)V",
+        "Reasoning": "Method summary specifies the data origin.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is passed to k method.",
+        "Source Method": "Lcom/millennialmedia/internal/k$d;->location:(Ljava/lang/String;)V",
+        "Reasoning": "Method signature indicates data transfer.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Location is logged using com.millennialmedia.h.b() method.",
+        "Source Method": "Lcom/millennialmedia/internal/k$d;->location:(Ljava/lang/String;)V",
+        "Reasoning": "Method signature specifies the logging action.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "com.millennialmedia.h.b()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " k$d method --> k method --> com.millennialmedia.h.b() method",
+        "Reasoning": "Stepwise flow based on method signatures and summaries."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is retrieved from the `getLocation()` method.",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary indicates this method collects location data.",
+        "Action": "Stored in a register/variable"
+      },
+      {
+        "Step": "Location is passed to the `b()` method.",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Location is stored in a register/variable from the previous step.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mopub/common/AdUrlGenerator;->b:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mopub/common/AdUrlGenerator;->a:(Landroid/location/Location;)V --> Lcom/mopub/common/AdUrlGenerator;->b:(Ljava/lang/String;)V",
+        "Reasoning": "Location is collected in the `a()` method and logged in the `b()` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Search Text"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location or searchText is checked for validity.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method throws an exception if location or searchText is not specified.",
+        "Action": "Stored in Bundle"
+      },
+      {
+        "Step": "Bundle is used to create a GraphRequest object.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "GraphRequest object is created with the parameters from the Bundle.",
+        "Action": "Transmitted to Facebook API"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...)",
+        "Reasoning": "Location or searchText is collected in the GraphRequest object and transmitted to the Facebook API, which then sends it to the GraphJSONArrayCallback object."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Wi-Fi Connection",
+      "Bluetooth Connection"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract user location information from CurrentPlaceRequestParams",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters(...)",
+        "Reasoning": "Method description mentions extracting user location",
+        "Action": "Stored in JSON object"
+      },
+      {
+        "Step": "Create JSON object with location information",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters(...)",
+        "Reasoning": "JSON object creation includes location data",
+        "Action": "Created"
+      },
+      {
+        "Step": "Include Wi-Fi and Bluetooth connection information in JSON object",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters(...)",
+        "Reasoning": "Method description mentions Wi-Fi and Bluetooth connections",
+        "Action": "Stored in JSON object"
+      }
+    ],
+    "All Sinks": [
+      "Method not provided in the given data"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters(...) --> JSON object --> Method not provided in the given data",
+        "Reasoning": "Data flows from method to JSON object and then to the sink method, which is not provided in the given data"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Search Text"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location and search text are collected in `PlaceSearchRequestParams`.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Sensitive user personal data is originated from the `PlaceSearchRequestParams` object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "The `PlaceSearchRequestParams` object is used to construct a `GraphRequest` object.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The `PlaceSearchRequestParams` object contains sensitive user personal data.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;->executeAndWait:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation(...) --> Lcom/facebook/GraphRequest;->executeAndWait(...)",
+        "Reasoning": "Sensitive user personal data is passed to the `GraphRequest` object and then executed."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract last location",
+        "Source Method": "Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method extracts the last location from the `LocationManager`.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID",
+      "SSID",
+      "RSSI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method call to `getConnectedWifi()`",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The method `getConnectedWifi()` retrieves the user's BSSID, SSID, and RSSI information.",
+        "Action": "Stored in registers and passed to `WifiScanResult` object"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user location data",
+        "Source Method": "Lcom/flurry/sdk/ei;->c:()Lcom/flurry/sdk/cw;",
+        "Reasoning": "The method `Lcom/flurry/sdk/ei;->c:()Lcom/flurry/sdk/cw;` obtains user location data from the `Location` object.",
+        "Action": "Stored in cw object"
+      },
+      {
+        "Step": "Check accuracy",
+        "Source Method": "Lcom/flurry/sdk/en;->a(I)Z",
+        "Reasoning": "The method `Lcom/flurry/sdk/en;->a(I)Z` checks the accuracy of the location data.",
+        "Action": "N/A"
+      },
+      {
+        "Step": "Convert to double values",
+        "Source Method": "Lcom/flurry/sdk/lv;->a(D I)D",
+        "Reasoning": "The method `Lcom/flurry/sdk/lv;->a(D I)D` converts the location data to double values.",
+        "Action": "N/A"
+      },
+      {
+        "Step": "Store in cw object",
+        "Source Method": "Lcom/flurry/sdk/ei;->c:()Lcom/flurry/sdk/cw;",
+        "Reasoning": "The method `Lcom/flurry/sdk/ei;->c:()Lcom/flurry/sdk/cw;` stores the processed location data in the `cw` object.",
+        "Action": "Stored in cw object"
+      }
+    ],
+    "All Sinks": [
+      "N/A"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/flurry/sdk/ei;->c:()Lcom/flurry/sdk/cw; --> Lcom/flurry/sdk/en;->a(I)Z --> Lcom/flurry/sdk/lv;->a(D I)D --> Lcom/flurry/sdk/ei;->c:()Lcom/flurry/sdk/cw;",
+        "Reasoning": "The location data is collected, processed, and stored in the `cw` object."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Timestamps",
+      "Location Coordinates",
+      "User ID",
+      "Event Names",
+      "Times"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is collected in method `a`.",
+        "Source Method": "Lcom/flurry/sdk/hx;->a:(Ljava/lang/String; Ljava/util/Map;)Ljava/lang/String;",
+        "Reasoning": "Method `a` is explicitly mentioned in the summary as the origin of sensitive data.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is passed through various methods.",
+        "Source Method": "Lcom/flurry/sdk/hx;->a:(Ljava/lang/String; Ljava/util/Map;)Ljava/lang/String;",
+        "Reasoning": "The summary mentions data being passed through various methods.",
+        "Action": "Passed through methods"
+      },
+      {
+        "Step": "Data is logged, transmitted, or displayed.",
+        "Source Method": "Lcom/flurry/sdk/hx;->a:(Ljava/lang/String; Ljava/util/Map;)Ljava/lang/String;",
+        "Reasoning": "The summary mentions data being logged, transmitted, or displayed.",
+        "Action": "Logged, transmitted, or displayed"
+      }
+    ],
+    "All Sinks": [
+      "Logging",
+      "Network Calls",
+      "File Writes"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/flurry/sdk/hx;->a:(Ljava/lang/String; Ljava/util/Map;)Ljava/lang/String; --> Logging, Network Calls, File Writes",
+        "Reasoning": "Data flows from the origin method to the sink points mentioned in the summary."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive user data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user data is passed between methods via registers and method invocations.",
+        "Source Method": "Lcom/flurry/sdk/hy;->f:()[B",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/flurry/sdk/hk;->a(Ljava/lang/String;)[B"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/flurry/sdk/hy;->f:()[B --> Lcom/flurry/sdk/hk;->a(Ljava/lang/String;)[B",
+        "Reasoning": "Method invocation and server call."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number",
+      "User Data",
+      "Personal Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user data is collected from `it` object.",
+        "Source Method": "Lcom/flurry/sdk/is;-><init>:(Lcom/flurry/sdk/it;)V",
+        "Reasoning": "Sensitive data originates from `it` object.",
+        "Action": "Stored in various fields"
+      },
+      {
+        "Step": "Sensitive user data is written to byte array.",
+        "Source Method": "Lcom/flurry/sdk/in;->a:()[B",
+        "Reasoning": "Sensitive user data is written to byte array.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Sensitive personal data is transmitted to server.",
+        "Source Method": "Lcom/flurry/sdk/ip;->b:()[B",
+        "Reasoning": "The method `b()` of class `Lcom/flurry/sdk/ip` originates user personal data.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/flurry/sdk/in;->a:()[B",
+      "Lcom/flurry/sdk/ip;->b:()[B"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/flurry/sdk/is;-><init>:(Lcom/flurry/sdk/it;)V --> Lcom/flurry/sdk/in;->a:()[B --> Lcom/flurry/sdk/ip;->b:()[B",
+        "Reasoning": "Sensitive data flows from `is` to `in` and then to `ip`."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "mmdid",
+      "mmh_",
+      "SHA1"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is collected.",
+        "Source Method": "Lcom/millennialmedia/internal/d/a;->a:(Ljava/util/Map; Z)Ljava/lang/String;",
+        "Reasoning": "Method summary indicates data collection.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive user personal data is appended to a string.",
+        "Source Method": "Lcom/millennialmedia/internal/d/a;->a:(Ljava/util/Map; Z)Ljava/lang/String;",
+        "Reasoning": "Method summary indicates data transformation.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Sensitive user personal data is logged.",
+        "Source Method": "Lcom/millennialmedia/internal/d/a;->a:(Ljava/util/Map; Z)Ljava/lang/String;",
+        "Reasoning": "Method summary indicates data logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/millennialmedia/i;->e()Lcom/millennialmedia/l;",
+      "Lcom/millennialmedia/internal/d/a;->a(Ljava/lang/StringBuilder; Ljava/lang/String; Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/millennialmedia/internal/d/a;->a:(Ljava/util/Map; Z)Ljava/lang/String; --> Lcom/millennialmedia/i;->e()Lcom/millennialmedia/l; --> Lcom/millennialmedia/internal/d/a;->a(Ljava/lang/StringBuilder; Ljava/lang/String; Ljava/lang/Object;)V",
+        "Reasoning": "Data flows from method A to method B to method C."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected from the Location object.",
+        "Source Method": "Lcom/millennialmedia/internal/k;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary specifies data collection.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is converted to a JSON object.",
+        "Source Method": "Lcom/millennialmedia/internal/k;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary specifies data transformation.",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "JSON object is logged using the b() method.",
+        "Source Method": "Lcom/millennialmedia/internal/k;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary specifies data logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/millennialmedia/internal/k;->b()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/millennialmedia/internal/k;->a:(Landroid/location/Location;)V --> Lcom/millennialmedia/internal/k;->b()V",
+        "Reasoning": "Location data is collected, transformed, and logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "View.getContext() method extracts user data.",
+        "Source Method": "Lcom/moat/analytics/mobile/aol/u;->\u02cb:(Ljava/lang/String; Landroid/view/View;)V",
+        "Reasoning": "Sensitive data originated from this method.",
+        "Action": "Stored in userSensitiveData field"
+      },
+      {
+        "Step": "JSONObject is created with user data.",
+        "Source Method": "Lcom/moat/analytics/mobile/aol/u;->\u02cb:(Ljava/lang/String; Landroid/view/View;)V",
+        "Reasoning": "Sensitive data is used to create JSONObject.",
+        "Action": "Created JSONObject"
+      },
+      {
+        "Step": "JSONObject is converted to string.",
+        "Source Method": "Lcom/moat/analytics/mobile/aol/u;->\u02cb:(Ljava/lang/String; Landroid/view/View;)V",
+        "Reasoning": "Sensitive data is converted to string.",
+        "Action": "String conversion"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/moat/analytics/mobile/aol/u;->\u02ca:(Landroid/view/View;)F"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/moat/analytics/mobile/aol/u;->\u02cb:(Ljava/lang/String; Landroid/view/View;)V --> Lcom/moat/analytics/mobile/aol/u;->\u02ca:(Landroid/view/View;)F",
+        "Reasoning": "Sensitive data is passed to u.\u02ca() method and then stored in userSensitiveData field."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "Lcom/moat/analytics/mobile/mpub/o;->f:()Landroid/location/Location;",
+        "Reasoning": "Method f() explicitly retrieves user location",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Additional processing",
+        "Source Method": "Lcom/moat/analytics/mobile/mpub/o;->b:(Landroid/location/Location; Landroid/location/Location;)Landroid/location/Location;",
+        "Reasoning": "Method b() performs additional processing on the retrieved location",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Method not specified in the summaries"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/moat/analytics/mobile/mpub/o;->f:()Landroid/location/Location; --> Lcom/moat/analytics/mobile/mpub/o;->b:(Landroid/location/Location; Landroid/location/Location;)Landroid/location/Location; --> Method not specified in the summaries",
+        "Reasoning": "Location is stored in the v0 register in method f(), then passed to method b() and potentially further processed or transmitted in an unspecified manner."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected from `Landroid/location/Location` object.",
+        "Source Method": "Lcom/moat/analytics/mobile/mpub/z;->b:(Landroid/location/Location;)Ljava/util/Map;",
+        "Reasoning": "Argument `v4` of `Lcom/moat/analytics/mobile/mpub/z;->b` method.",
+        "Action": "Stored in a new `Ljava/util/HashMap` object."
+      },
+      {
+        "Step": "Data is logged using `Lcom/moat/analytics/mobile/mpub/z;->b` method.",
+        "Source Method": "Lcom/moat/analytics/mobile/mpub/z;->b:(Ljava/util/Map;)V",
+        "Reasoning": "Argument `v0` of `Lcom/moat/analytics/mobile/mpub/z;->b` method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/moat/analytics/mobile/mpub/z;->b:(Ljava/util/Map;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/moat/analytics/mobile/mpub/z;->b:(Landroid/location/Location;)Ljava/util/Map; --> Lcom/moat/analytics/mobile/mpub/z;->b:(Ljava/util/Map;)V",
+        "Reasoning": "Location data is collected, stored in a HashMap, and then logged."
+      }
+    ],
+    "Label": "leak"
+  }
+]

@@ -1,0 +1,476 @@
+[
+  {},
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "timestamp",
+      "accuracy",
+      "bearing",
+      "speed",
+      "altitude",
+      "provider",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location data from Location API",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/aep;->a:(Lorg/json/JSONObject; Lcom/yandex/metrica/impl/ob/ed;)Lorg/json/JSONObject;",
+        "Reasoning": "The method originates sensitive user personal data by calling Location API to get latitude, longitude, timestamp, accuracy, bearing, speed, altitude and provider.",
+        "Action": "Stored in a JSONObject"
+      },
+      {
+        "Step": "Store location data in JSONObject",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/aep;->a:(Lorg/json/JSONObject; Lcom/yandex/metrica/impl/ob/ed;)Lorg/json/JSONObject;",
+        "Reasoning": "The data is stored in a JSONObject and passed as an argument to the put() or putOpt() methods.",
+        "Action": "Stored in a JSONObject"
+      },
+      {
+        "Step": "Check if string is empty",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/ds;->c:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the isEmpty() method from TextUtils class.",
+        "Action": "Passed to next methods"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/yandex/metrica/impl/ob/aep;->b:(Lorg/json/JSONObject;)V",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/yandex/metrica/impl/ob/aep;->a:(Lorg/json/JSONObject; Lcom/yandex/metrica/impl/ob/ed;)Lorg/json/JSONObject; --> Lcom/yandex/metrica/impl/ob/aep;->b:(Lorg/json/JSONObject;)V ",
+        "Reasoning": "The data reaches sinks like logging and storage through the return statement."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location information using 'android/location/Location' class",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/bx;->a:(Landroid/location/Location;)Ljava/lang/String;",
+        "Reasoning": "The method uses the 'android/location/Location' class to get location information.",
+        "Action": "Stored in a JSONObject and then converted to a String"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/yandex/metrica/impl/ob/bx;->a:(Landroid/location/Location;)Ljava/lang/String; --> Stored in a JSONObject and then converted to a String",
+        "Reasoning": "The method uses the 'android/location/Location' class to get location information, which is stored in a JSONObject and then converted to a String."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "android/content/Context",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Accessing location manager and context",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/rl;->a:()Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by accessing the location manager and context.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Checking fine location permission",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/tu;->b:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates sensitive user personal data by accessing the fine location permission.",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "Checking coarse location permission",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/tu;->a:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates sensitive user personal data by checking for the android.permission.ACCESS_COARSE_LOCATION permission.",
+        "Action": "Stored in registers (v0, v1)"
+      },
+      {
+        "Step": "Checking permissions using Context and String API calls",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/tu;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data from sensitive API calls to the `Context` and uses it to check permissions.",
+        "Action": "Stored in registers (v0, v2) and variables (v3)"
+      },
+      {
+        "Step": "Network transmission of location data",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/rl;->a:()Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by accessing the location manager and context.",
+        "Action": "Propagated to other methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/yandex/metrica/impl/ob/rl;->a:()Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/yandex/metrica/impl/ob/tu;->b:(Landroid/content/Context;)Z --> Lcom/yandex/metrica/impl/ob/rl;->a:()Landroid/location/Location --> Network transmission of location data",
+        "Reasoning": "The fine location permission is accessed and the location data is stored in register v1. This data is then propagated to other methods via method invocations, ultimately resulting in network transmission of location data."
+      },
+      {
+        "dataflow 2": " Lcom/yandex/metrica/impl/ob/tu;->a:(Landroid/content/Context;)Z --> Lcom/yandex/metrica/impl/ob/rl;->a:()Landroid/location/Location --> Network transmission of location data",
+        "Reasoning": "The coarse location permission is checked and the location data is stored in registers (v0, v1). This data is then propagated to other methods via method invocations, ultimately resulting in network transmission of location data."
+      },
+      {
+        "dataflow 3": " Lcom/yandex/metrica/impl/ob/tu;->a:(Landroid/content/Context; Ljava/lang/String;)Z --> Lcom/yandex/metrica/impl/ob/rl;->a:()Landroid/location/Location --> Network transmission of location data",
+        "Reasoning": "The permissions are checked using Context and String API calls, and the location data is stored in registers (v0, v2) and variables (v3). This data is then propagated to other methods via method invocations, ultimately resulting in network transmission of location data."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location information",
+      "device details",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Invoke location provider APIs to retrieve location information",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/sw;->a:(Lcom/yandex/metrica/impl/ob/sh;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by invoking sensitive APIs.",
+        "Action": "Stored in a JSONObject"
+      },
+      {
+        "Step": "Check if string is empty using android.text.TextUtils.isEmpty()",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/ds;->c:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by invoking the isEmpty() method.",
+        "Action": "Returned original value of 'v1'"
+      },
+      {
+        "Step": "Pass retrieved location information as a String to the caller",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/sw;->a:(Lcom/yandex/metrica/impl/ob/sh;)Ljava/lang/String;",
+        "Reasoning": "The method also handles various edge cases for different types of location providers.",
+        "Action": "Passed as a String to the caller"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/yandex/metrica/impl/ob/sw;->a:(Lcom/yandex/metrica/impl/ob/sh;)Ljava/lang/String; --> Stored in a JSONObject --> Lcom/yandex/metrica/impl/ob/sw;->a:(Lcom/yandex/metrica/impl/ob/sh;)Ljava/lang/String;",
+        "Reasoning": "The location information is retrieved from the location provider APIs, stored in a JSONObject and then passed as a String to the caller."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Long"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from Location and stores it in registers and variables within the method.",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/tc;->a:(Lcom/yandex/metrica/impl/ob/sh;)Lcom/yandex/metrica/impl/ob/wi$b$b;",
+        "Reasoning": "Based on the summary of the method",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Accesses the 'e' field of an instance of 'Lcom/yandex/metrica/impl/ob/sh;' which is a Location object.",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/sh;->c:()Landroid/location/Location;",
+        "Reasoning": "Based on the summary of the method",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Calls a sensitive API (likely for analytics or tracking purposes) and stores it in register v0.",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/sh;->a:()Ljava/lang/Long;",
+        "Reasoning": "Based on the summary of the method",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/yandex/metrica/impl/ob/tc;->a:(Lcom/yandex/metrica/impl/ob/sh;)Lcom/yandex/metrica/impl/ob/wi$b$b --> Lcom/yandex/metrica/impl/ob/sh;->c:()Landroid/location/Location --> [Sink point not identified within this method]",
+        "Reasoning": "The data is stored in registers and variables within the method, then passed to other methods via method invocations. Finally, it reaches a sink point like logging or storage."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WiFi SSID from broadcast receiver",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by getting the WiFi SSID.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Pass WiFi SSID to other methods",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The data is then passed to other methods via method invocations.",
+        "Action": "Passed via method invocation"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->logWifiSSID:()V;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> Stored in register v0 --> Passed via method invocation --> Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->logWifiSSID:()V;",
+        "Reasoning": "The WiFi SSID is first stored in a register, then passed to other methods, and finally logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "device ID",
+      "Lcom/yandex/metrica/impl/ob/tu;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device ID from TelephonyManager",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/abs$1;->a:(Landroid/telephony/TelephonyManager;)Ljava/lang/String;",
+        "Reasoning": "Method originates user personal data using getDeviceId() method of TelephonyManager.",
+        "Action": "Stored in register v3"
+      },
+      {
+        "Step": "Retrieve object from field b",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/abs;->b:(Lcom/yandex/metrica/impl/ob/abs;)Lcom/yandex/metrica/impl/ob/tu;",
+        "Reasoning": "Method originates sensitive user personal data by calling a sensitive API to retrieve an object of type Lcom/yandex/metrica/impl/ob/tu; from the field b in the object passed as parameter.",
+        "Action": "Stored in register v0 and propagated through it"
+      },
+      {
+        "Step": "Retrieve Context object",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/abp;->d:()Landroid/content/Context;",
+        "Reasoning": "Method originates user personal data by calling the sensitive API 'Lcom/yandex/metrica/impl/ob/abp;->d:()Landroid/content/Context;' which retrieves a Context object.",
+        "Action": "Stored in register v0 and propagated to the return statement"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/yandex/metrica/impl/ob/abs$1;->a:(Landroid/telephony/TelephonyManager;)Ljava/lang/String;",
+      "null",
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/yandex/metrica/impl/ob/abp;->d:()Landroid/content/Context; --> Lcom/yandex/metrica/impl/ob/abs$1;->a:(Landroid/telephony/TelephonyManager;)Ljava/lang/String; --> Lcom/yandex/metrica/impl/ob/abs;->b:(Lcom/yandex/metrica/impl/ob/abs;)Lcom/yandex/metrica/impl/ob/tu;",
+        "Reasoning": "Device ID is retrieved from Context object and propagated through the methods, eventually stored in register v0 of the last method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID",
+      "IP address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WifiManager.getConnectionInfo() called",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/eb$2;->a:(Landroid/net/wifi/WifiManager;)Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "Extracts user personal data from WifiManager",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "Data passed to other methods for further processing",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/eb$2;->a:(Landroid/net/wifi/WifiManager;)Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "Passes extracted data to other methods",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/yandex/metrica/impl/ob/eb$2;->a:(Landroid/net/wifi/WifiManager;)Landroid/net/wifi/WifiInfo; --> ... --> [No Sink Found]",
+        "Reasoning": "Data is extracted from WifiManager and passed to other methods, but no sink point found"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID",
+      "SSID",
+      "Android version (SDK_INT)",
+      "TimeUnit"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate from WifiInfo",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/eb;->a:(Ljava/util/List; Landroid/net/wifi/WifiInfo;)Ljava/util/List;",
+        "Reasoning": "The current method originates user personal data through the `getBSSID()` and `getSSID()` methods of WifiInfo.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Originate from WiFi scan result",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/eb;->a:(Ljava/lang/String; Landroid/net/wifi/ScanResult;)Lcom/yandex/metrica/impl/ob/ea;",
+        "Reasoning": "The data is stored in registers (v2, v4) and variables (v0, v3).",
+        "Action": "Passed to other methods via direct invocations"
+      },
+      {
+        "Step": "Originate from SDK_INT API call",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/eb;->a:(Landroid/net/wifi/ScanResult;)Ljava/lang/Long;",
+        "Reasoning": "The data is stored in register v0 and then passed to method b() via an invoke-direct instruction.",
+        "Action": "Passed through registers"
+      },
+      {
+        "Step": "Originate from TimeUnit",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/aff;->b:(J Ljava/util/concurrent/TimeUnit;)J",
+        "Reasoning": "The data is stored in register v3.",
+        "Action": "Passed to the `c()` method of `com/yandex/metrica/impl/ob/afg`"
+      },
+      {
+        "Step": "Originate from elapsedRealtime() API call",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/afg;->c:()J",
+        "Reasoning": "The data is stored in register `v0` and then returned.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/yandex/metrica/impl/ob/eb;->a:(Ljava/util/List; Landroid/net/wifi/WifiInfo;)Ljava/util/List;",
+      "Lcom/yandex/metrica/impl/ob/eb;->b:(Landroid/net/wifi/ScanResult;)Ljava/lang/Long;",
+      "Lcom/yandex/metrica/impl/ob/afg;->c:()J"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/yandex/metrica/impl/ob/eb;->a:(Ljava/util/List; Landroid/net/wifi/WifiInfo;)Ljava/util/List; --> Lcom/yandex/metrica/impl/ob/eb;->b:(Landroid/net/wifi/ScanResult;)Ljava/lang/Long; --> Sink (Logging)",
+        "Reasoning": "The data is propagated through WifiInfo and ScanResult, eventually reaching a sink point in the form of logging."
+      },
+      {
+        "dataflow 2": " Lcom/yandex/metrica/impl/ob/eb;->a:(Landroid/net/wifi/ScanResult;)Ljava/lang/Long; --> Lcom/yandex/metrica/impl/ob/afg;->c:()J --> Sink (Logging)",
+        "Reasoning": "The data is propagated through ScanResult, then passed to the `c()` method of `com/yandex/metrica/impl/ob/afg`, which returns a value that is subtracted from the stored time using `sub-long/2addr`. The data eventually reaches a sink point in the form of logging."
+      },
+      {
+        "dataflow 3": " Lcom/yandex/metrica/impl/ob/aff;->b:(J Ljava/util/concurrent/TimeUnit;)J --> Sink (Logging)",
+        "Reasoning": "The data is propagated through TimeUnit, eventually reaching a sink point in the form of logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getSharedPreferences() called indirectly through iget-object v0, v0, Lcom/yandex/metrica/impl/ob/st;->g Ljava/lang/String;",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/st;->a:(Lcom/yandex/metrica/impl/ob/st;)Ljava/lang/String;",
+        "Reasoning": "The current method originates user personal data by calling the sensitive API `Landroid/content/Context;->getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;` indirectly through `iget-object v0, v0, Lcom/yandex/metrica/impl/ob/st;->g Ljava/lang/String;`. The data is stored in register v0 and passed to the next method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "getLastKnownLocation() method of LocationManager accessed",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/st$1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by invoking the getLastKnownLocation() method of LocationManager, which accesses the device's location.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/yandex/metrica/impl/ob/st;->a:(Lcom/yandex/metrica/impl/ob/st;)Ljava/lang/String; --> Landroid/content/Context;->getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences; --> null",
+        "Reasoning": "The data is stored in register v0 and passed to the next method, but there are no sink points like logging, network transmission, or storage."
+      },
+      {
+        "dataflow 2": "Lcom/yandex/metrica/impl/ob/st$1;->a:(Landroid/location/LocationManager;)Landroid/location/Location; --> null",
+        "Reasoning": "The location is then stored in register v2 and passed as a return value, but there are no sink points like logging, network transmission, or storage."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from location information",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/yb$a;->a:(Landroid/location/Location; Landroid/location/Location;)Z",
+        "Reasoning": "The current method uses sensitive API calls to originate user personal data from location information.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Propagate through method invocations for comparison and analysis",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/dy;->a:(I)Z",
+        "Reasoning": "The data propagates through method invocations to other methods for comparison and analysis.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Reach sink points like logging and storage",
+        "Source Method": "Lcom/yandex/metrica/impl/ob/dy;->a:(I)Z",
+        "Reasoning": "The data reaches sink points like logging and storage.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/yandex/metrica/impl/ob/dy;->a:(I)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/yandex/metrica/impl/ob/yb$a;->a:(Landroid/location/Location; Landroid/location/Location;)Z --> Lcom/yandex/metrica/impl/ob/dy;->a:(I)Z --> Lcom/yandex/metrica/impl/ob/dy;->a:(I)Z",
+        "Reasoning": "The data originates from the location information, propagates through method invocations for comparison and analysis, and reaches sink points like logging and storage."
+      }
+    ],
+    "Label": "leak"
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "phone number",
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check for permissions to read phone state and SMS",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The method originates sensitive user personal data by checking for permissions.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Retrieve phone number from TelephonyManager",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "If permissions are granted, it retrieves the phone number.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get user personal data through getSystemService API call",
+        "Source Method": "Lcom/facebook/react/bridge/ReactContext;->getSystemService:(Ljava/lang/String;)Ljava/lang/Object;",
+        "Reasoning": "The method originates user personal data through the getSystemService API call.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get ReactApplicationContext",
+        "Source Method": "Lcom/facebook/react/bridge/ReactContextBaseJavaModule;->getReactApplicationContext:()Lcom/facebook/react/bridge/ReactApplicationContext;",
+        "Reasoning": "The data originates from the sensitive API call getReactApplicationContext() which retrieves user personal data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Invoke a sensitive API call to get an object and a string",
+        "Source Method": "Lcom/facebook/t0/a/a;->d:(Ljava/lang/Object; Ljava/lang/String;)Ljava/lang/Object;",
+        "Reasoning": "The method originates sensitive user personal data by invoking a sensitive API call.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/react/bridge/ReactContext;->log:(Ljava/lang/String;)V",
+      "Lcom/facebook/t0/a/a;->a:(Ljava/lang/Object; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String; --> Lcom/facebook/react/bridge/ReactContext;->getSystemService:(Ljava/lang/String;)Ljava/lang/Object; --> Lcom/facebook/t0/a/a;->d:(Ljava/lang/Object; Ljava/lang/String;)Ljava/lang/Object;",
+        "Reasoning": "The data is propagated and transformed through method invocations, starting from the getPhoneNumberSync() method in RNDeviceModule class."
+      }
+    ],
+    "Label": "leak"
+  }
+]

@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "Latitude (double)",
+            "Longitude (double)"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve latitude and longitude from Location object",
+                "Source Method": "Lde/ecspride/LocationLeak1$MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "The method retrieves the latitude and longitude which are crucial personal data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Convert latitude and longitude to strings",
+                "Source Method": "Ljava/lang/Double;->toString(D)Ljava/lang/String;",
+                "Reasoning": "Conversion of double values to string format for potential storage or logging.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/LocationLeak1;->access$0(Lde/ecspride/LocationLeak1; Ljava/lang/String;)V",
+            "Lde/ecspride/LocationLeak1;->access$1(Lde/ecspride/LocationLeak1; Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Lde/ecspride/LocationLeak1$MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V --> Conversion to string --> Stored in access$0 and access$1]",
+                "Reasoning": "The latitude and longitude are first retrieved from the Location object, then converted to strings, which are eventually stored in class variables."
+            }
+        ],
+        "Label": "leak"
+    }
+]

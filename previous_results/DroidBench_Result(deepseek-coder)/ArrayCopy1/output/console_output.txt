@@ -1,0 +1,50 @@
+
+Processing folder: D:\UBCBAPK_Methods\ArrayCopy1
+Using methods file: D:\UBCBAPK_Methods\ArrayCopy1\ArrayCopy1_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the device ID from the TelephonyManager using getDeviceId(), which represents user-specific personal data, and then logs this information to the logcat with 'DroidBench' as the tag. The device ID is stored in an array before being passed to Log.i for logging.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieving device ID from TelephonyManager",
+            "Source Method": "Ledu/mit/array_copy/MainActivity;->getDeviceId():Ljava/lang/String;",
+            "Reasoning": "The method retrieves the device ID which is user-specific personal data.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Storing device ID in an array",
+            "Source Method": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The retrieved device ID is stored temporarily in an array before logging.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Logging the device ID using Log.i",
+            "Source Method": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The stored device ID is passed to Log.i for logging.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/array_copy/MainActivity;->Log.i(Ljava/lang/String; Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Ledu/mit/array_copy/MainActivity;->getDeviceId():Ljava/lang/String; --> ... --> Sink Method: Ledu/mit/array_copy/MainActivity;->Log.i(Ljava/lang/String; Ljava/lang/String;)I]",
+            "Reasoning": "The device ID is retrieved from TelephonyManager, stored in an array within the onCreate method, and then logged using Log.i."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ArrayCopy1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ArrayCopy1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ArrayCopy1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ArrayCopy1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ArrayCopy1\output\sensitive_only.json
+Total time for folder: 88.84 seconds

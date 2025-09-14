@@ -1,0 +1,46 @@
+
+Processing folder: D:\UBCBAPK_Methods\VirtualDispatch1
+Using methods file: D:\UBCBAPK_Methods\VirtualDispatch1\VirtualDispatch1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V => In the method onCreate of Lde/ecspride/VirtualDispatch1, user personal data (IMEI) is originated from the TelephonyManager's getDeviceId() call and stored in an instance variable imei.
+[SUMMARY] Lde/ecspride/VirtualDispatch1;->clickButton:(Landroid/view/View;)V => The method increments a counter and checks its parity. If the counter is even, it initializes an instance of Lde/ecspride/NoDataLeak with the message 'no leak' and calls logData(). If the counter is odd, it initializes another instance of Lde/ecspride/DataLeak using the device's IMEI which is stored in a field, also calling logData() on the new instance. The method does not involve any direct interactions with user personal data or transmit it to external entities.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "IMEI"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Obtain IMEI from TelephonyManager and store it in instance variable `imei`",
+            "Source Method": "Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "IMEI is obtained as a part of user personal data, which needs to be protected.",
+            "Action": "Stored in instance variable `imei`"
+        },
+        {
+            "Step": "Use IMEI to instantiate classes that call logData(), potentially logging sensitive information",
+            "Source Method": "Lde/ecspride/VirtualDispatch1;->clickButton:(Landroid/view/View;)V",
+            "Reasoning": "The use of IMEI in class instantiation and method calls suggests potential exposure of personal data.",
+            "Action": "Transmitted to potentially sensitive classes"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/NoDataLeak#logData()",
+        "Lde/ecspride/DataLeak#logData()"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V) --> Stored in instance variable `imei` --> Transmitted to Lde/ecspride/NoDataLeak and Lde/ecspride/DataLeak --> Called method logData() on these classes]",
+            "Reasoning": "IMEI is used during instantiation of potentially sensitive classes, which might lead to logging or transmission of personal data."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\VirtualDispatch1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\VirtualDispatch1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\VirtualDispatch1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\VirtualDispatch1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\VirtualDispatch1\output\sensitive_only.json
+Total time for folder: 894.81 seconds

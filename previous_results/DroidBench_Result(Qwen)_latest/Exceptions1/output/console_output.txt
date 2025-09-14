@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\Exceptions1
+Using methods file: D:\UBCBAPK_Methods\Exceptions1\Exceptions1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves the device ID via TelephonyManager.getDeviceId() and passes it as the third argument to SmsManager.sendTextMessage(), which is a network transmission sink. The device ID (personal data) is sent to the phone number '+49 1234'.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\Exceptions1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Exceptions1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Exceptions1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved from TelephonyManager.getDeviceId()",
+                "Source Method": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly calls TelephonyManager.getDeviceId() to obtain the device ID",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is passed to network transmission sink",
+                "Source Method": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is passed as third argument to SmsManager.sendTextMessage() which is a network transmission sink",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;)V ",
+                "Reasoning": "Device ID is retrieved via TelephonyManager.getDeviceId() and passed as third argument to SmsManager.sendTextMessage() which is a network transmission sink"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Exceptions1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Exceptions1\output\sensitive_only.json
+Total summary time: 668.7437279224396 seconds

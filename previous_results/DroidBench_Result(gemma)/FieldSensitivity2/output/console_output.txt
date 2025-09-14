@@ -1,0 +1,61 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\FieldSensitivity2
+Using methods file: D:\withoutcallgraphResult\TestAcessess\FieldSensitivity2\FieldSensitivity2_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "User personal data (SIM serial number) is originated via getSystemService and getSimSerialNumber, stored in the Datacontainer's secret field. The sendTextMessage method (network transmission) is identified as a sink, but the data sent (hardcoded strings) does not include user data. No sensitive data reaches a sink or is passed to next methods.",
+    "Next Methods": [
+        "Lde/ecspride/FieldSensitivity2;->setContentView:(I)V",
+        "Lde/ecspride/Datacontainer;-><init>()V",
+        "Lde/ecspride/FieldSensitivity2;->getSystemService:(Ljava/lang/String;)Ljava/lang/Object;",
+        "Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V",
+        "Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V",
+        "Lde/ecspride/Datacontainer;->getDescription()Ljava/lang/String;"
+    ]
+}
+Processed summary for Lde/ecspride/Datacontainer;->getDescription:()Ljava/lang/String;: {
+    "Summary": "No sensitive data operations were observed in this method related to its own originations. The method simply retrieves and returns a description string without originating, storing, or propagating user personal data. No sinks or method invocations were detected.",
+    "Next Methods": []
+}
+Processed summary for Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V: {
+    "Summary": "The method sets the 'secret' field of the Datacontainer instance with the provided String parameter. Based on the Previous Summary, this String is user personal data (SIM serial number) originating from getSystemService and getSimSerialNumber. The data is stored in the 'secret' field but not passed to any next methods or sinks within this method.",
+    "Next Methods": []
+}
+Processed summary for Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V: {
+    "Summary": "No sensitive data operations were observed in this method related to its own originations. The method sets the 'description' field of the Datacontainer instance but does not originate, propagate, or pass sensitive data to next methods or sinks.",
+    "Next Methods": []
+}
+Processed summary for Lde/ecspride/Datacontainer;-><init>:()V: {
+    "Summary": "No sensitive data operations were observed in this method related to its own originations. The method only calls the superclass constructor and does not process or propagate any user personal data.",
+    "Next Methods": []
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\FieldSensitivity2\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\FieldSensitivity2\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\FieldSensitivity2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data is originated from getSystemService(getSimSerialNumber) in onCreate",
+                "Source Method": "Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "SIM serial number is retrieved and stored in Datacontainer's secret field",
+                "Action": "Stored in Datacontainer"
+            },
+            {
+                "Step": "Data is set in Datacontainer's secret field",
+                "Source Method": "Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V",
+                "Reasoning": "Secret field is populated with SIM serial number from previous step",
+                "Action": "Data retained in object"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": null,
+        "Label": "no leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\FieldSensitivity2\output\refined_method_summaries.json
+Saved 0 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\FieldSensitivity2\output\sensitive_only.json
+Total summary time: 68.20782208442688 seconds

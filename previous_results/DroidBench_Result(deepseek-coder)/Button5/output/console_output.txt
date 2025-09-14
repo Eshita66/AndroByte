@@ -1,0 +1,51 @@
+
+Processing folder: D:\UBCBAPK_Methods\Button5
+Using methods file: D:\UBCBAPK_Methods\Button5\Button5_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/button_object_allocation/Button1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/button_object_allocation/Button1;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the device ID from the TelephonyManager using getDeviceId(), which represents user-specific information, and stores this in a static variable called imei within the class. This indicates that sensitive user personal data (IMEI) is originated, stored, and passed internally within the application.
+[SUMMARY] Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V => The method involves retrieving the hint from a Button and logging it using Log.i(). The button's hint, which could contain user-specific information, is retrieved and then logged via Log.i(), potentially exposing this information to logs.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID",
+        "Button Hint"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval and Storage of Device ID",
+            "Source Method": "Ledu/mit/button_object_allocation/Button1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The device ID is retrieved from the TelephonyManager and stored in a static variable within the class, representing user-specific information.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Logging of Button Hint",
+            "Source Method": "Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V",
+            "Reasoning": "The button's hint, which could contain user-specific information, is retrieved and logged via Log.i(), potentially exposing this information to logs.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V",
+        "Log.i()"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[getDeviceId() --> onCreate() --> stored in static variable]",
+            "Reasoning": "The device ID is retrieved from the TelephonyManager and directly stored in a static variable within the class during the onCreate method."
+        },
+        {
+            "dataflow 2": "[retrieve hint from Button --> sendMessage() --> Log.i()]",
+            "Reasoning": "The button's hint, which could contain user-specific information, is retrieved and logged via Log.i() during the sendMessage method."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Button5\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Button5\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Button5\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Button5\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\Button5\output\sensitive_only.json
+Total time for folder: 152.15 seconds

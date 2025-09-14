@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain IMEI from TelephonyManager in onCreate()",
+                "Source Method": "Lde/ecspride/ApplicationLifecyle2;->onCreate:()V",
+                "Reasoning": "IMEI is obtained directly from the TelephonyManager service.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send IMEI via SMS in onLowMemory()",
+                "Source Method": "Lde/ecspride/ApplicationLifecyle2;->onLowMemory:()V",
+                "Reasoning": "IMEI is sent as part of an SMS message, which could be considered sensitive information.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ApplicationLifecyle2;->onLowMemory:()V",
+            "Log.i(...)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method Lde/ecspride/ApplicationLifecyle2;->onCreate:()V --> onLowMemory() --> Sink Method Log.i(...) -->]",
+                "Reasoning": "IMEI is obtained in onCreate(), passed to onLowMemory() where it is logged."
+            }
+        ],
+        "Label": "leak"
+    }
+]

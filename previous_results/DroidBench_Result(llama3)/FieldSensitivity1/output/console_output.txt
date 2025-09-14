@@ -1,0 +1,74 @@
+
+ Processing folder: D:\UBCBAPK_Methods\FieldSensitivity1
+ Using methods file: D:\UBCBAPK_Methods\FieldSensitivity1\FieldSensitivity1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;']
+[SUMMARY] Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer; => {
+    "Summary": "This method creates a Datacontainer instance, sets its description and secret fields based on system information, and returns the modified container.",
+    "Next Methods": [
+        "Lde/ecspride/Datacontainer;->setDescription(Ljava/lang/String;)V",
+        "Lde/ecspride/FieldSensitivity1;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Landroid/telephony/TelephonyManager;->getSimSerialNumber()Ljava/lang/String;"
+    ]
+}
+[SUMMARY] Lde/ecspride/Datacontainer;->setDescription(Ljava/lang/String;)V => {
+    "Summary": "This method creates a Datacontainer instance, sets its description and secret fields based on system information, and returns the modified container.",
+    "Next Methods": [
+        "Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V => {
+    "Summary": "This method creates a Datacontainer instance, sets its description and secret fields based on system information, and returns the modified container.",
+    "Next Methods": [
+        "Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V",
+        "Lde/ecspride/Datacontainer;->getDescription:()Ljava/lang/String;"
+    ]
+}
+[SUMMARY] Lde/ecspride/Datacontainer;->getDescription:()Ljava/lang/String; => {
+    "Summary": "This method creates a Datacontainer instance, sets its description and secret fields based on system information, and returns the modified container.",
+    "Next Methods": [
+        "Lcom/example/MyClass;->someMethod(Ljava/lang/String;)"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\FieldSensitivity1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\FieldSensitivity1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\FieldSensitivity1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "getDeviceId() returns tainted DeviceId",
+                "Source Method": "Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;",
+                "Reasoning": "The method creates a Datacontainer instance, sets its description and secret fields based on system information, and returns the modified container.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "setDescription() overwrites DeviceId with system information",
+                "Source Method": "Lde/ecspride/Datacontainer;->setDescription(Ljava/lang/String;)V",
+                "Reasoning": "The method creates a Datacontainer instance, sets its description and secret fields based on system information, and returns the modified container.",
+                "Action": "Overwritten"
+            },
+            {
+                "Step": "getDescription() uses tainted DeviceId",
+                "Source Method": "Lde/ecspride/Datacontainer;->getDescription:()Ljava/lang/String;",
+                "Reasoning": "The method creates a Datacontainer instance, sets its description and secret fields based on system information, and returns the modified container.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId() --> setDescription() --> getDescription()",
+                "Reasoning": "The tainted DeviceId is passed from getDeviceId() to setDescription(), which overwrites it with system information. The overwritten value is then used in getDescription()."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\FieldSensitivity1\output\refined_method_summaries.json
+Saved 0 'leak' subgraphs to D:\UBCBAPK_Methods\FieldSensitivity1\output\sensitive_only.json
+Total time for folder: 19.30 seconds

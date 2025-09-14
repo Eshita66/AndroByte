@@ -1,0 +1,69 @@
+Processing folder: D:\UBCBAPK_Methods\Library2
+Using methods file: D:\UBCBAPK_Methods\Library2\Library2_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;: {
+    "Summary": "This method retrieves the device ID from the TelephonyManager. It originates the device ID by calling the `getDeviceId()` method on an instance of `android.telephony.TelephonyManager`. The device ID is returned as a string. No sinks were identified within this method itself.",
+    "Next Methods": []
+}
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "This method originates user data by calling the `getIMEI` method of the `LibClass` object. The `LibClass` object then uses the `SmsManager` to send a text message containing the IMEI. This involves a call to `sendTextMessage`, which utilizes the `android.telephony.SmsManager` class. The IMEI is transmitted as part of the message. No sinks are identified within this method itself; the data is transmitted via the `sendTextMessage` call. Therefore, no further data propagation or processing is observed within this method.",
+    "Next Methods": [
+        "Lde/ecspride/LibClass;-><init>:(())"
+    ]
+}
+Method summaries saved to D:\UBCBAPK_Methods\Library2\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Library2\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Library2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+                "Reasoning": "The `getIMEI` method retrieves the device ID by calling `getDeviceId()` on a `TelephonyManager` instance.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String; --> DeviceId",
+                "Reasoning": "The `getIMEI` method retrieves the device ID and returns it.  No overwrite or taint loss is indicated."
+            }
+        ],
+        "Label": "no leak"
+    },
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get IMEI from LibClass",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method `onCreate` calls `getIMEI` on the `LibClass` object, originating the `DeviceId`.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Landroid/content/Intent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Landroid/content/Intent;)V",
+                "Reasoning": "The `DeviceId` (obtained from `getIMEI`) is transmitted via the `sendTextMessage` call."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Library2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Library2\output\sensitive_only.json
+Total summary time: 14.362258911132812 seconds

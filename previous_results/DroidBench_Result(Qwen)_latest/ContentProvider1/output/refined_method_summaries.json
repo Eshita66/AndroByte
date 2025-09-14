@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is checked for emulator detection",
+                "Source Method": "Lde/ecspride/MyContentProvider;->onCreate:()Z",
+                "Reasoning": "The onCreate method of MyContentProvider checks the device ID for '0000' to set the isEmulator flag.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is logged if emulator flag is set",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The onCreate method of MainActivity logs the device ID if the isEmulator flag is true.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MyContentProvider;->onCreate:()Z --> Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is checked in MyContentProvider's onCreate, then used in MainActivity's onCreate to log the ID if isEmulator is true."
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\ArrayCopy1
+Using methods file: D:\UBCBAPK_Methods\ArrayCopy1\ArrayCopy1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive data originated from TelephonyManager's getDeviceId() method. It was propagated through various registers and passed to Log.i() as an argument.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ArrayCopy1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ArrayCopy1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ArrayCopy1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from TelephonyManager's getDeviceId() method",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId:()Ljava/lang/String;",
+                "Reasoning": "Data was propagated through various registers and passed to Log.i() as an argument.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Landroid/telephony/TelephonyManager;->getDeviceId:()Ljava/lang/String; --> ... --> Landroid/util/Log;->i:(Ljava/lang/String;)I",
+                "Reasoning": "Sensitive data originated from TelephonyManager's getDeviceId() method. It was propagated through various registers and passed to Log.i() as an argument."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ArrayCopy1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ArrayCopy1\output\sensitive_only.json
+Total summary time: 56.28166222572327 seconds

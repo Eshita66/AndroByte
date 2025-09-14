@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "getDeviceId is a source of sensitive data",
+                "Source Method": "Ledu/mit/button_object_allocation/Button1;->getDeviceId()I",
+                "Reasoning": "The getDeviceId method retrieves the device's IMEI using the TelephonyManager instance.",
+                "Action": "Passed to onCreate and sendMessage methods"
+            },
+            {
+                "Step": "onCreate overwrites DeviceId with a safe constant",
+                "Source Method": "Ledu/mit/button_object_allocation/Button1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The sensitive value (DeviceId) is overwritten with a safe constant.",
+                "Action": "No longer tainted"
+            },
+            {
+                "Step": "sendMessage still has tainted DeviceId",
+                "Source Method": "Ledu/mit/button_object_allocation/Button1;->sendMessage(Landroid/view/View;)V",
+                "Reasoning": "The sensitive value (DeviceId) is retrieved using the TelephonyManager instance.",
+                "Action": "Still tainted"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/button_object_allocation/Button1;->sendMessage(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId(...) --> onCreate(...) --> sendMessage(...)",
+                "Reasoning": "The DeviceId is passed from getDeviceId to onCreate, but overwritten with a safe constant. However, in sendMessage, the DeviceId is still tainted and flows further."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

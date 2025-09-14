@@ -1,0 +1,8 @@
+[
+    {
+        "Lde/ecspride/MyContentProvider;->onCreate:()Z": "The `onCreate` method first initializes `v4` to 1. Then, it calls `getContext()` to obtain a `Context` object, assigning it to `v2`.  Next, it attempts to get the device ID using `getDeviceId()`, storing the result in `v0`.  The code then checks if the device ID contains the string '0000'. Finally, if the device ID contains '0000', it sets the `isEmulator` flag (v4) to 1.  This flow establishes a direct link from `getDeviceId()` (a sensitive API) to the `isEmulator` flag via `v0`.  The `getContext()` call is a necessary intermediary, but the core taint originates from the `getDeviceId()` invocation."
+    },
+    {
+        "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V": "The `onCreate` method of `MainActivity` first calls `invoke-super` to initialize the `ActionBarActivity` base class. Then, it sets the content view using `setContentView`. Next, it creates and adds a placeholder fragment. Critically, the code then attempts to obtain the device ID using `getDeviceId` from `TelephonyManager` and subsequently uses this value to send a text message via `SmsManager.sendTextMessage`. The `sendTextMessage` method takes the phone number `+49 1234` as the destination address and the device ID as the message body. This constitutes a clear flow from a sensitive API (`getDeviceId`) to a sensitive sink (`SmsManager.sendTextMessage`).  The instruction `invoke-virtual v8, v4, Lde/ecspride/MainActivity;->getDeviceId()Ljava/lang/String;` directly moves the device ID to a register (`v8`) which is then used as the message body in the `sendTextMessage` call. The `const/4 v5, 2131034172` instruction sets the message body to the device ID. This is a concrete, traceable flow."
+    }
+]

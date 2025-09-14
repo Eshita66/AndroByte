@@ -1,0 +1,51 @@
+
+ Processing folder: D:\UBCBAPK_Methods\MultidimensionalArray1
+ Using methods file: D:\UBCBAPK_Methods\MultidimensionalArray1\MultidimensionalArray1_bytecode_instructions.json
+Sensitive root methods: ['Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": [
+        "The method retrieves the device ID via TelephonyManager and logs it using Log.i, which may constitute a sensitive data leak."
+    ],
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\MultidimensionalArray1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\MultidimensionalArray1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\MultidimensionalArray1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved from TelephonyManager",
+                "Source Method": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly calls TelephonyManager to obtain the device ID, which is a sensitive data source.",
+                "Action": "Stored in memory"
+            },
+            {
+                "Step": "Device ID is logged using Log.i",
+                "Source Method": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The Log.i method is a sink that directly receives the device ID without any overwriting or taint removal mentioned in the summary.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The device ID is retrieved via TelephonyManager (source), passed to Log.i (sink) without being overwritten or sanitized, resulting in a sensitive data leak."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\MultidimensionalArray1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\MultidimensionalArray1\output\sensitive_only.json
+Total time for folder: 15.73 seconds

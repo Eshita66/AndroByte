@@ -1,0 +1,38 @@
+
+Processing folder: D:\UBCBAPK_Methods\ArrayToString1
+Using methods file: D:\UBCBAPK_Methods\ArrayToString1\ArrayToString1_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/to_string/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/to_string/MainActivity;->onCreate:(Landroid/os/Bundle;)V => In the given method, sensitive user personal data (specifically, the device ID) is originated and obtained from the TelephonyManager instance. This data is then passed to Log.i for logging purposes. The device ID is retrieved using getDeviceId() on the TelephonyManager instance, which holds this information.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Obtain device ID from TelephonyManager",
+            "Source Method": "Ledu/mit/to_string/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method retrieves the device ID using getDeviceId() from TelephonyManager, which holds this information.",
+            "Action": "Stored in local variable"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/to_string/MainActivity;->Log.i:(Ljava/lang/String; Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Ledu/mit/to_string/MainActivity;->onCreate:(Landroid/os/Bundle;)V) --> Local variable holding device ID --> Sink Method(Ledu/mit/to_string/MainActivity;->Log.i:(Ljava/lang/String; Ljava/lang/String;)I)]",
+            "Reasoning": "The device ID is first stored in a local variable within the onCreate method, and then passed to Log.i for logging."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ArrayToString1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ArrayToString1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ArrayToString1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ArrayToString1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ArrayToString1\output\sensitive_only.json
+Total time for folder: 28.02 seconds

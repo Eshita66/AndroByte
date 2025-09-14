@@ -1,0 +1,26 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain IMEI from TelephonyManager",
+                "Source Method": "Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID (IMEI) directly from the TelephonyManager, which is considered a personal data type.",
+                "Action": "Stored and logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V",
+            "Log.i(...)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V --> ... --> Sink Method: Log.i(...) or writeToLog]",
+                "Reasoning": "The IMEI is obtained directly from the TelephonyManager in onCreate, which is an untrusted source. This data is then logged without any processing, indicating a direct flow to a sink that logs the information."
+            }
+        ],
+        "Label": "leak"
+    }
+]

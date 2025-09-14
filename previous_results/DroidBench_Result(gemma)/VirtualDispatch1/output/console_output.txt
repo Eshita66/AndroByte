@@ -1,0 +1,41 @@
+Processing folder: D:\withoutcallgraphResult\testagain\VirtualDispatch1
+Using methods file: D:\withoutcallgraphResult\testagain\VirtualDispatch1\VirtualDispatch1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method `Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V` first invokes the superclass constructor (`invoke-super`) with the `Bundle` as a parameter. Then, it calls `setContentView` with the constant `2130903040`. Following this, it calls `getSystemService` with the string \"phone\", which triggers the `getDeviceId` method of the `TelephonyManager`. The result of `getDeviceId` (a String) is then stored in the `imei` field of the `VirtualDispatch1` object. This represents a clear flow: `[getDeviceId \u279d String \u279d imei]`. The `getSystemService` call is a sensitive API call, triggering the leak.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\testagain\VirtualDispatch1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\testagain\VirtualDispatch1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\testagain\VirtualDispatch1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "deviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID",
+                "Source Method": "Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The method calls `getSystemService` with the string \"phone\", triggering the `getDeviceId` method of the `TelephonyManager`.",
+                "Action": "Store"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/VirtualDispatch1;->onSaveInstanceState:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/VirtualDispatch1;->onSaveInstanceState:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `deviceId` obtained from `getDeviceId` is stored in the `imei` field of the `VirtualDispatch1` object. This is then saved during `onSaveInstanceState`."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\testagain\VirtualDispatch1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\testagain\VirtualDispatch1\output\sensitive_only.json
+Total summary time: 8.874305009841919 seconds

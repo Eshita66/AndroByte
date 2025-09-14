@@ -1,0 +1,25 @@
+[
+    {
+        "Data Types Collected": [
+            "Double (latitude and longitude)"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve latitude and longitude from location object",
+                "Source Method": "Lde/ecspride/MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "Data is retrieved directly from the location object.",
+                "Action": "Converted to string and passed as argument."
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/IDataProvider;->setData(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(... --> Convert to string --> Append to StringBuilder --> Call setData method on IDataProvider)]",
+                "Reasoning": "The latitude and longitude values are first converted to strings, then potentially appended to a StringBuilder (if used in the process), and finally passed as an argument to the setData method of IDataProvider."
+            }
+        ],
+        "Label": "leak"
+    }
+]

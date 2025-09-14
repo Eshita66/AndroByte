@@ -1,0 +1,39 @@
+Processing folder: D:\UBCBAPK_Methods\ReflectionDynamic
+Using methods file: D:\UBCBAPK_Methods\ReflectionDynamic\ReflectionDynamic_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "This method originates user data by calling `TelephonyManager.getDeviceId()`. This retrieves the device ID, a sensitive piece of information. The device ID is then stored in the `MainActivity.c` field as a `Class` object. Subsequently, a `reflect.Method` is invoked to call a method named \"leak\" on the `MainActivity.o` field.  Because the method ultimately calls a reflection method, it's considered a sink. Therefore, the `Next Methods` list is empty.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ReflectionDynamic\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ReflectionDynamic\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ReflectionDynamic\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieved via TelephonyManager.getDeviceId().",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method summary explicitly states that the device ID is retrieved using `TelephonyManager.getDeviceId()`.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Ljunbin/ubc/MainActivity;->leak:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljunbin/ubc/MainActivity;->leak:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method retrieves the Device ID and passes it to the `leak` method via reflection."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ReflectionDynamic\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ReflectionDynamic\output\sensitive_only.json
+Total summary time: 7.286805152893066 seconds

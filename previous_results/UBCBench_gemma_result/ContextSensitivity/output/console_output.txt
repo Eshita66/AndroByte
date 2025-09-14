@@ -1,0 +1,70 @@
+Processing folder: D:\UBCBAPK_Methods\ContextSensitivity
+Using methods file: D:\UBCBAPK_Methods\ContextSensitivity\ContextSensitivity_bytecode_instructions.json
+Sensitive method found: Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V
+Sensitive method found: Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V
+Processed summary for Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V: {
+    "Summary": "This method originates user data by calling TelephonyManager.getDeviceId(). This API retrieves the device ID, a sensitive piece of user information. The retrieved device ID is then passed to the returnString method, which logs the device ID using android.util.Log.e.  Because the method logs the device ID, it constitutes a sink. Therefore, the Next Methods list is empty.",
+    "Next Methods": []
+}
+Processed summary for Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V: {
+    "Summary": "This method originates user data by calling TelephonyManager.getSimSerialNumber(). This API returns the SIM serial number, which is a sensitive piece of information. The returned string is then passed to the returnString method and subsequently logged using Log.e. Because the method logs the sensitive data, it constitutes a sink. Therefore, the 'Next Methods' list is empty.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ContextSensitivity\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ContextSensitivity\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ContextSensitivity\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V",
+                "Reasoning": "The method calls TelephonyManager.getDeviceId() to retrieve the DeviceId.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V --> Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V",
+                "Reasoning": "The DeviceId is retrieved from TelephonyManager.getDeviceId() and passed to the returnString method, which logs the DeviceId using android.util.Log.e. This constitutes a sink."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    },
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get Device ID",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V",
+                "Reasoning": "The method calls TelephonyManager.getSimSerialNumber(), which returns the SIM serial number.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V --> Log.e",
+                "Reasoning": "The method calls Log.e, which is a sink. The SIM serial number is directly passed to the sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ContextSensitivity\output\refined_method_summaries.json
+Saved 2 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ContextSensitivity\output\sensitive_only.json
+Total summary time: 14.093713283538818 seconds

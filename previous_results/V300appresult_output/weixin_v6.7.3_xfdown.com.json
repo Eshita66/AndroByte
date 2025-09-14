@@ -1,0 +1,2584 @@
+[
+  {
+    "Data Types Collected": [
+      "wifi bssid"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method `getWifiSignalStrength()` collects wifi bssid.",
+        "Source Method": "Lcom/tencent/mars/comm/NetworkSignalUtil;->getWifiSignalStrength:()J",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Wifi bssid is passed to `v()` method.",
+        "Source Method": "Lcom/tencent/mars/comm/NetworkSignalUtil;->getWifiSignalStrength:()J",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Logging of wifi bssid.",
+        "Source Method": "Lcom/tencent/mars/comm/NetworkSignalUtil;->getWifiSignalStrength:()J",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mars/comm/NetworkSignalUtil;->v:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mars/comm/NetworkSignalUtil;->getWifiSignalStrength:()J --> Lcom/tencent/mars/comm/NetworkSignalUtil;->v:(Ljava/lang/String;)V",
+        "Reasoning": "Overall data flow based on method signatures and summaries."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID",
+      "BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data collected from WifiManager",
+        "Source Method": "Lcom/tencent/mars/comm/PlatformComm$C2Java;->getCurWifiInfo:()Lcom/tencent/mars/comm/PlatformComm$WifiInfo;",
+        "Reasoning": "Method returns PlatformComm$WifiInfo object containing SSID and BSSID",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "N/A"
+    ],
+    "Complete Data Flow": null,
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve device ID",
+        "Source Method": "Lcom/tencent/mm/sdk/platformtools/bk;->fP:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `fP` uses `TelephonyManager` to get the device ID.",
+        "Action": "Stored in variable"
+      },
+      {
+        "Step": "Trim device ID",
+        "Source Method": "Lcom/tencent/mm/sdk/platformtools/bk;->fP:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The retrieved device ID is trimmed.",
+        "Action": "No change in data type"
+      },
+      {
+        "Step": "Return device ID",
+        "Source Method": "Lcom/tencent/mm/sdk/platformtools/bk;->fP:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The trimmed device ID is returned as the result.",
+        "Action": "Returned from method"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Unique User Identifier"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Generate UUID",
+        "Source Method": "Lcom/tencent/recovery/util/Util;->hs:(Landroid/content/Context;)I",
+        "Reasoning": "UUID is generated when not found in shared preferences.",
+        "Action": "Stored in shared preferences"
+      },
+      {
+        "Step": "Append Device Information",
+        "Source Method": "Lcom/tencent/recovery/util/Util;->hs:(Landroid/content/Context;)I",
+        "Reasoning": "Device information is appended to the UUID.",
+        "Action": "Stored in shared preferences"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/recovery/util/Util;->hs:(Landroid/content/Context;)I --> Stored in shared preferences",
+        "Reasoning": "UUID is generated and stored in shared preferences."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain BSSID",
+        "Source Method": "Lcom/tencent/smtt/utils/Apn;->getWifiSSID:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `getWifiSSID()` explicitly returns the BSSID as a string.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC Address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain MAC address",
+        "Source Method": "Loicq/wlogin_sdk/tools/util;->is:(Landroid/content/Context;)[B",
+        "Reasoning": "Method signature indicates the method obtains the MAC address",
+        "Action": "Stored in local variable"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Loicq/wlogin_sdk/tools/util;->is:(Landroid/content/Context;)[B --> Local Variable",
+        "Reasoning": "MAC address is stored in a local variable within the method"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract Device ID",
+        "Source Method": "Loicq/wlogin_sdk/tools/util;->it:(Landroid/content/Context;)[B",
+        "Reasoning": "Method signature matches the summary",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI",
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting user device identifiers",
+        "Source Method": "Loicq/wlogin_sdk/tools/util;->iu:(Landroid/content/Context;)[B",
+        "Reasoning": "Method `iu()` collects IMEI and MAC address",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Converting to byte arrays",
+        "Source Method": "Loicq/wlogin_sdk/tools/util;->iu:(Landroid/content/Context;)[B",
+        "Reasoning": "Collected data is converted to byte arrays",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Passing to `cf()` method",
+        "Source Method": "Loicq/wlogin_sdk/tools/util;->iu:(Landroid/content/Context;)[B",
+        "Reasoning": "Data is passed to `cf()` method",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Method where data is used or stored"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Loicq/wlogin_sdk/tools/util;->iu:(Landroid/content/Context;)[B --> Method where data is used or stored",
+        "Reasoning": "Data is collected, transformed, and passed to a sink method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve IMEI from TelephonyManager",
+        "Source Method": "Lc/t/m/g/cm;->a:()Ljava/lang/String;",
+        "Reasoning": "Method signature matches the summary",
+        "Action": "Stored in `a` field"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lc/t/m/g/cm;->a:()Ljava/lang/String; --> [Stored in a field]",
+        "Reasoning": "Overall data flow matches the source method and action"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address",
+        "Source Method": "Lc/t/m/g/cm;->c:()Ljava/lang/String;",
+        "Reasoning": "Method `c()` retrieves the MAC address.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC Address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC Address",
+        "Source Method": "Lcom/tencent/c/a/a/s;->ar:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `ar` retrieves the MAC address using `WifiManager` API.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/c/a/a/s;->ar:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/c/a/a/s;->ar:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/tencent/c/a/a/s;->ar:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "MAC address retrieved by `ar` method is returned as a string and stored in the same method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve BSSID",
+        "Source Method": "Lcom/tencent/c/a/a/s;->as(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method `as()` calls `WifiInfo.getBSSID()` to retrieve the BSSID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/c/a/a/s;->as(Landroid/content/Context;)Ljava/lang/String; --> Stored",
+        "Reasoning": "The BSSID is stored as a string."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve SSID",
+        "Source Method": "Lcom/tencent/c/a/a/s;->at:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method retrieves SSID using `getWifiInfo()` and `getSSID()` methods.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method call",
+        "Source Method": "Lcom/tencent/c/a/a/s;->getImei:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Reads user personal data from `READ_PHONE_STATE` permission",
+        "Action": "Stored in `v0` register"
+      },
+      {
+        "Step": "Permission check",
+        "Source Method": "Lcom/tencent/c/a/a/s;->getImei:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Checks if permission is granted and device is a phone",
+        "Action": "Skips data flow if conditions are not met"
+      },
+      {
+        "Step": "IMEI retrieval",
+        "Source Method": "Lcom/tencent/c/a/a/s;->getImei:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Uses `TelephonyManager` to get IMEI",
+        "Action": "Returns IMEI as a string"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/c/a/a/s;->getImei:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/c/a/a/s;->getImei:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/tencent/c/a/a/s;->getImei:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Data is passed through the method without being modified"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Network Information (SSID, Network Type, ISP Code)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method `Lcom/tencent/mm/ak/d;->MZ()` collects user's network information.",
+        "Source Method": "Lcom/tencent/mm/ak/d;->MZ()",
+        "Reasoning": "Method signature and summary match.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      "Logging"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/ak/d;->MZ() --> Logging",
+        "Reasoning": "Collected network information is logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is collected from `handleExDeviceGetCurrentSSIDEvent` method.",
+        "Source Method": "Lcom/tencent/mm/plugin/exdevice/model/e$19;->a:(Lcom/tencent/mm/sdk/b/b;)Z",
+        "Reasoning": "Stored in `bJI` field of `dj$b` object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive data is passed to `i` method of `y` class.",
+        "Source Method": "Lcom/tencent/mm/plugin/exdevice/model/e$19;->a:(Lcom/tencent/mm/sdk/b/b;)Z",
+        "Reasoning": "Passed as argument to `i` method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/exdevice/model/y;->i(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/exdevice/model/e$19;->a:(Lcom/tencent/mm/sdk/b/b;)Z --> Lcom/tencent/mm/plugin/exdevice/model/y;->i(Ljava/lang/String;)V",
+        "Reasoning": "Sensitive data is collected in `a` method, passed to `i` method as an argument, and logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi Network Name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WiFi network name is retrieved using `WifiInfo.getSSID()`",
+        "Source Method": "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->a:(Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI; Landroid/net/wifi/WifiInfo;)V",
+        "Reasoning": "Sensitive API call",
+        "Action": "Stored"
+      },
+      {
+        "Step": "WiFi network name is passed to `ExdeviceConnectWifiUI$2` method",
+        "Source Method": "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI$2;->onClick(Landroid/view/View;)V",
+        "Reasoning": "Method argument",
+        "Action": "Passed"
+      },
+      {
+        "Step": "WiFi network name is logged using `y.i()`",
+        "Source Method": "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI$2;->onClick(Landroid/view/View;)V",
+        "Reasoning": "Logging function call",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI$2;->onClick(Landroid/view/View;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->a:(Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI; Landroid/net/wifi/WifiInfo;)V --> Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI$2;->onClick(Landroid/view/View;)V --> Logging",
+        "Reasoning": "Data is passed from the source method to the sink method and then logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID",
+      "Local Password"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve SSID of connected WiFi network",
+        "Source Method": "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->aMv:()V",
+        "Reasoning": "Method summary specifies retrieving SSID",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Retrieve local password",
+        "Source Method": "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->aMv:()V",
+        "Reasoning": "Method summary specifies checking for local password",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Attempt to connect to device",
+        "Source Method": "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->aMv:()V",
+        "Reasoning": "Method summary specifies attempting connection",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->aMv:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->aMv:()V --> Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->aMv:()V",
+        "Reasoning": "Collected SSID and local password within the same method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Wifi Information (SSID)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User Wifi Information is collected.",
+        "Source Method": "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->fD:(Z)V",
+        "Reasoning": "Method summary indicates user wifi information is collected.",
+        "Action": "Stored in jCd field"
+      },
+      {
+        "Step": "SSID is logged.",
+        "Source Method": "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->fD:(Z)V",
+        "Reasoning": "Method summary indicates SSID is logged.",
+        "Action": "Logged using y.i() method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->y.i()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->fD:(Z)V --> Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->y.i()",
+        "Reasoning": "SSID is collected in `jCd` field and then logged using `y.i()` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is passed between methods via method invocations.",
+        "Source Method": "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->q:(Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;)V",
+        "Reasoning": "Method q() stores sensitive user personal data in the jCe field.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive user personal data is saved to a file if the password has changed.",
+        "Source Method": "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->q:(Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;)V",
+        "Reasoning": "If the password has changed, the sensitive user personal data is saved to a file.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->a(Ljava/io/File;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->q:(Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;)V --> Lcom/tencent/mm/plugin/exdevice/ui/ExdeviceConnectWifiUI;->a(Ljava/io/File;)V",
+        "Reasoning": "Sensitive user personal data is passed between methods via method invocations and stored in a file."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wifi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User switches wifi among ssids",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/model/b$1;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "Method signature and summary mention user switching wifi among ssids.",
+        "Action": "Stored in Wifi SSID"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/freewifi/model/b$1;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V --> Wifi SSID",
+        "Reasoning": "Data flows from the source method to Wifi SSID"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": null,
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID",
+      "RSSI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve BSSID and RSSI",
+        "Source Method": "Lcom/tencent/mm/plugin/voip/model/s$6;->run:()V",
+        "Reasoning": "WifiManager.getConnectionInfo() method is used to retrieve BSSID and RSSI.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Calculate Network Signal Strength",
+        "Source Method": "Lcom/tencent/mm/plugin/voip/model/s$6;->run:()V",
+        "Reasoning": "RSSI is used to calculate network signal strength.",
+        "Action": "Calculated"
+      },
+      {
+        "Step": "Set Network Signal Value",
+        "Source Method": "Lcom/tencent/mm/plugin/voip/model/s$6;->run:()V",
+        "Reasoning": "setNetSignalValue() method is used to set the calculated network signal strength.",
+        "Action": "Set"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/voip/model/s$6;->run:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/voip/model/s$6;->run:()V --> Lcom/tencent/mm/plugin/voip/model/s$6;->run:()V",
+        "Reasoning": "The BSSID and RSSI are first stored, then used to calculate the network signal strength, and finally set using the setNetSignalValue() method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "Lcom/d/a/a/k;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Settings.Secure.getString() retrieves user location",
+        "Action": "Stored in k$b object"
+      },
+      {
+        "Step": "Pass location to c() method",
+        "Source Method": "Lcom/d/a/a/k;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "k$b object is passed to c() method",
+        "Action": "Passed to c() method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/d/a/a/k;->c:(Lcom/d/a/a/k$b;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/d/a/a/k;->onLocationChanged:(Landroid/location/Location;)V --> Lcom/d/a/a/k;->c:(Lcom/d/a/a/k$b;)V",
+        "Reasoning": "Location data is retrieved in onLocationChanged(), stored in k$b object, and passed to c() method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Location",
+      "Cell Key"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract user location and cell key from bundle",
+        "Source Method": "Lc/t/m/g/dj;->b:(Landroid/os/Bundle;)Z",
+        "Reasoning": "Method signature and summary mention extraction of user location and cell key",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check if location is available",
+        "Source Method": "Lc/t/m/g/dj;->b:(Landroid/os/Bundle;)Z",
+        "Reasoning": "Method signature and summary mention checking for location availability",
+        "Action": "N/A"
+      },
+      {
+        "Step": "Log cell key if location is available",
+        "Source Method": "Lc/t/m/g/dj;->b:(Landroid/os/Bundle;)Z",
+        "Reasoning": "Method signature and summary mention logging cell key if location is available",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lc/t/m/g/dj;->b:(Landroid/os/Bundle;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/t/m/g/dj;->b:(Landroid/os/Bundle;)Z --> Lc/t/m/g/dj;->b:(Landroid/os/Bundle;)Z",
+        "Reasoning": "Data flows from source method to sink method through logging action"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected in `em.a()` method.",
+        "Source Method": "Lc/t/m/g/em;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary states that location data is originated in this method.",
+        "Action": "Stored in `ei` register"
+      },
+      {
+        "Step": "Location data is passed to `a` method.",
+        "Source Method": "Lc/t/m/g/em;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary states that location data is passed to the `a` method via `ei` register.",
+        "Action": "Passed as argument to `a` method"
+      },
+      {
+        "Step": "Location data is logged to console.",
+        "Source Method": "Lc/t/m/g/em;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary states that the `a` method logs the data to the console.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lc/t/m/g/em;->a:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " em.a() --> a --> console",
+        "Reasoning": "Location data is collected in `em.a()` method, passed to `a` method, and logged to console."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "connectivity",
+      "wifi"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is originated in `connectivity` and `wifi` methods.",
+        "Source Method": "Lc/t/m/g/x;->e:()V",
+        "Reasoning": "Data is passed between these methods.",
+        "Action": "Stored in `c`, `b`, and `i` fields."
+      }
+    ],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive API call detected"
+    ],
+    "Overall Data Flow": null,
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/freewifi/model/j;->bh:(Z)V"
+    ],
+    "Complete Data Flow": null,
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "MallTransactionObject"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "MallTransactionObject is passed to WebViewUI activity",
+        "Source Method": "Lcom/tencent/mm/plugin/order/ui/a/a;->a:(Landroid/content/Context; Ljava/lang/String; Lcom/tencent/mm/plugin/order/model/MallTransactionObject;)V",
+        "Reasoning": "Method invocation",
+        "Action": "Passed as argument"
+      },
+      {
+        "Step": "MallTransactionObject is sent to server via GET request",
+        "Source Method": "Lcom/tencent/mm/plugin/order/ui/a/a;->a:(Landroid/content/Context; Ljava/lang/String; Lcom/tencent/mm/plugin/order/model/MallTransactionObject;)V",
+        "Reasoning": "Network call",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/order/ui/a/a;->a:(Landroid/content/Context; Ljava/lang/String; Lcom/tencent/mm/plugin/order/model/MallTransactionObject;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/order/ui/a/a;->a:(Landroid/content/Context; Ljava/lang/String; Lcom/tencent/mm/plugin/order/model/MallTransactionObject;)V --> Lcom/tencent/mm/plugin/order/ui/a/a;->a:(Landroid/content/Context; Ljava/lang/String; Lcom/tencent/mm/plugin/order/model/MallTransactionObject;)V --> Lcom/tencent/mm/plugin/order/ui/a/a;->a:(Landroid/content/Context; Ljava/lang/String; Lcom/tencent/mm/plugin/order/model/MallTransactionObject;)V",
+        "Reasoning": "Method invocation and network call"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "System.currentTimeMillis()",
+      "WifiInfo.getSSID",
+      "WifiInfo.getBSSID",
+      "WifiInfo.getMacAddress"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Data Collection",
+        "Source Method": "System.currentTimeMillis(), WifiInfo.getSSID(), WifiInfo.getBSSID(), WifiInfo.getMacAddress",
+        "Reasoning": "Collected from user device information",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data Transformation",
+        "Source Method": "WalletSwitchConfig.isReportWifiSSid()",
+        "Reasoning": "Passed to method for further processing",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Data Logging",
+        "Source Method": "y.i()",
+        "Reasoning": "Logged using y.i() method",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "y.i()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "System.currentTimeMillis(), WifiInfo.getSSID(), WifiInfo.getBSSID(), WifiInfo.getMacAddress --> WalletSwitchConfig.isReportWifiSSid() --> y.i()",
+        "Reasoning": "Data is collected from user device information, transformed by WalletSwitchConfig.isReportWifiSSid() method, and finally logged using y.i() method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "username",
+      "traceid"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User input is collected",
+        "Source Method": "Lcom/tencent/mm/plugin/webview/ui/tools/h;->fA:(Ljava/lang/String;Ljava/lang/String;)V",
+        "Reasoning": "Method parameters are named `username` and `traceid`",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is logged",
+        "Source Method": "Lcom/tencent/mm/plugin/webview/ui/tools/h;->fA:(Ljava/lang/String;Ljava/lang/String;)V",
+        "Reasoning": "MicroMsg.WebViewReportUtil is called",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/webview/ui/tools/MicroMsg$WebViewReportUtil;->reportWebViewReport:(Ljava/lang/String;Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/webview/ui/tools/h;->fA:(Ljava/lang/String;Ljava/lang/String;)V --> Lcom/tencent/mm/plugin/webview/ui/tools/MicroMsg$WebViewReportUtil;->reportWebViewReport:(Ljava/lang/String;Ljava/lang/String;)V",
+        "Reasoning": "Data is logged after being collected"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method call",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/e;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Accessing IMEI using TelephonyManager",
+        "Action": "Stored in local variable"
+      },
+      {
+        "Step": "Method call",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/cy;->d(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "Logging IMEI",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/tencentmap/mapsdk/a/cy;->d(Ljava/lang/String; [Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/tencentmap/mapsdk/a/e;->b:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/tencent/tencentmap/mapsdk/a/cy;->d(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "IMEI is accessed in method b, then logged in method d"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Accessing Wi-Fi MAC address",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/e;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `e()` retrieves the device's Wi-Fi MAC address.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Passing to `cy;->d()` method",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/e;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The Wi-Fi MAC address is passed to the `d()` method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Logging or transmitting",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/cy;->d(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The `d()` method potentially logs or transmits the Wi-Fi MAC address.",
+        "Action": "Logged/Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/tencentmap/mapsdk/a/cy;->d(Ljava/lang/String; [Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/tencentmap/mapsdk/a/e;->e:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/tencent/tencentmap/mapsdk/a/cy;->d(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The Wi-Fi MAC address collected by `e()` is passed to `d()` and potentially logged or transmitted."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain IMEI from TelephonyManager API",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/hq;->a()",
+        "Reasoning": "Method `a()` explicitly retrieves IMEI using TelephonyManager API",
+        "Action": "Stored in variable `a`"
+      },
+      {
+        "Step": "Return IMEI from method",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/hq;->a()",
+        "Reasoning": "Method `a()` returns the IMEI stored in variable `a`",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/tencentmap/mapsdk/a/hq;->a()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/tencentmap/mapsdk/a/hq;->a() --> Lcom/tencent/tencentmap/mapsdk/a/hq;->a()",
+        "Reasoning": "The IMEI is obtained and returned within the same method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address from WifiManager API",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/hq;->c:()Ljava/lang/String;",
+        "Reasoning": "Method signature and summary description",
+        "Action": "Stored in c field of hq class"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/tencent/tencentmap/mapsdk/a/hq;->c:()Ljava/lang/String; --> c field of hq class",
+        "Reasoning": "Data is stored in the c field of the hq class"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve IMEI",
+        "Source Method": "Lcom/tencent/youtu/ytcommon/auth/StatisticsUtils;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the description",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC Address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "MAC address extraction",
+        "Source Method": "Lcom/tencent/youtu/ytcommon/auth/StatisticsUtils;->getMacAddr:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method retrieves MAC address from WifiManager",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI",
+      "IMSI",
+      "ICCID",
+      "Android ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method `init` collects personal data",
+        "Source Method": "Lcom/tenpay/ndk/CertUtil;->init:(Landroid/content/Context;)V",
+        "Reasoning": "Method arguments and instance variables",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user location data is originated in the current method.",
+        "Source Method": "Lc/t/m/g/dq;->b:(Lc/t/m/g/dq; Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in the `p` field of the `dq` object."
+      },
+      {
+        "Step": "The data is then passed to the `a` method of the `dg` object.",
+        "Source Method": "Lc/t/m/g/dq;->b:(Lc/t/m/g/dq; Landroid/location/Location;)V",
+        "Reasoning": "Method call.",
+        "Action": "Passed as an argument."
+      },
+      {
+        "Step": "The data is logged using the `b` method of the `dg` object.",
+        "Source Method": "Lc/t/m/g/dq;->b:(Lc/t/m/g/dq; Landroid/location/Location;)V",
+        "Reasoning": "Method call.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lc/t/m/g/dg;->b:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lc/t/m/g/dq;->b:(Lc/t/m/g/dq; Landroid/location/Location;)V --> Lc/t/m/g/dg;->b:(Ljava/lang/String;)V",
+        "Reasoning": "Overall data flow analysis."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected.",
+        "Source Method": "Lc/t/m/g/dq;->b:(Landroid/location/Location;)Z",
+        "Reasoning": "Method signature indicates location collection.",
+        "Action": "Stored in registers and passed between methods."
+      },
+      {
+        "Step": "Location is logged.",
+        "Source Method": "Lc/t/m/g/dq;->b:(Landroid/location/Location;)Z",
+        "Reasoning": "Method signature suggests logging.",
+        "Action": "Logged using logging sink."
+      }
+    ],
+    "All Sinks": [
+      "Lc/t/m/g/dq;->b:(Landroid/location/Location;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/t/m/g/dq;->b:(Landroid/location/Location;)Z --> Lc/t/m/g/dq;->b:(Landroid/location/Location;)Z",
+        "Reasoning": "Data is passed between methods within the same subgraph."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location data",
+        "Source Method": "Lc/t/m/g/dq;->a:()Landroid/location/Location;",
+        "Reasoning": "Sensitive API `getLastKnownLocation()` is used.",
+        "Action": "Stored in `v1`"
+      },
+      {
+        "Step": "Log location data",
+        "Source Method": "Lc/t/m/g/dq;->a(Landroid/location/Location; D D I)V",
+        "Reasoning": "Data is logged using `invoke-static/range`.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lc/t/m/g/dq;->a(Landroid/location/Location; D D I)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/t/m/g/dq;->a:()Landroid/location/Location; --> Lc/t/m/g/dq;->a(Landroid/location/Location; D D I)V",
+        "Reasoning": "Location data is retrieved and logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is received in `onLocationChanged` method.",
+        "Source Method": "Lc/t/m/g/dq;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary specifies this.",
+        "Action": "Stored in `v7`"
+      },
+      {
+        "Step": "Location data is passed to `a()` method.",
+        "Source Method": "Lc/t/m/g/dq;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary specifies this.",
+        "Action": "Passed to `v6`"
+      },
+      {
+        "Step": "Location data is logged using `Lc/t/m/g/j;->a()` method.",
+        "Source Method": "Lc/t/m/g/dq;->a(Landroid/location/Location;)V",
+        "Reasoning": "Method summary specifies this.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lc/t/m/g/j;->a()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/t/m/g/dq;->onLocationChanged(Landroid/location/Location;)V --> Lc/t/m/g/dq;->a(Landroid/location/Location;)V --> Lc/t/m/g/j;->a()",
+        "Reasoning": "Overall data flow summarizes this."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi Network Information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method retrieves WiFi network information.",
+        "Source Method": "Lcom/tencent/liteav/network/i;->b:()Ljava/lang/String;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/tencent/liteav/network/i;->b:()Ljava/lang/String; --> Collected",
+        "Reasoning": "Collected within the method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is collected in `run()` method.",
+        "Source Method": "Lcom/tencent/mm/modelstat/o;->jl:(I)V",
+        "Reasoning": "Method invocation",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Sensitive data is sent to the server.",
+        "Source Method": "Lcom/tencent/mm/modelstat/o;->jl:(I)V",
+        "Reasoning": "invoke-static instruction",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/modelstat/o;->report:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/modelstat/o;->jl:(I)V --> Lcom/tencent/mm/modelstat/o;->report:(Ljava/lang/String;)V",
+        "Reasoning": "Sensitive data is collected in `run()` method and passed to `report()` method via method invocation. The data is then sent to the server using `invoke-static` instruction."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved using getConnectionInfo() method.",
+        "Source Method": "Lcom/tencent/mm/plugin/appbrand/jsapi/wifi/wifisdk/d;->getConnectionInfo()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "Sensitive user personal data is originated in getConnectionInfo().",
+        "Action": "Stored in gHe"
+      },
+      {
+        "Step": "User device ID is retrieved using getConnectionInfo() method.",
+        "Source Method": "Lcom/tencent/mm/plugin/appbrand/jsapi/wifi/wifisdk/d;->getConnectionInfo()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "Sensitive user personal data is originated in getConnectionInfo().",
+        "Action": "Stored in gHe"
+      },
+      {
+        "Step": "User phone number is retrieved using getConnectionInfo() method.",
+        "Source Method": "Lcom/tencent/mm/plugin/appbrand/jsapi/wifi/wifisdk/d;->getConnectionInfo()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "Sensitive user personal data is originated in getConnectionInfo().",
+        "Action": "Stored in gHe"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/appbrand/jsapi/wifi/wifisdk/b;->aM()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " getConnectionInfo() --> aM()",
+        "Reasoning": "Data flows from getConnectionInfo() to aM() where it is stored."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Constant String",
+        "Source Method": "Lcom/tencent/mm/plugin/normsg/b;->vr:(I)Ljava/lang/String;",
+        "Reasoning": "Sensitive data originated from `const-string/jumbo` instruction",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Invoke Virtual",
+        "Source Method": "Lcom/tencent/mm/plugin/normsg/b;->vr:(I)Ljava/lang/String;",
+        "Reasoning": "Passed through `invoke-virtual` instruction",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Invoke Static",
+        "Source Method": "Lcom/tencent/mm/plugin/normsg/b;->vr:(I)Ljava/lang/String;",
+        "Reasoning": "Reached `invoke-static` before logging",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/normsg/b;->vr:(I)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/normsg/b;->vr:(I)Ljava/lang/String; --> Lcom/tencent/mm/plugin/normsg/b;->vr:(I)Ljava/lang/String; --> Lcom/tencent/mm/plugin/normsg/b;->vr:(I)Ljava/lang/String;",
+        "Reasoning": "Sensitive data is logged after being transmitted and stored"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number",
+      "Sensitive Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is originated in the constructor of the i class",
+        "Source Method": "Lcom/tencent/mm/plugin/remittance/model/i;-><init>:(Ljava/lang/String; Ljava/lang/String; I Ljava/lang/String; Ljava/lang/String; I I Ljava/lang/String; Ljava/lang/String; I I Ljava/lang/String; Lcom/tencent/mm/protocal/c/yz; Ljava/lang/String; I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "Constructor parameters",
+        "Action": "Originated"
+      },
+      {
+        "Step": "Passed to Kt() method",
+        "Source Method": "Lcom/tencent/mm/plugin/remittance/model/i;-><init>:(Ljava/lang/String; Ljava/lang/String; I Ljava/lang/String; Ljava/lang/String; I I Ljava/lang/String; Ljava/lang/String; I I Ljava/lang/String; Lcom/tencent/mm/protocal/c/yz; Ljava/lang/String; I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "Method argument",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Used to construct a kd object",
+        "Source Method": "Lcom/tencent/mm/plugin/remittance/model/i;-><init>:(Ljava/lang/String; Ljava/lang/String; I Ljava/lang/String; Ljava/lang/String; I I Ljava/lang/String; Ljava/lang/String; I I Ljava/lang/String; Lcom/tencent/mm/protocal/c/yz; Ljava/lang/String; I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "Object creation",
+        "Action": "Processed"
+      },
+      {
+        "Step": "Sent in a network request",
+        "Source Method": "Lcom/tencent/mm/plugin/remittance/model/i;-><init>:(Ljava/lang/String; Ljava/lang/String; I Ljava/lang/String; Ljava/lang/String; I I Ljava/lang/String; Ljava/lang/String; I I Ljava/lang/String; Lcom/tencent/mm/protocal/c/yz; Ljava/lang/String; I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "Network call",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Network request"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/remittance/model/i;-><init>:(Ljava/lang/String; Ljava/lang/String; I Ljava/lang/String; Ljava/lang/String; I I Ljava/lang/String; Ljava/lang/String; I I Ljava/lang/String; Lcom/tencent/mm/protocal/c/yz; Ljava/lang/String; I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V --> Network request",
+        "Reasoning": "Network call in constructor"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "ConnectivityManager",
+      "WifiManager",
+      "NetworkInfo"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is collected from ConnectivityManager, WifiManager, and NetworkInfo.",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/ey;->e:()V",
+        "Reasoning": "Summary provided in JSON data.",
+        "Action": "Stored in b, c, d, e, and f."
+      },
+      {
+        "Step": "Sensitive data is potentially sent to the server via i and j.",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/ey;->e:()V",
+        "Reasoning": "Summary provided in JSON data.",
+        "Action": "Transmitted to server."
+      }
+    ],
+    "All Sinks": [
+      "i",
+      "j"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/tencentmap/mapsdk/a/ey;->e:()V --> i, j",
+        "Reasoning": "Sensitive data is collected and then sent to the server via i and j."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method `a()` of class `Lcom/tencent/tencentmap/mapsdk/a/ub` collects IMEI",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/ub;->a:()Ljava/lang/String;",
+        "Reasoning": "Method returns IMEI if available, otherwise 'noIMEI'",
+        "Action": "Stored in `v0`"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Device ID is retrieved using TelephonyManager API.",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/y;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method summary specifies this.",
+        "Action": "Stored in `v0`"
+      },
+      {
+        "Step": "Device ID is passed to `getDeviceId()` method.",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/y;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method summary specifies this.",
+        "Action": "Passed as argument"
+      },
+      {
+        "Step": "Device ID is returned as a string.",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/y;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method summary specifies this.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "None specified in the given data"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "WiFi Network Information",
+      "Device Specifications"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location, WiFi network information, and device specifications are collected.",
+        "Source Method": "Lc/t/m/g/cv;->a:(Lc/t/m/g/co; Landroid/location/Location; Ljava/util/List; Ljava/util/List;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the provided summary.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is sent to a server.",
+        "Source Method": "Lc/t/m/g/cv;->a:(Lc/t/m/g/co; Landroid/location/Location; Ljava/util/List; Ljava/util/List;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the provided summary.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Server"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lc/t/m/g/cv;->a(...) --> Server",
+        "Reasoning": "Data is collected and then sent to the server."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location API calls collect user location data.",
+        "Source Method": "Lc/t/m/g/ec;->b:(I Ljava/lang/String; Lc/t/m/g/dg; Z Z Z)Ljava/lang/String;",
+        "Reasoning": "Method signature contains `Location` object.",
+        "Action": "Serialized into JSON string"
+      },
+      {
+        "Step": "JSON string potentially transmitted or logged.",
+        "Source Method": "Lc/t/m/g/ec;->b:(I Ljava/lang/String; Lc/t/m/g/dg; Z Z Z)Ljava/lang/String;",
+        "Reasoning": "Method signature suggests logging or transmission.",
+        "Action": "Logged or transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Logging",
+      "Transmission"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Location API calls --> Serialization --> Logging/Transmission",
+        "Reasoning": "Data flows from location API calls, is serialized, and then logged or transmitted."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting IMEI",
+        "Source Method": "Lcom/tencent/d/f/d;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "TelephonyManager API",
+        "Action": "Stored in local variable"
+      },
+      {
+        "Step": "Logging IMEI",
+        "Source Method": "Lcom/tencent/d/f/d;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Logging",
+        "Action": "Logged using Lcom/tencent/d/f/h;->co(Ljava/lang/Object;)V"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/d/f/h;->co(Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/d/f/d;->getIMEI:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/tencent/d/f/h;->co(Ljava/lang/Object;)V",
+        "Reasoning": "IMEI is collected and logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi MAC Address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method `hD()` collects user's WiFi MAC address.",
+        "Source Method": "Lcom/tencent/d/f/d;->hD:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Checks if WiFi MAC address is empty or default.",
+        "Source Method": "Lcom/tencent/d/f/d;->hD:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method summary.",
+        "Action": "Validated"
+      },
+      {
+        "Step": "Returns WiFi MAC address if valid.",
+        "Source Method": "Lcom/tencent/d/f/d;->hD:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method summary.",
+        "Action": "Returned"
+      },
+      {
+        "Step": "Logs an error message if WiFi MAC address is invalid.",
+        "Source Method": "Lcom/tencent/d/f/d;->hD:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method summary.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/d/f/d;->hD:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/d/f/d;->hD:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/tencent/d/f/d;->hD:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/tencent/d/f/d;->hD:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/tencent/d/f/d;->hD:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Steps in the overall data flow."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "TelephonyManager.getLine1Number() is called to retrieve phone number",
+        "Source Method": "Lcom/tencent/mm/platformtools/i;->getPhoneNum:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the source method",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Phone number is extracted from the result of TelephonyManager.getLine1Number()",
+        "Source Method": "Lcom/tencent/mm/platformtools/i;->getPhoneNum:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Code analysis",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Phone number is logged",
+        "Source Method": "Lcom/tencent/mm/platformtools/i;->getPhoneNum:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Code analysis",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/platformtools/i;->getPhoneNum:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/platformtools/i;->getPhoneNum:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String; --> Logged",
+        "Reasoning": "Data flows from source method to sink method via logging action"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User input is collected.",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/ui/b$1;->onSceneEnd:(I I Ljava/lang/String; Lcom/tencent/mm/ah/m;)V",
+        "Reasoning": "Sensitive API detected in method signature.",
+        "Action": "Passed to method `aTx()`"
+      },
+      {
+        "Step": "Sensitive information is logged.",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/ui/b$1;->aTx:(Ljava/lang/String;)V",
+        "Reasoning": "Method `aTx()` logs the data using `DE()` method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/freewifi/ui/b$1;->DE:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/freewifi/ui/b$1;->onSceneEnd(...) --> Lcom/tencent/mm/plugin/freewifi/ui/b$1;->aTx(...) --> Lcom/tencent/mm/plugin/freewifi/ui/b$1;->DE(...)",
+        "Reasoning": "Data flows from `onSceneEnd()` to `aTx()` and then to `DE()` for logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve device ID",
+        "Source Method": "Lcom/tencent/smtt/utils/b;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the summary",
+        "Action": "Stored in `a` field"
+      },
+      {
+        "Step": "Check for empty device ID",
+        "Source Method": "Lcom/tencent/smtt/utils/b;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the summary",
+        "Action": "Return if not empty"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/smtt/utils/b;->c:(Landroid/content/Context;)Ljava/lang/String; --> Return",
+        "Reasoning": "Data is retrieved and returned without being stored or sent anywhere"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiManager API data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected from WifiManager API.",
+        "Source Method": "Lcom/tencent/smtt/utils/b;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method `Lcom/tencent/smtt/utils/b;->e:(Landroid/content/Context;)Ljava/lang/String;` originates user personal data from the `WifiManager` API.",
+        "Action": "Stored in the `d` field."
+      },
+      {
+        "Step": "Data is passed to the `b()` method.",
+        "Source Method": "Lcom/tencent/smtt/utils/b;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is passed to the `b()` method.",
+        "Action": "Passed to the `b()` method."
+      },
+      {
+        "Step": "Data is returned.",
+        "Source Method": "Lcom/tencent/smtt/utils/b;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method returns the data.",
+        "Action": "Returned."
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/smtt/utils/b;->e:(Landroid/content/Context;)Ljava/lang/String; --> None",
+        "Reasoning": "The data is collected but not sent to any sink points."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve IMEI",
+        "Source Method": "Lcom/tencent/ttpic/device/DeviceUtils;->getImei:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method documentation specifies IMEI retrieval",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Log IMEI",
+        "Source Method": "Lcom/tencent/ttpic/device/DeviceUtils;->getImei:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method logs the IMEI if it's not empty",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/ttpic/device/DeviceUtils;->log:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/ttpic/device/DeviceUtils;->getImei:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/tencent/ttpic/device/DeviceUtils;->log:(Ljava/lang/String;)V",
+        "Reasoning": "IMEI is retrieved in getImei() and logged in log()"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting IMEI",
+        "Source Method": "Lcom/tencent/ytcommon/auth/StatisticsUtils;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method uses `Settings.Secure.ANDROID_ID` and `TelephonyManager.getDeviceId` APIs to collect IMEI.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Checking for Empty IMEI",
+        "Source Method": "Lcom/tencent/ytcommon/auth/StatisticsUtils;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method checks if IMEI is empty using `isEmpty`.",
+        "Action": "Validated"
+      },
+      {
+        "Step": "Returning IMEI",
+        "Source Method": "Lcom/tencent/ytcommon/auth/StatisticsUtils;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "If IMEI is not empty, it is returned as the result.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/ytcommon/auth/StatisticsUtils;->getIMEI:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/tencent/ytcommon/auth/StatisticsUtils;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The collected IMEI is returned as the result of the method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain MAC address",
+        "Source Method": "Lcom/tencent/ytcommon/auth/StatisticsUtils;->getMacAddr:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `getMacAddr` explicitly retrieves the MAC address.",
+        "Action": "Stored in `v1`"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " getMacAddr(...) --> Stored in v1",
+        "Reasoning": "MAC address is retrieved and stored in `v1` within the `getMacAddr` method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is originated in method vW.",
+        "Source Method": "Lcom/tencent/mm/booter/e;->vW:()Z",
+        "Reasoning": "Method summary indicates data origin.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to logging function.",
+        "Source Method": "Lcom/tencent/mm/booter/e;->vW:()Z",
+        "Reasoning": "Method summary indicates logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/booter/e;->vW:()Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/booter/e;->vW:()Z --> Lcom/tencent/mm/booter/e;->vW:()Z",
+        "Reasoning": "Method invocation chain within the same method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi Information",
+      "Network Type",
+      "User Agent"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is collected.",
+        "Source Method": "Lcom/tencent/mm/plugin/appbrand/jsapi/miniprogram_navigator/f;->a:(I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; J)V",
+        "Reasoning": "Method signature matches the provided summary.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Collected data is logged.",
+        "Source Method": "Lcom/tencent/mm/plugin/appbrand/jsapi/miniprogram_navigator/f;->a:(I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; J)V",
+        "Reasoning": "Logging is mentioned in the summary.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Collected data is transmitted to a server.",
+        "Source Method": "Lcom/tencent/mm/plugin/appbrand/jsapi/miniprogram_navigator/f;->a:(I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; J)V",
+        "Reasoning": "Transmission is mentioned in the summary.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/appbrand/jsapi/miniprogram_navigator/f;->a:(I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; J)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/appbrand/jsapi/miniprogram_navigator/f;->a:(I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; J)V --> Lcom/tencent/mm/plugin/appbrand/jsapi/miniprogram_navigator/f;->a:(I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; J)V --> Lcom/tencent/mm/plugin/appbrand/jsapi/miniprogram_navigator/f;->a:(I Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; J)V",
+        "Reasoning": "Data flows through the source method, logging method, and transmission method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "wifi_ssid"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/m;->Do:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "getConnectedWifiSsid() method",
+        "Action": "Stored in v1"
+      },
+      {
+        "Step": "User personal data is logged",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/m;->Do:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "y.i() method",
+        "Action": "Logged to console"
+      },
+      {
+        "Step": "User personal data is returned",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/m;->Do:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Return statement",
+        "Action": "Returned from method"
+      }
+    ],
+    "All Sinks": [
+      "y.i()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/tencent/mm/plugin/freewifi/m;->Do:(Ljava/lang/String;)Ljava/lang/String; --> y.i()",
+        "Reasoning": "User personal data is collected, logged, and returned, thus flowing into the y.i() method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected by `Lcom/tencent/mm/plugin/freewifi/m;->aTE()`",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/m;->aTE()",
+        "Reasoning": "Called by `Lcom/tencent/mm/plugin/freewifi/m;->Dp()`, which stores it in `v0`",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Collected data is checked for emptiness",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/m;->Dp()",
+        "Reasoning": "Checks if `v0` is empty",
+        "Action": "Checked"
+      },
+      {
+        "Step": "Collected data is logged",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/m;->Dp()",
+        "Reasoning": "Logs using `Lcom/tencent/mm/sdk/platformtools/y;->i()`",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Collected data is returned",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/m;->Dp()",
+        "Reasoning": "Returns `v0`",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/sdk/platformtools/y;->i()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/freewifi/m;->aTE() --> Lcom/tencent/mm/plugin/freewifi/m;->Dp() --> Lcom/tencent/mm/sdk/platformtools/y;->i()",
+        "Reasoning": "Collected data is logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is stored in `bNZ` field.",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->bNZ()Ljava/lang/String;",
+        "Reasoning": "Method summary indicates data is stored in `bNZ` field.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User personal data is passed to `a()` method via `intent`.",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->a(Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;)V",
+        "Reasoning": "Method summary indicates data is passed to `a()` method via `intent`.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "User personal data is stored in `k` object.",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->b(Ljava/lang/String;)V",
+        "Reasoning": "Method summary indicates data is stored in `k` object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User personal data is logged in a message.",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->b(Ljava/lang/String;)V",
+        "Reasoning": "Method summary indicates data is logged.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->b(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->bNZ()Ljava/lang/String; --> Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->a(Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;)V --> Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->b(Ljava/lang/String;)V --> Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->b(Ljava/lang/String;)V",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User data is passed between methods via intent extras.",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->onCreate:(Landroid/os/Bundle;)V",
+        "Reasoning": "Sensitive user data is passed between methods via intent extras.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User data is logged.",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->onCreate:(Landroid/os/Bundle;)V",
+        "Reasoning": "Sensitive user data is logged using the `aTz()` method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->aTz()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->onCreate:(Landroid/os/Bundle;)V --> Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccWebViewUI;->aTz()V",
+        "Reasoning": "User data is passed between methods via intent extras and then logged using the `aTz()` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "phoneNumber"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is collected in the `invoke-virtual` instruction.",
+        "Source Method": "Lcom/tencent/mm/plugin/sns/model/ak;->bEa:()Ljava/lang/String;",
+        "Reasoning": "Method `bEa` explicitly collects `phoneNumber`.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is passed to `MicroMsg.SnsItemReportHelper`.",
+        "Source Method": "Lcom/tencent/mm/plugin/sns/model/ak;->bEa:()Ljava/lang/String;",
+        "Reasoning": "Method `bEa` calls `MicroMsg.SnsItemReportHelper` with `phoneNumber`.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is logged using `y.e()` method.",
+        "Source Method": "Lcom/tencent/mm/plugin/sns/model/ak;->bEa:()Ljava/lang/String;",
+        "Reasoning": "`y.e()` method receives data from `MicroMsg.SnsItemReportHelper`.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/sns/model/ak;->bEa:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/sns/model/ak;->bEa:()Ljava/lang/String; --> MicroMsg.SnsItemReportHelper --> y.e()",
+        "Reasoning": "Data flows from `bEa` to `MicroMsg.SnsItemReportHelper` and then to `y.e()`."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "device IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method call",
+        "Source Method": "Lcom/tencent/qqvideo/proxy/common/VcSystemInfo;->getDeviceIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method `getDeviceIMEI()` retrieves the device IMEI.",
+        "Action": "Stored in `deviceIMEI` field"
+      },
+      {
+        "Step": "TelephonyManager call",
+        "Source Method": "Lcom/tencent/qqvideo/proxy/common/VcSystemInfo;->getDeviceIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The `deviceIMEI` is passed to the `getDeviceId()` method of the `TelephonyManager` class.",
+        "Action": "Retrieves device IMEI"
+      },
+      {
+        "Step": "Method call",
+        "Source Method": "Lcom/tencent/qqvideo/proxy/common/VcSystemInfo;->getDeviceIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The retrieved device IMEI is stored in the `deviceIMEI` field.",
+        "Action": "Stored in `deviceIMEI` field"
+      }
+    ],
+    "All Sinks": [
+      "Method not found"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address from WifiManager",
+        "Source Method": "Lcom/tencent/qqvideo/proxy/common/VcSystemInfo;->getDeviceMacAddr:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method `getDeviceMacAddr()` specifically retrieves the MAC address.",
+        "Action": "Stored in `deviceMacAddr` field"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/qqvideo/proxy/common/VcSystemInfo;->getDeviceMacAddr:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/qqvideo/proxy/common/VcSystemInfo;->getDeviceMacAddr:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/tencent/qqvideo/proxy/common/VcSystemInfo;->getDeviceMacAddr:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The MAC address is stored in the `deviceMacAddr` field within the same method, indicating no data flow beyond the method itself."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi MAC Address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain WiFi MAC address",
+        "Source Method": "Lcom/tencent/qqvideo/proxy/common/VcSystemInfo;->getWiFiMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method `getWiFiMacAddress()` explicitly returns the WiFi MAC address.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/lq;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method retrieves the MAC address using the WifiManager API.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve device ID",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/lq;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the summary",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User Device ID is retrieved from TelephonyManager.",
+        "Source Method": "Lorg/xwalk/core/XWalkEnvironment;->getDeviceId()",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in sStrDeviceId field."
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/xwalk/core/XWalkEnvironment;->getDeviceId() --> sStrDeviceId",
+        "Reasoning": "Data is stored in the sStrDeviceId field."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wifi Name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Wifi Name is retrieved from `getWifiName()` method.",
+        "Source Method": "Lcom/tencent/mm/plugin/backup/b/g;->getWifiName(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method documentation specifies this method returns Wifi Name.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Wifi Name is further processed through `getWifiApConfiguration()` and `getWifiApState()` methods.",
+        "Source Method": "Lcom/tencent/mm/plugin/backup/b/g;->getWifiApConfiguration(Landroid/content/Context;)Ljava/net/wifi/WifiConfiguration;",
+        "Reasoning": "These methods are called to retrieve additional Wifi information.",
+        "Action": "Processed"
+      },
+      {
+        "Step": "Wifi Name is logged using `MicroMsg.BackupUtil.i()`.",
+        "Source Method": "Lcom/tencent/mm/plugin/backup/b/g;->cM(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method documentation specifies this method logs Wifi Name.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/backup/b/g;->cM(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/backup/b/g;->getWifiName(Landroid/content/Context;)Ljava/lang/String; --> Lcom/tencent/mm/plugin/backup/b/g;->getWifiApConfiguration(Landroid/content/Context;)Ljava/net/wifi/WifiConfiguration; --> Lcom/tencent/mm/plugin/backup/b/g;->getWifiApState(Landroid/content/Context;)Ljava/net/wifi/WifiInfo; --> Lcom/tencent/mm/plugin/backup/b/g;->cM(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Data flows through these methods in sequence, with each method contributing to the final logging action."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User ID",
+      "Device ID",
+      "Phone Number",
+      "Location",
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User ID is passed through dmK, ecE, and bssid.",
+        "Source Method": "Lcom/tencent/mm/plugin/sns/a/b/d;-><init>:(Ljava/lang/String; I I I Lcom/tencent/mm/protocal/c/bf; Lcom/tencent/mm/protocal/c/bi; I Ljava/lang/String; I I I I I Lcom/tencent/mm/bv/b; Lcom/tencent/mm/bv/b;)V",
+        "Reasoning": "Passed through dmK, ecE, and bssid.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User ID is exposed through logging.",
+        "Source Method": "Lcom/tencent/mm/plugin/sns/a/b/d;-><init>:(Ljava/lang/String; I I I Lcom/tencent/mm/protocal/c/bf; Lcom/tencent/mm/protocal/c/bi; I Ljava/lang/String; I I I I I Lcom/tencent/mm/bv/b; Lcom/tencent/mm/bv/b;)V",
+        "Reasoning": "Exposed through logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/ah/b$a;->uri"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/sns/a/b/d;-><init> --> Lcom/tencent/mm/ah/b$a;->uri",
+        "Reasoning": "User ID is passed through dmK, ecE, and bssid, then exposed through logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Personal Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected from `getActiveNetworkInfo()`",
+        "Source Method": "Lcom/tencent/pb/common/b/g;->getActiveNetworkInfo:()Landroid/net/NetworkInfo;",
+        "Reasoning": "getActiveNetworkInfo() method is used to retrieve user network information.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "User personal data is passed to `getConnectionInfo()`",
+        "Source Method": "Lcom/tencent/pb/common/b/g;->getActiveNetworkInfo:()Landroid/net/NetworkInfo;",
+        "Reasoning": "getConnectionInfo() method is called on the retrieved NetworkInfo object.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "User personal data is passed to `getSSID()`",
+        "Source Method": "Lcom/tencent/pb/common/b/g;->getConnectionInfo:()Landroid/net/NetworkInfo$DetailedNetworkInfo;",
+        "Reasoning": "getSSID() method is called on the DetailedNetworkInfo object.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "User personal data is stored in `dhJ` field",
+        "Source Method": "Lcom/tencent/pb/common/b/g;->getSSID:()Ljava/lang/String;",
+        "Reasoning": "dhJ field is declared in the class.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User personal data is stored in `dhI` field",
+        "Source Method": "Lcom/tencent/pb/common/b/g;->getSSID:()Ljava/lang/String;",
+        "Reasoning": "dhI field is declared in the class.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Device ID is retrieved using getDeviceID() method.",
+        "Source Method": "Lcom/tencent/qqvideo/proxy/httpproxy/HttpproxyFacade;->jsonReport:(Ljava/lang/String;)V",
+        "Reasoning": "Sensitive user personal data is originated from the `getDeviceID()` method.",
+        "Action": "Stored in `v3` register"
+      },
+      {
+        "Step": "Device ID is passed to httpproxyReport() method.",
+        "Source Method": "Lcom/tencent/qqvideo/proxy/httpproxy/HttpproxyFacade;->jsonReport:(Ljava/lang/String;)V",
+        "Reasoning": "Data is passed to the `httpproxyReport()` method.",
+        "Action": "Transmitted to server via logging"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/qqvideo/proxy/httpproxy/HttpproxyFacade;->httpproxyReport:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/qqvideo/proxy/httpproxy/HttpproxyFacade;->jsonReport:(Ljava/lang/String;)V --> Lcom/tencent/qqvideo/proxy/httpproxy/HttpproxyFacade;->httpproxyReport:(Ljava/lang/String;)V",
+        "Reasoning": "Device ID is first stored in the `v3` register and then passed to the `httpproxyReport()` method where it is logged to the server."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user phone number is originated in the method.",
+        "Source Method": "Lc/t/m/g/dd$a;->b:()Ljava/lang/String;",
+        "Reasoning": "Method summary",
+        "Action": "Stored in the `d` field"
+      },
+      {
+        "Step": "Phone number is passed to the `e()` method.",
+        "Source Method": "Lc/t/m/g/dd$a;->b:()Ljava/lang/String;",
+        "Reasoning": "Method invocation",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lc/t/m/g/dd$a;->e:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/t/m/g/dd$a;->b:()Ljava/lang/String; --> Lc/t/m/g/dd$a;->e:(Ljava/lang/String;)V",
+        "Reasoning": "Method invocation and logging"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "app version",
+      "device ID",
+      "subscriber ID",
+      "IMEI",
+      "OS version"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive API call detected",
+        "Source Method": "Lc/t/m/g/dg$2;->run:()V",
+        "Reasoning": "Data is originated in `doInBg()` method, stored in `dh` object, and then passed to `j.a()` method with the following parameters: app version, device ID, subscriber ID, IMEI, and OS version.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "j.a()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lc/t/m/g/dg$2;->run:()V --> j.a()",
+        "Reasoning": "Sensitive API call detected in `run()` method, which transmits the collected personal data to `j.a()` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Data is collected from the device.",
+        "Source Method": "Lcom/tencent/liteav/d;->n:()V",
+        "Reasoning": "Method summary mentions data collection.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is sent to the analytics server.",
+        "Source Method": "Lcom/tencent/liteav/d;->n:()V",
+        "Reasoning": "Method summary mentions sending data.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/liteav/analytics/b;->nativeReportEvent:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/liteav/d;->n:()V --> Lcom/tencent/liteav/analytics/b;->nativeReportEvent:(Ljava/lang/String;)V",
+        "Reasoning": "Data is collected from n() and then sent to nativeReportEvent()."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID",
+      "BSSID",
+      "BHJ",
+      "BHI",
+      "Network Type",
+      "Connection Duration"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Intent extras passed to FreeWifiSuccUI",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccUI;->onCreate:(Landroid/os/Bundle;)V",
+        "Reasoning": "Sensitive data originates from intent extras in onCreate method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data passed to h.f() method",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/k;->aTy:()Lcom/tencent/mm/plugin/freewifi/k;",
+        "Reasoning": "Sensitive data is passed from aTy method to h.f() method in an array of objects.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Logging",
+      "Network Calls"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccUI;->onCreate:(Landroid/os/Bundle;)V --> h.f() --> Logging",
+        "Reasoning": "Sensitive data is logged in h.f() method after being passed from FreeWifiSuccUI."
+      },
+      {
+        "dataflow 2": "Lcom/tencent/mm/plugin/freewifi/ui/FreeWifiSuccUI;->onCreate:(Landroid/os/Bundle;)V --> h.f() --> Network Calls",
+        "Reasoning": "Sensitive data is sent via network calls in h.f() method after being passed from FreeWifiSuccUI."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Location Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected in `ah$1`.",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/ah$1;->a:()V",
+        "Reasoning": "Method summary indicates data is originated in `ah$1`.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "User location data is passed to `ad.a()`.",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/ah$1;->a:()V",
+        "Reasoning": "Method summary indicates data is passed to `ad.a()`.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "User location data is logged in `ah.b()`.",
+        "Source Method": "Lcom/tencent/tencentmap/mapsdk/a/ah$1;->a:()V",
+        "Reasoning": "Method summary indicates data is logged in `ah.b()`.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/tencentmap/mapsdk/a/ah$1;->b:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/tencentmap/mapsdk/a/ah$1;->a:()V --> Lcom/tencent/tencentmap/mapsdk/a/ah$1;->b:()V",
+        "Reasoning": "Data flows from `ah$1` to `ah.b()`."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method retrieves user's Wi-Fi BSSID",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/model/d;->aTV()",
+        "Reasoning": "Method signature and summary match",
+        "Action": "Stored in variable `v1`"
+      },
+      {
+        "Step": "Logs user's Wi-Fi BSSID",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/model/d;->aTV()",
+        "Reasoning": "Method logs the value of `v1`",
+        "Action": "Logged using `MicroMsg.FreeWifi.FreeWifiManager`"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/freewifi/model/d;->aTV()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/freewifi/model/d;->aTV() --> MicroMsg.FreeWifi.FreeWifiManager",
+        "Reasoning": "Logging is the only action performed with the collected data"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve BSSID",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/model/d;->aUa:()Ljava/lang/String;",
+        "Reasoning": "Method `aUa()` explicitly retrieves the BSSID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiInfo"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WifiInfo object is collected",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/model/f;->a:(Landroid/net/wifi/WifiInfo;)Z",
+        "Reasoning": "Method signature specifies input parameter type",
+        "Action": "Stored in f$b object"
+      },
+      {
+        "Step": "Sensitive data is logged",
+        "Source Method": "Lcom/tencent/mm/plugin/freewifi/model/f;->a:(Landroid/net/wifi/WifiInfo;)Z",
+        "Reasoning": "Method call to y.i() implies logging",
+        "Action": "Logged using y.i() method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/tencent/mm/plugin/freewifi/model/f;->a:(Landroid/net/wifi/WifiInfo;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/freewifi/model/f;->a:(Landroid/net/wifi/WifiInfo;)Z --> Lcom/tencent/mm/plugin/freewifi/model/f;->a:(Landroid/net/wifi/WifiInfo;)Z",
+        "Reasoning": "Data flows from source method to sink method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user ID",
+      "view ID",
+      "click position",
+      "action",
+      "scene type",
+      "description",
+      "ad type",
+      "SNS status"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User data is collected in `Lcom/tencent/mm/plugin/sns/a/b/c;-><init>`",
+        "Source Method": "Lcom/tencent/mm/plugin/sns/a/b/c;-><init>:(J Ljava/lang/String; I I I Ljava/lang/String; I Ljava/lang/String; I Lcom/tencent/mm/bv/b; Lcom/tencent/mm/bv/b;)V",
+        "Reasoning": "Method signature matches the provided summary",
+        "Action": "Stored in `dmK`"
+      },
+      {
+        "Step": "Data is passed to `Lcom/tencent/mm/ah/b$a;->Kt`",
+        "Source Method": "Lcom/tencent/mm/plugin/sns/a/b/c;-><init>:(J Ljava/lang/String; I I I Ljava/lang/String; I Ljava/lang/String; I Lcom/tencent/mm/bv/b; Lcom/tencent/mm/bv/b;)V",
+        "Reasoning": "Method is called with `dmK` as an argument",
+        "Action": "Passed to `Lcom/tencent/mm/ah/b$a;->Kt`"
+      },
+      {
+        "Step": "Data is logged via `/cgi-bin/mmux-bin/adclick`",
+        "Source Method": "Lcom/tencent/mm/ah/b$a;->Kt",
+        "Reasoning": "Method name suggests logging action",
+        "Action": "Logged via `/cgi-bin/mmux-bin/adclick`"
+      }
+    ],
+    "All Sinks": [
+      "/cgi-bin/mmux-bin/adclick"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/mm/plugin/sns/a/b/c;-><init> --> Lcom/tencent/mm/ah/b$a;->Kt --> /cgi-bin/mmux-bin/adclick",
+        "Reasoning": "Steps in Overall Data Flow represent the data flow"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve IMEI from TelephonyManager API",
+        "Source Method": "Lcom/tencent/tmassistantsdk/util/GlobalUtil;->getImei:()Ljava/lang/String;",
+        "Reasoning": "Method `getImei()` calls TelephonyManager API to retrieve IMEI",
+        "Action": "Stored in `v0` register"
+      },
+      {
+        "Step": "Check context availability",
+        "Source Method": "Lcom/tencent/tmassistantsdk/util/GlobalUtil;->getImei:()Ljava/lang/String;",
+        "Reasoning": "Context availability check ensures data integrity",
+        "Action": "Logs error message if context unavailable"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/util/Log;->e:(Ljava/lang/String;Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tencent/tmassistantsdk/util/GlobalUtil;->getImei:()Ljava/lang/String; --> Lcom/tencent/tmassistantsdk/util/GlobalUtil;->getImei:()Ljava/lang/String; --> Landroid/util/Log;->e:(Ljava/lang/String;Ljava/lang/String;)I",
+        "Reasoning": "IMEI is retrieved, checked for context availability, and logged in case of failure"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC Address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC Address",
+        "Source Method": "Lcom/tencent/tmassistantsdk/util/GlobalUtil;->getMacAddress:()Ljava/lang/String;",
+        "Reasoning": "Method documentation states it retrieves the MAC address.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  }
+]

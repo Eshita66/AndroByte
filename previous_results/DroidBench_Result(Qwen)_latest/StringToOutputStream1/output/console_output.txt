@@ -1,0 +1,70 @@
+
+ Processing folder: D:\UBCBAPK_Methods\StringToOutputStream1
+ Using methods file: D:\UBCBAPK_Methods\StringToOutputStream1\StringToOutputStream1_bytecode_instructions.json
+Sensitive root methods: ['Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "The onCreate method initializes the activity by setting the content view, retrieves the device ID from TelephonyManager, converts it to bytes, writes it to a ByteArrayOutputStream, and logs the result.",
+    "Next Methods": [
+        "Landroid/app/Activity;->onCreate(Landroid/os/Bundle;)V",
+        "Ledu/mit/outputstream/MainActivity;->setContentView(I)V",
+        "Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+        "Ljava/lang/String;->getBytes()[B",
+        "Ljava/io/ByteArrayOutputStream;->write([BII)V",
+        "Ljava/io/ByteArrayOutputStream;->toString()Ljava/lang/String;",
+        "Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\StringToOutputStream1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\StringToOutputStream1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\StringToOutputStream1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieving device ID from TelephonyManager",
+                "Source Method": "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The onCreate method explicitly retrieves the device ID from TelephonyManager as a sensitive source.",
+                "Action": "Collected"
+            },
+            {
+                "Step": "Converting device ID to bytes",
+                "Source Method": "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is converted to bytes as part of the data flow processing.",
+                "Action": "Transformed"
+            },
+            {
+                "Step": "Writing bytes to ByteArrayOutputStream",
+                "Source Method": "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The byte data is stored in a ByteArrayOutputStream, maintaining its tainted state.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging the byte data",
+                "Source Method": "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The byte data is passed to a logging sink, which is a potential leak point.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The device ID is retrieved from TelephonyManager, converted to bytes, stored in ByteArrayOutputStream, and then passed to the logging sink (Log.d) without being overwritten by a non-sensitive value."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\StringToOutputStream1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\StringToOutputStream1\output\sensitive_only.json
+Total time for folder: 2591.22 seconds

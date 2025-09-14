@@ -1,0 +1,40 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieval of Device ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The method retrieves the TelephonyManager service, which is used to access device-specific information including the ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Passing Device ID to BaseClass",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The retrieved device ID is passed to an instance of BaseClass.",
+                "Action": "Transmitted"
+            },
+            {
+                "Step": "Sending Text Message using SmsManager",
+                "Source Method": "BaseClass->send(SmsMessage)",
+                "Reasoning": "The BaseClass, potentially after processing the device ID, uses it to send a text message via SmsManager.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->setContentView(I)",
+            "BaseClass->send(SmsMessage)",
+            null,
+            "Toast.makeText(...)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Source Method: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Sink Method: BaseClass->send(SmsMessage)]",
+                "Reasoning": "The device ID is retrieved from TelephonyManager and passed to the onCreate method, which then passes it to BaseClass for sending a text message without any intermediate storage or logging."
+            }
+        ],
+        "Label": "no leak"
+    }
+]

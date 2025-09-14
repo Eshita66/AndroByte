@@ -1,0 +1,293 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is included in request Bundle.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in request Bundle."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onCompleted:(Lcom/facebook/GraphResponse;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onCompleted(...) ",
+        "Reasoning": "Data flows from request creation to callback method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve GPS location",
+        "Source Method": "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "Method signature matches the source method",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Log location if not too old",
+        "Source Method": "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "Logging is done with the retrieved location",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location; --> Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "Location is retrieved and logged in the same method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "AFEvent"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user data is originated from AppsFlyerLibCore",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Passed to AFSensorManager, AFSensorManager, and EventDataCollector",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive user data is logged",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Passed to EventDataCollector",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/EventDataCollector;->collectEvent:(Ljava/util/Map;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; --> Lcom/appsflyer/EventDataCollector;->collectEvent:(Ljava/util/Map;)V",
+        "Reasoning": "Sensitive user data is passed to EventDataCollector, which logs it."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location (latitude, longitude, altitude, accuracy)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data extraction",
+        "Source Method": "Lbo/app/i2;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "Method extracts user location data.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbo/app/i2;-><init>:(Landroid/location/Location;)V --> null",
+        "Reasoning": "Location data is extracted but not further processed or shared."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Checks for WiFi connection and SSID match",
+        "Source Method": "Lcom/pusherman/networkinfo/RNNetworkInfo$a;->run:()V",
+        "Reasoning": "Method description specifies the logic",
+        "Action": "Stored in SSID variable"
+      },
+      {
+        "Step": "Extracts first n characters of SSID",
+        "Source Method": "Lcom/pusherman/networkinfo/RNNetworkInfo$a;->run:()V",
+        "Reasoning": "Method description specifies the logic",
+        "Action": "Stored in SSID variable"
+      },
+      {
+        "Step": "Resolves promise with SSID",
+        "Source Method": "Lcom/pusherman/networkinfo/RNNetworkInfo$a;->run:()V",
+        "Reasoning": "Method description specifies the logic",
+        "Action": "Transmitted via promise"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/pusherman/networkinfo/RNNetworkInfo$a;->run:()V --> Promise --> null",
+        "Reasoning": "Data flows from source method to promise and then to sink (null in this case)"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve BSSID",
+        "Source Method": "Lcom/pusherman/networkinfo/RNNetworkInfo$b;->run:()V",
+        "Reasoning": "Method retrieves BSSID of connected wifi network",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/pusherman/networkinfo/RNNetworkInfo$b;->run:()V --> null",
+        "Reasoning": "BSSID is retrieved but not logged, sent, or written to a file"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID",
+      "BSSID",
+      "Strength",
+      "Frequency",
+      "IP Address",
+      "Subnet",
+      "Cellular Generation",
+      "Carrier"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User data is collected from `android.permission.ACCESS_WIFI_STATE` permission.",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createDetailsMap:(Ljava/lang/String;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "Summary provides the source method and the flow of data.",
+        "Action": "Stored in `v8`"
+      },
+      {
+        "Step": "Data is passed to `getReactContext()` method.",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createDetailsMap:(Ljava/lang/String;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "Summary provides the flow of data.",
+        "Action": "Passed to `getReactContext()` method"
+      },
+      {
+        "Step": "Data is passed to `putString()` method.",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createDetailsMap:(Ljava/lang/String;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "Summary provides the flow of data.",
+        "Action": "Stored in a writable map"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/react/bridge/WritableMap;->putString(Ljava/lang/String;Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createDetailsMap:(Ljava/lang/String;)Lcom/facebook/react/bridge/WritableMap; --> Lcom/facebook/react/bridge/WritableMap;->putString(Ljava/lang/String;Ljava/lang/String;)V",
+        "Reasoning": "Overall Data Flow provides the stepwise flow of data."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "Method description",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Format MAC address",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "Method description",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String; --> Transmitted",
+        "Reasoning": "MAC address is formatted and returned as a string."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "PhoneNumber"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected from `TelephonyManager`",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The `getPhoneNumberSync()` method calls `getLine1Number()` which retrieves user phone number",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String; --> Collected",
+        "Reasoning": "The collected user phone number is returned by the method"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "user location data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is retrieved from the `GeolocationModule.LocationOptions` object.",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData:(Lcom/facebook/react/bridge/ReadableMap; Lcom/facebook/react/bridge/Callback; Lcom/facebook/react/bridge/Callback;)V",
+        "Reasoning": "Method summary indicates data retrieval from `LocationOptions`. ",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User location data is passed to the `GeolocationModule.SingleUpdateRequest` instance.",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData:(Lcom/facebook/react/bridge/ReadableMap; Lcom/facebook/react/bridge/Callback; Lcom/facebook/react/bridge/Callback;)V",
+        "Reasoning": "Method signature suggests data transfer.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "User location data is logged to the callback.",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData:(Lcom/facebook/react/bridge/ReadableMap; Lcom/facebook/react/bridge/Callback; Lcom/facebook/react/bridge/Callback;)V",
+        "Reasoning": "Method summary indicates logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData:(Lcom/facebook/react/bridge/ReadableMap; Lcom/facebook/react/bridge/Callback; Lcom/facebook/react/bridge/Callback;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData:(Lcom/facebook/react/bridge/ReadableMap; Lcom/facebook/react/bridge/Callback; Lcom/facebook/react/bridge/Callback;)V --> Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData:(Lcom/facebook/react/bridge/ReadableMap; Lcom/facebook/react/bridge/Callback; Lcom/facebook/react/bridge/Callback;)V --> Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData:(Lcom/facebook/react/bridge/ReadableMap; Lcom/facebook/react/bridge/Callback; Lcom/facebook/react/bridge/Callback;)V",
+        "Reasoning": "Stepwise flow of user location data through the three methods."
+      }
+    ],
+    "Label": "leak"
+  }
+]

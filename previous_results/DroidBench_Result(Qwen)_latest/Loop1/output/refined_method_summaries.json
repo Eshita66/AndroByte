@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval",
+                "Source Method": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID using TelephonyManager.getDeviceId()",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Data formatting",
+                "Source Method": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is processed into a string with underscores",
+                "Action": "Transformed"
+            },
+            {
+                "Step": "Network transmission",
+                "Source Method": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The formatted device ID is sent via SMS using SmsManager.sendTextMessage()",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V --> TelephonyManager.getDeviceId() --> String formatting --> SmsManager.sendTextMessage() ",
+                "Reasoning": "The device ID is retrieved from TelephonyManager, formatted into a string with underscores, and passed as an argument to SmsManager.sendTextMessage() which constitutes a network transmission sink."
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

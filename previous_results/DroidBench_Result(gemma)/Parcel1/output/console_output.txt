@@ -1,0 +1,39 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\Parcel1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\Parcel1\Parcel1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method of `MainActivity` first invokes the superclass's `onCreate` method. Then, it calls `getSystemService` with the string \"phone\", obtaining an instance of `TelephonyManager`. Subsequently, it calls `getDeviceId()`, which returns a `String`. Finally, it calls `writeParcel` with the returned `String`. The flow is: `getDeviceId()` (source) \u2192 `v1` (variable) \u2192 `writeParcel` (sink). The `writeParcel` sink is triggered because `v1` holds the result of `getDeviceId()`. This constitutes a leak.",
+    "Next Methods": []
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\Parcel1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\Parcel1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\Parcel1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "String"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain device ID.",
+                "Source Method": "Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method calls `getSystemService` with the string \"phone\", which returns a `TelephonyManager` instance, subsequently invoking `getDeviceId()` to retrieve the device ID as a String.",
+                "Action": "String retrieval"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/parcel/MainActivity;->writeParcel:(Landroid/os/Parcel;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/parcel/MainActivity;->writeParcel:(Landroid/os/Parcel;)V",
+                "Reasoning": "The `getDeviceId()` method returns a String, which is then directly passed as an argument to the `writeParcel` method. This constitutes a sensitive data leak."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\Parcel1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\Parcel1\output\sensitive_only.json
+Total summary time: 42.63849496841431 seconds

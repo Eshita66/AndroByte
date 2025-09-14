@@ -1,0 +1,38 @@
+[
+    {
+        "Data Types Collected": [
+            "User personal data (phone information)"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data origin",
+                "Source Method": "Lde/ecspride/InheritedObjects1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "TelephonyManager obtains phone information via getSystemService(\"phone\").",
+                "Action": "Source identified"
+            },
+            {
+                "Step": "Data propagation",
+                "Source Method": "Lde/ecspride/InheritedObjects1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Data is passed to General class's getInfo() method.",
+                "Action": "Data flow tracked"
+            },
+            {
+                "Step": "Sink invocation",
+                "Source Method": "Lde/ecspride/InheritedObjects1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Data is sent via SmsManager's sendTextMessage (network transmission sink).",
+                "Action": "Sink identified"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/InheritedObjects1;->onCreate:(Landroid/os/Bundle;)V --> Landroid/telephony/TelephonyManager;->getDeviceId:()Ljava/lang/String; --> Lde/ecspride/General;->getInfo:()Ljava/lang/String; --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;)V",
+                "Reasoning": "Phone information flows from TelephonyManager to SMS sending sink without taint removal."
+            }
+        ],
+        "Label": "leak"
+    },
+    {}
+]

@@ -1,0 +1,25 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID from TelephonyManager",
+                "Source Method": "Llina/ubc/objectsensitivity/ObjectSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The system service 'TELEPHONY_SERVICE' is retrieved to get the TelephonyManager instance.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/objectsensitivity/ObjectSensitivity;->Log.i(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/objectsensitivity/ObjectSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Llina/ubc/objectsensitivity/ObjectSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Llina/ubc/objectsensitivity/ObjectSensitivity;->Log.i(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The device ID is retrieved from TelephonyManager and stored in the system service registry. When logging, it directly goes to Log.i which can be accessed by developers or through logs."
+            }
+        ],
+        "Label": "leak"
+    }
+]

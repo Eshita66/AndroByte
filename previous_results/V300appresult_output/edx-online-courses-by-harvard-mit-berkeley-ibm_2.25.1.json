@@ -1,0 +1,113 @@
+[
+  {
+    "Data Types Collected": [
+      "Lcom/facebook/AccessToken",
+      "Landroid/location/Location",
+      "Ljava/lang/String;",
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is passed to the GraphRequest method.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data through the 'iput-object' instruction that stores a sensitive GraphJSONArrayCallback object in the 'val$callback' field.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AccessToken and graphPath variables are used to originate user personal data.",
+        "Source Method": "Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod; Lcom/facebook/GraphRequest$Callback;)V",
+        "Reasoning": "The method originates user personal data through the accessToken and graphPath variables.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "HTTP method is set for the GraphRequest object.",
+        "Source Method": "Lcom/facebook/GraphRequest;->setHttpMethod:(Lcom/facebook/HttpMethod;)V",
+        "Reasoning": "The method originates sensitive user personal data by calling the 'setHttpMethod' method with a potentially sensitive HTTP method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Callback is set for the GraphRequest object.",
+        "Source Method": "Lcom/facebook/GraphRequest;->setCallback:(Lcom/facebook/GraphRequest$Callback;)V",
+        "Reasoning": "The method sets a callback for the GraphRequest. If logging is disabled and warning is enabled, it skips setting the callback.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Logging behavior is checked and data is propagated.",
+        "Source Method": "Lcom/facebook/FacebookSdk;->isLoggingBehaviorEnabled:(Lcom/facebook/LoggingBehavior;)Z",
+        "Reasoning": "The method originates sensitive user personal data by checking if logging behavior is enabled and contains specific behaviors.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/FacebookSdk;->isLoggingBehaviorEnabled:(Lcom/facebook/LoggingBehavior;)Z",
+      "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+      "Lcom/facebook/FacebookSdk;->isDebugEnabled:()Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> Lcom/facebook/FacebookSdk;->isLoggingBehaviorEnabled:(Lcom/facebook/LoggingBehavior;)Z]",
+        "Reasoning": "[The location data is passed to the GraphRequest method, which then propagates through the logging behavior check in FacebookSdk]"
+      },
+      {
+        "dataflow 2": " [Lcom/facebook/FacebookSdk;->isDebugEnabled:()Z --> Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;]",
+        "Reasoning": "[The debug enabled flag is checked in FacebookSdk, which then propagates through the GraphRequest method]"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Android ID",
+      "Device serial number",
+      "Phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Android ID from getContentResolver()",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method gets the Android ID using the getContentResolver() API.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Check if device serial number is not null or empty",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method checks the device serial number using Build.SERIAL.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get device ID from TelephonyManager",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method gets the device ID using the TelephonyManager.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Generate random UUID",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method generates a random UUID if none of the above methods succeed.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Check for READ_PHONE_STATE permission",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->hasPermission:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method checks if the app has the READ_PHONE_STATE permission.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/segment/analytics/internal/Utils;->hasPermission:(Landroid/content/Context; Ljava/lang/String;)Z",
+      "Lcom/segment/analytics/internal/Utils;->getSystemService:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String() --> ... --> Lcom/segment/analytics/internal/Utils;->getSystemService:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/Object()]",
+        "Reasoning": "The data is propagated from getDeviceId to getSystemService through various methods."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

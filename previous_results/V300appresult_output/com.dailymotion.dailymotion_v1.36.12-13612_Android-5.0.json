@@ -1,0 +1,101 @@
+[
+  {
+    "Data Types Collected": [
+      "User location data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected in `LocationResult`.",
+        "Source Method": "Lcom/google/android/gms/location/LocationResult;",
+        "Reasoning": "Method invocation in `AppboyGeofenceService.a()`",
+        "Action": "Stored in registers v1, v3, v5, v6"
+      },
+      {
+        "Step": "User location data is logged.",
+        "Source Method": "Lcom/appboy/services/AppboyGeofenceService;->a:(Lcom/google/android/gms/location/LocationResult;)Z",
+        "Reasoning": "Call to Appboy.c() method",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appboy/services/Appboy.c(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "LocationResult --> AppboyGeofenceService.a() --> Appboy.c()",
+        "Reasoning": "Location data is first stored in registers, then passed to AppboyGeofenceService.a(), and finally logged using Appboy.c()"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user wifi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User wifi SSID is retrieved using `getSSID()` method.",
+        "Source Method": "Lcom/b/f/e;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Sensitive API call `getSSID()` is used to retrieve user wifi SSID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/b/f/e;->a:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/b/f/e;->a:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/b/f/e;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "User wifi SSID is retrieved using `getSSID()` method and returned as a string."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Receive location update from intent",
+        "Source Method": "La/a/ag;->a:(Landroid/content/Intent;)V",
+        "Reasoning": "Intent contains location data",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Validate location",
+        "Source Method": "La/a/ag;->a:(Landroid/content/Intent;)V",
+        "Reasoning": "Check for null location",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "La/a/ag;->a:(Landroid/content/Intent;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "La/a/ag;->a:(Landroid/content/Intent;)V --> La/a/ag;->a:(Landroid/content/Intent;)V",
+        "Reasoning": "Location data is validated and logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain location data",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLib;->getLocationData:(Landroid/content/Context;)Ljava/util/Map;",
+        "Reasoning": "Method returns a HashMap containing location data.",
+        "Action": "Stored in HashMap"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  }
+]

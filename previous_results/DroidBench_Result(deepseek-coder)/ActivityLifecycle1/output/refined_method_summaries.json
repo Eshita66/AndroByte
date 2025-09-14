@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID",
+            "URL"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Source Method (`onCreate`) extracts device ID and forms URL.",
+                "Source Method": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Device ID is extracted from TelephonyManager and concatenated with a hardcoded string to form a URL.",
+                "Action": "Stored in static field"
+            },
+            {
+                "Step": "URL formed in `onCreate` method is passed to `connect` method.",
+                "Source Method": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V -> Lde/ecspride/ActivityLifecycle1;->connect:()V",
+                "Reasoning": "URL contains sensitive information (device ID).",
+                "Action": "Accessed in `connect` method"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ActivityLifecycle1;->connect:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V -> Lde/ecspride/ActivityLifecycle1;->connect:()V",
+                "Reasoning": "Device ID is extracted in `onCreate`, processed to form a URL, and passed to `connect` method where it forms part of the URL."
+            }
+        ],
+        "Label": "leak"
+    }
+]

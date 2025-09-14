@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\CastingForward
+Using methods file: D:\UBCBAPK_Methods\CastingForward\CastingForward_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "This method originates user data by calling `TelephonyManager.getDeviceId()`. This retrieves the device ID, a sensitive piece of personal data. The device ID is then used to set the hint text of a TextView and is logged using `android.util.Log.v`. Because a sink (logging) is present, the `Next Methods` list must be empty.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\CastingForward\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\CastingForward\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\CastingForward\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method `onCreate` calls `TelephonyManager.getDeviceId()` to retrieve the device ID.",
+                "Action": "Retrieve"
+            }
+        ],
+        "All Sinks": [
+            "Ljunbin/ubc/MainActivity;->logV:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljunbin/ubc/MainActivity;->logV:(Ljava/lang/String;)V",
+                "Reasoning": "The device ID obtained from `getDeviceId()` is used as an argument to `logV`.  The summary indicates that this is a sink method.  The device ID is not overwritten."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\CastingForward\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\CastingForward\output\sensitive_only.json
+Total summary time: 7.240499019622803 seconds

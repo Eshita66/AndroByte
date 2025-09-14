@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\HashMapAccess1
+Using methods file: D:\UBCBAPK_Methods\HashMapAccess1\HashMapAccess1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/HashMapAccess1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/HashMapAccess1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "This method originates user data by obtaining the device ID using the `getDeviceId()` method of the `TelephonyManager`. It then stores this device ID in a `HashMap` under the keys \"tainted\" and \"untainted\". Finally, it uses the `SmsManager` to send an SMS message with the device ID \"+49 1234\". This represents a clear data leakage point as it directly transmits sensitive device information. The device ID is stored in a HashMap, which is a potential storage sink. The final SMS sending operation is a direct transmission of the device ID, making it a significant sink.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\HashMapAccess1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\HashMapAccess1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\HashMapAccess1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain Device ID",
+                "Source Method": "Lde/ecspride/HashMapAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method obtains the device ID using `getDeviceId()` from `TelephonyManager`.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/HashMapAccess1;->sendSMS:(Ljava/lang/String;Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/HashMapAccess1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/HashMapAccess1;->sendSMS:(+49 1234, \"untainted\")",
+                "Reasoning": "The device ID obtained from `getDeviceId()` is stored in a HashMap and then directly transmitted via `sendSMS`."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\HashMapAccess1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\HashMapAccess1\output\sensitive_only.json
+Total summary time: 7.655985116958618 seconds

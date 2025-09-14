@@ -1,0 +1,290 @@
+[
+  {
+    "Data Types Collected": [
+      "Landroid/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve GPS location",
+        "Source Method": "Lbo/app/m1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The method explicitly retrieves the location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check location age",
+        "Source Method": "Lbo/app/m1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The method checks if the location is older than a threshold.",
+        "Action": "Validated"
+      },
+      {
+        "Step": "Log location usage",
+        "Source Method": "Lbo/app/m1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The method logs a message based on the location age.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lbo/app/m1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lbo/app/m1;->a:(Landroid/location/LocationManager;)Landroid/location/Location; --> Lbo/app/m1;->a:(Landroid/location/LocationManager;)Landroid/location/Location; --> Lbo/app/m1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The location is retrieved, validated, and logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected from the `Landroid/location/Location` object.",
+        "Source Method": "Lbo/app/n2;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is used to initialize a new object of type `Lbo/app/n2`.",
+        "Source Method": "Lbo/app/n2;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Created"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbo/app/n2;-><init>:(Landroid/location/Location;)V --> Lbo/app/n2;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "Data is stored in local variables and then used to create a new object."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Search Text"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location and search text are collected from the user.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method parameters",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Location and search text are included in the GraphRequest object.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "GraphRequest creation",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...) ",
+        "Reasoning": "GraphRequest is executed and the result is passed to the GraphJSONArrayCallback."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "LocationPackage"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "LocationPackage object is passed to PlaceManager class.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle;",
+        "Reasoning": "Sensitive user personal data is originated from the LocationPackage object.",
+        "Action": "Stored in Bundle object"
+      },
+      {
+        "Step": "Bundle object is passed to Facebook Places API request.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle;",
+        "Reasoning": "Sensitive user personal data is used to make a request to the Facebook Places API.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle; --> Facebook Places API request",
+        "Reasoning": "Sensitive user personal data is passed to the Facebook Places API request."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "PlaceSearchRequestParams",
+      "Location",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data from PlaceSearchRequestParams is stored in v0.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location and search text are checked for validity.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Validated"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation(...) --> null",
+        "Reasoning": "Validated user personal data is not sent to any sink point."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SHA256 Fingerprint",
+      "Application Package Name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Application Package Name is extracted",
+        "Source Method": "Lcom/appsflyer/internal/ah;->AFKeystoreWrapper:(Lcom/appsflyer/internal/h;)Ljava/util/Map;",
+        "Reasoning": "invoke-virtual Landroid/content/Context;->getPackageName()Ljava/lang/String;",
+        "Action": "Stored"
+      },
+      {
+        "Step": "SHA256 Fingerprint is generated",
+        "Source Method": "Lcom/appsflyer/internal/aa;->AFInAppEventParameterName:(Landroid/content/pm/PackageManager; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "method call",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/internal/aa;->AFInAppEventParameterName:(Landroid/content/pm/PackageManager; Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/internal/ah;->AFKeystoreWrapper:(Lcom/appsflyer/internal/h;)Ljava/util/Map; --> Lcom/appsflyer/internal/aa;->AFInAppEventParameterName:(Landroid/content/pm/PackageManager; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Sensitive data is passed from AFKeystoreWrapper to AFInAppEventParameterName"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location from location manager",
+        "Source Method": "Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "Method documentation specifies obtaining location",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LocationScannerImpl(...) --> Stored",
+        "Reasoning": "Location is stored when retrieved"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WifiScannerImpl.getConnectedWifi() collects SSID",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The method returns a WifiScanResult object which contains the SSID",
+        "Action": "Collected"
+      },
+      {
+        "Step": "WifiScannerImpl.isWifiSsidBlacklisted() checks SSID",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->isWifiSsidBlacklisted:(Ljava/lang/String;)Z",
+        "Reasoning": "The method receives the SSID from WifiScannerImpl.getConnectedWifi()",
+        "Action": "Used as input"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " WifiScannerImpl.getConnectedWifi() --> WifiScannerImpl.isWifiSsidBlacklisted() --> null",
+        "Reasoning": "The SSID is collected in WifiScannerImpl.getConnectedWifi() and used as input in WifiScannerImpl.isWifiSsidBlacklisted(). No sink points are identified."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is retrieved from getLastLocation method.",
+        "Source Method": "Lcom/tembici/tembici/ui/fragments/map/BaseMapFragment$getLastLocation$1;->onSuccess:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature matches the source method.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " BaseMapFragment$getLastLocation$1;->onSuccess(...) --> Stored",
+        "Reasoning": "Location is stored in a register and passed to the onSuccess method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected",
+        "Source Method": "Lcom/tembici/tembici/ui/fragments/usertransitcard/UserTransitCardPointOfSalesFragment$defineUserLocation$1;->onSuccess:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary provide the source method and data flow",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "User latitude and longitude are set",
+        "Source Method": "Lcom/tembici/tembici/ui/fragments/usertransitcard/UserTransitCardPointOfSalesFragment$defineUserLocation$1;->onSuccess:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary provide the source method and data flow",
+        "Action": "Passed to access$setUserLatitude$p() and access$setUserLongitude$p() methods"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/tembici/tembici/ui/fragments/usertransitcard/UserTransitCardPointOfSalesFragment$defineUserLocation$1;->onSuccess:(Landroid/location/Location;)V --> access$setUserLatitude$p() and access$setUserLongitude$p() methods",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed"
+      }
+    ],
+    "Label": "no leak"
+  }
+]

@@ -1,0 +1,41 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\SourceCodeSpecific1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\SourceCodeSpecific1\SourceCodeSpecific1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method of `MainActivity` first calls `getSystemService` to obtain a `TelephonyManager` instance. Then, it iteratively adds several phone numbers (+49 123456, +49 654321, +49 111111, +49 222222, +49 333333) to a `HashSet`. Finally, it calls `sendSMS` with the populated `HashSet` and a string argument. The `sendSMS` method is the sink. The key flow is `TelephonyManager.getDeviceId()` which returns a string. This string is passed as an argument to `sendSMS`.  Specifically, instruction `invoke-virtual v6, v5, Lde/ecspride/MainActivity;->sendSMS(Ljava/util/Set; Ljava/lang/String;)V` shows the flow. The `getDeviceId` instruction is the source. The `sendSMS` method is the sink. The `v5` register contains the string returned by `getDeviceId`.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\SourceCodeSpecific1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\SourceCodeSpecific1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\SourceCodeSpecific1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "TelephonyManager.deviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain device ID using TelephonyManager.",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method calls `getSystemService` to get a `TelephonyManager` instance, which then calls `getDeviceId()`.",
+                "Action": "Store device ID in a variable."
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendSMS:(Ljava/util/Set; Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->getDeviceId() --> Lde/ecspride/MainActivity;->sendSMS:(Ljava/util/Set; Ljava/lang/String;)V",
+                "Reasoning": "The `getDeviceId` instruction returns a string. This string is then passed as the second argument to the `sendSMS` method."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\SourceCodeSpecific1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\SourceCodeSpecific1\output\sensitive_only.json
+Total summary time: 87.55843043327332 seconds

@@ -1,0 +1,1561 @@
+[
+  {
+    "Data Types Collected": [
+      "Landroid/app/Application;",
+      "Lcom/appsflyer/AFEvent;",
+      "Lcom/appsflyer/AppsFlyerLibCore;",
+      "Landroid/content/Context;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is originated from the current method's API calls to AppsFlyer services.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "The data is stored in registers and variables within the method and propagated through method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data originates from a sensitive API call to AppsFlyerProperties.valueOf().",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties;",
+        "Reasoning": "The data is stored in register v0 and propagated through the return statement.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "The method originates user personal data by calling the getInstance() method to retrieve an instance of AppsFlyerLibCore.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->getSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The data is stored in the afInfoLog field of the AppsFlyerLibCore instance and propagated through registers and variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive user personal data originates from the context of AFEvent.",
+        "Source Method": "Lcom/appsflyer/AFEvent;->context:()Landroid/app/Application;",
+        "Reasoning": "The data is stored in register v0 and propagated to the return statement.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "The method getInstance() of AppsFlyerLibCore class is used to originate user personal data.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->getInstance:()Lcom/appsflyer/AppsFlyerLibCore;",
+        "Reasoning": "The instance variable of the same class is stored in register v0 and returned at the end of the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "The method originates user personal data by calling sensitive API to get SharedPreferences and storing it in instance variables.",
+        "Source Method": "Lcom/appsflyer/internal/EventDataCollector;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "The data is then passed to other methods via method invocations.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AppsFlyerLibCore;->getSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+      "Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; --> Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties; --> Lcom/appsflyer/AppsFlyerLibCore;->getSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "Sensitive user personal data is originated from the current method's API calls to AppsFlyer services, stored in registers and variables within the method and propagated through method invocations."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device location",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/c/f$d;->c:(Landroid/content/Context;)Ljava/lang/Double;",
+        "Reasoning": "The method calls a sensitive API to get the device's location.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Propagate through registers",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/c/f$d;->c:(Landroid/content/Context;)Ljava/lang/Double;",
+        "Reasoning": "The data is stored in registers and variables within the method.",
+        "Action": "Propagation"
+      },
+      {
+        "Step": "Return as Double value",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/c/f$d;->c:(Landroid/content/Context;)Ljava/lang/Double;",
+        "Reasoning": "The data reaches a sink point as it is being returned as a Double value.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adyen/threeds2/internal/c/a/c/f$d;->c:(Landroid/content/Context;)Ljava/lang/Double;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adyen/threeds2/internal/c/a/c/f$d;->c:(Landroid/content/Context;)Ljava/lang/Double; --> Stored in registers and variables within the method --> Returned as Double value ",
+        "Reasoning": "The data originates from a sensitive API call, is stored in registers and variables within the method, and is returned as a Double value."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Double"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method c() invokes method a() with Context object.",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/c/f$f;->c:(Landroid/content/Context;)Ljava/lang/Double;",
+        "Reasoning": "The data is then propagated through registers and variables, ultimately being stored as a Double value in the register v3.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Method a() returns Location object.",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/c/f;->a:(Landroid/content/Context;)Landroid/location/Location;",
+        "Reasoning": "The data is stored in register v0 and variable 'a' of class Lcom/adyen/threeds2/internal/c/a/c/f.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Method b() calls sensitive API to create array of objects.",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/c/f;->b:()Ljava/util/List;",
+        "Reasoning": "The data is stored in registers and variables within the method, then passed to other methods via method invocations.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adyen/threeds2/internal/c/a/c/f;->b:()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/adyen/threeds2/internal/c/a/c/f$f;->c:(Landroid/content/Context;)Ljava/lang/Double; --> Lcom/adyen/threeds2/internal/c/a/c/f;->a:(Landroid/content/Context;)Landroid/location/Location; --> Lcom/adyen/threeds2/internal/c/a/c/f;->b:()",
+        "Reasoning": "The data is propagated through method invocations and stored in registers and variables."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device ID from TelephonyManager",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/i/b;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the getDeviceId() function of the TelephonyManager class.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/adyen/threeds2/internal/c/a/i/b;->d:(Landroid/content/Context;)Ljava/lang/String;(...) --> Stored",
+        "Reasoning": "The device ID is stored in register v1 and then returned as a String."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device's IMEI and Device ID from sensitive APIs",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/i/e;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method calls sensitive APIs to get the device's IMEI and Device ID.",
+        "Action": "Stored in register v3"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adyen/threeds2/internal/c/a/i/e;->d:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adyen/threeds2/internal/c/a/i/e;->d:(Landroid/content/Context;)Ljava/lang/String;(...) --> Stored in register v3 --> Returned as a return object",
+        "Reasoning": "The method stores the collected data in a register and then returns it as an object."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Call getLine1Number() from TelephonyManager",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/i/l;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "This method originates user personal data by calling sensitive API getLine1Number() from TelephonyManager.",
+        "Action": "Stored in register v1"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/adyen/threeds2/internal/c/a/i/l;->d:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/adyen/threeds2/internal/c/a/i/l;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in register v1 and propagated to the return statement, which is not a sink."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SIM serial number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get TelephonyManager",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/i/x;->c:(Landroid/content/Context;)Ljava/lang/TelephonyManager;",
+        "Reasoning": "The method originates user personal data by calling the `c` method which returns a `TelephonyManager`.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get SIM serial number",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/i/x;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "This `TelephonyManager` is then used to get the SIM serial number, which is stored in register `v1` and eventually returned as the result of this method.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adyen/threeds2/internal/c/a/i/x;->d:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adyen/threeds2/internal/c/a/i/x;->c:(Landroid/content/Context;)Ljava/lang/TelephonyManager; --> Lcom/adyen/threeds2/internal/c/a/i/x;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the `c` method which returns a `TelephonyManager`. This `TelephonyManager` is then used to get the SIM serial number, which is stored in register `v1` and eventually returned as the result of this method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/net/wifi/WifiInfo"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieves WiFi information",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/j/b;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method d(Landroid/content/Context;)Landroid/net/wifi/WifiInfo is called to retrieve WiFi information.",
+        "Action": "Stored in registers (v0 and v1)"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": "not_sensitive "
+  },
+  {
+    "Data Types Collected": [
+      "android/net/wifi/WifiInfo"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WiFi information retrieved",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/j/k;->d(Landroid/content/Context;)Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "Method d() retrieves WiFi information.",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "SSID extracted from WiFi info",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/j/k;->getSSID(Landroid/net/wifi/WifiInfo;)Ljava/lang/String;",
+        "Reasoning": "Method getSSID() extracts SSID from WiFi info.",
+        "Action": "Passed to the getSSID() method for further processing"
+      },
+      {
+        "Step": "Final result returned as string",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/j/k;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method e() returns the final result as a string.",
+        "Action": "Returned to caller"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/adyen/threeds2/internal/c/a/j/k;->d(Landroid/content/Context;)Landroid/net/wifi/WifiInfo --> Lcom/adyen/threeds2/internal/c/a/j/k;->getSSID(Landroid/net/wifi/WifiInfo;)Ljava/lang/String --> Lcom/adyen/threeds2/internal/c/a/j/k;->e(Landroid/content/Context;)Ljava/lang/String",
+        "Reasoning": "WiFi information is retrieved, SSID extracted and final result returned as string"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "device's WiFi MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device's WiFi MAC address",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/j/l;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the `d` method of its own class with a sensitive API call to get the device's WiFi MAC address.",
+        "Action": "Stored in register v1"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/net/wifi/WifiInfo;->getMacAddress()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adyen/threeds2/internal/c/a/j/l;->e:(Landroid/content/Context;)Ljava/lang/String; --> WifiInfo.getMacAddress() ",
+        "Reasoning": "The method originates user personal data by calling the `d` method of its own class with a sensitive API call to get the device's WiFi MAC address, which is then passed to WifiInfo.getMacAddress()"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android_id",
+      "phone number",
+      "device ID",
+      "device software version",
+      "SIM serial number",
+      "SIM operator",
+      "network operator name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collects user personal data",
+        "Source Method": "Lcom/boltdeliveryclientapp/DataPointCollectorModule;->collectCarrier:(Lcom/facebook/react/bridge/WritableMap;)V",
+        "Reasoning": "Invokes sensitive API calls to get device's android_id, phone number, etc.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Checks READ_PHONE_STATE permission",
+        "Source Method": "Lcom/boltdeliveryclientapp/DataPointCollectorModule;->checkReadPhoneStatePermission:()Z",
+        "Reasoning": "Checks the READ_PHONE_STATE permission to access user personal data",
+        "Action": "Propagated through registers"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/boltdeliveryclientapp/DataPointCollectorModule;->collectCarrier:(Lcom/facebook/react/bridge/WritableMap;)V",
+      "Lcom/boltdeliveryclientapp/DataPointCollectorModule;->checkReadPhoneStatePermission:()Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/boltdeliveryclientapp/DataPointCollectorModule;->collectCarrier:(Lcom/facebook/react/bridge/WritableMap;)V --> Stored in registers and variables --> Lcom/boltdeliveryclientapp/DataPointCollectorModule;->checkReadPhoneStatePermission:()Z --> Propagated through registers ",
+        "Reasoning": "The data collected by collectCarrier is stored in registers and variables, then propagated to checkReadPhoneStatePermission method which checks the READ_PHONE_STATE permission. If the permission is granted, it returns true; otherwise, it returns false."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID",
+      "SSID",
+      "MAC address",
+      "IP address",
+      "DNS",
+      "Gateway",
+      "Server address",
+      "Netmask",
+      "Lease duration",
+      "Connectivity type"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collects network data using WifiManager and ConnectivityManager",
+        "Source Method": "Lcom/boltdeliveryclientapp/DataPointCollectorModule;->collectNetwork:(Lcom/facebook/react/bridge/WritableMap;)V",
+        "Reasoning": "This method retrieves information such as BSSID, SSID, MAC address, IP address, DNS, gateway, server address, netmask, lease duration, and connectivity type.",
+        "Action": "Stored in a WritableMap"
+      },
+      {
+        "Step": "Converts an integer to IP address",
+        "Source Method": "Lcom/boltdeliveryclientapp/DataPointCollectorModule;->intToIp:(I)Ljava/lang/String;",
+        "Reasoning": "The data is stored in a StringBuilder object and propagated through registers.",
+        "Action": "Stored as a String"
+      },
+      {
+        "Step": "Obtains network interface information using sensitive API calls",
+        "Source Method": "Lcom/boltdeliveryclientapp/DataPointCollectorModule;->getIPAddress:(Ljava/lang/String; Z)Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers and variables within the method, then propagated through method invocations.",
+        "Action": "Propagated through method invocations"
+      },
+      {
+        "Step": "Parses MAC address and network interface name",
+        "Source Method": "Lcom/boltdeliveryclientapp/DataPointCollectorModule;->parseMac:(Ljava/net/NetworkInterface; Ljava/lang/String;)Lkotlin/Pair;",
+        "Reasoning": "The data is stored in registers and variables within the method, then propagated to other methods via method invocations.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Parses IP address information using sensitive API calls",
+        "Source Method": "Lcom/boltdeliveryclientapp/DataPointCollectorModule;->parseIp:(Ljava/net/NetworkInterface; Ljava/lang/String; Z)Lkotlin/Pair;",
+        "Reasoning": "The data is stored in registers and variables within the method, including the v0 register and local variables like v2.",
+        "Action": "Propagated to other methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/boltdeliveryclientapp/DataPointCollectorModule;->parseMac:(Ljava/net/NetworkInterface; Ljava/lang/String;)Lkotlin/Pair;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/boltdeliveryclientapp/DataPointCollectorModule;->collectNetwork:(Lcom/facebook/react/bridge/WritableMap;)V --> Lcom/boltdeliveryclientapp/DataPointCollectorModule;->intToIp:(I)Ljava/lang/String; --> Lcom/boltdeliveryclientapp/DataPointCollectorModule;->parseMac:(Ljava/net/NetworkInterface; Ljava/lang/String;)Lkotlin/Pair;",
+        "Reasoning": "The data is propagated from collectNetwork to intToIp, then to parseMac where it's logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "altitude",
+      "accuracy",
+      "bearing",
+      "speed",
+      "timestamp"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "LocationResolver's locationToMap() accesses user personal data.",
+        "Source Method": "Lcom/github/amarcruz/geolocation/LocationResolver;->locationToMap:(Landroid/location/Location;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The method originates user personal data from the `locationToMap` method by accessing sensitive information such as latitude, longitude, altitude, accuracy, bearing, speed, and timestamp from the provided location.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "LocationResolver's locationToMap() passes data to createMap().",
+        "Source Method": "Lcom/github/amarcruz/geolocation/LocationResolver;->locationToMap:(Landroid/location/Location;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The data is then stored in registers and variables within the method. The data propagation analysis shows that the data is passed to other methods via method invocations, specifically to `createMap` and `putDouble`/`putBoolean` methods.",
+        "Action": "Passed to createMap() method."
+      },
+      {
+        "Step": "Arguments' createMap() originates user personal data.",
+        "Source Method": "Lcom/facebook/react/bridge/Arguments;->createMap:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The method originates user personal data using the `createMap()` API call. The data is stored in register v0 and passed to the `WritableNativeMap` constructor.",
+        "Action": "Stored in register v0."
+      },
+      {
+        "Step": "WritableNativeMap's init() originates user personal data.",
+        "Source Method": "Lcom/facebook/react/bridge/WritableNativeMap;-><init>:()V",
+        "Reasoning": "The method originates user personal data by using the sensitive API call to initHybrid() in the WritableNativeMap class. The data is stored in register v0 and passed to another method via method invocation.",
+        "Action": "Passed to another method via method invocation."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/react/bridge/WritableNativeMap;-><init>:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/github/amarcruz/geolocation/LocationResolver;->locationToMap:(Landroid/location/Location;)Lcom/facebook/react/bridge/WritableMap; --> Lcom/facebook/react/bridge/Arguments;->createMap:()Lcom/facebook/react/bridge/WritableMap; --> Lcom/facebook/react/bridge/WritableNativeMap;-><init>:()V ",
+        "Reasoning": "The data flow starts from LocationResolver's locationToMap(), which accesses user personal data. The data is then passed to createMap() method in Arguments class, and finally reaches WritableNativeMap's init() method, where it is logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain location information using sensitive APIs",
+        "Source Method": "Lcom/huawei/hms/ads/kp;->Code:(Landroid/content/Context; I)V",
+        "Reasoning": "The method calls the `getLocationByNative` method to obtain location information.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Store device ID through a sensitive API call",
+        "Source Method": "Lcom/huawei/hms/ads/lj;->Code:(Ljava/lang/Runnable; J)V",
+        "Reasoning": "The method calls a sensitive API to store the device ID.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Pass phone number to other methods via method invocations",
+        "Source Method": "Lcom/huawei/openalliance/ad/beans/metadata/Location;->Code:(Ljava/lang/Long;)V",
+        "Reasoning": "The method stores the 'clctTime' value in a Location object, which can be used to obtain phone number information.",
+        "Action": "Passed to other methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/hms/ads/fo;->Code(Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/huawei/hms/ads/fo;->Z(Ljava/lang/String; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/huawei/hms/ads/kp;->Code:(Landroid/content/Context; I)V --> Lcom/huawei/hms/ads/fo;->Code(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method calls the `getLocationByNative` method to obtain location information, which is then passed to the `Code` method of the `Lcom/huawei/hms/ads/fo;` class."
+      },
+      {
+        "dataflow 2": "Lcom/huawei/hms/ads/lj;->Code:(Ljava/lang/Runnable; J)V --> Lcom/huawei/hms/ads/kf;->Code:(Ljava/lang/Runnable; Ljava/lang/String; J)V",
+        "Reasoning": "The method calls a sensitive API to store the device ID, which is then passed to the `Code` method of the `Lcom/huawei/hms/ads/kf;` class."
+      },
+      {
+        "dataflow 3": "Lcom/huawei/openalliance/ad/beans/metadata/Location;->Code:(Ljava/lang/Long;)V --> Lcom/huawei/openalliance/ad/beans/metadata/Location;->Code:(Ljava/lang/String;)V",
+        "Reasoning": "The method stores the 'clctTime' value in a Location object, which can be used to obtain phone number information."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "keywords",
+      "gender",
+      "targeting content URL",
+      "instance ID",
+      "string",
+      "integer"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data through sensitive API calls.",
+        "Source Method": "Lcom/huawei/hms/ads/reward/RewardAd;->Code:(Lcom/huawei/hms/ads/AdParam;)V",
+        "Reasoning": "The method originates user personal data by calling a sensitive API to get location, keywords, gender, targeting content URL, and instance ID.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "Originates sensitive user personal data by calling a sensitive API.",
+        "Source Method": "Lcom/huawei/openalliance/ad/inter/k;->Code:(Ljava/lang/String;)V",
+        "Reasoning": "The current method originates sensitive user personal data by calling a sensitive API to store a string in the 'D' field of the object.",
+        "Action": "Stored in register v0 and then returned."
+      },
+      {
+        "Step": "Originates user personal data by invoking a sensitive API call.",
+        "Source Method": "Lcom/huawei/openalliance/ad/inter/k;->Code:(I)V",
+        "Reasoning": "The method originates user personal data by invoking a sensitive API call to store an integer value in a field of the current object.",
+        "Action": "Stored in register v0 and passed to another method via method invocation."
+      },
+      {
+        "Step": "Data originates from sensitive API calls.",
+        "Source Method": "Lcom/huawei/openalliance/ad/inter/k;->Code:(Ljava/util/Set;)V",
+        "Reasoning": "Data originates from sensitive API calls (e.g., iput-object) and is stored in register v0.",
+        "Action": "Data propagation occurs through method invocation to next methods."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/hms/ads/reward/RewardAd;->Code:(Lcom/huawei/hms/ads/AdParam;)V",
+      "Lcom/huawei/openalliance/ad/inter/k;->Code:(Ljava/lang/String;)V",
+      "Lcom/huawei/openalliance/ad/inter/k;->Code:(I)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/huawei/hms/ads/reward/RewardAd;->Code:(Lcom/huawei/hms/ads/AdParam;)V --> Lcom/huawei/openalliance/ad/inter/k;->Code:(Ljava/util/Set;)V --> Lcom/huawei/openalliance/ad/inter/k;->Code:(Ljava/lang/String;)V",
+        "Reasoning": "The data flows from the RewardAd method to the inter/k method, where it is stored in a set and then passed to another method via method invocation. The string is then returned."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates from getGender() method",
+        "Source Method": "Lcom/huawei/openalliance/ad/beans/metadata/Location;-><init>:(Ljava/lang/Double; Ljava/lang/Double;)V",
+        "Reasoning": "The Location class's constructor is called with two Double parameters.",
+        "Action": "Stored in registers v0, v1"
+      },
+      {
+        "Step": "Originates from getTargetingContentUrl() method",
+        "Source Method": "Lcom/huawei/openalliance/ad/beans/metadata/Location;->Code:(Ljava/lang/Double;)V",
+        "Reasoning": "Sensitive user personal data originates from the 'doubleValue()' method of a Double object.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Originates from getKeywords() method",
+        "Source Method": "Lcom/huawei/openalliance/ad/beans/metadata/Location;->V:(Ljava/lang/Double;)V",
+        "Reasoning": "The method originates sensitive user personal data by calling the `doubleValue()` method on a `Ljava/lang/Double;` object.",
+        "Action": "Passed to a new instance of `Ljava/math/BigDecimal;`"
+      },
+      {
+        "Step": "Originates from 'C' field of AdSlotParam$a object",
+        "Source Method": "Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->Z:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;",
+        "Reasoning": "Sensitive user personal data originates from the `C` field of `AdSlotParam$a` object.",
+        "Action": "Stored in register v1"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/openalliance/ad/beans/metadata/Location;->Code:(Ljava/lang/Double;)V",
+      "Lcom/huawei/openalliance/ad/beans/metadata/Location;->V:(Ljava/lang/Double;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/huawei/openalliance/ad/beans/metadata/Location;-><init>:(Ljava/lang/Double; Ljava/lang/Double;)V --> Lcom/huawei/openalliance/ad/beans/metadata/Location;->Code:(Ljava/lang/Double;)V --> Lcom/huawei/openalliance/ad/beans/metadata/Location;->V:(Ljava/lang/Double;)V --> Lcom/huawei/openalliance/ad/beans/metadata/Location;",
+        "Reasoning": "The data is propagated from the constructor to the Code and V methods, where it is processed and passed to other methods."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "gender",
+      "targeting content URL",
+      "keywords",
+      "integer value",
+      "iput instruction",
+      "API call to access AdSlotParam's Z field",
+      "AdSlotParam$a class",
+      "C field of AdSlotParam$a class",
+      "AdSlotParam object",
+      "request options",
+      "ad content classification",
+      "tag for under age of promise",
+      "tag for child protection",
+      "non-personalized ad",
+      "app language",
+      "app country",
+      "consent",
+      "code and string parameters",
+      "HA (field 'I' of type Ljava/lang/String;)",
+      "current time in milliseconds",
+      "thread name",
+      "process ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from AdParam object.",
+        "Source Method": "Lcom/huawei/hms/ads/w;->Code:(Lcom/huawei/hms/ads/AdParam; Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;)V",
+        "Reasoning": "The method originates user personal data from the AdParam object, which contains sensitive information such as gender, targeting content URL, and keywords.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "Originate user personal data using the sensitive API call to get an integer value from AdSlotParam$a.",
+        "Source Method": "Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->I:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;",
+        "Reasoning": "The method originates user personal data using the sensitive API call to get an integer value from AdSlotParam$a.",
+        "Action": "Stored in register v1 and passed to other methods via return-object instruction."
+      },
+      {
+        "Step": "Sensitive user personal data is originated from the 'iput' instruction using API call to access AdSlotParam's Z field.",
+        "Source Method": "Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->V:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;",
+        "Reasoning": "Sensitive user personal data is originated from the 'iput' instruction using API call to access AdSlotParam's Z field.",
+        "Action": "Stored in register v1 and then returned as an object."
+      },
+      {
+        "Step": "Originate user personal data by calling a sensitive API to retrieve an AdSlotParam object.",
+        "Source Method": "Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->Code:(Ljava/util/List;)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;",
+        "Reasoning": "The method originates user personal data by calling a sensitive API to retrieve an AdSlotParam object.",
+        "Action": "Stored in the 'v0' register and passed to the next methods."
+      },
+      {
+        "Step": "Originate user personal data using sensitive API calls to get request options.",
+        "Source Method": "Lcom/huawei/hms/ads/by;->Code:(Lcom/huawei/hms/ads/RequestOptions;)Lcom/huawei/hms/ads/RequestOptions;",
+        "Reasoning": "This method originates user personal data using sensitive API calls to get request options, including ad content classification, tag for under age of promise, tag for child protection, non-personalized ad, app language, app country, and consent.",
+        "Action": "Stored in registers and variables within the method and passed to other methods via method invocations."
+      },
+      {
+        "Step": "Originate user personal data by invoking the B() method of class com.huawei.hms.ads.i.",
+        "Source Method": "Lcom/huawei/hms/ads/i;->I:()Lcom/huawei/hms/ads/RequestOptions;",
+        "Reasoning": "This method originates user personal data by invoking the B() method of class com.huawei.hms.ads.i.",
+        "Action": "Stored in register v1 and passed to other methods via method invocations."
+      },
+      {
+        "Step": "Originate user personal data by invoking the `sget-object` instruction to retrieve sensitive information from a static field.",
+        "Source Method": "Lcom/huawei/hms/ads/i;->Code:()Lcom/huawei/hms/ads/i;",
+        "Reasoning": "The method originates user personal data by invoking the `sget-object` instruction to retrieve sensitive information from a static field.",
+        "Action": "Stored in register `v1`. The data propagation analysis reveals that the data is passed to other methods via method invocations, specifically to `Lcom/huawei/hms/ads/i;-><init>()V`."
+      },
+      {
+        "Step": "Originate user personal data through API calls to getTagForChildProtection, getTagForUnderAgeOfPromise, getAdContentClassification, getNonPersonalizedAd, getAppLang, getApp, getAppCountry, getRequestLocation, getSearchTerm, and getExtras.",
+        "Source Method": "Lcom/huawei/hms/ads/RequestOptions;->toBuilder:()Lcom/huawei/hms/ads/RequestOptions$Builder;",
+        "Reasoning": "This method originates user personal data through API calls to getTagForChildProtection, getTagForUnderAgeOfPromise, getAdContentClassification, getNonPersonalizedAd, getAppLang, getApp, getAppCountry, getRequestLocation, getSearchTerm, and getExtras.",
+        "Action": "Stored in registers or variables within the method and propagated to other methods via method invocations."
+      },
+      {
+        "Step": "Originate user personal data by calling sensitive API to setTagForChildProtection.",
+        "Source Method": "Lcom/huawei/hms/ads/RequestOptions$Builder;->setTagForChildProtection:(Ljava/lang/Integer;)Lcom/huawei/hms/ads/RequestOptions$Builder;",
+        "Reasoning": "The method originates user personal data by calling sensitive API to setTagForChildProtection.",
+        "Action": "Stored in register v4 and variable v0. The data is passed to other methods via method invocations, specifically invoke-static Lcom/huawei/hms/ads/RequestOptions;->Z()Ljava/lang/String;. The data reaches a sink point through logging."
+      },
+      {
+        "Step": "Originate user personal data from the setSearchTerm API call.",
+        "Source Method": "Lcom/huawei/hms/ads/RequestOptions$Builder;->setSearchTerm:(Ljava/lang/String;)Lcom/huawei/hms/ads/RequestOptions$Builder;",
+        "Reasoning": "The method originates user personal data from the setSearchTerm API call.",
+        "Action": "Stored in register v2 and variable D of class RequestOptions$Builder. The data is propagated to method V of class fo through a static invocation."
+      },
+      {
+        "Step": "Originate user personal data by setting a request location using the setRequestLocation() method.",
+        "Source Method": "Lcom/huawei/hms/ads/RequestOptions$Builder;->setRequestLocation:(Ljava/lang/Boolean;)Lcom/huawei/hms/ads/RequestOptions$Builder;",
+        "Reasoning": "The method originates user personal data by setting a request location using the setRequestLocation() method.",
+        "Action": "Stored in the 'v1' register and passed to the return value of the method."
+      },
+      {
+        "Step": "Originate user personal data by invoking the static method Z() in RequestOptions that returns a sensitive string.",
+        "Source Method": "Lcom/huawei/hms/ads/RequestOptions$Builder;->setApp:(Lcom/huawei/hms/ads/App;)Lcom/huawei/hms/ads/RequestOptions$Builder;",
+        "Reasoning": "The method originates user personal data by invoking the static method Z() in RequestOptions that returns a sensitive string.",
+        "Action": "Stored in register v2 and variable S of class RequestOptions$Builder. The data is then passed to the method V() in fo class, which is likely a sink for logging."
+      },
+      {
+        "Step": "Originate user personal data by setting extras in the RequestOptions$Builder object using a sensitive API call.",
+        "Source Method": "Lcom/huawei/hms/ads/RequestOptions$Builder;->setExtras:(Ljava/util/Map;)Lcom/huawei/hms/ads/RequestOptions$Builder;",
+        "Reasoning": "The method originates user personal data by setting extras in the RequestOptions$Builder object using a sensitive API call.",
+        "Action": "Stored in register v0 and passed to the next methods."
+      },
+      {
+        "Step": "Originate user personal data using the sensitive API sget-object to retrieve a code and then invokes another method V with string parameters, indicating potential logging or transmission of user data.",
+        "Source Method": "Lcom/huawei/hms/ads/fo;->V:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data using the sensitive API sget-object to retrieve a code and then invokes another method V with string parameters, indicating potential logging or transmission of user data.",
+        "Action": "Stored in register v0 and then passed to another method via the return statement."
+      },
+      {
+        "Step": "Originate user personal data by invoking a sensitive API call to retrieve the 'Code' object.",
+        "Source Method": "Lcom/huawei/hms/ads/fo;->Code:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data by invoking a sensitive API call to retrieve the 'Code' object.",
+        "Action": "Stored in register v0 and then passed to another method via method invocation."
+      },
+      {
+        "Step": "Originate user personal data through the Code(I)Z call in line 2, where v3 is an instance of com.huawei.hms.ads.fp.",
+        "Source Method": "Lcom/huawei/hms/ads/fp;->V:(I Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the Code(I)Z call in line 2, where v3 is an instance of com.huawei.hms.ads.fp.",
+        "Action": "Stored in register v0 and then passed to the I(I Ljava/lang/String; Ljava/lang/String;)Lcom/huawei/hms/ads/fv method."
+      },
+      {
+        "Step": "Originate user personal data through the `iget-boolean` instruction accessing sensitive fields (`S` and `B`) of an object.",
+        "Source Method": "Lcom/huawei/hms/ads/fp;->Code:(I)Z",
+        "Reasoning": "The method originates user personal data through the `iget-boolean` instruction accessing sensitive fields (`S` and `B`) of an object.",
+        "Action": "Stored in register v0. If a condition is met, the data is propagated to other methods via method invocations."
+      },
+      {
+        "Step": "Originate user personal data from sensitive API calls to get string values.",
+        "Source Method": "Lcom/huawei/hms/ads/fp;->I:(I Ljava/lang/String; Ljava/lang/String;)Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "The method originates user personal data from sensitive API calls to get string values.",
+        "Action": "Stored in registers and variables within the method, then passed to other methods via method invocations."
+      },
+      {
+        "Step": "Originate user personal data from constructor parameters (Ljava/lang/String; I Ljava/lang/String;)V.",
+        "Source Method": "Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data origin is from the constructor parameters (Ljava/lang/String; I Ljava/lang/String;)V.",
+        "Action": "Stored in field 'I' of type Ljava/lang/String;. The data is propagated through registers and variables within the method."
+      },
+      {
+        "Step": "Originate user personal data by invoking a sensitive API call to `Lcom/huawei/hms/ads/fv;->F` which returns a `Ljava/lang/StringBuilder`.",
+        "Source Method": "Lcom/huawei/hms/ads/fv;->Code:(Ljava/lang/Object;)Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "The method originates user personal data by invoking a sensitive API call to `Lcom/huawei/hms/ads/fv;->F` which returns a `Ljava/lang/StringBuilder`.",
+        "Action": "Stored in register v0 and then passed to another method via the return statement."
+      },
+      {
+        "Step": "Originate user personal data by calling System.currentTimeMillis() and Thread.currentThread().getName() APIs.",
+        "Source Method": "Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "This method originates user personal data by calling System.currentTimeMillis() and Thread.currentThread().getName() APIs.",
+        "Action": "Stored in fields B, C, and S."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/hms/ads/by;->Code:(Lcom/huawei/hms/ads/RequestOptions;)Lcom/huawei/hms/ads/RequestOptions;",
+      "Lcom/huawei/hms/ads/i;->I:()Lcom/huawei/hms/ads/RequestOptions;",
+      "Lcom/huawei/hms/ads/fp;->V:(I Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/huawei/hms/ads/fo;->V:(Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/huawei/hms/ads/fo;->Code:(Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/huawei/hms/ads/fp;->I:(I Ljava/lang/String; Ljava/lang/String;)Lcom/huawei/hms/ads/fv;",
+      "Lcom/huawei/hms/ads/fv;->Code:(Ljava/lang/Object;)Lcom/huawei/hms/ads/fv;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->I:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/by;->Code:(Lcom/huawei/hms/ads/RequestOptions;)Lcom/huawei/hms/ads/RequestOptions;",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/by;->Code:(Lcom/huawei/hms/ads/RequestOptions;)Lcom/huawei/hms/ads/RequestOptions;"
+      },
+      {
+        "dataflow 2": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->V:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/i;->I:()Lcom/huawei/hms/ads/RequestOptions;",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/i;->I:()Lcom/huawei/hms/ads/RequestOptions;"
+      },
+      {
+        "dataflow 3": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->Code:(Ljava/util/List;)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/by;->Code:(Lcom/huawei/hms/ads/RequestOptions;)Lcom/huawei/hms/ads/RequestOptions;",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/by;->Code:(Lcom/huawei/hms/ads/RequestOptions;)Lcom/huawei/hms/ads/RequestOptions;"
+      },
+      {
+        "dataflow 4": " Lcom/huawei/hms/ads/i;->I:()Lcom/huawei/hms/ads/RequestOptions; --> ... --> Lcom/huawei/hms/ads/fp;->V:(I Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data originates from class com.huawei.hms.ads.i and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fp;->V:(I Ljava/lang/String; Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 5": " Lcom/huawei/hms/ads/i;->Code:()Lcom/huawei/hms/ads/i; --> ... --> Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "The data originates from class com.huawei.hms.ads.i and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;"
+      },
+      {
+        "dataflow 6": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->Z:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 7": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->Code:(Ljava/util/List;)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;"
+      },
+      {
+        "dataflow 8": " Lcom/huawei/hms/ads/by;->Code:(Lcom/huawei/hms/ads/RequestOptions;)Lcom/huawei/hms/ads/RequestOptions --> ... --> Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "The data originates from class com.huawei.hms.ads.by and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;"
+      },
+      {
+        "dataflow 9": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->V:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 10": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->I:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 11": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->Code:(Ljava/util/List;)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;"
+      },
+      {
+        "dataflow 12": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->V:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 13": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->I:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 14": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->Code:(Ljava/util/List;)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;"
+      },
+      {
+        "dataflow 15": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->V:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 16": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->I:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 17": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->Code:(Ljava/util/List;)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;"
+      },
+      {
+        "dataflow 18": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->V:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 19": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->I:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 20": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->Code:(Ljava/util/List;)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;"
+      },
+      {
+        "dataflow 21": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->V:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 22": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->I:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 23": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->Code:(Ljava/util/List;)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;"
+      },
+      {
+        "dataflow 24": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->V:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 25": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->I:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 26": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->Code:(Ljava/util/List;)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;"
+      },
+      {
+        "dataflow 27": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->V:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 28": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->I:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 29": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->Code:(Ljava/util/List;)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;->I:()Lcom/huawei/hms/ads/fv;"
+      },
+      {
+        "dataflow 30": " Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a;->V:(I)Lcom/huawei/openalliance/ad/beans/parameter/AdSlotParam$a; --> ... --> Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V",
+        "Reasoning": "The data originates from AdSlotParam$a class and is propagated through various methods until it reaches the sink point Lcom/huawei/hms/ads/fv;-><init>:(Ljava/lang/String; I Ljava/lang/String;)V"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi information",
+      "String (user input)",
+      "Integer (API call result)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieves WiFi information",
+        "Source Method": "Lcom/huawei/hms/framework/common/NetworkUtil;->getWifiRssi:(Landroid/content/Context;)I",
+        "Reasoning": "The method originates user personal data by calling the getWifiRssi function which retrieves WiFi information.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Logs information",
+        "Source Method": "Lcom/huawei/hms/framework/common/Logger;->i:(Ljava/lang/String; Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data by invoking a sensitive API call to log information.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Concatenates prefix with input string",
+        "Source Method": "Lcom/huawei/hms/framework/common/Logger;->complexAppTag:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by concatenating a prefix 'NetworkSdk_' with the input string parameter.",
+        "Action": "Passed to toString() method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/hms/framework/common/Logger;->i:(Ljava/lang/String; Ljava/lang/Object;)V",
+      "Lcom/huawei/hms/framework/common/Logger;->logPrintln:(I Ljava/lang/String; Ljava/lang/String;)I",
+      "Lcom/huawei/hms/framework/common/Logger;->extLogPrintln:(I Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/huawei/hms/framework/common/Logger;->getCallMethodInfo:(I)Ljava/lang/String;",
+      "Lcom/huawei/hms/framework/common/NetworkUtil;->getWifiRssi:(Landroid/content/Context;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/huawei/hms/framework/common/NetworkUtil;->getWifiRssi:(Landroid/content/Context;)I --> Stored in registers and variables v2, v1 --> Passed to getConnectionInfo() and getBSSID() methods",
+        "Reasoning": "The method originates user personal data by calling the getWifiRssi function which retrieves WiFi information. The data is stored in registers and variables within the method, specifically in variable v2 and register v1."
+      },
+      {
+        "dataflow 2": " Lcom/huawei/hms/framework/common/Logger;->i:(Ljava/lang/String; Ljava/lang/Object;)V --> Stored in registers and variables before being passed to other methods via method invocations",
+        "Reasoning": "The method originates user personal data by invoking a sensitive API call to log information. The data is stored in registers and variables within the method before being passed to other methods via method invocations."
+      },
+      {
+        "dataflow 3": " Lcom/huawei/hms/framework/common/Logger;->complexAppTag:(Ljava/lang/String;)Ljava/lang/String --> Stored in StringBuilder object and passed to toString() method",
+        "Reasoning": "The method originates user personal data by concatenating a prefix 'NetworkSdk_' with the input string parameter. The data is stored in a StringBuilder object and passed to the toString() method before being returned as a String."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "java.lang.Object"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getApplicationContext() and getSystemService() API calls",
+        "Source Method": "Lcom/huawei/hms/framework/common/NetworkUtil;->getWifiRssiLevel:(Landroid/content/Context;)I",
+        "Reasoning": "The method originates user personal data through the getApplicationContext() and getSystemService() API calls.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Method invocations to Landroid/net/wifi/WifiManager;->getConnectionInfo()Landroid/net/wifi/WifiInfo;",
+        "Source Method": "Lcom/huawei/hms/framework/common/NetworkUtil;->getWifiRssiLevel:(Landroid/content/Context;)I",
+        "Reasoning": "The data is propagated to other methods via method invocations.",
+        "Action": "Passed to Landroid/net/wifi/WifiManager;->getConnectionInfo()Landroid/net/wifi/WifiInfo;"
+      },
+      {
+        "Step": "Method invocation to Lcom/huawei/hms/framework/common/Logger;->i(Ljava/lang/String; Ljava/lang/Object;)V",
+        "Source Method": "Lcom/huawei/hms/framework/common/NetworkUtil;->getWifiRssiLevel:(Landroid/content/Context;)I",
+        "Reasoning": "The data is propagated to other methods via method invocations.",
+        "Action": "Passed to Lcom/huawei/hms/framework/common/Logger;->i(Ljava/lang/String; Ljava/lang/Object;)V"
+      },
+      {
+        "Step": "Method invocation to Lcom/huawei/hms/framework/common/Logger;->println(I Ljava/lang/String; Ljava/lang/Object;)V",
+        "Source Method": "Lcom/huawei/hms/framework/common/Logger;->i(Ljava/lang/String; Ljava/lang/Object;)V",
+        "Reasoning": "The data is then passed to the 'Lcom/huawei/hms/framework/common/Logger;->println(I Ljava/lang/String; Ljava/lang/Object;)V' method, which is a sink point for logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/hms/framework/common/Logger;->i(Ljava/lang/String; Ljava/lang/Object;)V",
+      "Lcom/huawei/hms/framework/common/Logger;->println(I Ljava/lang/String; Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/huawei/hms/framework/common/NetworkUtil;->getWifiRssiLevel:(Landroid/content/Context;)I --> Lcom/huawei/hms/framework/common/Logger;->i(Ljava/lang/String; Ljava/lang/Object;)V --> Lcom/huawei/hms/framework/common/Logger;->println(I Ljava/lang/String; Ljava/lang/Object;)V",
+        "Reasoning": "The data originates from the getApplicationContext() and getSystemService() API calls in NetworkUtil, then passed to Logger's i method which logs it."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location-related information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Call Location API to get location data",
+        "Source Method": "Lcom/huawei/hms/locationSdk/w0;->a:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "The method originates user personal data by calling the Location API.",
+        "Action": "Stored in a JSONObject"
+      },
+      {
+        "Step": "Store location data in JSONObject",
+        "Source Method": "Lcom/huawei/hms/locationSdk/w0;->a:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "The data is stored in a JSONObject.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Log location data",
+        "Source Method": "Lcom/huawei/hms/locationSdk/w0;->a:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "The data reaches sinks such as logging (via Log.d calls).",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": "not_sensitive "
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data collected",
+        "Source Method": "Lcom/huawei/hms/rn/location/backend/utils/LocationUtils;->lambda$static$3:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "The current method is using sensitive API calls to originate user personal data.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Data passed to other methods",
+        "Source Method": "Lcom/huawei/hms/rn/location/backend/utils/LocationUtils;->lambda$static$3:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "The data is stored in registers and variables within the method, and it is passed to other methods via method invocations.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Data reaches sink point through logging",
+        "Source Method": "Lcom/huawei/hms/rn/location/backend/utils/LocationUtils;->lambda$static$3:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "The data reaches a sink point through logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/hms/rn/location/backend/utils/LocationUtils;->lambda$static$3:(Landroid/location/Location;)Lorg/json/JSONObject;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/huawei/hms/rn/location/backend/utils/LocationUtils;->lambda$static$3:(Landroid/location/Location;)Lorg/json/JSONObject; --> Stored in registers and variables within the method --> Passed via method invocation --> Logged",
+        "Reasoning": "The data is collected, stored, passed to other methods, and logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location and device ID collected from user personal data.",
+        "Source Method": "Lcom/leanplum/internal/LeanplumInternal$7$1;->doInBackground:([Ljava/lang/Void;)Ljava/lang/Void;",
+        "Reasoning": "The method originates user personal data from the location and stores it in a HashMap. The data is then passed to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Phone number collected through sensitive API calls.",
+        "Source Method": "Lcom/leanplum/internal/RequestFactory;->createRequest:(Ljava/lang/String; Ljava/lang/String; Ljava/util/Map;)Lcom/leanplum/internal/RequestOld;",
+        "Reasoning": "The method originates user personal data through sensitive API calls to countAggregator(). The data is stored in register v0 and passed to the incrementCount() method. The data ultimately reaches a sink point as it is being incremented.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data propagated from one method to another via method invocations.",
+        "Source Method": "Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V",
+        "Reasoning": "This method originates user personal data through sensitive API calls to generate log messages. The data is stored in registers and variables within the method and propagated to other methods via method invocations. The data reaches sink points like logging, network transmission, or storage.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Data checked if present in set and retrieved from map.",
+        "Source Method": "Lcom/leanplum/internal/CountAggregator;->incrementCount:(Ljava/lang/String; I)V",
+        "Reasoning": "The method originates user personal data from the 'enabledCounters' set and propagates it through registers. It checks if a counter is present in the set, retrieves its value from the 'counts' map, updates the count, and stores it back in the map.",
+        "Action": "Checked"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V",
+      "Lcom/leanplum/internal/CountAggregator;->incrementCount:(Ljava/lang/String; I)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/leanplum/internal/LeanplumInternal$7$1;->doInBackground:([Ljava/lang/Void;)Ljava/lang/Void--> Lcom/leanplum/internal/RequestFactory;->createRequest:(Ljava/lang/String; Ljava/lang/String; Ljava/util/Map;)Lcom/leanplum/internal/RequestOld--> Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V]",
+        "Reasoning": "[Location and device ID collected from user personal data, passed to RequestFactory method which calls CountAggregator method that increments count and logs the data]"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiMacAddressHash",
+      "user phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getWifiMacAddressHash() method invocation",
+        "Source Method": "Lcom/leanplum/internal/Util;->getWifiMacAddressHash:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in register v0 and then passed to other methods via method invocations.",
+        "Action": "stored"
+      },
+      {
+        "Step": "md5() function invocation",
+        "Source Method": "Lcom/leanplum/internal/Util;->md5:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The hashed data is then propagated through registers and variables within the method, ultimately being returned as a string.",
+        "Action": "stored"
+      },
+      {
+        "Step": "log() function invocation",
+        "Source Method": "Lcom/leanplum/internal/Log;->i:([Ljava/lang/Object;)V",
+        "Reasoning": "The data is stored in registers v0 and v2 before being passed to other methods via method invocations.",
+        "Action": "logged"
+      },
+      {
+        "Step": "log() function invocation",
+        "Source Method": "Lcom/leanplum/internal/Log;->v:([Ljava/lang/Object;)V",
+        "Reasoning": "The concatenated string is passed as an argument to the log method, which is likely used for logging purposes.",
+        "Action": "logged"
+      },
+      {
+        "Step": "log() function invocation",
+        "Source Method": "Lcom/leanplum/internal/Log;->w:([Ljava/lang/Object;)V",
+        "Reasoning": "The sensitive API call is log() from the com.leanplum.internal.Log class, which stores the data in its internal buffer.",
+        "Action": "logged"
+      },
+      {
+        "Step": "log() function invocation",
+        "Source Method": "Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in registers (v0, v1) and variables (v3). It is then passed to other methods via method invocations.",
+        "Action": "logged"
+      },
+      {
+        "Step": "maybeSendLog() function invocation",
+        "Source Method": "Lcom/leanplum/internal/Log;->maybeSendLog:(Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in registers and variables within the method and propagated to other methods via method invocations.",
+        "Action": "logged"
+      },
+      {
+        "Step": "post() function invocation",
+        "Source Method": "Lcom/leanplum/internal/RequestOld;->post:(Ljava/lang/String; Ljava/util/Map;)Lcom/leanplum/internal/RequestOld;",
+        "Reasoning": "The data is stored in registers and variables within the method, then passed to other methods via method invocations.",
+        "Action": "logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/leanplum/internal/Log;->i:([Ljava/lang/Object;)V",
+      "Lcom/leanplum/internal/Log;->v:([Ljava/lang/Object;)V",
+      "Lcom/leanplum/internal/Log;->w:([Ljava/lang/Object;)V",
+      "Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V",
+      "Lcom/leanplum/internal/Log;->maybeSendLog:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/leanplum/internal/Util;->getWifiMacAddressHash:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/leanplum/internal/Log;->i:([Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data by calling the getMacAddress() function on WifiInfo object. The data is stored in register v0 and then passed to other methods via method invocations."
+      },
+      {
+        "dataflow 2": "Lcom/leanplum/internal/Util;->md5:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/leanplum/internal/Log;->i:([Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data by using the MD5 algorithm to hash a string. The hashed data is then propagated through registers and variables within the method, ultimately being returned as a string."
+      },
+      {
+        "dataflow 3": "Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V --> Lcom/leanplum/internal/Log;->i:([Ljava/lang/Object;)V",
+        "Reasoning": "This method originates user personal data through sensitive API calls to generate tags and messages. The data is stored in registers (v0, v1) and variables (v3). It is then passed to other methods via method invocations."
+      },
+      {
+        "dataflow 4": "Lcom/leanplum/internal/Log;->maybeSendLog:(Ljava/lang/String;)V --> Lcom/leanplum/internal/Log;->i:([Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to logging and network transmission. The data is stored in registers and variables within the method and propagated to other methods via method invocations."
+      },
+      {
+        "dataflow 5": "Lcom/leanplum/internal/RequestOld;->post:(Ljava/lang/String; Ljava/util/Map;)Lcom/leanplum/internal/RequestOld; --> Lcom/leanplum/internal/Log;->i:([Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls. The data is stored in registers and variables within the method, then passed to other methods via method invocations."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Keywords",
+      "Gender",
+      "TargetingContentUrl",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data by calling sensitive APIs.",
+        "Source Method": "Lcom/huawei/hms/ads/g;->V:(Lcom/huawei/hms/ads/AdParam;)V",
+        "Reasoning": "The method calls sensitive APIs (e.g., getKeywords(), getGender(), getTargetingContentUrl(), I()) and stores it in registers or variables.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by calling the 'g' field setter with a String parameter.",
+        "Source Method": "Lcom/huawei/openalliance/ad/inter/h;->V:(Ljava/lang/String;)V",
+        "Reasoning": "The method calls the 'g' field setter with a String parameter and stores it in register 'v0'.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by calling a sensitive API to get a Set of users.",
+        "Source Method": "Lcom/huawei/openalliance/ad/inter/h;->Code:(Ljava/util/Set;)V",
+        "Reasoning": "The method calls a sensitive API to get a Set of users and stores it in the 'v1' register.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by calling a sensitive API to store a string in the 'h' field.",
+        "Source Method": "Lcom/huawei/openalliance/ad/inter/h;->I:(Ljava/lang/String;)V",
+        "Reasoning": "The method calls a sensitive API to store a string in the 'h' field and stores it in register v0.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data from the `f` field of the current object.",
+        "Source Method": "Lcom/huawei/openalliance/ad/inter/h;->Code:(I)V",
+        "Reasoning": "The method originates user personal data from the `f` field of the current object and stores it in register `v0`. The data is then passed to the next method via return statement.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/openalliance/ad/inter/h;->V:(Ljava/lang/String;)V",
+      "Lcom/huawei/hms/ads/g;->V:(Lcom/huawei/hms/ads/AdParam;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/huawei/openalliance/ad/inter/h;->Code:(Ljava/util/Set;)V --> Lcom/huawei/openalliance/ad/inter/h;->I:(Ljava/lang/String)V --> Lcom/huawei/openalliance/ad/inter/h;->V:(Ljava/lang/String)V",
+        "Reasoning": "The data is propagated from the `Code` method to the `I` method and then to the `V` method via method invocations."
+      },
+      {
+        "dataflow 2": " Lcom/huawei/openalliance/ad/inter/h;->Code:(I)V --> Lcom/huawei/openalliance/ad/inter/h;->V:(Ljava/lang/String)V",
+        "Reasoning": "The data is propagated from the `Code` method to the `V` method via return statement."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "AdParam",
+      "RequestOptions"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location and AdParam are propagated through registers and variables",
+        "Source Method": "Lcom/huawei/hms/ads/j;->V:(Lcom/huawei/hms/ads/AdParam;)V",
+        "Reasoning": "The method originates user personal data from AdParam and Location objects.",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "Location object is stored in register v0",
+        "Source Method": "Lcom/huawei/openalliance/ad/views/PPSBannerView;->setLocation:(Lcom/huawei/openalliance/ad/beans/metadata/Location;)V",
+        "Reasoning": "The method originates user personal data from the Location object.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "RequestOptions are stored in register v0 as an instance of Lcom/huawei/hms/ads/RequestOptions;",
+        "Source Method": "Lcom/huawei/openalliance/ad/views/PPSBannerView;->setRequestOptions:(Lcom/huawei/hms/ads/RequestOptions;)V",
+        "Reasoning": "The method originates user personal data by using the sensitive API setRequestOptions to set the request options.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Data is passed to other methods via method invocation",
+        "Source Method": "Lcom/huawei/openalliance/ad/views/PPSBannerView;->setLocation:(Lcom/huawei/openalliance/ad/beans/metadata/Location;)V",
+        "Reasoning": "The data is then passed to another method without any sinks identified.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Data is propagated to other methods via method invocation",
+        "Source Method": "Lcom/huawei/openalliance/ad/views/PPSBannerView;->setRequestOptions:(Lcom/huawei/hms/ads/RequestOptions;)V",
+        "Reasoning": "The data is propagated to other methods via method invocation.",
+        "Action": "Passed via method invocation"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/huawei/hms/ads/j;->V:(Lcom/huawei/hms/ads/AdParam;)V --> Lcom/huawei/openalliance/ad/views/PPSBannerView;->setLocation:(Lcom/huawei/openalliance/ad/beans/metadata/Location;)V --> null",
+        "Reasoning": "The data originates from AdParam and Location objects, then passed to setLocation method without any sinks identified."
+      },
+      {
+        "dataflow 2": "Lcom/huawei/openalliance/ad/views/PPSBannerView;->setRequestOptions:(Lcom/huawei/hms/ads/RequestOptions;)V --> Lcom/huawei/openalliance/ad/views/PPSBannerView;->setLocation:(Lcom/huawei/openalliance/ad/beans/metadata/Location;)V --> null",
+        "Reasoning": "The data originates from RequestOptions, then passed to setLocation method without any sinks identified."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "location information",
+      "device ID",
+      "phone number",
+      "code",
+      "collection"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data by invoking sensitive API calls to get location information.",
+        "Source Method": "Lcom/huawei/hms/ads/ko$1;->onLocationResult:(Lcom/huawei/hms/location/LocationResult;)V",
+        "Reasoning": "The method originates user personal data by invoking sensitive API calls to get location information.",
+        "Action": "stored in variables and registers, then passed to other methods for further processing."
+      },
+      {
+        "Step": "Originates user personal data from the 'Code' parameter.",
+        "Source Method": "Lcom/huawei/hms/ads/lk;->Code:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data from the 'Code' parameter.",
+        "Action": "stored in register v0 and propagated to the next method via a move instruction."
+      },
+      {
+        "Step": "Originates user personal data through the 'Code(I)' call.",
+        "Source Method": "Lcom/huawei/hms/ads/fp;->V:(I Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the 'Code(I)' call.",
+        "Action": "stored in register v0 and passed to other methods via method invocations."
+      },
+      {
+        "Step": "Originates user personal data from sensitive API calls to `Code`.",
+        "Source Method": "Lcom/huawei/hms/ads/fo;->I:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data from sensitive API calls to `Code`.",
+        "Action": "stored in register `v0` and propagated through subsequent instructions."
+      },
+      {
+        "Step": "Originates user personal data by parsing a string using `android.net.Uri.parse()`.",
+        "Source Method": "Lcom/huawei/hms/ads/ld;->F:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by parsing a string using `android.net.Uri.parse()`.",
+        "Action": "stored in registers and variables within the method, including `v1` and `v0`. The data is propagated to other methods via method invocations."
+      },
+      {
+        "Step": "Originates user personal data from a sensitive API call to get the string builder.",
+        "Source Method": "Lcom/huawei/hms/ads/fv;->Code:(Ljava/lang/Object;)Lcom/huawei/hms/ads/fv;",
+        "Reasoning": "The method originates user personal data from a sensitive API call to get the string builder.",
+        "Action": "stored in register `v0` and passed through variable 'F'. It then reaches a sink point by being returned as an object."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/hms/ads/fp;->Code(Lcom/huawei/hms/ads/fv; I Ljava/lang/String;)V",
+      "Lcom/huawei/hms/ads/lk;->toString()Ljava/lang/String;",
+      "Lcom/huawei/hms/ads/fv;->return-object v5"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/huawei/hms/ads/ko$1;->onLocationResult:(Lcom/huawei/hms/location/LocationResult;)V --> Lcom/huawei/hms/ads/fp;->Code(Lcom/huawei/hms/ads/fv; I Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in variables and registers, then passed to other methods for further processing. The data reaches sinks such as logging and storage."
+      },
+      {
+        "dataflow 2": " Lcom/huawei/hms/ads/lk;->Code:(Ljava/lang/String;)Ljava/lang/String --> Lcom/huawei/hms/ads/fv;->return-object v5",
+        "Reasoning": "The data is stored in register `v0` and propagated to the next method via a move instruction. The data then reaches a sink point by being returned as an object."
+      },
+      {
+        "dataflow 3": " Lcom/huawei/hms/ads/fp;->V:(I Ljava/lang/String; Ljava/lang/String;)V --> Lcom/huawei/hms/ads/lk;->toString()Ljava/lang/String",
+        "Reasoning": "The method originates user personal data through the 'Code(I)' call. The data is stored in register `v0` and passed to other methods via method invocations, including 'I(I Ljava/lang/String; Ljava/lang/String;)Lcom/huawei/hms/ads/fv;' and 'Code(Lcom/huawei/hms/ads/fv; I Ljava/lang/String;)V'. A sink point is identified as the 'Code(Lcom/huawei/hms/ads/fv; I Ljava/lang/String;)V' method, which logs data."
+      },
+      {
+        "dataflow 4": " Lcom/huawei/hms/ads/fo;->I:(Ljava/lang/String; Ljava/lang/String;)V --> Lcom/huawei/hms/ads/lk;->toString()Ljava/lang/String",
+        "Reasoning": "The method originates user personal data from sensitive API calls to `Code`. The data is stored in register `v0` and propagated through subsequent instructions. No sinks are identified within this method."
+      },
+      {
+        "dataflow 5": " Lcom/huawei/hms/ads/ld;->F:(Ljava/lang/String;)Ljava/lang/String --> Lcom/huawei/hms/ads/fv;->return-object v5",
+        "Reasoning": "The method originates user personal data by parsing a string using `android.net.Uri.parse()` and then extracting the scheme and host. The data is stored in registers and variables within the method, including `v1` and `v0`. The data is propagated to other methods via method invocations."
+      },
+      {
+        "dataflow 6": " Lcom/huawei/hms/ads/fv;->Code:(Ljava/lang/Object;)Lcom/huawei/hms/ads/fv --> Lcom/huawei/hms/ads/fv;->return-object v5",
+        "Reasoning": "The method originates user personal data from a sensitive API call to get the string builder. The data is stored in register `v0` and passed through variable 'F'. It then reaches a sink point by being returned as an object."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "READ_PHONE_STATE permission check and device ID retrieval",
+        "Source Method": "Lcom/huawei/hms/hatool/z0;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Sensitive user personal data originates from the READ_PHONE_STATE permission check and device ID retrieval.",
+        "Action": "Stored in registers (v0, v1)"
+      },
+      {
+        "Step": "Checking for read phone permission",
+        "Source Method": "Lcom/huawei/hms/hatool/p0;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data by checking for read phone permission.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Sensitive API call to `Lcom/huawei/hms/hatool/y;->b()Z`",
+        "Source Method": "Lcom/huawei/hms/hatool/y;->b:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data using sensitive API call to `Lcom/huawei/hms/hatool/y;->b()Z`.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Sensitive API calls to `Lcom/huawei/hms/hatool/y;->d()Z`",
+        "Source Method": "Lcom/huawei/hms/hatool/y;->f:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to `Lcom/huawei/hms/hatool/y;->d()Z`.",
+        "Action": "Stored in registers v0, v2, and v3"
+      },
+      {
+        "Step": "append method calls on a StringBuilder instance",
+        "Source Method": "Lcom/huawei/hms/hatool/z;->b:(I Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "Sensitive user personal data originates from the `append` method calls on a StringBuilder instance.",
+        "Action": "Stored in registers and variables within this method"
+      },
+      {
+        "Step": "Invoking the 'b' method of class 'z' with a parameter of 6",
+        "Source Method": "Lcom/huawei/hms/hatool/y;->b:()Z",
+        "Reasoning": "The method originates sensitive user personal data by invoking the 'b' method of class 'z' with a parameter of 6.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Sensitive API calls to Log class",
+        "Source Method": "Lcom/huawei/hms/hatool/z;->a:(I Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to Log class.",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "Calling the sensitive API in 'iget-boolean v0, v1, Lcom/huawei/hms/hatool/z;->a Z' instruction",
+        "Source Method": "Lcom/huawei/hms/hatool/z;->b:(I)Z",
+        "Reasoning": "The method originates user personal data by calling the sensitive API in 'iget-boolean v0, v1, Lcom/huawei/hms/hatool/z;->a Z' instruction.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/hms/hatool/y;->f(Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/huawei/hms/hatool/z;->b(I Ljava/lang/String; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/huawei/hms/hatool/z0;->f(Landroid/content/Context;)Ljava/lang/String--> Lcom/huawei/hms/hatool/y;->b()Z --> Lcom/huawei/hms/hatool/z;->b(I Ljava/lang/String; Ljava/lang/String)V]",
+        "Reasoning": "The data is propagated from the READ_PHONE_STATE permission check and device ID retrieval to the 'b' method of class 'y', then to the append method calls on a StringBuilder instance."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "gender",
+      "targeting content URL",
+      "keywords",
+      "request options"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from API calls",
+        "Source Method": "Lcom/huawei/hms/ads/template/view/NativeTemplateView;->Code:(Lcom/huawei/openalliance/ad/inter/h; Lcom/huawei/hms/ads/AdParam;)V",
+        "Reasoning": "Sensitive API calls to get location, gender, targeting content URL, keywords, and request options.",
+        "Action": "Stored in variables v0-v6"
+      },
+      {
+        "Step": "Propagates through registers",
+        "Source Method": "Lcom/huawei/hms/ads/template/view/NativeTemplateView;->Code:(Lcom/huawei/openalliance/ad/inter/h; Lcom/huawei/hms/ads/AdParam;)V",
+        "Reasoning": "Data is propagated through registers.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Reaches sinks such as logging and network transmission",
+        "Source Method": "Lcom/huawei/hms/ads/template/view/NativeTemplateView;->Code:(Lcom/huawei/openalliance/ad/inter/h; Lcom/huawei/hms/ads/AdParam;)V",
+        "Reasoning": "Data reaches sinks such as logging and network transmission.",
+        "Action": "Logged, transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/huawei/hms/ads/template/view/NativeTemplateView;->Code:(Lcom/huawei/openalliance/ad/inter/h; Lcom/huawei/hms/ads/AdParam;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/huawei/hms/ads/template/view/NativeTemplateView;->Code:(Lcom/huawei/openalliance/ad/inter/h; Lcom/huawei/hms/ads/AdParam;)V --> Stored in variables v0-v6 --> Propagated through registers --> Logged, transmitted",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "mac address",
+      "wifi info"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Call getMacAddressSync() method",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the `getMacAddressSync()` and `getWifiInfo()` methods.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Call getWifiInfo() method",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The method originates user personal data by calling the getWifiInfo() method, which retrieves the WiFi information.",
+        "Action": "Stored in register v2"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String; --> Stored in register v0 --> No explicit sink points like logging, network transmission, or storage are identified.",
+        "Reasoning": "The data is stored in register `v0` and passed to other methods via method invocations."
+      },
+      {
+        "dataflow 2": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo; --> Stored in register v2 --> No explicit sink points like logging, network transmission, or storage are identified.",
+        "Reasoning": "The data is stored in register `v2` and then passed to other methods via method invocations."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check permissions and retrieve phone number",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to check permissions and retrieve the phone number.",
+        "Action": "Stored in registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->logError:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String; --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->logError:()V",
+        "Reasoning": "The phone number is retrieved and then logged as an error message."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location data from LocationManager",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData:(Lcom/facebook/react/bridge/ReadableMap; Lcom/facebook/react/bridge/Callback; Lcom/facebook/react/bridge/Callback;)V",
+        "Reasoning": "The method originates user personal data by calling the `getSystemService` API to retrieve the location manager.",
+        "Action": "stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get latitude, longitude, altitude, accuracy, bearing, and speed from Location object",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule;->locationToMap:(Landroid/location/Location;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "User personal data originates from the locationToMap method using sensitive API calls to getLatitude, getLongitude, getAltitude, getAccuracy, getBearing, and getSpeed.",
+        "Action": "stored in registers v1 and v0"
+      },
+      {
+        "Step": "Invoke requestLocationUpdates on LocationManager",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule$SingleUpdateRequest;->invoke:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data by invoking the `requestLocationUpdates` method of the `LocationManager`, which can potentially log or transmit location information.",
+        "Action": "stored in registers and variables within the method"
+      },
+      {
+        "Step": "Create WritableNativeMap instance",
+        "Source Method": "Lcom/facebook/react/bridge/Arguments;->createMap:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The method originates user personal data by creating a WritableNativeMap instance.",
+        "Action": "stored in register v0"
+      },
+      {
+        "Step": "Initiate NativeMap constructor",
+        "Source Method": "Lcom/facebook/react/bridge/NativeMap;-><init>:(Lcom/facebook/jni/HybridData;)V",
+        "Reasoning": "The current method originates user personal data through the 'Lcom/facebook/jni/HybridData;' object.",
+        "Action": "stored in a register (v0)"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/reactnativecommunity/geolocation/GeolocationModule$SingleUpdateRequest;->postDelayed:(Ljava/lang/Runnable; J)V",
+      "Lcom/facebook/react/bridge/Arguments;->createMap:()Lcom/facebook/react/bridge/WritableMap;",
+      "Lcom/facebook/react/bridge/NativeMap;-><init>:(Lcom/facebook/jni/HybridData;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData:(Lcom/facebook/react/bridge/ReadableMap; Lcom/facebook/react/bridge/Callback; Lcom/facebook/react/bridge/Callback;)V --> Lcom/reactnativecommunity/geolocation/GeolocationModule$SingleUpdateRequest;->invoke:(Landroid/location/Location;)V --> Lcom/reactnativecommunity/geolocation/GeolocationModule$SingleUpdateRequest;->postDelayed:(Ljava/lang/Runnable; J)V",
+        "Reasoning": "The location data is first retrieved by the getCurrentLocationData method, then passed to the invoke method of SingleUpdateRequest, which can potentially log or transmit the location information. The postDelayed method is called with a Runnable that likely contains the location data."
+      },
+      {
+        "dataflow 2": " Lcom/reactnativecommunity/geolocation/GeolocationModule;->locationToMap:(Landroid/location/Location;)Lcom/facebook/react/bridge/WritableMap; --> Lcom/facebook/react/bridge/NativeMap;-><init>:(Lcom/facebook/jni/HybridData;)V",
+        "Reasoning": "The location data is first retrieved by the locationToMap method, which creates a WritableNativeMap instance. The NativeMap constructor is then called with the HybridData object, which likely contains the location data."
+      }
+    ],
+    "Label": "leak"
+  }
+]

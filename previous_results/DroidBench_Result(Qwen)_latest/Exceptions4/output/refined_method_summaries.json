@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved from TelephonyManager",
+                "Source Method": "Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Method summary explicitly states device ID is obtained via TelephonyManager.getDeviceId()",
+                "Action": "Retrieved"
+            },
+            {
+                "Step": "Device ID is stored in RuntimeException",
+                "Source Method": "Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Method summary indicates device ID is stored in a RuntimeException",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is transmitted via SMS",
+                "Source Method": "Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Method summary states SMS transmission occurs via SmsManager.sendTextMessage()",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V ",
+                "Reasoning": "Device ID is retrieved from TelephonyManager, stored in RuntimeException, then passed to SmsManager.sendTextMessage() for SMS transmission"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

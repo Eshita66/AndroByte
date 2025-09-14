@@ -1,0 +1,119 @@
+[
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain Location",
+        "Source Method": "Lcom/flurry/sdk/ads/gg;->c:()Lcom/flurry/sdk/ads/ew;",
+        "Reasoning": "Sensitive data is originated in the `Lcom/flurry/sdk/ads/gg;->c()` method.",
+        "Action": "Stored in ew object"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/flurry/sdk/ads/gg;->c:()Lcom/flurry/sdk/ads/ew; --> null",
+        "Reasoning": "Sensitive data is stored in the ew object but there are no sink points mentioned in the summaries."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location object is created and populated with sensitive data.",
+        "Source Method": "Lcom/flurry/sdk/iw;->a:()Lorg/json/JSONObject;",
+        "Reasoning": "Sensitive user data is originated from the `Location` object.",
+        "Action": "Stored in registers v1, v4, v6, v8, v9, and v10."
+      },
+      {
+        "Step": "Sensitive data is passed to the JSONObject object.",
+        "Source Method": "Lcom/flurry/sdk/iw;->a:()Lorg/json/JSONObject;",
+        "Reasoning": "Sensitive user data is stored in registers v1, v4, v6, v8, v9, and v10.",
+        "Action": "Passed to the `put()` method of the JSONObject object."
+      },
+      {
+        "Step": "JSONObject object is created.",
+        "Source Method": "Lcom/flurry/sdk/iw;->a:()Lorg/json/JSONObject;",
+        "Reasoning": "Sensitive user data is passed to the `put()` method of the JSONObject object.",
+        "Action": "Created and returned."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/flurry/sdk/iw;->a:()Lorg/json/JSONObject;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/flurry/sdk/iw;->a:()Lorg/json/JSONObject; --> Lcom/flurry/sdk/iw;->a:()Lorg/json/JSONObject;",
+        "Reasoning": "Sensitive user data is passed from the source method to the sink method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location",
+        "Source Method": "Lcom/flurry/sdk/at;->d:()Landroid/location/Location;",
+        "Reasoning": "Method description",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/flurry/sdk/at;->d:()Landroid/location/Location; --> Stored",
+        "Reasoning": "Location is stored in memory"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved from LocationManager.",
+        "Source Method": "Lmnn/Android/helper/LocationHelper;->getLocation:(Lmnn/Android/helper/LocationHelper$Callback;)V",
+        "Reasoning": "getLastKnownLocation() method is called.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Location data is passed to getLocationDetails() method.",
+        "Source Method": "Lmnn/Android/helper/LocationHelper;->getLocation:(Lmnn/Android/helper/LocationHelper$Callback;)V",
+        "Reasoning": "Method call.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LocationHelper.getLocation() --> getLocationDetails()",
+        "Reasoning": "Location data is passed from getLocation() to getLocationDetails(). No explicit logging, network, or storage calls are identified in the provided summaries."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

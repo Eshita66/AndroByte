@@ -1,0 +1,567 @@
+[
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract SSID from WifiInfo",
+        "Source Method": "Lcom/example/smartlinklib/MainActivity;->getSSid:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the getSSID() method of WifiInfo.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Extract substring from SSID",
+        "Source Method": "Lcom/example/smartlinklib/MainActivity;->getSSid:()Ljava/lang/String;",
+        "Reasoning": "The extracted string contains double quotes (\"), it is returned as the result.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/example/smartlinklib/MainActivity;->getSSid:()Ljava/lang/String; --> Stored (SSID) --> Stored (substring of SSID)",
+        "Reasoning": "The method originates user personal data by calling the getSSID() method of WifiInfo, extracts a substring containing sensitive information from it and stores it."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "currentLocation",
+      "latitude",
+      "longitude",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get current location from GPSTracker class.",
+        "Source Method": "Lcom/geniemd/geniemd/utils/GPSTracker;->getLocation:()Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data through sensitive API calls to determine GPS and network locations.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get latitude and longitude from current location.",
+        "Source Method": "Lcom/geniemd/geniemd/activities/SplashActivity;->canGetGPS:(I)Z",
+        "Reasoning": "The data is then propagated to other methods via method invocations.",
+        "Action": "Stored in 'currentState' field of the SplashActivity class"
+      },
+      {
+        "Step": "Check for ACCESS_FINE_LOCATION permission.",
+        "Source Method": "Lcom/geniemd/geniemd/activities/SplashActivity;->hasLocationPermission:(I)Z",
+        "Reasoning": "The data is stored in register v1 and propagated to other methods via method invocations.",
+        "Action": "Logged using Landroid/util/Log;->w(Ljava/lang/String; Ljava/lang/String;)I"
+      },
+      {
+        "Step": "Check for permissions and log if not granted.",
+        "Source Method": "Lpub/devrel/easypermissions/EasyPermissions;->hasPermissions:(Landroid/content/Context; [Ljava/lang/String;)Z",
+        "Reasoning": "The data is stored in registers or variables within the method, including v0, v1, v2, v3, v4, v5, and v6.",
+        "Action": "Logged using Landroid/util/Log;->w(Ljava/lang/String; Ljava/lang/String;)I"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/geniemd/geniemd/activities/SplashActivity;->canGetGPS:(I)Z",
+      "Lpub/devrel/easypermissions/EasyPermissions;->hasPermissions:(Landroid/content/Context; [Ljava/lang/String;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/geniemd/geniemd/utils/GPSTracker;->getLocation:()Landroid/location/Location; --> Lcom/geniemd/geniemd/activities/SplashActivity;->canGetGPS:(I)Z --> Lcom/geniemd/geniemd/activities/SplashActivity;->canGetGPS:(I)Z",
+        "Reasoning": "The data is propagated and transformed through method invocations, with the final sink being logging in SplashActivity."
+      },
+      {
+        "dataflow 2": "Lpub/devrel/easypermissions/EasyPermissions;->hasPermissions:(Landroid/content/Context; [Ljava/lang/String;)Z",
+        "Reasoning": "The data is propagated and transformed through method invocations, with the final sink being logging using Landroid/util/Log;->w(Ljava/lang/String; Ljava/lang/String;)I"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location object's latitude and longitude extracted from Location object",
+        "Source Method": "Lcom/geniemd/geniemd/activities/findproviders/ProvidersActivity;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The data is stored in registers (v1) before being returned void.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device location using GPSTracker class.",
+        "Source Method": "Lcom/geniemd/geniemd/utils/GPSTracker;->getLocation:()Landroid/location/Location;",
+        "Reasoning": "The method originates sensitive user personal data through the use of LocationManager and GPS.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get address from location using Geocoder class.",
+        "Source Method": "Lcom/geniemd/geniemd/activities/newassessment/QuestionsAssessment;->getCurrentState:()Ljava/lang/String;",
+        "Reasoning": "The data is then passed to the Geocoder class to get the address from the location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Store and manipulate sensitive data in JSON array.",
+        "Source Method": "Lcom/geniemd/geniemd/activities/newassessment/QuestionsAssessment;->getCurrentState:()Ljava/lang/String;",
+        "Reasoning": "The method also uses a JSON array to store and manipulate the data.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/geniemd/geniemd/activities/newassessment/QuestionsAssessment;->getCurrentState:()Ljava/lang/String;",
+      null,
+      "Lcom/geniemd/geniemd/utils/GPSTracker;->getLocation:()Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/geniemd/geniemd/utils/GPSTracker;->getLocation:()Landroid/location/Location; --> Lcom/geniemd/geniemd/activities/newassessment/QuestionsAssessment;->getCurrentState:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers and variables within the method, and it is passed to other methods via method invocations."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "MenuItem's getTitle() method",
+      "MenuItem's getItemId() method"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from MenuItem object",
+        "Source Method": "Lcom/geniemd/geniemd/activities/firstaid/EmergencyContactActivity;->onOptionsItemSelected:(Landroid/view/MenuItem;)Z",
+        "Reasoning": "The method originates user personal data from the `MenuItem` object's `getTitle()` and `getItemId()` methods.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Data propagated to other methods via method invocations",
+        "Source Method": "Lcom/geniemd/geniemd/activities/firstaid/EmergencyContactActivity;->onOptionsItemSelected:(Landroid/view/MenuItem;)Z",
+        "Reasoning": "The data is propagated to other methods via method invocations, including `startActivity()`, `showLoading()`, and `setContact()`.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Data reaches a sink point when passed to EmergencyContactController",
+        "Source Method": "Lcom/geniemd/geniemd/activities/firstaid/EmergencyContactActivity;->onOptionsItemSelected:(Landroid/view/MenuItem;)Z",
+        "Reasoning": "The data reaches a sink point when it is passed to the `EmergencyContactController` to start an action.",
+        "Action": "Passed to EmergencyContactController"
+      },
+      {
+        "Step": "Origins user personal data by setting a contact object",
+        "Source Method": "Lbr/com/rubythree/geniemd/api/controllers/EmergencyContactController;->setContact:(Lbr/com/rubythree/geniemd/api/models/EmergencyContact;)V",
+        "Reasoning": "The method originates user personal data by setting a contact object.",
+        "Action": "Stored in the 'contact' field of the EmergencyContactController class"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/geniemd/geniemd/activities/firstaid/EmergencyContactActivity;->onOptionsItemSelected:(Landroid/view/MenuItem;)Z",
+      "Lbr/com/rubythree/geniemd/api/controllers/EmergencyContactController;->setContact:(Lbr/com/rubythree/geniemd/api/models/EmergencyContact;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/geniemd/geniemd/activities/firstaid/EmergencyContactActivity;->onOptionsItemSelected:(Landroid/view/MenuItem;)Z --> EmergencyContactController --> Lbr/com/rubythree/geniemd/api/controllers/EmergencyContactController;->setContact:(Lbr/com/rubythree/geniemd/api/models/EmergencyContact;)V",
+        "Reasoning": "The data originates from the `onOptionsItemSelected` method in `EmergencyContactActivity`, is propagated to other methods, and reaches a sink point when passed to the `EmergencyContactController` to start an action."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "I"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data by using GPSTracker class and propagating through various operations.",
+        "Source Method": "Lcom/geniemd/geniemd/utils/GPSTracker;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to get the location and network status.",
+        "Action": "Stored in registers (v0, v1) and variables within the method."
+      },
+      {
+        "Step": "Originates user personal data by checking GPS and network status.",
+        "Source Method": "Lcom/geniemd/geniemd/utils/GPSTracker;->getLocation:()Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by checking GPS and network status.",
+        "Action": "Passed to other methods via method invocations."
+      },
+      {
+        "Step": "Originates user personal data from the context and permissions array.",
+        "Source Method": "Lpub/devrel/easypermissions/EasyPermissions;->hasPermissions:(Landroid/content/Context; [Ljava/lang/String;)Z",
+        "Reasoning": "The method hasPermissions of class EasyPermissions originates user personal data from the context and permissions array.",
+        "Action": "Propagated to other methods via method invocations like Log.w and ContextCompat.checkSelfPermission."
+      },
+      {
+        "Step": "Originates sensitive user personal data by calling the hasLocationPermission method.",
+        "Source Method": "Lcom/geniemd/geniemd/activities/newview/HomePage;->hasLocationPermission:(I)Z",
+        "Reasoning": "The current method originates sensitive user personal data by calling the hasLocationPermission method.",
+        "Action": "Logged or displayed."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/geniemd/geniemd/utils/GPSTracker;->getLocation:()Landroid/location/Location;",
+      "Lpub/devrel/easypermissions/EasyPermissions;->hasPermissions:(Landroid/content/Context; [Ljava/lang/String;)Z",
+      "Lcom/geniemd/geniemd/activities/newview/HomePage;->canGetGPS:(I)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/geniemd/geniemd/utils/GPSTracker;<init>(...) --> getLocation(...) --> canGetGPS(...) ",
+        "Reasoning": "The data is propagated from the GPSTracker class to the HomePage activity."
+      },
+      {
+        "dataflow 2": " Lpub/devrel/easypermissions/EasyPermissions;hasPermissions(...) --> hasLocationPermission(...) --> canGetGPS(...) ",
+        "Reasoning": "The data is propagated from the EasyPermissions class to the HomePage activity."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "D (double)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getLatitude() method invoked",
+        "Source Method": "Lcom/geniemd/geniemd/utils/GPSTracker;->getLatitude:()D",
+        "Reasoning": "The getLatitude() method of Location class is invoked to collect user personal data.",
+        "Action": "Stored in 'latitude' field"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/geniemd/geniemd/utils/GPSTracker;->getLatitude:()D --> Stored in 'latitude' field",
+        "Reasoning": "The getLatitude() method of Location class is invoked to collect user personal data, which is then stored in the 'latitude' field."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "D"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user longitude",
+        "Source Method": "Lcom/geniemd/geniemd/utils/GPSTracker;->getLongitude:()D",
+        "Reasoning": "The method originates user personal data by calling the `getLongitude()` method of a Location object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/geniemd/geniemd/utils/GPSTracker;->getLongitude:()D --> Stored in GPSTracker class --> No sink found",
+        "Reasoning": "The data is stored in the `longitude` field of the GPSTracker class but no sink point (logging, network calls, or file writes) is identified."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "current location",
+      "locationManager",
+      "latitude",
+      "longitude",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Current Location Obtained",
+        "Source Method": "Lcom/geniemd/geniemd/utils/GPSTracker;->getLocation:()Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data through the getLocation() method.",
+        "Action": "Stored in locationManager, location, latitude, and longitude"
+      },
+      {
+        "Step": "GPS Status Checked",
+        "Source Method": "Lcom/geniemd/geniemd/utils/GPSTracker;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "The current method GPSTracker's constructor originates sensitive user personal data by checking GPS and network enabled status.",
+        "Action": "Stored in instance variables isGPSEnabled, isNetworkEnabled, canGetLocation, and mContext"
+      },
+      {
+        "Step": "Permission Check",
+        "Source Method": "Lcom/geniemd/geniemd/banglalink/OemMain;->hasLocationPermission:(I)Z",
+        "Reasoning": "The method originates user personal data by checking for the ACCESS_FINE_LOCATION permission.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "API Calls to CheckSelfPermission",
+        "Source Method": "Lpub/devrel/easypermissions/EasyPermissions;->hasPermissions:(Landroid/content/Context; [Ljava/lang/String;)Z",
+        "Reasoning": "The current method originates user personal data through sensitive API calls to checkSelfPermission.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Data Passed to Other Methods",
+        "Source Method": "Lcom/geniemd/geniemd/banglalink/OemMain;->canGetGPS:(I)Z",
+        "Reasoning": "The data is passed to other methods via method invocations.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Data Stored in Registers and Variables",
+        "Source Method": "Lcom/geniemd/geniemd/utils/GPSTracker;->getLocation:()Landroid/location/Location;",
+        "Reasoning": "The data is stored in registers and variables within the method.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/geniemd/geniemd/banglalink/OemMain;->canGetGPS:(I)Z",
+      "Lpub/devrel/easypermissions/EasyPermissions;->hasPermissions:(Landroid/content/Context; [Ljava/lang/String;)Z",
+      "Lcom/geniemd/geniemd/utils/GPSTracker;->getLocation:()Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/geniemd/geniemd/utils/GPSTracker;->getLocation:()Landroid/location/Location; --> Stored in locationManager, location, latitude, and longitude --> Lcom/geniemd/geniemd/banglalink/OemMain;->canGetGPS:(I)Z --> Logged",
+        "Reasoning": "The data is obtained from the getLocation() method, stored in registers and variables within the method, and then passed to other methods via method invocations. The data reaches a sink point in the form of logging."
+      },
+      {
+        "dataflow 2": " Lcom/geniemd/geniemd/utils/GPSTracker;-><init>:(Landroid/content/Context;)V --> Stored in instance variables isGPSEnabled, isNetworkEnabled, canGetLocation, and mContext --> Lcom/geniemd/geniemd/banglalink/OemMain;->hasLocationPermission:(I)Z --> Stored in registers and variables within the method",
+        "Reasoning": "The data is obtained from the constructor of GPSTracker class, stored in instance variables, and then checked for permission. The data reaches a sink point in the form of storing in registers and variables."
+      },
+      {
+        "dataflow 3": " Lpub/devrel/easypermissions/EasyPermissions;->hasPermissions:(Landroid/content/Context; [Ljava/lang/String;)Z --> Stored in registers and variables within the method",
+        "Reasoning": "The data is obtained from the hasPermissions() method, stored in registers and variables within the method. The data does not reach a sink point."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.net.wifi.WifiInfo",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get network information and user connection type",
+        "Source Method": "Lcom/ihealth/communication/ins/Bpm1InsSet$WifiReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "Analyzing network state, Wi-Fi info, and server address",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Get BPM1 INS set using sensitive API call",
+        "Source Method": "Lcom/ihealth/communication/ins/Bpm1InsSet;->b:(Lcom/ihealth/communication/ins/Bpm1InsSet; I)V",
+        "Reasoning": "Originates user personal data by getting BPM1 INS set",
+        "Action": "Stored in register v0 and passed to another method"
+      },
+      {
+        "Step": "Get Wifi connection info using sensitive API call",
+        "Source Method": "Lcom/ihealth/communication/utils/WifiAdmin;->getWifiInfo:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "Originates user personal data from Wifi connection info",
+        "Action": "Stored in register v0 and passed to getConnectionInfo() method"
+      },
+      {
+        "Step": "Get sensitive user personal data using sensitive API calls",
+        "Source Method": "Lcom/ihealth/communication/ins/Bpm1InsSet;->b:(I)V",
+        "Reasoning": "Originates sensitive user personal data through the use of sensitive API calls",
+        "Action": "Stored in register v0 and propagated to other methods"
+      },
+      {
+        "Step": "Get sensitive user personal data from strings",
+        "Source Method": "Lcom/ihealth/communication/ins/Bpm1InsSet;->a:(I Ljava/lang/String;)V",
+        "Reasoning": "Sensitive user personal data originates from the 'state_number_bpm1' and 'state_description_bpm1' strings",
+        "Action": "Stored in a JSONObject and passed to an iHealthDeviceBPM1Callback instance"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/ihealth/communication/ins/Bpm1InsSet;->b:(I)V",
+      "Lcom/ihealth/communication/ins/Bpm1InsSet;->a:(I Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/ihealth/communication/ins/Bpm1InsSet$WifiReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V --> Lcom/ihealth/communication/utils/WifiAdmin;->getWifiInfo:()Landroid/net/wifi/WifiInfo; --> Lcom/ihealth/communication/ins/Bpm1InsSet;->b:(I)V",
+        "Reasoning": "Data is propagated from network information to sensitive API calls and finally reaches a sink point"
+      },
+      {
+        "dataflow 2": "Lcom/ihealth/communication/ins/Bpm1InsSet;->b:(Lcom/ihealth/communication/ins/Bpm1InsSet; I)V --> Lcom/ihealth/communication/ins/Bpm1InsSet;->a:(I Ljava/lang/String;)V",
+        "Reasoning": "Data is propagated from BPM1 INS set to strings and finally reaches a sink point"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "java.lang.String",
+      "XmitterBean",
+      "CRC32"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data originates from method parameters 'v8', 'v9'.",
+        "Source Method": "Lcom/ihealth/communication/ins/HS6InsSet;->b:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in registers and variables within the method, including 'v0' (XmitterBean), 'v1' (CRC32). The data is propagated to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User personal data originates from HS6InsSet and XmitterBean objects.",
+        "Source Method": "Lcom/ihealth/communication/ins/HS6InsSet$XmitterBeanThread;-><init>:(Lcom/ihealth/communication/ins/HS6InsSet; Lcom/ihealth/communication/ins/XmitterBean;)V",
+        "Reasoning": "The data is stored in registers 'v0' and 'v1', propagates it to other methods via direct invocation of Thread's constructor.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User personal data originates from XmitterBean object.",
+        "Source Method": "Lcom/ihealth/communication/ins/XmitterBean;-><init>:()V",
+        "Reasoning": "The data is stored in register v0 and passed to the superclass constructor 'Object.<init>()'.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Sensitive user personal data reaches sinks like logging through method calls.",
+        "Source Method": "Lcom/ihealth/communication/ins/HS6InsSet;->b:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is propagated to other methods via method invocations, reaching sinks like logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/ihealth/communication/ins/HS6InsSet;->b:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/ihealth/communication/ins/HS6InsSet;->b:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V --> Stored in v0 (XmitterBean), v1 (CRC32) --> Passed to superclass constructor 'Object.<init>()' --> Logged through method calls",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi connection information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WiFi connection information",
+        "Source Method": "Lcom/ihealth/communication/utils/WifiAdmin;->isWifi5G:(Landroid/content/Context;)Z",
+        "Reasoning": "The method calls a sensitive API to get the WiFi connection information.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/ihealth/communication/utils/WifiAdmin;->isWifi5G:(Landroid/content/Context;)Z --> Lcom/ihealth/communication/utils/WifiAdmin;->getWiFiConnectionInfo:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/ihealth/communication/utils/WifiAdmin;->logWiFiConnectionInfo:(Ljava/lang/String;)V",
+        "Reasoning": "The WiFi connection information is stored in a variable, then logged using the logWiFiConnectionInfo method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getMacAddress method retrieves MAC address",
+        "Source Method": "Lcom/ihealth/communication/utils/WifiAdmin;->getMacAddress:()Ljava/lang/String;",
+        "Reasoning": "The method originates sensitive user personal data by calling the getConnectionInfo() method of WifiManager to retrieve the device's MAC address.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/ihealth/communication/utils/WifiAdmin;->getMacAddress:()Ljava/lang/String; --> Stored in register v0",
+        "Reasoning": "The retrieved MAC address is stored in a register, but no sink point (logging, network calls, or file writes) is identified for this data flow."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get SSID from WifiManager",
+        "Source Method": "Lcom/ihealth/communication/utils/WifiAdmin;->getSSID:()Ljava/lang/String;",
+        "Reasoning": "The method originates sensitive user personal data by calling the `getConnectionInfo()` method on a `WifiManager` object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/ihealth/communication/utils/WifiAdmin;->getSSID:()Ljava/lang/String; --> Stored",
+        "Reasoning": "The method originates sensitive user personal data by calling the `getConnectionInfo()` method on a `WifiManager` object. The SSID is then retrieved from the resulting `WifiInfo` object."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get Wifi SSID from context field of WifiManagerDelegate class",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "Data originates from the `context` field of the `WifiManagerDelegate` class.",
+        "Action": "Stored in register `v0`"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> Ljava/lang/String;",
+        "Reasoning": "The method propagates the data by passing it to other methods via method invocations."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address",
+      "device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "MAC address collected from getMacAddress() API call",
+        "Source Method": "Lcom/ihealth/communication/base/protocol/WifiCommProtocol;-><init>:(Landroid/content/Context; Lcom/ihealth/communication/base/comm/BaseComm; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Lcom/ihealth/communication/base/comm/BaseCommCallback; Lcom/ihealth/communication/ins/InsCallback;)V",
+        "Reasoning": "The method originates user personal data through the `getMacAddress()` API call.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "MAC address stored in byte array and passed to other methods via instance variables",
+        "Source Method": "Lcom/ihealth/communication/base/protocol/WifiCommProtocol;-><init>:(Landroid/content/Context; Lcom/ihealth/communication/base/comm/BaseComm; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Lcom/ihealth/communication/base/comm/BaseCommCallback; Lcom/ihealth/communication/ins/InsCallback;)V",
+        "Reasoning": "The MAC address is stored in a byte array and passed to other methods via instance variables.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Sensitive user personal data collected through constructor of WifiSendThread class",
+        "Source Method": "Lcom/ihealth/communication/base/wifi/WifiSendThread;-><init>:(Lcom/ihealth/communication/base/comm/BaseComm;)V",
+        "Reasoning": "The method originates sensitive user personal data through the constructor of WifiSendThread class which takes a BaseComm object as parameter.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/ihealth/communication/base/protocol/WifiCommProtocol;<init>(...), getMacAddress() --> MAC address stored in byte array and passed to other methods via instance variables --> Lcom/ihealth/communication/base/wifi/WifiSendThread;<init>(...)",
+        "Reasoning": "The data flow is as follows: The method originates user personal data through the `getMacAddress()` API call. The MAC address is stored in a byte array and passed to other methods via instance variables. This sensitive data is then collected by WifiSendThread class constructor."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

@@ -1,0 +1,38 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieving TelephonyManager instance",
+                "Source Method": "Llina/ubc/pathsensitivity/PathSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The method retrieves the TelephonyManager service, which is necessary to access device-specific information including the device ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Accessing Device ID",
+                "Source Method": "Llina/ubc/pathsensitivity/PathSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "After retrieving the TelephonyManager instance, accessing its getDeviceId() method retrieves the device ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging Device ID",
+                "Source Method": "Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method logs the device ID if certain conditions are met, involving a random number generation which is not explicitly mentioned in the provided data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/pathsensitivity/PathSensitivity;->log(Ljava/lang/String;)I",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Llina/ubc/pathsensitivity/PathSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Llina/ubc/pathsensitivity/PathSensitivity;->access$000()I --> Llina/ubc/pathsensitivity/PathSensitivity;->log(Ljava/lang/String;)I]",
+                "Reasoning": "The device ID is accessed from TelephonyManager and then logged using Log.i(), which is considered a sink for tainted data."
+            }
+        ],
+        "Label": "leak"
+    }
+]

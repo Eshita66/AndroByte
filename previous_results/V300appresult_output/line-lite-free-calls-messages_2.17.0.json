@@ -1,0 +1,104 @@
+[
+  {
+    "Data Types Collected": [
+      "java.lang.String",
+      "android.telephony.TelephonyManager"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user personal data from TelephonyManager instance",
+        "Source Method": "Ld/a/a/b/c/j/d;->g:()Ljava/lang/String;",
+        "Reasoning": "The method originates sensitive user personal data by invoking the `getLine1Number()` method of the `TelephonyManager` class.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Propagate user personal data to LOG.i() method",
+        "Source Method": "Ld/a/a/b/c/j/d;->g:()Ljava/lang/String;",
+        "Reasoning": "The data is then propagated this data to the `LOG.i()` method, which is a sink point for logging.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Get user personal data from Application class",
+        "Source Method": "Lcom/linecorp/linelite/app/main/LineApplication;->i:()Landroid/telephony/TelephonyManager;",
+        "Reasoning": "[The method originates user personal data by invoking the getApplicationContext() method from Android's Application class. The data is then propagated to a TelephonyManager instance via getSystemService().]",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      "Ld/a/a/b/c/j/d;->g:()Ljava/lang/String;",
+      "LOG.i()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/linecorp/linelite/app/main/LineApplication;->i:()Landroid/telephony/TelephonyManager; --> Ld/a/a/b/c/j/d;->g:()Ljava/lang/String; --> LOG.i()]",
+        "Reasoning": "The data flow starts from the LineApplication class, where it gets a TelephonyManager instance. This instance is then used to get user personal data in the form of a String, which is logged using the LOG.i() method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "Context",
+      "Intent",
+      "AudioManager$State"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "API call to retrieve user personal data",
+        "Source Method": "Lcom/linecorp/andromeda/audio/AudioManager;->g:()Z",
+        "Reasoning": "The method originates user personal data by calling the sensitive API Lcom/linecorp/andromeda/audio/AudioManager;->f()Ld/a/b/d/g;",
+        "Action": "Stored in registers v0 and v1"
+      },
+      {
+        "Step": "Data propagation via method invocations",
+        "Source Method": "Lcom/linecorp/andromeda/audio/AudioManager;->g:()Z",
+        "Reasoning": "The data is passed to other methods via method invocations of iget-object and if-eqz instructions.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Data reaches a sink point (logging)",
+        "Source Method": "Lcom/linecorp/andromeda/audio/AudioManager;->g:()Z",
+        "Reasoning": "The sink identification shows that the data reaches a sink point, which is logging.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "API call to retrieve user personal data",
+        "Source Method": "Ld/a/b/h/i/c;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "Sensitive user personal data originated from API calls, stored in registers and variables, propagated to other methods, and logged.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Data propagation via method invocations",
+        "Source Method": "Ld/a/b/h/i/c;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "The data is propagated to other methods.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Data reaches a sink point (logging)",
+        "Source Method": "Ld/a/b/h/i/c;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "The data is logged.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/linecorp/andromeda/audio/AudioManager;->g:()Z",
+      "Ld/a/b/h/i/c;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/linecorp/andromeda/audio/AudioManager;->g:()Z --> Lcom/linecorp/andromeda/audio/AudioManager;->a:()Z --> Lcom/linecorp/andromeda/audio/AudioManager;->g:()Z",
+        "Reasoning": "The data is propagated from method g() to method a(), and then back to method g()."
+      },
+      {
+        "dataflow 2": "Ld/a/b/h/i/c;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V --> ... --> Ld/a/b/h/i/c;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "The data is propagated from method onReceive() to other methods, and then back to method onReceive()."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

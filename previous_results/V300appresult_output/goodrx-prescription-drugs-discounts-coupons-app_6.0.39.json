@@ -1,0 +1,272 @@
+[
+  {
+    "Data Types Collected": [
+      "Double"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location from LocationDelegate",
+        "Source Method": "Lcom/goodrx/bifrost/delegate/LocationDelegate$DefaultImpls;->getLocation:(Lcom/goodrx/bifrost/delegate/LocationDelegate;)Ljava/lang/Object;",
+        "Reasoning": "The getLocation() API of LocationDelegate is called to obtain the user's location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Extract latitude from Location object",
+        "Source Method": "Lcom/goodrx/bifrost/delegate/LocationDelegate$DefaultImpls;->getLatitude:(Lcom/goodrx/bifrost/delegate/LocationDelegate;)Ljava/lang/Double;",
+        "Reasoning": "The latitude is extracted from the Location object and stored in a Double variable.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass latitude to next methods",
+        "Source Method": "Lcom/goodrx/bifrost/delegate/LocationDelegate$DefaultImpls;->getLatitude:(Lcom/goodrx/bifrost/delegate/LocationDelegate;)Ljava/lang/Double;",
+        "Reasoning": "The data is then passed to the next methods via method invocations.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/goodrx/bifrost/delegate/LocationDelegate$DefaultImpls;->getLocation:(Lcom/goodrx/bifrost/delegate/LocationDelegate;)Ljava/lang/Object; --> Lcom/goodrx/bifrost/delegate/LocationDelegate$DefaultImpls;->getLatitude:(Lcom/goodrx/bifrost/delegate/LocationDelegate;)Ljava/lang/Double; --> [Sink Method(...)]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "java.lang.Double"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Invoke getLocation() method from LocationDelegate",
+        "Source Method": "Lcom/goodrx/bifrost/delegate/LocationDelegate$DefaultImpls;->getLocation:(Lcom/goodrx/bifrost/delegate/LocationDelegate;)Ljava/lang/Object;",
+        "Reasoning": "The method originates user personal data by invoking the getLocation() method from LocationDelegate.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Extract longitude from Location object",
+        "Source Method": "Lcom/goodrx/bifrost/delegate/LocationDelegate$DefaultImpls;->getLongitude:(Lcom/goodrx/bifrost/delegate/LocationDelegate;)Ljava/lang/Double;",
+        "Reasoning": "The longitude is extracted from the Location object and stored in register v0 as a double value.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Pass longitude to Double.valueOf(D) method",
+        "Source Method": "Lcom/goodrx/bifrost/delegate/LocationDelegate$DefaultImpls;->getLongitude:(Lcom/goodrx/bifrost/delegate/LocationDelegate;)Ljava/lang/Double;",
+        "Reasoning": "This value is then passed to the valueOf(D) method of Double class, which stores it in register v2.",
+        "Action": "Stored in register v2"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/goodrx/bifrost/delegate/LocationDelegate$DefaultImpls;->getLocation:(Lcom/goodrx/bifrost/delegate/LocationDelegate;)Ljava/lang/Object; --> Lcom/goodrx/bifrost/delegate/LocationDelegate$DefaultImpls;->getLongitude:(Lcom/goodrx/bifrost/delegate/LocationDelegate;)Ljava/lang/Double; --> Double.valueOf(D)",
+        "Reasoning": "The longitude is extracted from the Location object and passed to the valueOf(D) method of Double class, which stores it in register v2."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "log level",
+      "user IDs",
+      "exceptions",
+      "current time in milliseconds"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates location data from 'isProviderEnabled' and 'getLastKnownLocation' API calls.",
+        "Source Method": "Lbo/app/m1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The method originates sensitive user personal data from the 'isProviderEnabled' and 'getLastKnownLocation' API calls.",
+        "Action": "Stored in register v1 and object v5"
+      },
+      {
+        "Step": "Originates log level data from sget instruction.",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "The data origin is from the sget instruction which retrieves a sensitive value (log level) from an external library.",
+        "Action": "Stored in register v0 and passed to Log.v method via method invocation"
+      },
+      {
+        "Step": "Originates user IDs and exceptions data from 'a' method of sTestUserDeviceLoggingManager.",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->appendToDeviceLogData:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The method originates user personal data by invoking the 'a' method of sTestUserDeviceLoggingManager, passing sensitive information such as user IDs and exceptions.",
+        "Action": "Stored in registers v1, v2, and v3 before being passed to the 'a' method"
+      },
+      {
+        "Step": "Originates current time in milliseconds data from java/lang/System;->currentTimeMillis()J",
+        "Source Method": "Lcom/appboy/support/DateTimeUtils;->nowInSeconds:()J",
+        "Reasoning": "The method originates user personal data by calling the sensitive API `java/lang/System;->currentTimeMillis()J`, which retrieves the current time in milliseconds.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I",
+      "Lcom/appboy/support/AppboyLogger;->appendToDeviceLogData:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lbo/app/m1;->a:(Landroid/location/LocationManager;)Landroid/location/Location --> Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "The location data is passed to the Log.v method via method invocation, which logs it."
+      },
+      {
+        "dataflow 2": "Lcom/appboy/support/AppboyLogger;->appendToDeviceLogData:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V --> network transmission",
+        "Reasoning": "The user IDs and exceptions data is passed to the 'a' method of sTestUserDeviceLoggingManager, which then transmits it over the network."
+      },
+      {
+        "dataflow 3": "Lcom/appboy/support/DateTimeUtils;->nowInSeconds:()J --> no sinks identified",
+        "Reasoning": "The current time in milliseconds data is not passed to any sinks within this method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access device location",
+        "Source Method": "Lcom/goodrx/coupon/view/CouponFragment$initLocationUpdates$1;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data by accessing the device's location through a sensitive API call (getLatitude() and getLongitude()).",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass to CouponViewModel instance",
+        "Source Method": "Lcom/goodrx/coupon/view/CouponFragment$initLocationUpdates$1;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The data is stored in registers v1, v2, v3, and v4 before being passed to the CouponViewModel instance.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Log or display location",
+        "Source Method": "Lcom/goodrx/coupon/viewmodel/CouponViewModel;->G0:(D D)V",
+        "Reasoning": "The data is then logged or displayed by calling the G0(D D)V method on the ViewModel.",
+        "Action": "Logged/Displayed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/goodrx/coupon/viewmodel/CouponViewModel;->G0:(D D)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/goodrx/coupon/view/CouponFragment$initLocationUpdates$1;->a:(Landroid/location/Location;)V --> Lcom/goodrx/coupon/viewmodel/CouponViewModel;->G0:(D D)V ",
+        "Reasoning": "The location data is accessed in CouponFragment, passed to CouponViewModel and logged/displayed."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "altitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location information (latitude, longitude, altitude) and accuracy.",
+        "Source Method": "Lbo/app/n2;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "The method invokes sensitive API calls to get location information.",
+        "Action": "Stored in registers v1-v6"
+      },
+      {
+        "Step": "Validate location using sensitive API calls.",
+        "Source Method": "Lbo/app/n2;-><init>:(D D Ljava/lang/Double; Ljava/lang/Double;)V",
+        "Reasoning": "The method uses sensitive API calls to validate location.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Validate location using sensitive API calls.",
+        "Source Method": "Lcom/appboy/support/ValidationUtils;->isValidLocation:(D D)Z",
+        "Reasoning": "The method originates user personal data from API calls to validate location.",
+        "Action": "Stored in registers and propagated through method invocations"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbo/app/n2;-><init>:(Landroid/location/Location;)V --> Lbo/app/n2;-><init>:(D D Ljava/lang/Double; Ljava/lang/Double;)V --> Lcom/appboy/support/ValidationUtils;->isValidLocation:(D D)Z",
+        "Reasoning": "The location information is first stored in the constructor of Lbo/app/n2, then passed to the constructor of Lbo/app/n2 with double parameters, and finally validated by Lcom/appboy/support/ValidationUtils"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "java.lang.StringBuilder"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getLatitude() and getLongitude() invoked on Location object",
+        "Source Method": "Lcom/goodrx/utils/locations/GrxLocationAPI;->f:(Landroid/location/Location;)V",
+        "Reasoning": "Data collection from user location",
+        "Action": "Stored in StringBuilder instance"
+      },
+      {
+        "Step": "d() method of GoodRxApi interface invoked with latitude and longitude",
+        "Source Method": "Lcom/goodrx/utils/locations/GrxLocationAPI;->f:(Landroid/location/Location;)V",
+        "Reasoning": "Data transmission or logging",
+        "Action": "Transmitted or logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/goodrx/utils/locations/GrxLocationAPI;->d:(Ljava/lang/String;Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/goodrx/utils/locations/GrxLocationAPI;->f:(Landroid/location/Location;)V --> Stored in StringBuilder instance --> Lcom/goodrx/utils/locations/GrxLocationAPI;->d:(Ljava/lang/String;Ljava/lang/String;)V",
+        "Reasoning": "Data collected from user location, stored temporarily and then transmitted or logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Android ID",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Android ID from ContentResolver",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the `getContentResolver()` API to retrieve the Android ID.",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Get Device ID from TelephonyManager",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "If the device has READ_PHONE_STATE permission, it attempts to get the device ID from the TelephonyManager.",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Get Phone Number from TelephonyManager",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->hasPermission:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The current method `hasPermission` in class `com.segment.analytics.internal.Utils` originates user personal data by calling the sensitive API `checkCallingOrSelfPermission` from the Android framework.",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Get PackageManager and check system feature",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->hasFeature:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data by calling the `getPackageManager` method on the `Context` object and then using its result to call `hasSystemFeature`.",
+        "Action": "Stored in register"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/segment/analytics/internal/Utils;->hasPermission:(Landroid/content/Context; Ljava/lang/String;)Z --> null",
+        "Reasoning": "The Android ID is retrieved from ContentResolver and stored in a register. The method then checks for READ_PHONE_STATE permission to get the device ID from TelephonyManager, which is also stored in a register. However, there are no sink points like logging, network transmission, or storage."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

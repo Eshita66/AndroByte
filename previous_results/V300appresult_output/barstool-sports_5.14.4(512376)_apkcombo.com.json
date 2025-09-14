@@ -1,0 +1,141 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected",
+        "Source Method": "Lcom/onesignal/LocationGMS;->fireCompleteForLocation:(Landroid/location/Location;)V",
+        "Reasoning": "Sensitive user location data is originated in LocationGMS",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is sent to scheduleUpdate method",
+        "Source Method": "Lcom/onesignal/LocationGMS;->fireCompleteForLocation:(Landroid/location/Location;)V",
+        "Reasoning": "Data is passed to scheduleUpdate method",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/onesignal/LocationGMS;->scheduleUpdate:(Ljava/util/List;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/onesignal/LocationGMS;->fireCompleteForLocation:(Landroid/location/Location;)V --> Lcom/onesignal/LocationGMS;->scheduleUpdate:(Ljava/util/List;)V",
+        "Reasoning": "Location data is collected in fireCompleteForLocation method and then sent to scheduleUpdate method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user location",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->setLocation:()V",
+        "Reasoning": "Method `setLocation()` calls `LocationService` to get user location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Add location parameters to URL",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->setLocation:()V",
+        "Reasoning": "Location is added as parameters `ll`, `lla`, and `llf` to the URL.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mopub/common/AdUrlGenerator;->generateAdUrl:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mopub/common/AdUrlGenerator;->setLocation:()V --> Lcom/mopub/common/AdUrlGenerator;->generateAdUrl:()Ljava/lang/String;",
+        "Reasoning": "Location obtained in `setLocation()` is added to the URL in `generateAdUrl()`."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is set in `setUserLocation` method.",
+        "Source Method": "Lcom/adcolony/sdk/AdColonyUserMetadata;->setUserLocation:(Landroid/location/Location;)Lcom/adcolony/sdk/AdColonyUserMetadata;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is passed to `setMetadata` method.",
+        "Source Method": "Lcom/adcolony/sdk/AdColonyUserMetadata;->setUserLocation:(Landroid/location/Location;)Lcom/adcolony/sdk/AdColonyUserMetadata;",
+        "Reasoning": "Method call analysis.",
+        "Action": "Logged as metadata"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adcolony/sdk/AdColonyUserMetadata;->setMetadata:(Ljava/util/Map;)Lcom/adcolony/sdk/AdColonyUserMetadata;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adcolony/sdk/AdColonyUserMetadata;->setUserLocation(...) --> Lcom/adcolony/sdk/AdColonyUserMetadata;->setMetadata(...) --> null",
+        "Reasoning": "Stepwise flow from source to sink."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "MAC address retrieved from context",
+        "Source Method": "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V",
+        "Reasoning": "Method signature matches",
+        "Action": "Stored in sha1_mac field"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V --> sha1_mac",
+        "Reasoning": "Data is stored in the sha1_mac field"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user location",
+        "Source Method": "Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String;",
+        "Reasoning": "The method getLocationParam calls getLocation, which returns a Location object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Format location data",
+        "Source Method": "Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String;",
+        "Reasoning": "The Location object is formatted into a string.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String; --> Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String;",
+        "Reasoning": "The formatted location data is returned by the method getLocationParam."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

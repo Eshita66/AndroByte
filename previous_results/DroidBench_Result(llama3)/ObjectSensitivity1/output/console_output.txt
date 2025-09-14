@@ -1,0 +1,48 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ObjectSensitivity1
+ Using methods file: D:\UBCBAPK_Methods\ObjectSensitivity1\ObjectSensitivity1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "The `onCreate` method initializes a LinkedList, retrieves the SIM serial number using TelephonyManager, and attempts to send an SMS message. The SIM serial number is added to a LinkedList.",
+    "Next Methods": [
+        "Lde/ecspride/ObjectSensitivity1;->setContentView(I)",
+        "Lde/ecspride/ObjectSensitivity1;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Landroid/telephony/TelephonyManager;->getSimSerialNumber()Ljava/lang/String;",
+        "Ljava/util/LinkedList;->add(Ljava/lang/Object;)Z",
+        "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ObjectSensitivity1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ObjectSensitivity1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ObjectSensitivity1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "SIM serial number retrieved from TelephonyManager.",
+                "Source Method": "Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The summary explicitly states that the SIM serial number is retrieved using TelephonyManager.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "null"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V --> SIM serial number --> null",
+                "Reasoning": "The `onCreate` method retrieves the SIM serial number.  Since no overwrite is mentioned, the SIM serial number remains tainted.  However, the summary does not indicate that the SIM serial number is passed to any sink method. Therefore, no sink is identified."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ObjectSensitivity1\output\refined_method_summaries.json
+Saved 0 'leak' subgraphs to D:\UBCBAPK_Methods\ObjectSensitivity1\output\sensitive_only.json
+Total time for folder: 7.80 seconds

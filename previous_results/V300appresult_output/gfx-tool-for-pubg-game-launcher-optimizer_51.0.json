@@ -1,0 +1,109 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is retrieved from Location object.",
+        "Source Method": "Lc/d/a0;->b:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data from the Location object.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Current time and thread information are retrieved through sensitive API calls.",
+        "Source Method": "Lc/d/a0;->a:(Lc/d/a0$d;)V",
+        "Reasoning": "Data originates from sensitive API calls to get current time and thread information.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "User ID or timestamp is retrieved through the `valueOf` static method from `Ljava/lang/Long;`.",
+        "Source Method": "Lc/d/y2;->j:(Ljava/lang/String; Ljava/lang/String; J)V",
+        "Reasoning": "The method originates sensitive user personal data by invoking the `valueOf` static method from `Ljava/lang/Long;`.",
+        "Action": "Stored in register v2"
+      },
+      {
+        "Step": "User personal data is retrieved from the `b` field of the `Lc/d/y2` class, which is a HashMap.",
+        "Source Method": "Lc/d/y2;->h:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Object;)V",
+        "Reasoning": "The current method originates user personal data from the `b` field of the `Lc/d/y2` class, which is a HashMap.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Sensitive object is retrieved through 'sget-object' instruction that retrieves a sensitive object from the class Lc/d/y2.",
+        "Source Method": "Lc/d/y2;->k:()V",
+        "Reasoning": "Sensitive user personal data originates from the 'sget-object' instruction that retrieves a sensitive object from the class Lc/d/y2.",
+        "Action": "Stored in registers v0 and v1"
+      },
+      {
+        "Step": "Handler object is accessed through `iget-object` instruction, which is then used to schedule a delayed task.",
+        "Source Method": "Lc/d/y2$a;->a:()V",
+        "Reasoning": "[The method originates user personal data through the use of `iget-object` instruction to access a Handler object, which is then used to schedule a delayed task.]",
+        "Action": "Stored in registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      "Lc/d/a0;->a(Lc/d/a0$d;)V",
+      "Lc/d/y2;->k:()V",
+      "Lc/d/y2$a;->a:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/d/a0;->b:(Landroid/location/Location;)V --> Lc/d/a0;->a(Lc/d/a0$d;)V --> Lc/d/a0;->a(Lc/d/a0$d;)V",
+        "Reasoning": "Data is passed from method b to a and then logged through the 'sget-object' instruction that retrieves a sensitive object from the class Lc/d/f2."
+      },
+      {
+        "dataflow 2": " Lc/d/y2;->j:(Ljava/lang/String; Ljava/lang/String; J)V --> Lc/d/y2;->k:()V --> Lc/d/y2;->k:()V",
+        "Reasoning": "Data is passed from method j to k and then logged through the 'sget-object' instruction that retrieves a sensitive object from the class Lc/d/f2."
+      },
+      {
+        "dataflow 3": " Lc/d/y2$a;->a:()V --> null",
+        "Reasoning": "Data is passed from method a to a sink point but no specific sink method is identified"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from device location permissions.",
+        "Source Method": "Lb/b/c/o$i;->c:()I",
+        "Reasoning": "The method uses the device's location permissions to calculate sunrise/sunset times.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Originate user personal data from current context (Landroid/content/Context;).",
+        "Source Method": "Lb/i/b/e;->i:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The method propagates the data through registers v0, v1, and v2.",
+        "Action": "Passed to other methods for further processing"
+      },
+      {
+        "Step": "Originate user location data using getLastKnownLocation API.",
+        "Source Method": "Lb/b/c/z;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method checks if a provider is enabled and then calls getLastKnownLocation.",
+        "Action": "Stored in register v3"
+      }
+    ],
+    "All Sinks": [
+      "Lb/b/c/o$i;->c:()I",
+      "Lb/b/c/z;->a:(Ljava/lang/String;)Landroid/location/Location;",
+      "Lb/i/b/e;->i:(Landroid/content/Context; Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lb/b/c/o$i;->c:()I --> Lb/b/c/z;->a:(Ljava/lang/String;)Landroid/location/Location --> Lb/i/b/e;->i:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The data is propagated from the first method to the second, and then to the third. The location data is used in the second method, and the context data is used in the third method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

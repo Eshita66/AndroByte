@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "device ID originated from getDeviceId()",
+                "Source Method": "Lde/ecspride/Exceptions3;->getDeviceId:()Ljava/lang/String;",
+                "Reasoning": "sensitive data reached a sink (sendTextMessage)",
+                "Action": "transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String;Ljava/lang/String; Landroid/content/SendingEndpointReference; Landroid/content/SendingEndpointReference;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId() --> stored in register v3 --> sendTextMessage(...)",
+                "Reasoning": "device ID originated from getDeviceId(), stored in register, and then passed to sendTextMessage()"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

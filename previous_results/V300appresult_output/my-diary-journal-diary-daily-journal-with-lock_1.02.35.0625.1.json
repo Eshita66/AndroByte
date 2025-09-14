@@ -1,0 +1,161 @@
+[
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is passed to newPlacesSearchRequest method",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data from the location and search text.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Search text is passed to newPlacesSearchRequest method",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data from the location and search text.",
+        "Action": "stored"
+      },
+      {
+        "Step": "User personal data is passed to FetchedAppGateKeepersManager",
+        "Source Method": "Lcom/facebook/internal/FetchedAppGateKeepersManager;->a:(Lcom/facebook/internal/FetchedAppGateKeepersManager$Callback;)V",
+        "Reasoning": "The method originates user personal data from SharedPreferences.",
+        "Action": "stored"
+      },
+      {
+        "Step": "User personal data is passed to a method in FetchedAppGateKeepersManager",
+        "Source Method": "Lcom/facebook/internal/FetchedAppGateKeepersManager;->a:(Ljava/lang/String; Lorg/json/JSONObject;)Lorg/json/JSONObject;",
+        "Reasoning": "The current method originates user personal data through the use of sensitive API calls.",
+        "Action": "stored"
+      },
+      {
+        "Step": "User personal data is logged",
+        "Source Method": "Lcom/facebook/internal/Utility;->logd:(Ljava/lang/String; Ljava/lang/Exception;)V",
+        "Reasoning": "The method originates user personal data through the `logd` method invocation.",
+        "Action": "logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/internal/Utility;->logd:(Ljava/lang/String; Ljava/lang/Exception;)V",
+      "Lcom/facebook/FacebookSdk;->getApplicationContext:()Landroid/content/Context;",
+      "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[newPlacesSearchRequest(...) --> FetchedAppGateKeepersManager(...)]",
+        "Reasoning": "User location and search text are passed to newPlacesSearchRequest method, which then passes the data to FetchedAppGateKeepersManager."
+      },
+      {
+        "dataflow 2": "[FetchedAppGateKeepersManager(...) --> a(...)]",
+        "Reasoning": "FetchedAppGateKeepersManager originates user personal data from SharedPreferences and stores it in a JSONObject, which is then passed to the method a in FetchedAppGateKeepersManager."
+      },
+      {
+        "dataflow 3": "[logd(...) --> logged]",
+        "Reasoning": "User personal data is logged using the logd method invocation."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Call getLastKnownLocation() API",
+        "Source Method": "Le/b/a/j;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by calling the getLastKnownLocation() API.",
+        "Action": "Stored in register v2"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Le/b/a/j;->a:(Ljava/lang/String;)Landroid/location/Location; --> Stored in register v2",
+        "Reasoning": "The data is stored in register v2 and propagated through registers."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number",
+      "AdvertisingId",
+      "MoPubIdentifier"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Call canCollectPersonalInformation() API",
+        "Source Method": "Lcom/mopub/common/MoPub;->canCollectPersonalInformation:()Z",
+        "Reasoning": "Determines if personal information can be collected",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get last known location using getLastKnownLocation() API",
+        "Source Method": "Lcom/mopub/common/LocationService;->getLastKnownLocation:(Landroid/content/Context;)Landroid/location/Location;",
+        "Reasoning": "Retrieves user's current location",
+        "Action": "Stored in Location object"
+      },
+      {
+        "Step": "Construct URL parameters using location data",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->m:()V",
+        "Reasoning": "Uses location data to construct URL parameters",
+        "Action": "Passed as parameter to a() method of BaseUrlGenerator"
+      },
+      {
+        "Step": "Call gdprApplies() method and store result in register v0",
+        "Source Method": "Lcom/mopub/common/privacy/PersonalInfoManager;->gdprApplies:()Ljava/lang/Boolean;",
+        "Reasoning": "Determines if GDPR applies",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Call getMoPubIdentifier() sensitive API and store result in register v0",
+        "Source Method": "Lcom/mopub/common/ClientMetadata;->getMoPubIdentifier:()Lcom/mopub/common/privacy/MoPubIdentifier;",
+        "Reasoning": "Retrieves MoPub identifier",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Call getAdvertisingInfo() method and store result in register v0",
+        "Source Method": "Lcom/mopub/common/privacy/MoPubIdentifier;->getAdvertisingInfo:()Lcom/mopub/common/privacy/AdvertisingId;",
+        "Reasoning": "Retrieves advertising info",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Call checkNotNull() method and store result in registers v0, v1, and v2",
+        "Source Method": "Lcom/mopub/common/Preconditions;->checkNotNull:(Ljava/lang/Object;)V",
+        "Reasoning": "Validates object's non-null status",
+        "Action": "Passed to another method via method invocation"
+      },
+      {
+        "Step": "Call log() method and store result in register v0",
+        "Source Method": "Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V",
+        "Reasoning": "Logs data",
+        "Action": "Passed to another method via method invocation"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mopub/common/LocationService;->a(Landroid/location/Location;)V",
+      "Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mopub/common/AdUrlGenerator;->m:()V --> Lcom/mopub/common/LocationService;->getLastKnownLocation:(Landroid/content/Context;)Landroid/location/Location; --> Lcom/mopub/common/logging/MoPubLog;->log:(Lcom/mopub/common/logging/MoPubLog$MPLogEventType; [Ljava/lang/Object;)V ",
+        "Reasoning": "The data flow starts from AdUrlGenerator where it gets the last known location, then passes this data to MoPubLog for logging"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

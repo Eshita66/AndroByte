@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "Sensitive user personal data (IMEI)"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "IMEI is originated from TelephonyManager",
+                "Source Method": "Lde/ecspride/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+                "Reasoning": "The method returns the device ID, which is sensitive user personal data.",
+                "Action": "Stored in MainActivity's imei field"
+            },
+            {
+                "Step": "IMEI is passed to Button2Listener through OnClickListener",
+                "Source Method": "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "The method calls the onClick() method of Button2Listener, passing the tainted data (IMEI) as an argument.",
+                "Action": "Passed to Button2Listener"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "TelephonyManager.getDeviceId() --> MainActivity.findViewById(...) --> Button1Listener.onClick(...) --> Button2Listener.onClick(...)",
+                "Reasoning": "The IMEI is originated from TelephonyManager and stored in MainActivity's imei field. Then, it's passed to Button1Listener through OnClickListener. Finally, the tainted data is passed to Button2Listener."
+            }
+        ],
+        "Label": "leak"
+    }
+]

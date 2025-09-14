@@ -1,0 +1,221 @@
+[
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check location permissions",
+        "Source Method": "Lbo/app/h1;->a:()Z",
+        "Reasoning": "The method originates user personal data by checking for location permissions.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Request a single location update",
+        "Source Method": "Lbo/app/h1;->a:()Z",
+        "Reasoning": "The method originates user personal data by requesting a single location update.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "Call the `setClass` method with a context and a class",
+        "Source Method": "Lbo/app/h1;->a:(Ljava/lang/String;)V",
+        "Reasoning": "The current method originates sensitive user personal data by calling the `setClass` method.",
+        "Action": "Stored in registers or variables"
+      },
+      {
+        "Step": "Use sensitive API calls to AppboyLogger's e() and appendToDeviceLogData()",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->e:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Append device log data",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->appendToDeviceLogData:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "This method AppboyLogger.appendToDeviceLogData originates user personal data from the parameters.",
+        "Action": "Appended to device log data"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appboy/support/AppboyLogger;->e:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I",
+      "Lcom/appboy/support/AppboyLogger;->appendToDeviceLogData:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbo/app/h1;->a:()Z --> Lbo/app/h1;->a:(Ljava/lang/String;)V --> Lcom/appboy/support/AppboyLogger;->appendToDeviceLogData:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data is propagated from the `Lbo/app/h1;->a:()Z` method to the `Lbo/app/h1;->a:(Ljava/lang/String;)V` method and then to the `Lcom/appboy/support/AppboyLogger;->appendToDeviceLogData:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V` method."
+      },
+      {
+        "dataflow 2": "Lbo/app/h1;->a:()Z --> Lcom/appboy/support/AppboyLogger;->e:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I",
+        "Reasoning": "The data is propagated from the `Lbo/app/h1;->a:()Z` method to the `Lcom/appboy/support/AppboyLogger;->e:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I` method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude",
+      "Time"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collect user location data",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "The method calls sensitive APIs such as getLatitude(), getLongitude(), and getTime() from the Location class.",
+        "Action": "Stored in a Map object"
+      },
+      {
+        "Step": "Originate user personal data from Intent object's extras",
+        "Source Method": "Lcom/appsflyer/internal/d;->valueOf:(Landroid/content/Context;)Lcom/appsflyer/internal/d$a;",
+        "Reasoning": "The method originates user personal data from the `Intent` object's extras.",
+        "Action": "Stored in registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+      "Lcom/appsflyer/internal/d;->valueOf:(Landroid/content/Context;)Lcom/appsflyer/internal/d$a;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; --> Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; (stored in Map object) --> Lcom/appsflyer/internal/d;->valueOf:(Landroid/content/Context;)Lcom/appsflyer/internal/d$a;",
+        "Reasoning": "The data collected from the Location class is stored in a Map object and passed to other methods for further processing. The user personal data originated from the Intent object's extras is stored in registers and variables within the method and propagated to other methods via method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "mac address",
+      "ReactApplicationContext"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getMacAddressSync() method invoked",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by invoking the getMacAddressSync() method.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "mReactApplicationContext field accessed",
+        "Source Method": "Lcom/facebook/react/bridge/ReactContextBaseJavaModule;->getReactApplicationContext:()Lcom/facebook/react/bridge/ReactApplicationContext;",
+        "Reasoning": "The current method originates user personal data from the mReactApplicationContext field of ReactContextBaseJavaModule.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "notNull function invoked",
+        "Source Method": "Lcom/facebook/react/bridge/ViewGroupUtilsApi14;->notNull(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "The data is then propagated to the assertNotNull function of ViewGroupUtilsApi14, which checks if the data is null.",
+        "Action": "Casted back to ReactApplicationContext"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/react/bridge/ViewGroupUtilsApi14;->notNull(Ljava/lang/Object;)Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String; --> Lcom/facebook/react/bridge/ReactContextBaseJavaModule;->getReactApplicationContext:()Lcom/facebook/react/bridge/ReactApplicationContext; --> Lcom/facebook/react/bridge/ViewGroupUtilsApi14;->notNull(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "The data is stored in register v0 and then propagated to other methods via method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "phone number",
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate phone number data from getPhoneNumberSync method.",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "Checking for permissions and SDK versions.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Originate user personal data by invoking 'assertNotNull' function from 'androidx/transition/ViewGroupUtilsApi14'.",
+        "Source Method": "Lcom/facebook/react/bridge/ReactContextBaseJavaModule;->getReactApplicationContext:()Lcom/facebook/react/bridge/ReactApplicationContext;",
+        "Reasoning": "Checking if a ReactApplicationContext is null.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Originate user personal data using the getSystemService API.",
+        "Source Method": "Lcom/facebook/react/bridge/ReactContext;->getSystemService:(Ljava/lang/String;)Ljava/lang/Object;",
+        "Reasoning": "Storing data in registers and variables within the method, specifically in the mInflater field of the ReactContext object.",
+        "Action": "Propagated through method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/react/bridge/ReactContext;->getSystemService:(Ljava/lang/String;)Ljava/lang/Object;",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String; --> Lcom/facebook/react/bridge/ReactContextBaseJavaModule;->getReactApplicationContext:()Lcom/facebook/react/bridge/ReactApplicationContext; --> Lcom/facebook/react/bridge/ReactContext;->getSystemService:(Ljava/lang/String;)Ljava/lang/Object;",
+        "Reasoning": "The data is propagated from the getPhoneNumberSync method to the ReactContext object, which then uses the getSystemService API."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get current location data from LocationManager",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData:(Lcom/facebook/react/bridge/ReadableMap; Lcom/facebook/react/bridge/Callback; Lcom/facebook/react/bridge/Callback;)V",
+        "Reasoning": "The method originates user personal data by calling the `getLastKnownLocation` method on the `LocationManager`. The data is then stored in the `mOldLocation` field of a `SingleUpdateRequest` object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Transform location to map",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule;->locationToMap:(Landroid/location/Location;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The method originates user personal data from the location provided by Android's Location API. The data is stored in registers and variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Create writable map with error information",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/PositionError;->buildError:(I Ljava/lang/String;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The data is stored in register `v0`. The data is then propagated through method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Throw SecurityException with message indicating lack of location permission",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule;->throwLocationPermissionMissing:(Ljava/lang/SecurityException;)V",
+        "Reasoning": "The exception is stored in register v0 and propagated via throw instruction.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Create writable map for hybrid initialization result",
+        "Source Method": "Lcom/facebook/react/bridge/WritableNativeMap;-><init>:()V",
+        "Reasoning": "The data is stored in register v0 and passed to another method.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/reactnativecommunity/geolocation/GeolocationModule;->logError:(Ljava/lang/String;)V",
+      "Lcom/reactnativecommunity/geolocation/PositionError;->throwException:(Ljava/lang/SecurityException;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData:(...) --> Lcom/reactnativecommunity/geolocation/GeolocationModule;->locationToMap:(...) --> Lcom/facebook/react/bridge/WritableMap;]",
+        "Reasoning": "The data flow starts with getting the current location data from the LocationManager, then transforms it to a map using the `locationToMap` method. The resulting writable map is propagated through method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

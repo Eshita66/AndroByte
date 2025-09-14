@@ -1,0 +1,44 @@
+
+Processing folder: D:\UBCBAPK_Methods\Exceptions1
+Using methods file: D:\UBCBAPK_Methods\Exceptions1\Exceptions1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V => The method Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V involves several operations that potentially involve user personal data. The method starts by initializing some local variables and then invokes superclass methods, setting the content view from a resource ID, and obtaining system services including accessing the device's TelephonyManager to retrieve the Device ID. This Device ID is stored in the variable v3 as a string. Later, an exception is thrown which is not directly related to data handling but indicates some error processing. The method then obtains the default SmsManager instance and attempts to send a text message with a predefined phone number using potentially tainted data (the Device ID).
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Initialization and Setup",
+            "Source Method": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method initializes local variables, invokes superclass methods, sets the content view from a resource ID, and accesses TelephonyManager to retrieve the Device ID.",
+            "Action": "Stored in variable v3"
+        },
+        {
+            "Step": "Sending Text Message",
+            "Source Method": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The Device ID, identified as personal data, is used to send a text message which could involve transmitting or storing user personal data.",
+            "Action": "Transmitted during SMS sending"
+        }
+    ],
+    "All Sinks": [
+        null
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V) --> ... --> Sink Method(null)]",
+            "Reasoning": "The Device ID is retrieved and used in operations that could involve data handling, but without explicit logs or other sinks for sensitive information, the data does not reach a point of potential leakage."
+        }
+    ],
+    "Label": "no leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Exceptions1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Exceptions1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Exceptions1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Exceptions1\output\visited_graph
+Saved 0 'leak' subgraphs to: D:\UBCBAPK_Methods\Exceptions1\output\sensitive_only.json
+Total time for folder: 309.47 seconds

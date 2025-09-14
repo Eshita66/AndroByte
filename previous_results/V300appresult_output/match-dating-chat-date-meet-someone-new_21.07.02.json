@@ -1,0 +1,337 @@
+[
+  {
+    "Data Types Collected": [
+      "Android ID",
+      "IMEI",
+      "Phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "AppsFlyerProperties and AppsFlyerLibCore API calls",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u02cb:(Lcom/appsflyer/internal/j;)Ljava/util/Map;",
+        "Reasoning": "Sensitive user personal data originates from API calls to AppsFlyerProperties and AppsFlyerLibCore.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AppsFlyerProperties getString method",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getString:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The data is then stored in register v2 and propagated through registers until it's returned as a String.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AppsFlyerLibCore API calls",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u02bb:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data by calling sensitive API to get Android ID and IMEI.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AppsFlyerLibCore API calls",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u141d:(Landroid/content/Context;)Z",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls to Google Play Services.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AFLogger afErrorLog method",
+        "Source Method": "Lcom/appsflyer/AFLogger;->afErrorLog:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The current method originates user personal data by invoking a sensitive API call to log an error message.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "AFLogger \u02ca method",
+        "Source Method": "Lcom/appsflyer/AFLogger;->\u02ca:(Ljava/lang/String; Ljava/lang/Throwable; Z)V",
+        "Reasoning": "The data is stored in registers v0, v1, v2, and v3 within the method.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "AppsFlyerProperties getBoolean method",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getBoolean:(Ljava/lang/String; Z)Z",
+        "Reasoning": "This method originates user personal data by calling the `getString` method of `AppsFlyerProperties`, which returns a string.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AFLogger \u0971 method",
+        "Source Method": "Lcom/appsflyer/AFLogger;->\u0971:(Ljava/lang/String; Z)Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers and variables, then propagated to other methods via method invocations.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AFLogger;->afErrorLog:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+      "Lcom/appsflyer/AFLogger;->\u02ca:(Ljava/lang/String; Ljava/lang/Throwable; Z)V",
+      "android.util.Log.e()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " AppsFlyerProperties and AppsFlyerLibCore API calls --> AFLogger afErrorLog method --> android.util.Log.e() ",
+        "Reasoning": "Sensitive user personal data originates from API calls to AppsFlyerProperties and AppsFlyerLibCore, stored in registers and variables within the methods. The data is propagated through method invocations to other methods within the same class or external libraries. Sensitive data reaches sinks such as logging (via AFLogger) and storage (via SharedPreferences)."
+      },
+      {
+        "dataflow 2": " AppsFlyerProperties getString method --> AppsFlyerProperties getBoolean method --> AFLogger \u0971 method --> android.util.Log.e() ",
+        "Reasoning": "The data is then stored in register v2 and propagated through registers until it's returned as a String. This method originates user personal data by calling the `getString` method of `AppsFlyerProperties`, which returns a string."
+      },
+      {
+        "dataflow 3": " AppsFlyerLibCore API calls --> AFLogger \u02ca method --> android.util.Log.e() ",
+        "Reasoning": "The method originates user personal data by calling sensitive API to get Android ID and IMEI. The data is stored in registers v0, v1, v2, and v3 within the method."
+      },
+      {
+        "dataflow 4": " AppsFlyerLibCore API calls --> AFLogger \u0971 method --> android.util.Log.e() ",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls to Google Play Services. The data is stored in registers and variables, then propagated to other methods via method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location coordinates and postal code from Google Location API",
+        "Source Method": "Lcom/match/matchlocal/m/b;->a:(Landroid/os/Bundle;)V",
+        "Reasoning": "The current method originates user personal data by calling the 'b' method of class 'Lcom/match/matchlocal/m/b;' to get a Context object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get subscriber ID from TelephonyManager",
+        "Source Method": "Lcom/match/matchlocal/n/a;->d:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data using the sensitive API 'android.telephony.TelephonyManager.getSubscriberId()'.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get postal code from MatchLocation object",
+        "Source Method": "Lcom/match/matchlocal/q/a/i;->a:(Lcom/match/android/networklib/model/MatchLocation;)V",
+        "Reasoning": "The current method originates sensitive user personal data from the `getPostalCode()` method of `MatchLocation` object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Detach iterators from OsSharedRealm object",
+        "Source Method": "Lio/realm/internal/OsSharedRealm;->detachIterators:()V",
+        "Reasoning": "The method uses the sensitive API to detach iterators from the OsSharedRealm object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Execute pending row queries from OsSharedRealm instance",
+        "Source Method": "Lio/realm/internal/OsSharedRealm;->executePendingRowQueries:()V",
+        "Reasoning": "The method executes pending row queries from the OsSharedRealm instance.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Execute query through executeQuery() method",
+        "Source Method": "Lio/realm/internal/PendingRow;->executeQuery:()V",
+        "Reasoning": "The method originates user personal data by executing a query through the `executeQuery()` method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Create snapshot of results using nativeCreateSnapshot function",
+        "Source Method": "Lio/realm/internal/OsResults;->createSnapshot:()Lio/realm/internal/OsResults;",
+        "Reasoning": "The method uses the `nativeCreateSnapshot` function to create a snapshot of the results.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get thread ID from BaseRealm object",
+        "Source Method": "Lio/realm/BaseRealm;->close:()V",
+        "Reasoning": "The method originates user personal data from the threadId J field of the BaseRealm object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get valid object from OsResults iterator",
+        "Source Method": "Lio/realm/internal/OsResults$Iterator;->detach:()V",
+        "Reasoning": "The method originates data from a sensitive API call to Realm's OsResults.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/match/matchlocal/n/a;->d:(Ljava/lang/String; Ljava/lang/String;)V",
+      "Lio/realm/BaseRealm;->close:()V",
+      "Lio/realm/Realm;->executeTransaction:(Lio/realm/Realm$Transaction;)V",
+      "Lcom/match/matchlocal/q/a/i;->a:(Lcom/match/android/networklib/model/MatchLocation;)V",
+      "Lio/realm/internal/OsSharedRealm;->detachIterators:()V",
+      "Lio/realm/internal/PendingRow;->executeQuery:()V",
+      "Lio/realm/internal/OsResults;->createSnapshot:()Lio/realm/internal/OsResults;",
+      "Lcom/match/matchlocal/q/a/i;->a:(Lcom/match/android/networklib/model/MatchLocation;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/match/matchlocal/m/b;->a:(Landroid/os/Bundle;)V --> Lcom/match/matchlocal/q/a/i;->a:(Lcom/match/android/networklib/model/MatchLocation;)V --> Lio/realm/BaseRealm;->close:()V",
+        "Reasoning": "The data is propagated from the location coordinates and postal code to MatchLocation object, then to Realm's close method."
+      },
+      {
+        "dataflow 2": "Lcom/match/matchlocal/n/a;->d:(Ljava/lang/String; Ljava/lang/String;)V --> Lio/realm/BaseRealm;->close:()V",
+        "Reasoning": "The subscriber ID is propagated from TelephonyManager to Realm's close method."
+      },
+      {
+        "dataflow 3": "Lcom/match/matchlocal/q/a/i;->a:(Lcom/match/android/networklib/model/MatchLocation;)V --> Lio/realm/BaseRealm;->close:()V",
+        "Reasoning": "The postal code is propagated from MatchLocation object to Realm's close method."
+      },
+      {
+        "dataflow 4": "Lio/realm/internal/OsSharedRealm;->detachIterators:()V --> Lcom/match/matchlocal/q/a/i;->a:(Lcom/match/android/networklib/model/MatchLocation;)V",
+        "Reasoning": "The iterators are detached from OsSharedRealm object and propagated to MatchLocation object."
+      },
+      {
+        "dataflow 5": "Lio/realm/internal/OsSharedRealm;->executePendingRowQueries:()V --> Lcom/match/matchlocal/q/a/i;->a:(Lcom/match/android/networklib/model/MatchLocation;)V",
+        "Reasoning": "The pending row queries are executed from OsSharedRealm instance and propagated to MatchLocation object."
+      },
+      {
+        "dataflow 6": "Lio/realm/internal/PendingRow;->executeQuery:()V --> Lcom/match/matchlocal/q/a/i;->a:(Lcom/match/android/networklib/model/MatchLocation;)V",
+        "Reasoning": "The query is executed through executeQuery method and propagated to MatchLocation object."
+      },
+      {
+        "dataflow 7": "Lio/realm/internal/OsResults;->createSnapshot:()Lio/realm/internal/OsResults; --> Lcom/match/matchlocal/q/a/i;->a:(Lcom/match/android/networklib/model/MatchLocation;)V",
+        "Reasoning": "The snapshot of results is created using nativeCreateSnapshot function and propagated to MatchLocation object."
+      },
+      {
+        "dataflow 8": "Lio/realm/BaseRealm;->close:()V --> Lcom/match/matchlocal/q/a/i;->a:(Lcom/match/android/networklib/model/MatchLocation;)V",
+        "Reasoning": "The thread ID is propagated from BaseRealm object to MatchLocation object."
+      },
+      {
+        "dataflow 9": "Lio/realm/internal/OsResults$Iterator;->detach:()V --> Lcom/match/matchlocal/q/a/i;->a:(Lcom/match/android/networklib/model/MatchLocation;)V",
+        "Reasoning": "The valid object is propagated from OsResults iterator to MatchLocation object."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Landroid/location/Location",
+      "Ljava/lang/String;",
+      "Lcom/match/android/networklib/model/k/u",
+      "Lcom/match/android/networklib/model/k/v"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data through sensitive API calls to `Landroid/location/Location`.",
+        "Source Method": "Lcom/match/matchlocal/m/c;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The current method originates user personal data through sensitive API calls to `Landroid/location/Location` and stores it in registers and variables.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data from the 'd' method, which uses sensitive API calls to access and store user information.",
+        "Source Method": "Lcom/match/matchlocal/n/a;->d:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in registers and variables within the method before being passed to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by using the `Lcom/match/android/networklib/model/k/u` and `Lcom/match/android/networklib/model/k/v` classes.",
+        "Source Method": "Lcom/match/matchlocal/b/a;->a:(Z D D)V",
+        "Reasoning": "The data is stored in registers v0, v2, and v3. It propagates through method invocations to `Lcom/match/android/networklib/c/b;->e()` and ultimately reaches the sink point of network transmission via `Le/b;->a(Le/d;)V`.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Le/b;->a(Le/d;)V",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/match/matchlocal/m/c;->a:(Landroid/location/Location;)V --> Lcom/match/matchlocal/n/a;->d:(Ljava/lang/String; Ljava/lang/String;)V --> Le/b;->a(Le/d;)V",
+        "Reasoning": "The data flows from `Lcom/match/matchlocal/m/c;->a:(Landroid/location/Location;)V` to `Lcom/match/matchlocal/n/a;->d:(Ljava/lang/String; Ljava/lang/String;)V` and then to `Le/b;->a(Le/d;)V`."
+      },
+      {
+        "dataflow 2": " Lcom/match/matchlocal/b/a;->a:(Z D D)V --> Lcom/match/android/networklib/c/b;->e()",
+        "Reasoning": "The data flows from `Lcom/match/matchlocal/b/a;->a:(Z D D)V` to `Lcom/match/android/networklib/c/b;->e()`."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location information",
+      "object (possibly null)",
+      "Throwable (with stack trace)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Call sensitive API to access location information.",
+        "Source Method": "Lcom/match/matchlocal/flows/newdiscover/search/b;->a:(Landroid/os/Bundle;)V",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to access location information.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check if object is null and propagate the result.",
+        "Source Method": "Lc/f/b/m;->b:(Ljava/lang/Object; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the invocation of a sensitive API call to check if an object is null.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Get stack trace and propagate it.",
+        "Source Method": "Lc/f/b/m;->a:(Ljava/lang/Throwable;)Ljava/lang/Throwable;",
+        "Reasoning": "This method originates user personal data through the getName() API call of Class.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Update Throwable object with new stack trace.",
+        "Source Method": "Lc/f/b/m;->a:(Ljava/lang/Throwable; Ljava/lang/String;)Ljava/lang/Throwable;",
+        "Reasoning": "The current method 'a' in class 'c/f/b/m' originates user personal data by using the sensitive API call to get the stack trace.",
+        "Action": "Updated"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/match/matchlocal/flows/newdiscover/search/b;->a:(Landroid/os/Bundle;)V",
+      "Lc/f/b/m;->b:(Ljava/lang/Object; Ljava/lang/String;)V",
+      "Lc/f/b/m;->a:(Ljava/lang/Throwable;)Ljava/lang/Throwable;",
+      "Lc/f/b/m;->a:(Ljava/lang/Throwable; Ljava/lang/String;)Ljava/lang/Throwable;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/match/matchlocal/flows/newdiscover/search/b;->a:(Landroid/os/Bundle;)V --> Stored location information in registers and variables --> Lc/f/b/m;->b:(Ljava/lang/Object; Ljava/lang/String;)V",
+        "Reasoning": "The data is propagated through method invocations to update the Throwable object with a new stack trace."
+      },
+      {
+        "dataflow 2": "Lc/f/b/m;->a:(Ljava/lang/Throwable) --> Passed Throwable with stack trace to Lc/f/b/m;->a:(Ljava/lang/Throwable; Ljava/lang/String;)Ljava/lang/Throwable;",
+        "Reasoning": "The data is propagated through method invocations to update the Throwable object with a new stack trace."
+      },
+      {
+        "dataflow 3": "Lc/f/b/m;->b:(Ljava/lang/Object; Ljava/lang/String;)V --> Passed result of null check to Lc/f/b/m;->a:(Ljava/lang/Throwable;)Ljava/lang/Throwable;",
+        "Reasoning": "The data is propagated through method invocations to update the Throwable object with a new stack trace."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WifiSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getWifiSSID() called on WifiInfo object",
+        "Source Method": "Ltvi/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling sensitive API 'getSSID()' on WifiInfo object.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Data passed to next methods via return statements",
+        "Source Method": "Ltvi/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in register v0 and passed to the next methods via return statements.",
+        "Action": "Passed as return value"
+      },
+      {
+        "Step": "Data reaches a sink point through 'return-object' statement",
+        "Source Method": "Ltvi/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point through the 'return-object' statement.",
+        "Action": "Returned to caller"
+      }
+    ],
+    "All Sinks": [
+      "Ltvi/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Ltvi/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> Ltvi/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> Ltvi/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The data flows from getWifiSSID() to itself through return statements."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

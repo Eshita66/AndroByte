@@ -1,0 +1,40 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\Reflection3
+Using methods file: D:\withoutcallgraphResult\TestAcessess\Reflection3\Reflection3_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "This method originates user data by using reflection to call `getDeviceId()` on a `TelephonyManager` instance. It then uses this device ID to send an SMS message to +49 1234. The data originates from the device's TelephonyManager and is used to send a message. Because the method calls `sendTextMessage`, which is a sink, the `Next Methods` list must be empty.",
+    "Next Methods": []
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\Reflection3\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\Reflection3\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\Reflection3\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "TelephonyManager"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "1",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method uses reflection to call `getDeviceId()` on a `TelephonyManager` instance, originating the `DeviceId` value.",
+                "Action": "Record `DeviceId` as a sensitive source."
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " [Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;)]",
+                "Reasoning": "The `sendTextMessage` method is a sink. The `DeviceId` value, originating from `getDeviceId()`, is passed to this sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\Reflection3\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\Reflection3\output\sensitive_only.json
+Total summary time: 7.569340705871582 seconds

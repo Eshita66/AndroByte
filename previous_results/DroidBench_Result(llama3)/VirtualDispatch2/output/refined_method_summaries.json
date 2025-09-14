@@ -1,0 +1,23 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "getDeviceId() returns a sensitive device ID",
+                "Source Method": "Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String;",
+                "Reasoning": "The getDeviceId() method of TelephonyManager returns a sensitive device ID",
+                "Action": "Stored in register v0 and returned by the method"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId() returns a sensitive DeviceId --> Sink Method(...) is not applicable because no sink method uses this value",
+                "Reasoning": "The getDeviceId() method of TelephonyManager returns a sensitive device ID, which is stored in register v0 and returned by the method. However, there are no sink methods that use this value."
+            }
+        ],
+        "Label": "no leak"
+    }
+]

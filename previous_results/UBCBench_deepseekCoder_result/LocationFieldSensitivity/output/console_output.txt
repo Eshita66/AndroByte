@@ -1,0 +1,46 @@
+
+Processing folder: D:\UBCBAPK_Methods\LocationFieldSensitivity
+Using methods file: D:\UBCBAPK_Methods\LocationFieldSensitivity\LocationFieldSensitivity_bytecode_instructions.json
+Source methods with sensitive calls: ['Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method 'onCreate' in the class 'MainActivity' of the app 'locationfieldsensitivity' retrieves the system service for location using 'getSystemService(java.lang.String)' with the argument '"location"'. It then uses this LocationManager to get the best provider and the last known location, which includes sensitive data such as latitude and timestamp. The retrieved location data is logged using 'Log.d(...)', potentially exposing user personal data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Location Data",
+        "Timestamp"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve Location Service",
+            "Source Method": "Llina/ubc/locationfieldsensitivity/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The method retrieves the system service for location using 'getSystemService(\"location\")'",
+            "Action": "Stored in LocationManager"
+        },
+        {
+            "Step": "Process Location Data",
+            "Source Method": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method retrieves the best provider and last known location, which includes sensitive data.",
+            "Action": "Processed for logging"
+        }
+    ],
+    "All Sinks": [
+        "Llina/ubc/locationfieldsensitivity/MainActivity;->Log.d(...)",
+     
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Llina/ubc/locationfieldsensitivity/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Source Method: Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Sink Method: Llina/ubc/locationfieldsensitivity/MainActivity;->Log.d(...)]",
+            "Reasoning": "The system service for location is retrieved in onCreate, and the location data (including sensitive information) is processed and logged."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\LocationFieldSensitivity\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\LocationFieldSensitivity\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\LocationFieldSensitivity\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\LocationFieldSensitivity\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\LocationFieldSensitivity\output\sensitive_only.json
+Total time for folder: 129.77 seconds

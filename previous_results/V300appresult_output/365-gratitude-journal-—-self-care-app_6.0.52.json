@@ -1,0 +1,81 @@
+[
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [
+      {
+        "Step": "Location and search parameters are added to a Bundle.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method creates a GraphRequest object with a Bundle containing location and search parameters.",
+        "Action": "Stored in Bundle"
+      },
+      {
+        "Step": "Bundle is sent to Facebook API with GET method.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The request is sent to the Facebook API with the GET method.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Facebook API with GET method",
+        "Reasoning": "The request is sent to the Facebook API with the GET method, potentially exposing location and search parameters."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain Wi-Fi SSID",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `c()` uses `WifiManager` to retrieve SSID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String; --> null",
+        "Reasoning": "The SSID is returned as a string but not further processed or sent to any sink points."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "wifi BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WifiManager API collects user personal data (wifi BSSID)",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method documentation specifies data collection",
+        "Action": "Stored in v2"
+      },
+      {
+        "Step": "Data passed to DataPointsNetwork.a() method",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method invocation",
+        "Action": "Passed as argument to DataPointsNetwork.a()"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "Method invocation passes data between methods"
+      }
+    ],
+    "Label": "leak"
+  }
+]

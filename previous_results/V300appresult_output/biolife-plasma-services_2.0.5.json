@@ -1,0 +1,147 @@
+[
+  {},
+  {
+    "Data Types Collected": [
+      "Location",
+      "LatLon",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getLatitude() and getLongitude() methods from Location class",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The data is stored in a LatLon object and then passed to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "isGeofenceMessagingEnabled() API call",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d;->a:(Lcom/salesforce/marketingcloud/location/LatLon;)V",
+        "Reasoning": "The data is stored in registers v0 and v3.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "isProximityMessagingEnabled() API call",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d;->b:(Lcom/salesforce/marketingcloud/location/LatLon;)V",
+        "Reasoning": "The data is stored in registers v0 and v1.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "applicationId() and a() API calls",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/geofence/a;->a:(Lcom/salesforce/marketingcloud/location/LatLon; Ljava/lang/String; Lcom/salesforce/marketingcloud/MarketingCloudConfig; Lcom/salesforce/marketingcloud/messages/c$b;)V",
+        "Reasoning": "The data is stored in registers and variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "exception occurs",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The data reaches sinks such as logging when an exception occurs.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "explicit logging statement using the 'b' method of the 'g' class",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d;->a:(Lcom/salesforce/marketingcloud/location/LatLon;)V",
+        "Reasoning": "The data reaches a sink point, which is an explicit logging statement.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "logging operation",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d;->b:(Lcom/salesforce/marketingcloud/location/LatLon;)V",
+        "Reasoning": "A sink point is identified as a logging operation.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "logging call using 'e()'",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/geofence/a;->a:(Lcom/salesforce/marketingcloud/location/LatLon; Ljava/lang/String; Lcom/salesforce/marketingcloud/MarketingCloudConfig; Lcom/salesforce/marketingcloud/messages/c$b;)V",
+        "Reasoning": "A sink point is identified as a logging call.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V",
+      "Lcom/salesforce/marketingcloud/messages/d;->b:(Lcom/salesforce/marketingcloud/location/LatLon;)V",
+      "Lcom/salesforce/marketingcloud/messages/geofence/a;->a:(Lcom/salesforce/marketingcloud/location/LatLon; Ljava/lang/String; Lcom/salesforce/marketingcloud/MarketingCloudConfig; Lcom/salesforce/marketingcloud/messages/c$b;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V --> Lcom/salesforce/marketingcloud/messages/d;->b:(Lcom/salesforce/marketingcloud/location/LatLon;)V --> Lcom/salesforce/marketingcloud/messages/geofence/a;->a:(Lcom/salesforce/marketingcloud/location/LatLon; Ljava/lang/String; Lcom/salesforce/marketingcloud/MarketingCloudConfig; Lcom/salesforce/marketingcloud/messages/c$b;)V",
+        "Reasoning": "The data is propagated from the 'a' method of the 'd' class to the 'b' method, and then to the 'a' method of the 'geofence/a' class."
+      },
+      {
+        "dataflow 2": "Lcom/salesforce/marketingcloud/messages/d;->a:(Lcom/salesforce/marketingcloud/location/LatLon;)V --> Lcom/salesforce/marketingcloud/messages/geofence/a;->a:(Lcom/salesforce/marketingcloud/location/LatLon; Ljava/lang/String; Lcom/salesforce/marketingcloud/MarketingCloudConfig; Lcom/salesforce/marketingcloud/messages/c$b;)V",
+        "Reasoning": "The data is propagated from the 'a' method of the 'd' class to the 'a' method of the 'geofence/a' class."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/net/wifi/WifiInfo",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getWifiInfo() method called",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The getWifiInfo() method originates user personal data by calling the getConnectionInfo() method, which returns a WifiInfo object.",
+        "Action": "stored in registers (v2 and v0) and variables (v1)"
+      },
+      {
+        "Step": "getMacAddressSync() method called",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The getMacAddressSync() method gets the MAC address by invoking getWifiInfo and then getting the MacAddress from WifiInfo.",
+        "Action": "transmitted through network interfaces"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo; --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The getMacAddressSync() method gets the MAC address by invoking getWifiInfo and then getting the MacAddress from WifiInfo. If Wi-Fi is not available, it tries to get the MAC address through network interfaces."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get phone number from TelephonyManager",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "This method originates user personal data by calling the `getLine1Number()` method of the TelephonyManager.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Propagate phone number through checks",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in register v0 and propagated through various checks before being returned as a string.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Return phone number as a string",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in register v0 and propagated through various checks before being returned as a string.",
+        "Action": "Returned as string"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;( --> phone number propagated through checks --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;) ",
+        "Reasoning": "This method originates user personal data by calling the `getLine1Number()` method of the TelephonyManager. The data is stored in register v0 and propagated through various checks before being returned as a string."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

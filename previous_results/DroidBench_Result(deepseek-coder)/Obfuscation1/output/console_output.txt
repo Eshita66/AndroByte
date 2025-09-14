@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\Obfuscation1
+Using methods file: D:\UBCBAPK_Methods\Obfuscation1\Obfuscation1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "In the method onCreate of Lde/ecspride/MainActivity;, a device ID is originated from Landroid/telephony/TelephonyManager;.getDeviceId()Ljava/lang/String; which returns the Device ID. This data is stored in register v3 after being cast to Ljava/lang/String;. The device ID is then passed as an argument to Landroid/telephony/SmsManager;.sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V. This method invocation serves as a sink for the sensitive data, and no further methods are invoked from this point.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\Obfuscation1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Obfuscation1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Obfuscation1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "Ljava/lang/String;"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is obtained from TelephonyManager and stored in register v3 as a string",
+                "Source Method": "Lde/ecspride/MainActivity;->getDeviceId():Ljava/lang/String;",
+                "Reasoning": "The device ID is fetched using the TelephonyManager API, which is considered safe for non-sensitive data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is passed as an argument to SmsManager.sendTextMessage",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID, which was obtained from TelephonyManager and stored in a register, is used as an argument for the sendTextMessage method.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Lde/ecspride/MainActivity;->getDeviceId():Ljava/lang/String; --> Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V]",
+                "Reasoning": "The device ID is sourced from TelephonyManager, passed to onCreate where it is stored and then used as an argument in the sendTextMessage method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Obfuscation1\output\refined_method_summaries.json
+Saved 0 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Obfuscation1\output\sensitive_only.json
+Total summary time: 422.1838824748993 seconds

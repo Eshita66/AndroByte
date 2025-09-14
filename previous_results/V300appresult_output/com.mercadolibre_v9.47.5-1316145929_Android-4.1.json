@@ -1,0 +1,71 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is originated from `com.flurry.sdk.bm` class.",
+        "Source Method": "Lcom/flurry/sdk/bl;-><init>:(Lcom/flurry/sdk/bm;)V",
+        "Reasoning": "Stored in `a`, `b`, `c`, and `d` fields.",
+        "Action": "Written to `ByteArrayOutputStream` and `DataOutputStream`"
+      },
+      {
+        "Step": "Data is written to `java.io.DataOutputStream`.",
+        "Source Method": "Lcom/flurry/sdk/bl;-><init>:(Lcom/flurry/sdk/bm;)V",
+        "Reasoning": "Final destination of sensitive data.",
+        "Action": "Data is sent to the sink point."
+      }
+    ],
+    "All Sinks": [
+      "java.io.DataOutputStream"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/flurry/sdk/bl;-><init>:(Lcom/flurry/sdk/bm;)V --> java.io.DataOutputStream",
+        "Reasoning": "Sensitive data is written directly to the sink point."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive API call to get location is detected.",
+        "Source Method": "Lcom/mercadolibre/mercadoenvios/calculator/AgencySelectMapFragment;->a:(Landroid/os/Bundle;)V",
+        "Reasoning": "Data is passed between methods 'a' and 'b' and eventually reaches the method 'b' where it is stored in the variable 'v5'.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mercadolibre/mercadoenvios/calculator/AgencySelectMapFragment;->b:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mercadolibre/mercadoenvios/calculator/AgencySelectMapFragment;->a:(Landroid/os/Bundle;)V --> Lcom/mercadolibre/mercadoenvios/calculator/AgencySelectMapFragment;->b:(Ljava/lang/String;)V",
+        "Reasoning": "The location data collected in method 'a' is passed to method 'b' where it is stored in the variable 'v5'."
+      }
+    ],
+    "Label": "leak"
+  }
+]

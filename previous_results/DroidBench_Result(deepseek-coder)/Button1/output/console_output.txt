@@ -1,0 +1,59 @@
+
+ Processing folder: D:\UBCBAPK_Methods\Button1
+ Using methods file: D:\UBCBAPK_Methods\Button1\Button1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": [
+        "The method onCreate of Lde/ecspride/Button1 starts by invoking super's onCreate method with the parameters Landroid/os/Bundle;, then sets the content view to a predefined resource ID (2130903040). It retrieves the system service for telephony, specifically the TelephonyManager, and extracts its device ID. This ID is stored in a static field called imei of the same class."
+    ],
+    "Next Methods": [
+        "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V => {
+    "Summary": [
+        "Method Analysis summary"
+    ],
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\Button1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\Button1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\Button1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Source Method retrieves DeviceId from TelephonyManager",
+                "Source Method": "Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method onCreate extracts the device ID using TelephonyManager and stores it in a static field called imei.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "DeviceId is passed to sendMessage method",
+                "Source Method": "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The device ID stored in the static field imei of class Lde/ecspride/Button1 is used as an argument for sendMessage method.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The method onCreate extracts the device ID and stores it in a static field, which is then used as an argument for sendMessage."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\Button1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\Button1\output\sensitive_only.json
+Total time for folder: 144.74 seconds

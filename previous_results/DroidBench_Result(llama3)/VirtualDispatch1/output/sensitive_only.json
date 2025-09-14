@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "imei field written by onCreate() method",
+                "Source Method": "Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Potential field-based leak detected: imei field written by this method may be read by Lde/ecspride/VirtualDispatch1;->clickButton:(Landroid/view/View;)V",
+                "Action": "Stored"
+            },
+            {
+                "Step": "imei field overwritten with no sensitive value in clickButton() method",
+                "Source Method": "Lde/ecspride/VirtualDispatch1;->clickButton(Landroid/view/View;)V",
+                "Reasoning": "Potential field-based leak detected: imei field written by this method may be read by Lde/ecspride/VirtualDispatch1;->clickButton:(Landroid/view/View;)V",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/VirtualDispatch1;->clickButton(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V --> imei field written by this method may be read by Lde/ecspride/VirtualDispatch1;->clickButton:(Landroid/view/View;)V --> Lde/ecspride/VirtualDispatch1;->clickButton(Landroid/view/View;)V",
+                "Reasoning": "The imei field is written by the onCreate() method and may be read by the clickButton() method, which then logs it."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

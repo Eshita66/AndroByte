@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from device ID API call",
+                "Source Method": "Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID was stored in a LinkedList and passed to the Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I method, which is a sink point for this sensitive data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V(...) --> Stored in LinkedList --> Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I(...)",
+                "Reasoning": "Sensitive data was originated from the device ID API call. The device ID was stored in a LinkedList and passed to the Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I method, which is a sink point for this sensitive data."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

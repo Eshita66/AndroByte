@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "Ljava/lang/String;"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is obtained from TelephonyManager and stored in register v3 as a string",
+                "Source Method": "Lde/ecspride/MainActivity;->getDeviceId():Ljava/lang/String;",
+                "Reasoning": "The device ID is fetched using the TelephonyManager API, which is considered safe for non-sensitive data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is passed as an argument to SmsManager.sendTextMessage",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID, which was obtained from TelephonyManager and stored in a register, is used as an argument for the sendTextMessage method.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Lde/ecspride/MainActivity;->getDeviceId():Ljava/lang/String; --> Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V]",
+                "Reasoning": "The device ID is sourced from TelephonyManager, passed to onCreate where it is stored and then used as an argument in the sendTextMessage method."
+            }
+        ],
+        "Label": [
+            "no leak"
+        ]
+    }
+]

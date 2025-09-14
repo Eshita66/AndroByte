@@ -1,0 +1,30 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "TelephonyManager",
+            "SIM serial number",
+            "LinkedList",
+            "SmsManager",
+            "sendTextMessage"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve SIM serial number",
+                "Source Method": "Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method calls `getSimSerialNumber()` on a `TelephonyManager` instance, retrieving the SIM serial number.",
+                "Action": "SIM serial number is retrieved and stored in v1."
+            }
+        ],
+        "All Sinks": [
+            "sendTextMessage"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "SIM serial number",
+                "Reasoning": "The SIM serial number is used as the message body in `sendTextMessage`."
+            }
+        ],
+        "Label": "no leak"
+    }
+]

@@ -1,0 +1,57 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ReflectionDynamic
+ Using methods file: D:\UBCBAPK_Methods\ReflectionDynamic\ReflectionDynamic_bytecode_instructions.json
+Sensitive root methods: ['Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": [
+        "The method onCreate of MainActivity initializes the UI by setting a content view, retrieves system services such as TelephonyManager to get device ID, dynamically loads a class using reflection to invoke a method named 'leak'. The method also handles potential exceptions that might occur during this process."
+    ],
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ReflectionDynamic\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ReflectionDynamic\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ReflectionDynamic\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Initialization of UI",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method initializes the UI, retrieving a sensitive data type (DeviceId) from a TelephonyManager instance.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Dynamic Class Loading and Method Invocation",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method uses reflection to invoke a method named 'leak' which is assumed to handle the DeviceId. This invocation potentially exposes the sensitive data.",
+                "Action": "Transmitted"
+            },
+            {
+                "Step": "Handling Exceptions",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method handles potential exceptions that might occur during the initialization and reflection invocation, which could lead to data loss if not properly managed.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ljunbin/ubc/LeakClass;->leak:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljunbin/ubc/LeakClass;->leak:()V",
+                "Reasoning": "The DeviceId is retrieved in onCreate and passed to the 'leak' method of a dynamically loaded class, which is considered a sink as it potentially exposes the data."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ReflectionDynamic\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\ReflectionDynamic\output\sensitive_only.json
+Total time for folder: 132.63 seconds

@@ -1,0 +1,137 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is obtained from Location API",
+        "Source Method": "Lcom/adobe/mobile/AnalyticsTrackLocation;->trackLocation:(Landroid/location/Location; Ljava/util/Map;)V",
+        "Reasoning": "The method originates user personal data through the invocation of `getDebugLogging()` and uses it to log a warning message with the format string and arguments.",
+        "Action": "Stored in registers (v0, v1) and variables (4)"
+      },
+      {
+        "Step": "User device ID is obtained from getDeviceId() API call",
+        "Source Method": "Lcom/adobe/mobile/StaticMethods;->getDebugLogging:()Z",
+        "Reasoning": "The method originates sensitive user personal data using the getDebugLogging() API call.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "User phone number is obtained from updateContextData() API call",
+        "Source Method": "Lcom/adobe/mobile/Lifecycle;->updateContextData:(Ljava/util/Map;)V",
+        "Reasoning": "Data originates from a sensitive API call to updateContextData, which stores user personal data in _lifecycleContextData and _lowercaseContextDataMutex.",
+        "Action": "Stored in registers v0, v1, and v4"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adobe/mobile/StaticMethods;->logWarningFormat:(Ljava/lang/String; [Ljava/lang/Object;)V",
+      "Lcom/adobe/mobile/Lifecycle;->updateContextData:(Ljava/util/Map;)V",
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/adobe/mobile/AnalyticsTrackLocation;->trackLocation:(Landroid/location/Location; Ljava/util/Map;)V --> Lcom/adobe/mobile/StaticMethods;->logWarningFormat:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The data is propagated through registers v0, v1, and variables 4 to the logWarningFormat method."
+      },
+      {
+        "dataflow 2": "Lcom/adobe/mobile/StaticMethods;->getDebugLogging:()Z --> Lcom/adobe/mobile/Lifecycle;->updateContextData:(Ljava/util/Map;)V",
+        "Reasoning": "The data is propagated through register v0 to the updateContextData method."
+      },
+      {
+        "dataflow 3": "Lcom/adobe/mobile/Lifecycle;->updateContextData:(Ljava/util/Map;)V --> Lcom/adobe/mobile/Lifecycle;->updateContextData:(Ljava/util/Map;)V",
+        "Reasoning": "The data is stored in registers v0, v1, and v4 within the updateContextData method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device ID using TelephonyManager",
+        "Source Method": "Lcom/razorpay/BaseUtils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the `getDeviceId` method of the `TelephonyManager` class.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get phone number using getSystemService",
+        "Source Method": "Lcom/razorpay/BaseUtils;->getSystemService:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/Object;",
+        "Reasoning": "The method originates sensitive user personal data using the `getSystemService` API call.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Check if phone number is null or empty",
+        "Source Method": "Lcom/razorpay/AnalyticsUtil;->isNullOrEmpty:(Ljava/lang/CharSequence;)Z",
+        "Reasoning": "The method originates user personal data by calling the `isEmpty` and `getTrimmedLength` methods from the Android TextUtils class.",
+        "Action": "Stored in registers (v0 and v1) within the method"
+      },
+      {
+        "Step": "Check if app has permission to access phone number",
+        "Source Method": "Lcom/razorpay/BaseUtils;->hasPermission:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method hasPermission in BaseUtils class originates user personal data by calling the checkCallingOrSelfPermission API, which is a sensitive API.",
+        "Action": "Stored in registers (v2) and variables (G__G_ I and d__1_ I)"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/razorpay/BaseUtils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/razorpay/BaseUtils;->hasPermission:(Landroid/content/Context; Ljava/lang/String;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/razorpay/BaseUtils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/razorpay/BaseUtils;->hasPermission:(Landroid/content/Context; Ljava/lang/String;)Z --> Sink Method(...)]",
+        "Reasoning": "The device ID is propagated to the hasPermission method, where it is used to check if the app has permission to access the phone number. The final sink point is the logging of an error message in the hasPermission method."
+      },
+      {
+        "dataflow 2": " [Lcom/razorpay/BaseUtils;->getSystemService:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/Object; --> Sink Method(...)]",
+        "Reasoning": "The phone number is propagated to a sink point, which is the `return-object v2` statement in the getSystemService method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "SMS message"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User receives SMS message",
+        "Source Method": "Lcom/razorpay/Q$$U_;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "The method onReceive originates user personal data from the SMS message.",
+        "Action": "Stored in v5 register"
+      },
+      {
+        "Step": "Data is passed to other methods via method invocations",
+        "Source Method": "Lcom/razorpay/Q$$U_;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "The data is stored in the v5 register and then passed to other methods via method invocations.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Data reaches a sink point through network transmission",
+        "Source Method": "Lcom/razorpay/Q$$U_;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "The data reaches a sink point through network transmission.",
+        "Action": "Transmitted via network"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/razorpay/Q$$U_;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/razorpay/Q$$U_;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V --> [Stored in v5 register] --> Lcom/razorpay/Q$$U_;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "The method onReceive originates user personal data from the SMS message. The data is stored in the v5 register and then passed to other methods via method invocations. The data reaches a sink point through network transmission."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

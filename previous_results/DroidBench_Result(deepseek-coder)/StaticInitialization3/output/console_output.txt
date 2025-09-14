@@ -1,0 +1,52 @@
+
+Processing folder: D:\UBCBAPK_Methods\StaticInitialization3
+Using methods file: D:\UBCBAPK_Methods\StaticInitialization3\StaticInitialization3_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/clinit/Test;-><clinit>:()V']
+[SUMMARY] Ledu/mit/clinit/Test;-><clinit>:()V => The method retrieves the device ID from the TelephonyManager service provided by Android, which can be considered sensitive information as it uniquely identifies the mobile device. This information is then stored in an instance variable of MainActivity.
+[SUMMARY] Ledu/mit/clinit/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method onCreate in MainActivity initializes the main activity by setting its content view to a predefined resource ID, 2130903040, and retrieves a string from an instance variable named 's'. It then logs this string along with a constant string 'DroidBench' using Log.i. The method does not involve any direct interaction with user personal data beyond the initialization of the content view.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieving device ID from TelephonyManager",
+            "Source Method": "Ledu/mit/clinit/Test;-><clinit>:()V",
+            "Reasoning": "The method retrieves the device ID, which is a unique identifier for the mobile device and can be considered sensitive information.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Storing retrieved device ID in instance variable of MainActivity",
+            "Source Method": "Ledu/mit/clinit/Test;-><clinit>:()V",
+            "Reasoning": "The device ID is transferred to the instance variable 's' of MainActivity.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Logging stored device ID in onCreate method",
+            "Source Method": "Ledu/mit/clinit/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The string 's' contains the sensitive information (device ID), which is then logged along with a constant string.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/clinit/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+    
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Ledu/mit/clinit/Test;-><clinit>:()V --> Stored in instance variable 's' of MainActivity --> Logged in onCreate method]",
+            "Reasoning": "The device ID is retrieved from TelephonyManager, stored in the instance variable 's' of MainActivity, and finally logged in the onCreate method."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\StaticInitialization3\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\StaticInitialization3\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\StaticInitialization3\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\StaticInitialization3\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\StaticInitialization3\output\sensitive_only.json
+Total time for folder: 822.94 seconds

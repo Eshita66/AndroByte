@@ -1,0 +1,282 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address",
+      "SHA-1 hash of MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "MAC address is retrieved from context.",
+        "Source Method": "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in sha1_mac field"
+      },
+      {
+        "Step": "SHA-1 hash of MAC address is generated.",
+        "Source Method": "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in sha1_mac field"
+      },
+      {
+        "Step": "MAC address validity is checked.",
+        "Source Method": "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Set bad_mac field to true if invalid"
+      },
+      {
+        "Step": "Error message is logged.",
+        "Source Method": "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V --> sha1_mac field --> Lcom/amazon/device/ads/DtbDeviceData;->getMacAddress:(Landroid/content/Context;)V",
+        "Reasoning": "Stepwise explanation of data flow and transformation."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method call",
+        "Source Method": "Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String;",
+        "Reasoning": "getLocationParam method retrieves user location data.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/DtbGeoLocation;->getLocationParam:()Ljava/lang/String; --> Collected",
+        "Reasoning": "getLocationParam method collects user location data."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "accuracy",
+      "altitude",
+      "speed",
+      "bearing",
+      "provider",
+      "timestamp"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Object Initialization",
+        "Source Method": "Lcom/foursquare/api/FoursquareLocation;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "Constructor initializes object with location data.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract SSID from WifiInfo",
+        "Source Method": "Lcom/foursquare/internal/network/n/a$a;->e:(Landroid/net/wifi/WifiInfo;)Ljava/lang/String;",
+        "Reasoning": "Method summary specifies extracting SSID",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Log SSID if not null or empty",
+        "Source Method": "Lcom/foursquare/internal/network/n/a$a;->e:(Landroid/net/wifi/WifiInfo;)Ljava/lang/String;",
+        "Reasoning": "Method summary specifies logging SSID",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/foursquare/internal/network/n/a$a;->b:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/foursquare/internal/network/n/a$a;->e:(Landroid/net/wifi/WifiInfo;)Ljava/lang/String; --> Lcom/foursquare/internal/network/n/a$a;->b:(Ljava/lang/String;)V",
+        "Reasoning": "Data flows from SSID extraction to logging"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID",
+      "User ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Checks for Wifi connection",
+        "Source Method": "Lcom/foursquare/internal/state/providers/g$a;->run:()V",
+        "Reasoning": "Method checks for Wifi connection",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Logs SSID and user ID",
+        "Source Method": "Lcom/foursquare/internal/state/providers/g$a;->run:()V",
+        "Reasoning": "Method logs SSID and user ID",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/foursquare/internal/state/providers/g$a;->run:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/foursquare/internal/state/providers/g$a;->run:()V --> Lcom/foursquare/internal/state/providers/g$a;->run:()V",
+        "Reasoning": "Collected SSID and user ID in the same method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Data Collection",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->AFDateFormat:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Stored in HashMap"
+      },
+      {
+        "Step": "Data Transmission",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->AFDateFormat:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Data is passed to `AppsFlyer.trackEvent()` method.",
+        "Action": "Transmitted to server via logging"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AppsFlyerLibCore;->AFDateFormat:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/AppsFlyerLibCore;->AFDateFormat:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; --> Lcom/appsflyer/AppsFlyerLibCore;->AFDateFormat:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Data is collected, stored, and then transmitted to the server."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [
+      {
+        "Step": "Location Object Received",
+        "Source Method": "Lcom/mapbox/mapboxsdk/location/j;->a:(Lcom/mapbox/mapboxsdk/maps/n; Landroid/location/Location;)F",
+        "Reasoning": "The method receives a location object.",
+        "Action": "Stored in local variable"
+      },
+      {
+        "Step": "Distance Calculation",
+        "Source Method": "Lcom/mapbox/mapboxsdk/location/j;->a:(Lcom/mapbox/mapboxsdk/maps/n; Landroid/location/Location;)F",
+        "Reasoning": "The method calculates the distance traveled using latitude, longitude, and accuracy.",
+        "Action": "No action performed"
+      }
+    ],
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected in the `a()` method of the `b` class.",
+        "Source Method": "Lcom/mparticle/internal/c0/a;->a:(Lcom/mparticle/internal/c0/b;)V",
+        "Reasoning": "Method summary describes data collection.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to the `<init>` method of the `a` class.",
+        "Source Method": "Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V",
+        "Reasoning": "Method signature matches.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is passed to the `JSONObject` constructor.",
+        "Source Method": "Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V",
+        "Reasoning": "Method summary describes data transformation.",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Data is logged.",
+        "Source Method": "Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V",
+        "Reasoning": "Method summary describes data logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mparticle/internal/c0/a;->a:(Lcom/mparticle/internal/c0/b;)V --> Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V --> Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V",
+        "Reasoning": "Stepwise flow of data through methods."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user data is obtained from `getDeviceObject()`",
+        "Source Method": "Lorg/prebid/mobile/o$b;->t:()Lorg/json/JSONObject;",
+        "Reasoning": "Method summary",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Added to JSON object",
+        "Source Method": "Lorg/prebid/mobile/o$b;->t:()Lorg/json/JSONObject;",
+        "Reasoning": "Method summary",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Logged using `a()` method",
+        "Source Method": "Lorg/prebid/mobile/o$b;->t:()Lorg/json/JSONObject;",
+        "Reasoning": "Method summary",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/prebid/mobile/o$b;->a:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/prebid/mobile/o$b;->t:()Lorg/json/JSONObject; --> Lorg/prebid/mobile/o$b;->a:(Ljava/lang/String;)V",
+        "Reasoning": "Data is stored, transmitted, and logged"
+      }
+    ],
+    "Label": "leak"
+  }
+]

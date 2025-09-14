@@ -1,0 +1,263 @@
+[
+  {
+    "Data Types Collected": [
+      "String",
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "UserManager class field 'token' accessed",
+        "Source Method": "Lcom/cube/arc/lib/manager/UserManager;->getToken:()Ljava/lang/String;",
+        "Reasoning": "Accessed a token stored in the class field 'token'",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Token passed to Headers$Builder newBuilder() method",
+        "Source Method": "Lcom/cube/arc/lib/manager/APIManager;->getGeofences:(Landroid/location/Location; Lnet/callumtaylor/asynchttp/response/ResponseHandler;)Lnet/callumtaylor/asynchttp/AsyncHttpClient;",
+        "Reasoning": "Passed to the newBuilder() method of Headers$Builder class",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Geofence location data (latitude and longitude) obtained from Location object",
+        "Source Method": "Lcom/cube/arc/lib/manager/APIManager;->getGeofences:(Landroid/location/Location; Lnet/callumtaylor/asynchttp/response/ResponseHandler;)Lnet/callumtaylor/asynchttp/AsyncHttpClient;",
+        "Reasoning": "Obtained from the Location object",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data added to list of NameValuePair objects",
+        "Source Method": "Lcom/cube/arc/lib/manager/APIManager;->getGeofences:(Landroid/location/Location; Lnet/callumtaylor/asynchttp/response/ResponseHandler;)Lnet/callumtaylor/asynchttp/AsyncHttpClient;",
+        "Reasoning": "Added to a list of NameValuePair objects",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data sent over the network using AsyncHttpClient get() method",
+        "Source Method": "Lcom/cube/arc/lib/manager/APIManager;->getGeofences:(Landroid/location/Location; Lnet/callumtaylor/asynchttp/response/ResponseHandler;)Lnet/callumtaylor/asynchttp/AsyncHttpClient;",
+        "Reasoning": "Sent over the network using the get() method of AsyncHttpClient class",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lnet/callumtaylor/asynchttp/AsyncHttpClient;->executeOnExecutor(Ljava/util/concurrent/Executor; [Ljava/lang/Object;)Landroid/os/AsyncTask;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "UserManager.getToken() --> AsyncHttpClient.newBuilder().add() --> AsyncHttpClient.executeOnExecutor()",
+        "Reasoning": "The data flow starts with the UserManager class accessing a token, which is then passed to the Headers$Builder newBuilder() method. The geofence location data (latitude and longitude) is obtained from the Location object and added to a list of NameValuePair objects. Finally, the data is sent over the network using the AsyncHttpClient executeOnExecutor() method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "java.lang.String",
+      "android.location.Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "APIManager updates push token and location",
+        "Source Method": "Lcom/cube/arc/lib/manager/APIManager;->updateStormPushToken:(Ljava/lang/String; Landroid/location/Location; Lnet/callumtaylor/asynchttp/response/ResponseHandler;)V",
+        "Reasoning": "The method originates user personal data by calling the AsyncHttpClient's post method with a JSON body containing the push token and location.",
+        "Action": "Stored in registers v0, v1, and v6"
+      },
+      {
+        "Step": "AsyncHttpClient posts request over network",
+        "Source Method": "Lnet/callumtaylor/asynchttp/AsyncHttpClient;->post:(Ljava/lang/String; Lokhttp3/RequestBody; Lnet/callumtaylor/asynchttp/response/ResponseHandler;)V",
+        "Reasoning": "The method originates user personal data by invoking the post method of AsyncHttpClient, which likely sends a request over the network.",
+        "Action": "Passed to invoked method"
+      }
+    ],
+    "All Sinks": [
+      "Lnet/callumtaylor/asynchttp/AsyncHttpClient;->post:(Ljava/lang/String; Lokhttp3/RequestBody; Lnet/callumtaylor/asynchttp/response/ResponseHandler;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/cube/arc/lib/manager/APIManager;->updateStormPushToken:(Ljava/lang/String; Landroid/location/Location; Lnet/callumtaylor/asynchttp/response/ResponseHandler;)V --> Lnet/callumtaylor/asynchttp/AsyncHttpClient;->post:(Ljava/lang/String; Lokhttp3/RequestBody; Lnet/callumtaylor/asynchttp/response/ResponseHandler;)V",
+        "Reasoning": "The data is propagated from APIManager to AsyncHttpClient, where it is sent over the network."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "[Ljava/lang/Double;",
+      "Landroid/content/Context",
+      "[Ljava/lang/Object;",
+      "java/util/Locale"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location's latitude and longitude are used to make sensitive API calls.",
+        "Source Method": "Lnet/atomcode/bearing/Bearing;->geocode:(Landroid/location/Location;)Lnet/atomcode/bearing/geocoding/GeocodingTask;",
+        "Reasoning": "The method uses the location's latitude and longitude to make sensitive API calls.",
+        "Action": "Stored in an array of Doubles"
+      },
+      {
+        "Step": "User personal data from the `Landroid/content/Context` parameter is stored in register v1.",
+        "Source Method": "Lnet/atomcode/bearing/geocoding/ReverseGeocodingTask;-><init>:(Landroid/content/Context; [Ljava/lang/Double;)V",
+        "Reasoning": "The method uses the `Landroid/content/Context` parameter to store user personal data.",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "Sensitive information about the device's locale is retrieved using getConfiguration() and locale API calls.",
+        "Source Method": "Lnet/atomcode/bearing/geocoding/GeocodingTask;-><init>:(Landroid/content/Context; [Ljava/lang/Object;)V",
+        "Reasoning": "The method uses the getConfiguration() and locale API calls to retrieve sensitive information about the device's locale.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "User personal data is propagated through method invocations using the constructor of AsyncTask.",
+        "Source Method": "Lnet/atomcode/bearing/geocoding/GeocodingTask;-><init>:(Landroid/content/Context; [Ljava/lang/Object; Ljava/util/Locale;)V",
+        "Reasoning": "The method uses the constructor of AsyncTask to propagate user personal data through method invocations.",
+        "Action": "Stored in registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lnet/atomcode/bearing/Bearing;->geocode:(Landroid/location/Location;)Lnet/atomcode/bearing/geocoding/GeocodingTask; --> [Lnet/atomcode/bearing/geocoding/ReverseGeocodingTask;-><init>:(Landroid/content/Context; [Ljava/lang/Double;)V --> null]",
+        "Reasoning": "The location's latitude and longitude are used to make sensitive API calls, which store the data in an array of Doubles. This data is then passed to the <init> method of ReverseGeocodingTask, but no sinks are identified."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location object",
+      "LatLng object"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location accessed through Location object.",
+        "Source Method": "Lcom/cube/arc/blood/location/SearchLocationActivity$1;->onMapReady:(Lcom/google/android/gms/maps/GoogleMap;)V",
+        "Reasoning": "The method originates user personal data from the Location object and propagates it through registers to add a location marker on the map.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "LatLng object created from device's location.",
+        "Source Method": "Lcom/cube/arc/lib/util/MapUtils;->addLocationMarker:(Lcom/google/android/gms/maps/GoogleMap; Landroid/location/Location; Z Landroid/content/Context;)Lcom/google/android/gms/maps/model/Marker;",
+        "Reasoning": "The method originates user personal data by accessing the device's location through the `getLatitude()` and `getLongitude()` methods.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "LatLng object used to zoom to location on map.",
+        "Source Method": "Lcom/cube/arc/lib/util/MapUtils;->zoomToLocation:(Lcom/google/android/gms/maps/GoogleMap; Lcom/google/android/gms/maps/model/LatLng; F Z)V",
+        "Reasoning": "The method originates user personal data from the 'v2' register which is likely a LatLng object.",
+        "Action": "Passed to other methods via method invocations"
+      },
+      {
+        "Step": "LatLng object used to add location marker on map.",
+        "Source Method": "Lcom/cube/arc/lib/util/MapUtils;->addLocationMarker:(Lcom/google/android/gms/maps/GoogleMap; Lcom/google/android/gms/maps/model/LatLng; Z Landroid/content/Context;)Lcom/google/android/gms/maps/model/Marker;",
+        "Reasoning": "The method originates user personal data from the Google Map API and stores it in registers.",
+        "Action": "Passed to other methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/cube/arc/lib/util/MapUtils;->addLocationMarker:(Lcom/google/android/gms/maps/GoogleMap; Lcom/google/android/gms/maps/model/LatLng; Z Landroid/content/Context;)Lcom/google/android/gms/maps/model/Marker;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/cube/arc/blood/location/SearchLocationActivity$1;->onMapReady:(Lcom/google/android/gms/maps/GoogleMap;)V --> Lcom/cube/arc/lib/util/MapUtils;->addLocationMarker:(Lcom/google/android/gms/maps/GoogleMap; Landroid/location/Location; Z Landroid/content/Context;)Lcom/google/android/gms/maps/model/Marker; --> Lcom/cube/arc/lib/util/MapUtils;->addLocationMarker:(Lcom/google/android/gms/maps/GoogleMap; Lcom/google/android/gms/maps/model/LatLng; Z Landroid/content/Context;)Lcom/google/android/gms/maps/model/Marker;",
+        "Reasoning": "The data flows from the `onMapReady` method to the `addLocationMarker` method, which then passes it to another instance of `addLocationMarker` where it is displayed on the map."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "LatLng",
+      "GoogleMap"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access device location using access$000 method",
+        "Source Method": "Lcom/cube/arc/blood/location/SearchLocationActivity$4;->onMapReady:(Lcom/google/android/gms/maps/GoogleMap;)V",
+        "Reasoning": "The `access$000` method returns a Location object, which is then stored in register v0.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get location data from LatLng object",
+        "Source Method": "Lcom/cube/arc/lib/util/MapUtils;->addLocationMarker:(Lcom/google/android/gms/maps/GoogleMap; Landroid/location/Location; Z Landroid/content/Context;)Lcom/google/android/gms/maps/model/Marker;",
+        "Reasoning": "The LatLng object contains the location data, which is used to create a marker on the GoogleMap.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass device location to other methods",
+        "Source Method": "Lcom/cube/arc/blood/location/SearchLocationActivity$4;->onMapReady:(Lcom/google/android/gms/maps/GoogleMap;)V",
+        "Reasoning": "The Location object is passed to other methods via method invocations.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/cube/arc/blood/location/SearchLocationActivity$4;->onMapReady:(Lcom/google/android/gms/maps/GoogleMap;)V --> Lcom/cube/arc/lib/util/MapUtils;->addLocationMarker:(Lcom/google/android/gms/maps/GoogleMap; Landroid/location/Location; Z Landroid/content/Context;)Lcom/google/android/gms/maps/model/Marker;",
+        "Reasoning": "The Location object is passed from `onMapReady` method to `addLocationMarker` method, where it is used to create a marker on the GoogleMap."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getLastKnownLocation() called",
+        "Source Method": "Lnet/atomcode/bearing/location/provider/LegacyLocationProvider;->getLastKnownLocation:(Lnet/atomcode/bearing/location/LocationProviderRequest;)Landroid/location/Location;",
+        "Reasoning": "Retrieving user's current location",
+        "Action": "Stored in register v4"
+      },
+      {
+        "Step": "Accuracy check and time comparison",
+        "Source Method": "[Not specified]",
+        "Reasoning": "Data is used for accuracy check and time comparison",
+        "Action": "Used for further processing"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "not_sensitive "
+  },
+  {
+    "Data Types Collected": [
+      "Landroid/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location provided",
+        "Source Method": "Lcom/cube/arc/blood/appointment/fragment/AppointmentLocationFragment$4;->onUpdate:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data from the location provided by the LocationExtensions class.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Propagated to GeocodingTask",
+        "Source Method": "Lcom/cube/arc/blood/appointment/fragment/AppointmentLocationFragment$4;->onUpdate:(Landroid/location/Location;)V",
+        "Reasoning": "The data is propagated to other methods via method invocations, specifically the listen() method of GeocodingTask.",
+        "Action": "Passed as an argument"
+      },
+      {
+        "Step": "Network transmission initiated",
+        "Source Method": "Lnet/atomcode/bearing/geocoding/GeocodingTask;->start:()V",
+        "Reasoning": "A sink point has been identified: the start() method of GeocodingTask, which initiates a network transmission.",
+        "Action": "Transmitted over network"
+      }
+    ],
+    "All Sinks": [
+      "Lnet/atomcode/bearing/geocoding/GeocodingTask;->start:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/cube/arc/blood/appointment/fragment/AppointmentLocationFragment$4;->onUpdate:(Landroid/location/Location;)V --> Lnet/atomcode/bearing/geocoding/GeocodingTask;->start:()V",
+        "Reasoning": "User location is provided to the onUpdate method, which propagates it to GeocodingTask's listen method. The data is then passed as an argument to GeocodingTask's start method, initiating a network transmission."
+      }
+    ],
+    "Label": "leak"
+  }
+]

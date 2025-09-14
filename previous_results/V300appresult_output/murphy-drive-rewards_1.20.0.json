@@ -1,0 +1,130 @@
+[
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is accessed from Location class.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data from the location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User search text is accessed from String class.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data from the search text.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User device ID is accessed from Context class.",
+        "Source Method": "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+        "Reasoning": "The current method originates user personal data through the sensitive API call to `Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;` and stores it in register v3.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User phone number is accessed from String class.",
+        "Source Method": "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+        "Reasoning": "The current method originates user personal data through the sensitive API call to `Landroid/content/Context;->getPackageManager()Landroid/content/pm/PackageManager;` and stores it in register v3.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+        "Reasoning": "The data is propagated from the GraphRequest method to the FacebookException constructor, where it is stored and potentially logged or transmitted."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "LatLon"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location object's latitude and longitude are extracted.",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data from the Location object's latitude and longitude.",
+        "Action": "Stored in a LatLon object"
+      },
+      {
+        "Step": "Sensitive API call made using 'store_latlon' string.",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "A sensitive API call is made using the 'store_latlon' string.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Sensitive data stored in registers (v0, v1, v4) and variables (b, a).",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d$4;-><init>:(Lcom/salesforce/marketingcloud/messages/d; Ljava/lang/String; [Ljava/lang/Object; Lcom/salesforce/marketingcloud/location/LatLon;)V",
+        "Reasoning": "The method originates user personal data through the invocation of sensitive API calls.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Sensitive data propagated to other methods via direct method invocations.",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d$4;-><init>:(Lcom/salesforce/marketingcloud/messages/d; Ljava/lang/String; [Ljava/lang/Object; Lcom/salesforce/marketingcloud/location/LatLon;)V",
+        "Reasoning": "The data is propagated to other methods via direct method invocations.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Sensitive API call made using 'java.lang.String.format()'.",
+        "Source Method": "Lcom/salesforce/marketingcloud/f/g;-><init>:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The current method originates user personal data by using the sensitive API call `java.lang.String.format()` to format a string.",
+        "Action": "Stored in register v3 and variable e"
+      },
+      {
+        "Step": "Sensitive data propagated to other methods via method invocations.",
+        "Source Method": "Lcom/salesforce/marketingcloud/f/g;-><init>:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The data is propagated to other methods via method invocations, specifically to the constructor of class java.lang.StringBuilder and the method toString() of class java.lang.StringBuilder.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Sensitive data reaches sink point of storage by being assigned to a field of the current object.",
+        "Source Method": "Lcom/salesforce/marketingcloud/f/g;-><init>:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The data reaches the sink point of storage by being assigned to a field of the current object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V",
+      "Lcom/salesforce/marketingcloud/messages/d$4;-><init>:(Lcom/salesforce/marketingcloud/messages/d; Ljava/lang/String; [Ljava/lang/Object; Lcom/salesforce/marketingcloud/location/LatLon;)V",
+      "Lcom/salesforce/marketingcloud/f/g;-><init>:(Ljava/lang/String; [Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V --> Lcom/salesforce/marketingcloud/messages/d$4;-><init>:(Lcom/salesforce/marketingcloud/messages/d; Ljava/lang/String; [Ljava/lang/Object; Lcom/salesforce/marketingcloud/location/LatLon;)V --> Lcom/salesforce/marketingcloud/f/g;-><init>:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The data flows from the Location object's latitude and longitude to the LatLon object, then to the registers (v0, v1, v4) and variables (b, a), and finally to the field of the current object."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Parse location object",
+        "Source Method": "Lplugin/google/maps/PluginUtil;->location2Json:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "Extracts properties from the location object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lplugin/google/maps/PluginUtil;->location2Json:(Landroid/location/Location;)Lorg/json/JSONObject; --> [Stored in JSONObject] --> Lplugin/google/maps/PluginUtil;->processLocationData:(Lorg/json/JSONObject;)V",
+        "Reasoning": "The location object is parsed and its properties are extracted. The resulting JSONObject is then passed to the processLocationData method for further processing."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

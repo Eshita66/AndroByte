@@ -1,0 +1,38 @@
+
+Processing folder: D:\UBCBAPK_Methods\ForName
+Using methods file: D:\UBCBAPK_Methods\ForName\ForName_bytecode_instructions.json
+Source methods with sensitive calls: ['Ljunbin/ubc/MainActivity;->getImei:()Ljava/lang/String;']
+[SUMMARY] Ljunbin/ubc/MainActivity;->getImei:()Ljava/lang/String; => The method retrieves the device ID from the TelephonyManager service provided by the 'phone' system service, which is obtained through getSystemService(). This operation involves accessing user-specific information (IMEI) via a privileged API call.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "IMEI"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieving IMEI from TelephonyManager",
+            "Source Method": "Ljunbin/ubc/MainActivity;->getImei:()Ljava/lang/String;",
+            "Reasoning": "The method accesses user-specific information (IMEI) via a privileged API call.",
+            "Action": "Accessed"
+        }
+    ],
+    "All Sinks": [
+        "Ljunbin/ubc/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(...getImei:()Ljava/lang/String...) --> ... --> Sink Method(...)]",
+            "Reasoning": "The IMEI is retrieved from TelephonyManager and potentially used in log statements or other methods not detailed here."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ForName\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ForName\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ForName\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ForName\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ForName\output\sensitive_only.json
+Total time for folder: 13.78 seconds

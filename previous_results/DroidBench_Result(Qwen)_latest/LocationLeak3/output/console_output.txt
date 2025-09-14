@@ -1,0 +1,53 @@
+
+ Processing folder: D:\UBCBAPK_Methods\LocationLeak3
+ Using methods file: D:\UBCBAPK_Methods\LocationLeak3\LocationLeak3_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V']
+[SUMMARY] Lde/ecspride/MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V => {
+    "Summary": [
+        "The onLocationChanged method processes location data, constructs a string with longitude and latitude, and sends it to the dataProvider's setData method."
+    ],
+    "Next Methods": [
+        "Lde/ecspride/IDataProvider;->setData(Ljava/lang/String;)V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\LocationLeak3\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\LocationLeak3\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\LocationLeak3\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "location data"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Location data is processed and formatted into a string",
+                "Source Method": "Lde/ecspride/MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "The method constructs a string with longitude and latitude from the Location object",
+                "Action": "transmitted"
+            },
+            {
+                "Step": "Formatted string is sent to dataProvider's setData method",
+                "Source Method": "Lde/ecspride/MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "The summary explicitly states the data is passed to setData",
+                "Action": "transmitted"
+            }
+        ],
+        "All Sinks": [
+            "LdataProvider;->setData:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V --> LdataProvider;->setData:(Ljava/lang/String;)V",
+                "Reasoning": "Location data is processed into a string and passed to setData method of dataProvider"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\LocationLeak3\output\refined_method_summaries.json
+Saved 0 'leak' subgraphs to D:\UBCBAPK_Methods\LocationLeak3\output\sensitive_only.json
+Total time for folder: 70.85 seconds

@@ -1,0 +1,113 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Search Text",
+      "Distance Filter"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location and search parameters are gathered.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method parameters include location, search text, and distance filter.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "GraphRequest object is created with collected parameters.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method returns a GraphRequest object with user-provided parameters.",
+        "Action": "Created"
+      },
+      {
+        "Step": "GraphRequest object is executed.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "GraphRequest object is executed to perform the places search request.",
+        "Action": "Executed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onResponse(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onResponse(...)",
+        "Reasoning": "GraphRequest object is executed, and the result is handled by the GraphJSONArrayCallback method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is retrieved from the Location API.",
+        "Source Method": "Lcom/facebook/react/modules/location/LocationModule;->getCurrentPosition(...)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "The data is passed to the invoke() method of LocationModule.SingleUpdateRequest.",
+        "Source Method": "Lcom/facebook/react/modules/location/LocationModule;->getCurrentPosition(...)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Passed as parameter"
+      },
+      {
+        "Step": "The data is not explicitly logged, transmitted, or displayed.",
+        "Source Method": "Lcom/facebook/react/modules/location/LocationModule;->getCurrentPosition(...)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Not processed further"
+      }
+    ],
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve WifiSSID",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method `getWifiSSID()` explicitly returns the WifiSSID.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> Returned",
+        "Reasoning": "The WifiSSID is returned by the method `getWifiSSID()` and no further data transformation occurs."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve phone number",
+        "Source Method": "Lcom/microsoft/xbox/toolkit/rn/PhoneNumberProviderRnModule;->lambda$getPhoneNumber$0:(Lcom/facebook/react/bridge/Promise; Lcom/microsoft/xbox/data/repository/PermissionsRepository$PermissionResponse;)V",
+        "Reasoning": "TelephonyManager's getLine1Number() method",
+        "Action": "Stored in Promise object"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/react/bridge/Promise;->resolve:(Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/microsoft/xbox/toolkit/rn/PhoneNumberProviderRnModule;->lambda$getPhoneNumber$0:(Lcom/facebook/react/bridge/Promise; Lcom/microsoft/xbox/data/repository/PermissionsRepository$PermissionResponse;)V --> Lcom/facebook/react/bridge/Promise;->resolve:(Ljava/lang/Object;)V",
+        "Reasoning": "Promise.resolve() stores the phone number in the Promise object"
+      }
+    ],
+    "Label": "leak"
+  }
+]

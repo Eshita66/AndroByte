@@ -1,0 +1,168 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Map contains user location",
+        "Source Method": "Lcom/flurry/sdk/ic;->a:(Ljava/lang/String; Ljava/lang/String; Ljava/util/Map;)Ljava/lang/String;",
+        "Reasoning": "containsKey() call checks for user location key",
+        "Action": "Stored in map"
+      },
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "Lcom/flurry/sdk/ic;->a:(Ljava/lang/String; Ljava/lang/String; Ljava/util/Map;)Ljava/lang/String;",
+        "Reasoning": "get() call retrieves user location from map",
+        "Action": "Stored in variable"
+      },
+      {
+        "Step": "Send user location to Flurry SDK",
+        "Source Method": "Lcom/flurry/sdk/ic;->a:(Ljava/lang/String; Ljava/lang/String; Ljava/util/Map;)Ljava/lang/String;",
+        "Reasoning": "invoke-static call sends user location to Flurry SDK",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/flurry/sdk/kc;->a(I Ljava/lang/String; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/flurry/sdk/ic;->a(...) --> Lcom/flurry/sdk/kc;->a(...)",
+        "Reasoning": "User location is collected, stored in a map, retrieved, and sent to Flurry SDK"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive user data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user data is collected.",
+        "Source Method": "Lcom/flurry/sdk/id;->h:()[B",
+        "Reasoning": "Method `jo.d()` is involved.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive user data is passed to `hw` and `hz`.",
+        "Source Method": "Lcom/flurry/sdk/id;->h:()[B",
+        "Reasoning": "Method `jo.d()` is involved.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Sensitive user data is logged.",
+        "Source Method": "Lcom/flurry/sdk/id;->h:()[B",
+        "Reasoning": "Method `jo.d()` is involved.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/flurry/sdk/id;->h:()[B"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/flurry/sdk/id;->h:()[B --> ... --> Lcom/flurry/sdk/id;->h:()[B",
+        "Reasoning": "Sensitive user data is collected, passed to other methods, and then logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "TelephonyManager.getDeviceId() collects device ID",
+        "Source Method": "Lcom/flurry/sdk/jc;->w:()V",
+        "Reasoning": "Method `w()` calls `getDeviceId()` on TelephonyManager API.",
+        "Action": "Stored in `i` field of `jc` object"
+      },
+      {
+        "Step": "Hashing of device ID",
+        "Source Method": "Lcom/flurry/sdk/jc;->w:()V",
+        "Reasoning": "If device ID is not null or empty, it is hashed using the `sha1` algorithm.",
+        "Action": "Stored in `i` field of `jc` object"
+      },
+      {
+        "Step": "Logging hashed device ID",
+        "Source Method": "Lcom/flurry/sdk/jc;->w:()V",
+        "Reasoning": "Hashed device ID is logged using `kc.a()`.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/flurry/sdk/kc;->a:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " TelephonyManager.getDeviceId() --> jc.i --> kc.a() ",
+        "Reasoning": "The device ID is collected, hashed, and logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user location data",
+        "Source Method": "Lcom/wondershare/utils/c$1;->run:()V",
+        "Reasoning": "Geocoder class is used to retrieve location data.",
+        "Action": "Stored in `a` field"
+      },
+      {
+        "Step": "Pass location data to `a()` method",
+        "Source Method": "Lcom/wondershare/utils/c$1;->run:()V",
+        "Reasoning": "Location data is passed as an argument to the `a()` method.",
+        "Action": "Logged using `Log.d()`"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/wondershare/utils/c$1;->a:(Ljava/util/List;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/wondershare/utils/c$1;->run:()V --> Lcom/wondershare/utils/c$1;->a:(Ljava/util/List;)V",
+        "Reasoning": "Location data is first stored in the `a` field and then passed to the `a()` method where it is logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "Lcom/wondershare/utils/c;->a:()Landroid/location/Location;",
+        "Reasoning": "Method signature matches the summary",
+        "Action": "Stored in d field"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/wondershare/utils/c;->a:()Landroid/location/Location; --> d field",
+        "Reasoning": "Data is stored in the d field"
+      }
+    ],
+    "Label": "no leak"
+  }
+]

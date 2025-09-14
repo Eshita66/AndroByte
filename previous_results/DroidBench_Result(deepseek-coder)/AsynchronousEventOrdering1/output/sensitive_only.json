@@ -1,0 +1,31 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieving and storing IMEI in instance variable",
+                "Source Method": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V",
+                "Reasoning": "The method retrieves the device ID (IMEI) from TelephonyManager and stores it in an instance variable of MainActivity.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging stored IMEI using Log.i",
+                "Source Method": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V",
+                "Reasoning": "The method retrieves the IMEI from an instance variable and logs it using Log.i, which can potentially log sensitive information.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V) --> Stored in instance variable --> Source Method(Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V) --> Logged using Log.i]",
+                "Reasoning": "The IMEI is retrieved and stored in an instance variable during onResume, which is then logged during onStop potentially exposing sensitive information."
+            }
+        ],
+        "Label": "leak"
+    }
+]

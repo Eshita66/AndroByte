@@ -1,0 +1,265 @@
+[
+  {
+    "Data Types Collected": [
+      "location",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location collected from android/location/Location parameter.",
+        "Source Method": "Lcom/facebook/Request;->newPlacesSearchRequest:(Lcom/facebook/Session; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/Request$GraphPlaceListCallback;)Lcom/facebook/Request;",
+        "Reasoning": "The location is stored in variables and registers within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "String parameter passed to Session and Request methods.",
+        "Source Method": "Lcom/facebook/Request;-><init>:(Lcom/facebook/Session; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod; Lcom/facebook/Request$Callback;)V",
+        "Reasoning": "The string is stored in registers v7-v12, then passed to the constructor of Request via an invoke-direct instruction.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "String parameter checked for null or empty condition.",
+        "Source Method": "Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z",
+        "Reasoning": "The string is stored in the 'v0' register and passed to other methods via method invocations.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/facebook/Request;->newPlacesSearchRequest:(Lcom/facebook/Session; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/Request$GraphPlaceListCallback;)Lcom/facebook/Request; --> Lcom/facebook/Request;-><init>:(Lcom/facebook/Session; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod; Lcom/facebook/Request$Callback;)V",
+        "Reasoning": "The location is passed to the constructor of Request via an invoke-direct instruction."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get TelephonyManager",
+        "Source Method": "Lcom/toktumi/line2/util/e;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Using getSystemService API to retrieve the TelephonyManager",
+        "Action": "stored in register v1"
+      },
+      {
+        "Step": "Get phone number from TelephonyManager",
+        "Source Method": "Lcom/toktumi/line2/util/e;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Calling getLine1Number method on TelephonyManager",
+        "Action": "stored in register v1"
+      },
+      {
+        "Step": "Return phone number as string",
+        "Source Method": "Lcom/toktumi/line2/util/e;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Returning the phone number as a string",
+        "Action": "returned"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/toktumi/line2/util/e;->b:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/toktumi/line2/util/e;->b:(Landroid/content/Context;)Ljava/lang/String;(--> stored in register v1 --> returned) ",
+        "Reasoning": "The phone number is retrieved from the TelephonyManager and then returned as a string"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve WiFi information",
+        "Source Method": "Lcom/toktumi/line2/util/e;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The `getSystemService` and `getConnectionInfo` methods are used to retrieve WiFi information.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Extract MAC address from WiFi info",
+        "Source Method": "Lcom/toktumi/line2/util/e;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The MAC address is extracted from the WiFi information.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Convert MAC address to lowercase",
+        "Source Method": "Lcom/toktumi/line2/util/e;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The MAC address is converted to lowercase.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "com.appsflyer.AppsFlyerLibCore",
+      "com.appsflyer.AFEvent"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from sensitive API calls",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->getSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The method originates user personal data through the getSharedPreferences() API call.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Store it in registers and variables",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u03b9:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "The method originates user personal data from sensitive API calls, stores it in registers and variables",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Propagate it through method invocations",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u03b9:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "The method originates user personal data from sensitive API calls, stores it in registers and variables, propagates it through method invocations",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Pass it to sinks such as logging and network transmission",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u03b9:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "The method originates user personal data from sensitive API calls, stores it in registers and variables, propagates it through method invocations, and passes it to sinks such as logging and network transmission",
+        "Action": "Logged/Transmitted"
+      },
+      {
+        "Step": "Access the 'context' and '\u0269' fields of the AFEvent object",
+        "Source Method": "Lcom/appsflyer/AFEvent;->context:()Landroid/content/Context;",
+        "Reasoning": "The method originates user personal data by accessing the 'context' and '\u0269' fields of the AFEvent object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AppsFlyerLibCore;->\u03b9:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+      "Lcom/appsflyer/AFEvent;->context:()Landroid/content/Context;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "getSharedPreferences(...) --> \u03b9(...) --> logging/network transmission",
+        "Reasoning": "The data is originated from getSharedPreferences(), then stored in \u03b9() and finally passed to sinks like logging or network transmission."
+      },
+      {
+        "dataflow 2": "context(...) --> \u0269(...) --> \u03b9(...)",
+        "Reasoning": "The context field of AFEvent is accessed, then its value is stored in \u0269() and finally passed to \u03b9()."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Lorg/osmdroid/util/GeoPoint"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location",
+        "Source Method": "Lcom/toktumi/line2/E$d;->a(Lorg/osmdroid/util/GeoPoint;)V",
+        "Reasoning": "Sensitive API call to get user location",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Pass location data to method 'd'",
+        "Source Method": "Lcom/toktumi/line2/E$d;->a(Lorg/osmdroid/util/GeoPoint;)V",
+        "Reasoning": "Method invocation",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Store location data in registers v2 and v4",
+        "Source Method": "Lcom/toktumi/line2/E;->d:()V",
+        "Reasoning": "Sensitive API calls getProviderEnabled() and getLastKnownLocation()",
+        "Action": "Stored in registers"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/toktumi/line2/E;->a(Landroid/location/Location;)V",
+      "Lcom/toktumi/line2/E;->b(Lorg/osmdroid/util/GeoPoint;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/toktumi/line2/E$d;->a(Lorg/osmdroid/util/GeoPoint;)V --> Lcom/toktumi/line2/E;->d:()V --> Lcom/toktumi/line2/E;->b(Lorg/osmdroid/util/GeoPoint;)V",
+        "Reasoning": "Location data is passed from method 'a' of class E$d to method 'd' in class E, which stores it in registers v2 and v4. The data is then passed to method 'b' in class E for storage or logging."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data extracted from Location object",
+        "Source Method": "Lcom/toktumi/line2/E;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The latitude and longitude are extracted and stored in variables v1 and v3 respectively.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "GeoPoint object created using location data",
+        "Source Method": "Lcom/toktumi/line2/E;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The GeoPoint object is created using these values and passed to the E$d instance.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Sensitive API 'k' called from class Le/d/f/b",
+        "Source Method": "Le/d/f/b;->g:()I",
+        "Reasoning": "The data is stored in register v0 and propagated through registers.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Sensitive API 'iget-object' called from class Le/d/f/d/e",
+        "Source Method": "Le/d/f/d/e;->d:()I",
+        "Reasoning": "The data is stored in register v0 and passed to the e() method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data propagated back to Le/d/f/d/e;",
+        "Source Method": "Le/d/f/d/e;->d:()I",
+        "Reasoning": "The data is then propagated back to this method via move-result instruction before being returned as an integer result.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Data passed to Le/d/f/a;",
+        "Source Method": "Lcom/toktumi/line2/E;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The data is also passed to the Le/d/f/a instance for further processing.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Le/d/f/b;->g:()I",
+      "Le/d/f/d/e;->d:()I",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/toktumi/line2/E;->onLocationChanged:(Landroid/location/Location;)V --> Le/d/f/b;->g:()I]",
+        "Reasoning": "The location data is extracted from the Location object, passed to the E$d instance, and then propagated through registers via method invocation."
+      },
+      {
+        "dataflow 2": "[Le/d/f/d/e;->d:()I --> Le/d/f/d/e;->c:()I]",
+        "Reasoning": "The sensitive API 'iget-object' is called from class Le/d/f/d/e, storing the data in register v0. The data is then passed to the e() method and propagated back via move-result instruction."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

@@ -1,0 +1,34 @@
+[
+    {
+        "Data Types Collected": [
+            "latitude",
+            "longitude"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data is stored in fields from onLocationChanged",
+                "Source Method": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "Latitude and longitude are stored as strings in fields, which may be accessed by onResume.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sensitive data is logged/displayed in onResume",
+                "Source Method": "Lde/ecspride/LocationLeak2;->onResume:()V",
+                "Reasoning": "Logs and displays latitude/longitude values from fields, which may contain sensitive data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/LocationLeak2;->onResume:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V --> Lde/ecspride/LocationLeak2;->onResume:()V",
+                "Reasoning": "Latitude/longitude are stored in fields by onLocationChanged, then accessed and logged by onResume without taint removal."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

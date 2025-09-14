@@ -1,0 +1,41 @@
+Processing folder: D:\withoutcallgraphResult\testagain\StringToCharArray1
+Using methods file: D:\withoutcallgraphResult\testagain\StringToCharArray1\StringToCharArray1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method `onCreate` first calls `invoke-super` to initialize the `Activity`. Then, it calls `getSystemService` with `android.telephony.TelephonyManager` to retrieve the device ID using `getDeviceId()`. This instruction directly uses the `getDeviceId()` API, which is a sensitive source. The result of `getDeviceId()` (a string) is then used to populate a `StringBuilder` with the device ID. The `StringBuilder` is then used to log a message using `Log.i`. This creates a flow from `getDeviceId()` (sensitive source) -> `StringBuilder` -> `Log.i` (sink). The `Log.i` sink is triggered by the `String` value returned from `getDeviceId()`. Therefore, a leak is identified.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\testagain\StringToCharArray1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\testagain\StringToCharArray1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\testagain\StringToCharArray1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method calls `getSystemService` with `android.telephony.TelephonyManager` to obtain the device ID using `getDeviceId()`.",
+                "Action": "Retrieval of device ID"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/string_to_char/MainActivity;->Log.i:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/string_to_char/MainActivity;->Log.i:(Ljava/lang/String;)",
+                "Reasoning": "The `getDeviceId()` method returns a string representing the device ID. This string is then used as an argument to the `Log.i` method, resulting in a log message containing the device ID. This creates a direct flow from the sensitive source to the sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\testagain\StringToCharArray1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\testagain\StringToCharArray1\output\sensitive_only.json
+Total summary time: 9.328990459442139 seconds

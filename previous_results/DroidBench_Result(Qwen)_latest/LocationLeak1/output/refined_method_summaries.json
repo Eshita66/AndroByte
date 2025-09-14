@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "Location",
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get location and convert to string",
+                "Source Method": "Lde/ecspride/LocationLeak1$MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "The onLocationChanged method gets the location and passes it to the access$0 method.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/LocationLeak1;->access$1(Lde/ecspride/LocationLeak1; Ljava/lang/String;)V",
+            "Lde/ecspride/LocationLeak1;->access$0(Lde/ecspride/LocationLeak1; Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " LocationLeak1$MyLocationListener.onLocationChanged(Landroid/location/Location;)V --> ... --> LocationLeak1.access$0(Lde/ecspride/LocationLeak1; Ljava/lang/String;)V",
+                "Reasoning": "The onLocationChanged method gets the location and passes it to the access$0 method."
+            },
+            {
+                "dataflow 2": "LocationLeak1.access$0(Lde/ecspride/LocationLeak1; Ljava/lang/String;)V --> ... --> LocationLeak1.access$1(Lde/ecspride/LocationLeak1; Ljava/lang/String;)V",
+                "Reasoning": "The access$0 method passes the location string to the access$1 method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

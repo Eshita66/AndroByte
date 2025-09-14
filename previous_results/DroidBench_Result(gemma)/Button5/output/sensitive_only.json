@@ -1,0 +1,28 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "android.view.View"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Ledu/mit/button_object_allocation/Button1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method retrieves the device ID using TelephonyManager and stores it in the `imei` field.",
+                "Action": "Store Device ID"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/button_object_allocation/Button1;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The `onCreate` method retrieves the `DeviceId` and passes it to the `sendMessage` method as an argument. The `sendMessage` method uses this `DeviceId` to set the button's hint to 'DroidBench'. "
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

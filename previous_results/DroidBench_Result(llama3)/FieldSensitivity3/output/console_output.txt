@@ -1,0 +1,83 @@
+
+ Processing folder: D:\UBCBAPK_Methods\FieldSensitivity3
+ Using methods file: D:\UBCBAPK_Methods\FieldSensitivity3\FieldSensitivity3_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "This method initializes an Activity and sets up a Datacontainer to send SMS using the TelephonyManager.",
+    "Next Methods": [
+        "Landroid/app/Activity;->onCreate(Landroid/os/Bundle;)V",
+        "Lde/ecspride/Datacontainer;->setDescription(Ljava/lang/String;)V",
+        "Lde/ecspride/Datacontainer;->setSecret(Ljava/lang/String;)V",
+        "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/Datacontainer;->setSecret(Ljava/lang/String;)V => {
+    "Summary": "This method initializes an Activity and sets up a Datacontainer to send SMS using the TelephonyManager.",
+    "Next Methods": [
+        "Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V",
+        "return-void"
+    ]
+}
+[SUMMARY] Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V => {}
+[SUMMARY] Lde/ecspride/Datacontainer;->setDescription(Ljava/lang/String;)V => {
+    "Summary": "This method initializes an Activity and sets up a Datacontainer to send SMS using the TelephonyManager.",
+    "Next Methods": [
+        "Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V",
+        "return-void"
+    ]
+}
+[SUMMARY] Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V => {
+    "Summary": "This method initializes an Activity and sets up a Datacontainer to send SMS using the TelephonyManager.",
+    "Next Methods": [
+        "Lde/ecspride/Datacontainer;->getDescription:()Ljava/lang/String;"
+    ]
+}
+[SUMMARY] Lde/ecspride/Datacontainer;->getDescription:()Ljava/lang/String; => {}
+ Saved method summaries to D:\UBCBAPK_Methods\FieldSensitivity3\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\FieldSensitivity3\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\FieldSensitivity3\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "String"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "onCreate method initializes Activity and sets up Datacontainer to send SMS using TelephonyManager.",
+                "Source Method": "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive data is collected from the Bundle passed to onCreate.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "setSecret method overwrites DeviceId with a safe constant, removing taint.",
+                "Source Method": "Lde/ecspride/Datacontainer;->setSecret(Ljava/lang/String;)V",
+                "Reasoning": "Sensitive data is overwritten with a non-sensitive value, removing taint.",
+                "Action": "Logged"
+            },
+            {
+                "Step": "setDescription method overwrites DeviceId with a safe constant, removing taint.",
+                "Source Method": "Lde/ecspride/Datacontainer;->setDescription(Ljava/lang/String;)V",
+                "Reasoning": "Sensitive data is overwritten with a non-sensitive value, removing taint.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/FieldSensitivity3;->sendSMS:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Datacontainer;->setSecret(Ljava/lang/String;)V --> Lde/ecspride/FieldSensitivity3;->sendSMS:(Ljava/lang/String;)V",
+                "Reasoning": "Sensitive data is collected from the Bundle passed to onCreate, overwritten in setSecret, and then sent via SMS."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\FieldSensitivity3\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\FieldSensitivity3\output\sensitive_only.json
+Total time for folder: 25.97 seconds

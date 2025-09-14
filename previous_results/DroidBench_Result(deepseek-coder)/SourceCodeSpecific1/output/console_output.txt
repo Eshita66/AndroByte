@@ -1,0 +1,59 @@
+
+Processing folder: D:\UBCBAPK_Methods\SourceCodeSpecific1
+Using methods file: D:\UBCBAPK_Methods\SourceCodeSpecific1\SourceCodeSpecific1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method 'onCreate' in the class 'MainActivity' of the app 'ecspride' involves handling user personal data by obtaining and manipulating phone numbers stored in a set, which are later used to send SMS messages. The TelephonyManager is utilized to get the device ID, but this does not involve direct user personal data unless explicitly defined or required for the service.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Phone numbers",
+        "Device ID",
+        "SMS messages"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "User interaction or system initialization triggers onCreate.",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "Initial data retrieval from the system service for telephony information, which could be used later in specific app functions if defined.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Device ID is stored in memory.",
+            "Source Method": "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "Retrieved from the system service for telephony information, which could be used later if required by the app.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Manipulation of phone numbers in a set within the application context.",
+            "Source Method": "Ljava/util/Set;->add(Ljava/lang/Object;)Z",
+            "Reasoning": "Data is added to a mutable collection potentially involving user personal data without explicit consent handling.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "The set of phone numbers is later used in sendSMS, potentially involving sensitive data handling.",
+            "Source Method": "Lde/ecspride/MainActivity;->sendSMS(Ljava/util/Set; Ljava/lang/String;)V",
+            "Reasoning": "Data manipulation within the app context that could involve user personal data without explicit consent or defined purpose for such actions.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->sendSMS(Ljava/util/Set; Ljava/lang/String;)V"
+  
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Stored in memory --> Source Method: Ljava/util/Set;->add(Ljava/lang/Object;)Z --> Stored in set --> Sink Method: Lde/ecspride/MainActivity;->sendSMS(Ljava/util/Set; Ljava/lang/String;)V]",
+            "Reasoning": "Data flows from the system service for telephony information to storage, then to a mutable collection, and finally potentially used for sending SMS without explicit user consent."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\SourceCodeSpecific1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\SourceCodeSpecific1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\SourceCodeSpecific1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\SourceCodeSpecific1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\SourceCodeSpecific1\output\sensitive_only.json
+Total time for folder: 332.21 seconds

@@ -1,0 +1,46 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ActivitySavedState1
+ Using methods file: D:\UBCBAPK_Methods\ActivitySavedState1\ActivitySavedState1_bytecode_instructions.json
+Sensitive root methods: ['Ledu/mit/activity_saved_state/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/activity_saved_state/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V => {
+    "Summary": [
+        "The method saves the device ID into the Bundle, which may pose a privacy risk if not handled properly."
+    ],
+    "Next Methods": [
+        "Ledu/mit/activity_saved_state/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+        "Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V",
+        "Landroid/app/Activity;->onSaveInstanceState(Landroid/os/Bundle;)V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ActivitySavedState1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ActivitySavedState1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ActivitySavedState1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Saving sensitive data to Bundle",
+                "Source Method": "Ledu/mit/activity_saved_state/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly saves the device ID into the Bundle, which could be a privacy risk if not properly handled.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/activity_saved_state/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V --> [Bundle storage]",
+                "Reasoning": "The method saves the device ID into the Bundle, but no sink method is explicitly mentioned in the summary. The taint status is not confirmed to be overwritten or removed."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ActivitySavedState1\output\refined_method_summaries.json
+Saved 0 'leak' subgraphs to D:\UBCBAPK_Methods\ActivitySavedState1\output\sensitive_only.json
+Total time for folder: 51.27 seconds

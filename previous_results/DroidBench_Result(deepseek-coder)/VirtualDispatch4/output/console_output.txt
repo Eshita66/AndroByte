@@ -1,0 +1,38 @@
+
+Processing folder: D:\UBCBAPK_Methods\VirtualDispatch4
+Using methods file: D:\UBCBAPK_Methods\VirtualDispatch4\VirtualDispatch4_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity$A;->getString:()Ljava/lang/String;']
+[SUMMARY] Lde/ecspride/MainActivity$A;->getString:()Ljava/lang/String; => This method retrieves the device ID from the TelephonyManager service provided by the system, which is obtained through getSystemService with the 'phone' argument. The device ID is then returned as a string.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval of device ID",
+            "Source Method": "Lde/ecspride/MainActivity$A;->getString:()Ljava/lang/String;",
+            "Reasoning": "The method retrieves the device ID from TelephonyManager, which is considered personal data.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/MainActivity$A;->getString:()Ljava/lang/String; --> Retrieves device ID from TelephonyManager --> Potential sink identified as Log.i(...) if used for logging",
+            "Reasoning": "The method retrieves personal data (device ID) which could be logged without proper handling, thus potentially leading to a leak."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\VirtualDispatch4\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\VirtualDispatch4\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\VirtualDispatch4\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\VirtualDispatch4\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\VirtualDispatch4\output\sensitive_only.json
+Total time for folder: 920.80 seconds

@@ -1,0 +1,42 @@
+Processing folder: D:\withoutcallgraphResult\testagain\PrivateDataLeak3
+Using methods file: D:\withoutcallgraphResult\testagain\PrivateDataLeak3\PrivateDataLeak3_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method first calls `invoke-super`, which is a standard activity lifecycle method and does not involve sensitive data. Then, it calls `setContentView` with an integer constant, which is a standard UI setup and does not involve sensitive data. Next, it calls `getSystemService` with the string \"phone\", which retrieves a `TelephonyManager` object. The `getDeviceId()` method is then invoked on this `TelephonyManager` object, which is a sensitive API. The result of `getDeviceId()` is a string, which is then written to a file named \"out.txt\" using `openFileOutput` and `write`. This constitutes a clear flow of sensitive data (device ID) into a sink (file writing). The `openFileOutput` and `write` instructions are the key elements in this flow.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\testagain\PrivateDataLeak3\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\testagain\PrivateDataLeak3\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\testagain\PrivateDataLeak3\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method calls `getSystemService` with the string \"phone\", which retrieves a `TelephonyManager` object. The `getDeviceId()` method is then invoked on this `TelephonyManager` object.",
+                "Action": "Retrieval of device ID"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->openFileOutput:(Ljava/lang/String;Ljava/lang/String;Z)V",
+            "Lde/ecspride/MainActivity;->write:(Ljava/lang/String;I)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->openFileOutput:(Ljava/lang/String;Ljava/lang/String;Z)V",
+                "Reasoning": "The `onCreate` method calls `getSystemService` with the string \"phone\", which retrieves a `TelephonyManager` object. The `getDeviceId()` method is then invoked on this `TelephonyManager` object, which returns the device ID as a string. This string is then written to a file named \"out.txt\" using `openFileOutput` and `write` instructions."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\testagain\PrivateDataLeak3\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\testagain\PrivateDataLeak3\output\sensitive_only.json
+Total summary time: 8.72494888305664 seconds

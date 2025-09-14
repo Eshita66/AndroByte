@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval and logging",
+                "Source Method": "Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V",
+                "Reasoning": "The method uses TelephonyManager's getDeviceId() to obtain a sensitive DeviceId, which is stored in register v2 and directly passed to the Log.v sink without overwriting or taint removal.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V --> Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The DeviceId is retrieved via getDeviceId(), stored in register v2, and directly passed to Log.v without overwriting or taint removal, resulting in a tainted argument to the sink."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

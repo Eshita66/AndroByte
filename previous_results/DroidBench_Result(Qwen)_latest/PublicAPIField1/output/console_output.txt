@@ -1,0 +1,53 @@
+Processing folder: D:\UBCBAPK_Methods\PublicAPIField1
+Using methods file: D:\UBCBAPK_Methods\PublicAPIField1\PublicAPIField1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method originates user personal data via the TelephonyManager's getDeviceId() API, retrieving the IMEI. The IMEI is processed into float values, stored in a PointF object, and then logged using android.util.Log. The sensitive data reaches a logging sink (Log.i).",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\PublicAPIField1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\PublicAPIField1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\PublicAPIField1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data retrieval",
+                "Source Method": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method calls TelephonyManager.getDeviceId() to retrieve IMEI as sensitive data",
+                "Action": "Collected"
+            },
+            {
+                "Step": "Data transformation",
+                "Source Method": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "IMEI is processed into float values and stored in PointF object",
+                "Action": "Transformed"
+            },
+            {
+                "Step": "Data exfiltration",
+                "Source Method": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Tainted data is passed to android.util.Log.i sink",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "IMEI is retrieved via TelephonyManager.getDeviceId(), processed into float values, stored in PointF, and then passed to Log.i sink"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\PublicAPIField1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\PublicAPIField1\output\sensitive_only.json
+Total summary time: 1447.554541349411 seconds

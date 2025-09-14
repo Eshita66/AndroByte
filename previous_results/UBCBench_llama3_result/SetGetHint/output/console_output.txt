@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\SetGetHint
+Using methods file: D:\UBCBAPK_Methods\SetGetHint\SetGetHint_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive data originated from Landroid/telephony/TelephonyManager;->getDeviceId(). It was stored in v1, passed to various methods, and ultimately logged using Landroid/util/Log;->v.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\SetGetHint\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\SetGetHint\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\SetGetHint\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from Landroid/telephony/TelephonyManager;->getDeviceId()",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId()",
+                "Reasoning": "Data flow: Source --> v1 --> various methods --> Sink (logged using Landroid/util/Log;->v)",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->v"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " [Source Method(Landroid/telephony/TelephonyManager;->getDeviceId()) --> ... --> Sink Method(Landroid/util/Log;->v)]",
+                "Reasoning": "Sensitive data (DeviceId) was passed to various methods and ultimately logged using Landroid/util/Log;->v."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\SetGetHint\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\SetGetHint\output\sensitive_only.json
+Total summary time: 370.06791973114014 seconds

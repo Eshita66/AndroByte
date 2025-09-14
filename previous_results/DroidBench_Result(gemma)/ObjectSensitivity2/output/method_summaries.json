@@ -1,0 +1,5 @@
+[
+    {
+        "Lde/ecspride/OverwiteValue;->onCreate:(Landroid/os/Bundle;)V": "The method `onCreate` first calls `getDeviceId` via `TelephonyManager.getDeviceId()`. This results in a tainted `String` being stored in `DataStore.field`. Subsequently, `sendTextMessage` is invoked with the same tainted `String` as the destination address (`vDest`). The `sendTextMessage` sink is triggered.  The `const-string v1, \"abc\"` and `iput-object v1, v10, Lde/ecspride/DataStore;->field Ljava/lang/String;` operations overwrite the previously tainted `DataStore.field` with a constant value. Therefore, the `sendTextMessage` sink is no longer triggered. The `const-string v1, \"abc\"` operation overwrites the previous taint.  The `Next Methods` array is empty."
+    }
+]

@@ -1,0 +1,42 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\Reflection2
+Using methods file: D:\withoutcallgraphResult\TestAcessess\Reflection2\Reflection2_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "This method originates user data by obtaining the device ID using the `getDeviceId()` method of the `TelephonyManager` class. Specifically, it uses the `android.telephony.TelephonyManager` service to retrieve the device ID and stores it as the `imei` field in a `BaseClass` instance.  It also uses the `SmsManager` to send a text message with the content \"+49 1234\".  Because this method uses the `TelephonyManager` and `SmsManager`, it is a sink for user data.  The `Next Methods` list is empty due to the identified sink.",
+    "Next Methods": []
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\Reflection2\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\Reflection2\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\Reflection2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "imei",
+            "android.telephony.TelephonyManager",
+            "SmsManager"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain Device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method `onCreate` obtains the device ID using `getDeviceId()` from `TelephonyManager`.",
+                "Action": "Retrieve Device ID"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " [Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V]",
+                "Reasoning": "The `onCreate` method uses the `DeviceId` obtained from `TelephonyManager` as an argument to the sink method."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\Reflection2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\Reflection2\output\sensitive_only.json
+Total summary time: 7.684139013290405 seconds

@@ -1,0 +1,59 @@
+
+ Processing folder: D:\UBCBAPK_Methods\Button3
+ Using methods file: D:\UBCBAPK_Methods\Button3\Button3_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V']
+[SUMMARY] Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V => {
+    "Summary": [
+        "The method retrieves the IMEI from TelephonyManager, stores it in the MainActivity's 'imei' field, and sets a Button2Listener for a button. The 'imei' field is accessed by Button2Listener's onClick method, which may read the sensitive data."
+    ],
+    "Next Methods": [
+        "Lde/ecspride/Button2Listener;->onClick:(Landroid/view/View;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/Button2Listener;->onClick:(Landroid/view/View;)V => {
+    "Summary": [
+        "The method sends the IMEI via SMS using SmsManager, which is a clear data leak of sensitive information."
+    ],
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\Button3\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\Button3\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\Button3\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "IMEI is retrieved from TelephonyManager",
+                "Source Method": "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "The method explicitly retrieves IMEI from TelephonyManager, a known sensitive source",
+                "Action": "Stored"
+            },
+            {
+                "Step": "IMEI is transmitted via SMS",
+                "Source Method": "Lde/ecspride/Button2Listener;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "The method uses the IMEI stored in MainActivity's 'imei' field for SMS transmission",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Button2Listener;->onClick:(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V --> Lde/ecspride/Button2Listener;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "IMEI is stored in MainActivity's 'imei' field by Button1Listener, then accessed by Button2Listener's onClick method which sends it via SMS"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\Button3\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\Button3\output\sensitive_only.json
+Total time for folder: 34.39 seconds

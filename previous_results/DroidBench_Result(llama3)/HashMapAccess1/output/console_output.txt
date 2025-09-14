@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\HashMapAccess1
+Using methods file: D:\UBCBAPK_Methods\HashMapAccess1\HashMapAccess1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/HashMapAccess1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/HashMapAccess1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive data originated in this method through the invocation of the getDeviceId() method from TelephonyManager. This data is stored in register v1 and propagated to a HashMap instance (v6) using the key \"tainted\". A sink was identified when the method invokes sendTextMessage() from SmsManager, passing the device ID as one of its arguments.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\HashMapAccess1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\HashMapAccess1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\HashMapAccess1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated in this method through the invocation of the getDeviceId() method from TelephonyManager.",
+                "Source Method": "Lde/ecspride/HashMapAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "This data is stored in register v1 and propagated to a HashMap instance (v6) using the key \"tainted\".",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sink was identified when the method invokes sendTextMessage() from SmsManager, passing the device ID as one of its arguments.",
+                "Source Method": "Lde/ecspride/HashMapAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is passed to a sink method.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingResult;, Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/HashMapAccess1;->onCreate:(Landroid/os/Bundle;)V --> HashMap instance (v6) using the key \"tainted\" --> Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingResult;, Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive data originated in this method through the invocation of the getDeviceId() method from TelephonyManager, and is passed to a sink method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\HashMapAccess1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\HashMapAccess1\output\sensitive_only.json
+Total summary time: 10.339137554168701 seconds

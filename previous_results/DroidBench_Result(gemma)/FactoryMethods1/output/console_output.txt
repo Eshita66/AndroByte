@@ -1,0 +1,42 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\FactoryMethods1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\FactoryMethods1\FactoryMethods1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method `onCreate` performs several location-related operations. Specifically, it initializes a `Criteria` object, retrieves the best location provider, and obtains the last known location, including latitude and longitude. The `Log.d` calls with the strings \"Latitude\" and \"Longtitude\" are potential sinks. The `Log.d` calls pass the strings \"Latitude\" and \"Longtitude\" as arguments.  Instruction `invoke-static {vSrcArr, vSrcPos, vDstArr, vDstPos, vLen}, java/lang/System;->arraycopy` propagates the string \"Latitude\" and \"Longtitude\" to the `Log.d` calls.  Therefore, a sink is identified.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\FactoryMethods1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\FactoryMethods1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\FactoryMethods1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "Latitude",
+            "Longitude"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Latitude and Longitude",
+                "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The `onCreate` method obtains the last known location, including latitude and longitude.",
+                "Action": "Stored as variables"
+            }
+        ],
+        "All Sinks": [
+            "android/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;[Z)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V --> android/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;[Z)V",
+                "Reasoning": "The `onCreate` method retrieves latitude and longitude. The `arraycopy` instruction propagates the string \"Latitude\" and \"Longtitude\" to the `Log.d` calls.  The `Log.d` calls pass the strings \"Latitude\" and \"Longtitude\" as arguments."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\FactoryMethods1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\FactoryMethods1\output\sensitive_only.json
+Total summary time: 53.13020348548889 seconds

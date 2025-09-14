@@ -1,0 +1,64 @@
+
+ Processing folder: D:\UBCBAPK_Methods\LocationLeak2
+ Using methods file: D:\UBCBAPK_Methods\LocationLeak2\LocationLeak2_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V']
+[SUMMARY] Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V => {
+    "Summary": "This method receives a Location object and extracts its latitude and longitude as strings, storing them in the LocationLeak2 object's latitude and longtitude fields.",
+    "Next Methods": [
+        "Lde/ecspride/LocationLeak2;->onResume:()V"
+    ]
+}
+[SUMMARY] Lde/ecspride/LocationLeak2;->onResume:()V => {
+    "Summary": "This method receives a Location object and extracts its latitude and longitude as strings, storing them in the LocationLeak2 object's latitude and longtitude fields. It then displays these values as Toast messages.",
+    "Next Methods": [
+        "Lde/ecspride/LocationLeak2;->latitude:()V",
+        "Lde/ecspride/LocationLeak2;->longtitude:()V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\LocationLeak2\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\LocationLeak2\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\LocationLeak2\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "Location",
+            "String",
+            "android.location.Location"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Location object received from getDeviceId.",
+                "Source Method": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "The summary states that this method receives a Location object.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Latitude and longitude extracted and stored.",
+                "Source Method": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V",
+                "Reasoning": "The summary explicitly states that latitude and longitude are extracted and stored.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Latitude and longitude displayed as Toast messages.",
+                "Source Method": "Lde/ecspride/LocationLeak2;->onResume:()V",
+                "Reasoning": "The summary states that these values are displayed as Toast messages.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/LocationLeak2;->onResume:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V --> Lde/ecspride/LocationLeak2;->onResume:()V",
+                "Reasoning": "The onLocationChanged method receives a Location object, extracts latitude and longitude, and stores them. The onResume method then receives the same Location object (potentially with the same latitude and longitude) and displays them as Toast messages."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\LocationLeak2\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\LocationLeak2\output\sensitive_only.json
+Total time for folder: 17.70 seconds

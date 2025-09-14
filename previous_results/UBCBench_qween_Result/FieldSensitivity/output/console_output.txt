@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\FieldSensitivity
+Using methods file: D:\UBCBAPK_Methods\FieldSensitivity\FieldSensitivity_bytecode_instructions.json
+Sensitive method found: Llina/ubc/fieldsensitivity/FieldSensitivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Llina/ubc/fieldsensitivity/FieldSensitivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method originates the device ID via Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String; and stores it in Llina/ubc/fieldsensitivity/FieldSensitivity$A;->info1 Ljava/lang/String;. It also stores a static string \"123\" in Llina/ubc/fieldsensitivity/FieldSensitivity$A;->info2 Ljava/lang/String;. Both info1 and info2 are logged via Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I, which are identified as sinks. No further method invocations propagate sensitive data.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\FieldSensitivity\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\FieldSensitivity\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\FieldSensitivity\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved from TelephonyManager",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+                "Reasoning": "The method directly accesses the device ID, which is a sensitive source.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is logged",
+                "Source Method": "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I",
+                "Reasoning": "The device ID is passed to the Log.e method, which is identified as a sink. The value is not overwritten with a non-sensitive constant.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String; --> Llina/ubc/fieldsensitivity/FieldSensitivity$A;->info1 Ljava/lang/String; --> Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I",
+                "Reasoning": "The device ID is retrieved from TelephonyManager, stored in info1, and then passed to Log.e without being overwritten by a non-sensitive value."
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\FieldSensitivity\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\FieldSensitivity\output\sensitive_only.json
+Total summary time: 41.461936950683594 seconds

@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from TelephonyManager.getDeviceId",
+                "Source Method": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "DeviceId is captured as source",
+                "Action": "Stored in String array"
+            },
+            {
+                "Step": "Data copied to second array",
+                "Source Method": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "System.arraycopy operation",
+                "Action": "Copied to secondary array"
+            },
+            {
+                "Step": "Data logged via Log.i",
+                "Source Method": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sink detected in Log.i call",
+                "Action": "Logged as log message"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;[Ljava/lang/Object;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> TelephonyManager.getDeviceId() --> String array --> System.arraycopy --> Log.i",
+                "Reasoning": "DeviceId is captured from TelephonyManager.getDeviceId(), stored in String array, copied via System.arraycopy to another array, and then passed to Log.i as a log message"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

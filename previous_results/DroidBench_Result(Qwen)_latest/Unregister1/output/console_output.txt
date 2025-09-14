@@ -1,0 +1,52 @@
+
+ Processing folder: D:\UBCBAPK_Methods\Unregister1
+ Using methods file: D:\UBCBAPK_Methods\Unregister1\Unregister1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MainActivity$1;->onClick:(Landroid/view/View;)V']
+[SUMMARY] Lde/ecspride/MainActivity$1;->onClick:(Landroid/view/View;)V => {
+    "Summary": [
+        "The onClick method retrieves the device ID from TelephonyManager, constructs a log message, and logs it using Log.i. No data leaks detected."
+    ],
+    "Next Methods": [
+        "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+        "Landroid/telephony/SmsManager;->getDefault()Landroid/telephony/SmsManager;",
+        "Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\Unregister1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\Unregister1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\Unregister1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved from TelephonyManager",
+                "Source Method": "Lde/ecspride/MainActivity$1;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "The onClick method explicitly retrieves the device ID from TelephonyManager as a sensitive source.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is logged using Log.i",
+                "Source Method": "Lde/ecspride/MainActivity$1;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "The summary indicates the device ID is used as a log message argument, but the summary explicitly states no data leaks detected.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity$1;->onClick:(Landroid/view/View;)V --> Log.i",
+                "Reasoning": "The device ID (sensitive source) is passed to Log.i, but the summary explicitly states no data leaks detected, implying taint is not propagated to sinks."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\Unregister1\output\refined_method_summaries.json
+Saved 0 'leak' subgraphs to D:\UBCBAPK_Methods\Unregister1\output\sensitive_only.json
+Total time for folder: 41.08 seconds

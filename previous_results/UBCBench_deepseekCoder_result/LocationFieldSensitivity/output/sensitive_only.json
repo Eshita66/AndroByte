@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "Location Data",
+            "Timestamp"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Location Service",
+                "Source Method": "Llina/ubc/locationfieldsensitivity/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The method retrieves the system service for location using 'getSystemService(\"location\")'",
+                "Action": "Stored in LocationManager"
+            },
+            {
+                "Step": "Process Location Data",
+                "Source Method": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the best provider and last known location, which includes sensitive data.",
+                "Action": "Processed for logging"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/locationfieldsensitivity/MainActivity;->Log.d(...)",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Llina/ubc/locationfieldsensitivity/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Source Method: Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Sink Method: Llina/ubc/locationfieldsensitivity/MainActivity;->Log.d(...)]",
+                "Reasoning": "The system service for location is retrieved in onCreate, and the location data (including sensitive information) is processed and logged."
+            }
+        ],
+        "Label": "leak"
+    }
+]

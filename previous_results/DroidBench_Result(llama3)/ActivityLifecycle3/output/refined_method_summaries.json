@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "subscriber ID",
+            "phone number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve subscriber ID",
+                "Source Method": "Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onSaveInstanceState` method retrieves the subscriber ID using `getSystemService` and `getSubscriberId()`. This ID is then stored as a field `s` within the `MainActivity` object.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send SMS with phone number",
+                "Source Method": "Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onRestoreInstanceState` method initiates the sending of an SMS message containing the phone number \"+49 1234\".",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V",
+                "Reasoning": "The subscriber ID is initially retrieved and stored within the `MainActivity` object. This data is then used to trigger the sending of an SMS message, directly exposing the phone number to an external service (SMS recipient). The phone number is transmitted without any further processing or storage."
+            }
+        ],
+        "Label": "leak"
+    }
+]

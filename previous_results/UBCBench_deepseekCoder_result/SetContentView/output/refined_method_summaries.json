@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID from TelephonyManager",
+                "Source Method": "Ljunbin/ubc/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The method retrieves the device ID through getSystemService with 'phone' key, which is sensitive information.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Log Device ID using Log.v",
+                "Source Method": "Ljunbin/ubc/MainActivity;->buttonClick:(Landroid/view/View;)V",
+                "Reasoning": "The device ID is logged via Log.v, which can expose sensitive information.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ljunbin/ubc/MainActivity;->buttonClick:(Landroid/view/View;)V",
+            "Log.v"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(Ljunbin/ubc/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;) --> ... --> Sink Method(Log.v)]",
+                "Reasoning": "The device ID is obtained from TelephonyManager and directly logged using Log.v without any intermediate processing that would comply with data protection regulations."
+            }
+        ],
+        "Label": "leak"
+    }
+]

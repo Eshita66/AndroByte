@@ -1,0 +1,46 @@
+
+Processing folder: D:\UBCBAPK_Methods\ActivityLifecycle3
+Using methods file: D:\UBCBAPK_Methods\ActivityLifecycle3\ActivityLifecycle3_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V => This method retrieves the subscriber ID from the device's TelephonyManager. The `getSystemService` call obtains an instance of `TelephonyManager`. The `getSubscriberId()` method then extracts a string, which is stored as a field `s` within the `MainActivity` object. This directly exposes the subscriber ID, a potentially sensitive piece of personal data, to the application's state.
+[SUMMARY] Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V => This method `onRestoreInstanceState` initiates the sending of an SMS message containing the phone number "+49 1234" to an unknown recipient. This directly involves the transmission of personal data (phone number) via the `SmsManager`. The method itself does not perform any further data processing or storage of this data beyond the SMS sending operation. The use of `SmsManager` indicates a potential data leak if the SMS message is not handled securely, as it exposes the phone number to external services.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "subscriber ID",
+        "phone number"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve subscriber ID",
+            "Source Method": "Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V",
+            "Reasoning": "The `onSaveInstanceState` method retrieves the subscriber ID using `getSystemService` and `getSubscriberId()`. This ID is then stored as a field `s` within the `MainActivity` object.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Send SMS with phone number",
+            "Source Method": "Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V",
+            "Reasoning": "The `onRestoreInstanceState` method initiates the sending of an SMS message containing the phone number \"+49 1234\".",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V",
+            "Reasoning": "The subscriber ID is initially retrieved and stored within the `MainActivity` object. This data is then used to trigger the sending of an SMS message, directly exposing the phone number to an external service (SMS recipient). The phone number is transmitted without any further processing or storage."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ActivityLifecycle3\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ActivityLifecycle3\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ActivityLifecycle3\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ActivityLifecycle3\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ActivityLifecycle3\output\sensitive_only.json
+Total time for folder: 11.26 seconds

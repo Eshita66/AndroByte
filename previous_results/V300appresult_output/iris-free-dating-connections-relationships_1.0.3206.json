@@ -1,0 +1,192 @@
+[
+  {
+    "Data Types Collected": [
+      "Device ID",
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User properties API call",
+        "Source Method": "Lf/c/a/g;->g:(Ljava/lang/String;",
+        "Reasoning": "Sensitive user personal data originates from the `user_properties` API.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Groups and group properties API call",
+        "Source Method": "Lf/c/a/g;->g:(Ljava/lang/String;",
+        "Reasoning": "Sensitive user personal data originates from the `groups` and `group_properties` APIs.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "getLastKnownLocation method of LocationManager",
+        "Source Method": "Lf/c/a/s;->d:()Landroid/location/Location;",
+        "Reasoning": "Sensitive user personal data originates from calling the getLastKnownLocation method of LocationManager.",
+        "Action": "Stored in 'v5' register and passed to other methods via method invocations"
+      },
+      {
+        "Step": "checkSelfPermission API call",
+        "Source Method": "Lf/c/a/v;->a:(Landroid/content/Context;",
+        "Reasoning": "Sensitive user personal data originates through the `checkSelfPermission` API call.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Propagation to sinks",
+        "Source Method": "Multiple methods",
+        "Reasoning": "Data is propagated through method invocations to sinks like logging.",
+        "Action": "Logged, transmitted, or stored"
+      }
+    ],
+    "All Sinks": [
+      "Lf/c/a/g;->g:(Ljava/lang/String;",
+      "Lf/c/a/s;->d:()Landroid/location/Location;",
+      "Lf/c/a/v;->a:(Landroid/content/Context;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lf/c/a/g;->g:(Ljava/lang/String; --> Lf/c/a/s;->d:()Landroid/location/Location --> Lf/c/a/v;->a:(Landroid/content/Context;) ]",
+        "Reasoning": "Sensitive user personal data is propagated from the `user_properties` API to the getLastKnownLocation method of LocationManager and then to the checkSelfPermission API call."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected by method Lf/i/b/e/i/a/m61;->a:(Ljava/lang/Object;)V.",
+        "Source Method": "Lf/i/b/e/i/a/m61;->a:(Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data by using sensitive API calls to Bundle.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Propagates through method invocations.",
+        "Source Method": "Lf/i/b/e/i/a/m61;->a:(Ljava/lang/Object;)V",
+        "Reasoning": "The data is stored in registers and variables within the method.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Reaches various sinks such as logging, network transmission, or storage.",
+        "Source Method": "Lf/i/b/e/i/a/m61;->a:(Ljava/lang/Object;)V",
+        "Reasoning": "The data is propagated to sinks for further processing.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lf/i/b/e/i/a/m62;->b:(Ljava/lang/String;)V",
+      "Lf/i/b/e/i/a/m63;->c:(Landroid/content/Intent;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lf/i/b/e/i/a/m61;->a:(Ljava/lang/Object;)V --> Lf/i/b/e/i/a/m62;->b:(Ljava/lang/String;)V",
+        "Reasoning": "User personal data is collected by method Lf/i/b/e/i/a/m61;->a:(Ljava/lang/Object;)V, propagated through method invocations and reaches sink Lf/i/b/e/i/a/m62;->b:(Ljava/lang/String;)V for logging."
+      },
+      {
+        "dataflow 2": "Lf/i/b/e/i/a/m61;->a:(Ljava/lang/Object;)V --> Lf/i/b/e/i/a/m63;->c:(Landroid/content/Intent;)V",
+        "Reasoning": "User personal data is collected by method Lf/i/b/e/i/a/m61;->a:(Ljava/lang/Object;)V, propagated through method invocations and reaches sink Lf/i/b/e/i/a/m63;->c:(Landroid/content/Intent;)V for network transmission."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get current location",
+        "Source Method": "Lo/b/c/i$h;->c:()I",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to get the current location.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Propagate through method invocations",
+        "Source Method": "Lo/b/c/i$h;->c:()I",
+        "Reasoning": "The data propagates through method invocations to other methods.",
+        "Action": "Passed as parameters"
+      },
+      {
+        "Step": "Reach sink points like logging and storage",
+        "Source Method": "Lo/b/c/i$h;->c:()I",
+        "Reasoning": "The data reaches sink points like logging and storage.",
+        "Action": "Logged and stored"
+      }
+    ],
+    "All Sinks": [
+      "Lo/b/c/i$h;->d:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lo/b/c/i$h;->c:()I --> Lo/b/c/i$h;->d:()V",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to get the current location. The data is stored in registers and variables within the method. It propagates through method invocations to other methods, reaching sink points like logging and storage."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "java.lang.Object"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "onSuccess method called",
+        "Source Method": "Lf/a/a/a/q$c;->onSuccess:(Ljava/lang/Object;)V",
+        "Reasoning": "Data is passed as an argument to the onSuccess method",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "LocationResult.locations list accessed",
+        "Source Method": "Lf/a/a/a/s;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The method originates user personal data from the 'locationResult.locations' list.",
+        "Action": "Stored in register v6"
+      },
+      {
+        "Step": "Data passed to other methods via method invocations",
+        "Source Method": "Lf/a/a/a/s;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The data is stored in register v6 and passed to other methods via method invocations.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data logged through function invocation",
+        "Source Method": "Lf/a/a/a/s;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The data reaches a sink point, specifically logging, through a function invocation.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lf/a/a/a/s;->a:(Lcom/google/android/gms/location/LocationResult;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lf/a/a/a/s;->a:(Lcom/google/android/gms/location/LocationResult;)V --> ... --> Lf/a/a/a/s;->a:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The data originates from the 'locationResult.locations' list, is stored in register v6 and passed to other methods via method invocations, and eventually reaches a sink point through a function invocation."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

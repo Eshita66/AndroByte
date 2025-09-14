@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "device_id"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID",
+                "Source Method": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `getDeviceId()` method call retrieves the device ID from the TelephonyManager.",
+                "Action": "Store device_id in register v1"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/icc_intent_class_modeling/MainActivity;->Log.i:(Ljava/lang/String;Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/icc_intent_class_modeling/MainActivity;->getDeviceId:(Landroid/telephony/TelephonyManager;)J --> Ledu/mit/icc_intent_class_modeling/MainActivity;->Log.i:(Ljava/lang/String;Ljava/lang/String;)V",
+                "Reasoning": "The `onCreate` method calls `getDeviceId()` on the `TelephonyManager`, which returns the device ID. This device ID is then stored in register v1, and subsequently passed as the first argument to `Log.i`.  The `Log.i` method then logs the device ID."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

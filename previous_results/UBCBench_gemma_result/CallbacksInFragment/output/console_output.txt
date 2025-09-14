@@ -1,0 +1,71 @@
+Processing folder: D:\UBCBAPK_Methods\CallbacksInFragment
+Using methods file: D:\UBCBAPK_Methods\CallbacksInFragment\CallbacksInFragment_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MyFragment;->onClick:(Landroid/view/View;)V
+Sensitive method found: Ljunbin/ubc/MyFragment;->onCreateView:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View;
+Processed summary for Ljunbin/ubc/MyFragment;->onClick:(Landroid/view/View;)V: {
+    "Summary": "The method retrieves the device ID via TelephonyManager.getDeviceId() and logs it using android.util.Log.v, which is a sink for personal data. No further data propagation occurs beyond the logging sink.",
+    "Next Methods": []
+}
+Processed summary for Ljunbin/ubc/MyFragment;->onCreateView:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View;: {
+    "Summary": "The method retrieves the device ID using Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String; and logs it via Landroid/util/Log;->v(Ljava/lang/String; Ljava/lang/String;)I. The device ID (sensitive personal data) is stored in register v1 and passed to the logging sink.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\CallbacksInFragment\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\CallbacksInFragment\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\CallbacksInFragment\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval and logging",
+                "Source Method": "Ljunbin/ubc/MyFragment;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "The method directly accesses TelephonyManager.getDeviceId() (sensitive source) and passes it to android.util.Log.v (sink) without overwriting or taint removal.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MyFragment;->onClick:(Landroid/view/View;)V --> Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The device ID (sensitive source) is directly passed to the logging sink without being overwritten or sanitized."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    },
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval and logging",
+                "Source Method": "Ljunbin/ubc/MyFragment;->onCreateView:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View;",
+                "Reasoning": "The method calls getDeviceId() (source) and passes the result to Log.v() (sink) without overwriting the sensitive value.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->v(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MyFragment;->onCreateView(...) --> Landroid/telephony/TelephonyManager;->getDeviceId() --> Landroid/util/Log;->v(...)",
+                "Reasoning": "The device ID is directly retrieved from TelephonyManager and passed to the logging sink without being overwritten by a non-sensitive value."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\CallbacksInFragment\output\refined_method_summaries.json
+Saved 2 'sensitive' subgraphs to: D:\UBCBAPK_Methods\CallbacksInFragment\output\sensitive_only.json
+Total summary time: 30.76137089729309 seconds

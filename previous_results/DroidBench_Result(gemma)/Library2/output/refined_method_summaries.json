@@ -1,0 +1,48 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+                "Reasoning": "The `getIMEI` method retrieves the device ID by calling `getDeviceId()` on a `TelephonyManager` instance.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String; --> DeviceId",
+                "Reasoning": "The `getIMEI` method retrieves the device ID and returns it.  No overwrite or taint loss is indicated."
+            }
+        ],
+        "Label": "no leak"
+    },
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get IMEI from LibClass",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method `onCreate` calls `getIMEI` on the `LibClass` object, originating the `DeviceId`.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Landroid/content/Intent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Landroid/content/Intent;)V",
+                "Reasoning": "The `DeviceId` (obtained from `getIMEI`) is transmitted via the `sendTextMessage` call."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

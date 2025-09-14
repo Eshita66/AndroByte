@@ -1,0 +1,211 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location",
+        "Source Method": "Lc/b/k/h;->c:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method calls getLastKnownLocation() to retrieve the location.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Source Method(...) --> Sink Method(null)",
+        "Reasoning": "The location is retrieved but not logged, transmitted, or displayed."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected in method f() and stored in registers v2, v5, and v7.",
+        "Source Method": "Lc/b/k/h;->f:(Landroid/location/Location;)V",
+        "Reasoning": "Method f() receives location data as an argument.",
+        "Action": "Stored in registers v2, v5, and v7"
+      },
+      {
+        "Step": "Location data is passed to method a() via method invocation.",
+        "Source Method": "Lc/b/k/h;->f:(Landroid/location/Location;)V",
+        "Reasoning": "Method f() calls method a() with the location data.",
+        "Action": "Passed as an argument to method a()"
+      },
+      {
+        "Step": "Location data is logged to the console in method a().",
+        "Source Method": "Lc/b/k/h;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method a() receives location data as an argument.",
+        "Action": "Logged to the console"
+      }
+    ],
+    "All Sinks": [
+      "Lc/b/k/h;->a:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lc/b/k/h;->f:(Landroid/location/Location;)V --> Lc/b/k/h;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Location data collected in method f() is passed to method a() and logged to the console."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "account type",
+      "account name",
+      "account unique identifier"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract account information",
+        "Source Method": "La/a/a/a/b/b;->a:(Landroid/content/Context; La/a/a/a/b/l;)V",
+        "Reasoning": "Method iterates through accounts and extracts account type, name, and unique identifier.",
+        "Action": "Stored in a map"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "TelephonyManager"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is originated from the TelephonyManager.",
+        "Source Method": "La/a/a/a/b/u;->a:(Landroid/content/Context; La/a/a/a/b/l;)V",
+        "Reasoning": "TelephonyManager provides access to user phone number and device ID.",
+        "Action": "Stored in a map."
+      },
+      {
+        "Step": "Sensitive user personal data is potentially passed to logging or transmission.",
+        "Source Method": "La/a/a/a/b/u;->a:(Landroid/content/Context; La/a/a/a/b/l;)V",
+        "Reasoning": "The map containing the personal data could be logged or transmitted.",
+        "Action": "Logging or transmission"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " La/a/a/a/b/u;->a:(Landroid/content/Context; La/a/a/a/b/l;)V --> Logging or transmission",
+        "Reasoning": "Sensitive user personal data is stored in a map and potentially logged or transmitted."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Last known location is retrieved",
+        "Source Method": "La/a/a/a/b/a/b;->a:(Landroid/content/Context; La/a/a/a/b/l;)V",
+        "Reasoning": "getLastKnownLocation() method call",
+        "Action": "Stored in a map"
+      },
+      {
+        "Step": "Map containing sensitive data is potentially sent",
+        "Source Method": "La/a/a/a/b/a/b;->a:(Landroid/content/Context; La/a/a/a/b/l;)V",
+        "Reasoning": "Map contains sensitive data",
+        "Action": "Logged or transmitted"
+      }
+    ],
+    "All Sinks": [
+      "La/a/a/a/b/a/b;->a:(Landroid/content/Context; La/a/a/a/b/l;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " La/a/a/a/b/a/b;->a:(Landroid/content/Context; La/a/a/a/b/l;)V --> La/a/a/a/b/a/b;->a:(Landroid/content/Context; La/a/a/a/b/l;)V",
+        "Reasoning": "Sensitive data is stored in a map and potentially sent"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Unique User Identifier"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user's unique identifier",
+        "Source Method": "Le/i/c/a/b/b;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Sensitive API `getContentResolver()` is used",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass to method n()",
+        "Source Method": "Le/i/c/a/b/b;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method call",
+        "Action": "Passed as argument"
+      },
+      {
+        "Step": "Log or transmit data",
+        "Source Method": "Le/i/c/a/b/b;->n()V",
+        "Reasoning": "Method call",
+        "Action": "Logged or Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Le/i/c/a/b/b;->n()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Le/i/c/a/b/b;->d:(Landroid/content/Context;)Ljava/lang/String; --> Le/i/c/a/b/b;->n()V",
+        "Reasoning": "Data is passed from method d() to method n() and then logged or transmitted"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected.",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary indicates user location is originated here.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is passed to another method.",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary mentions passing the location to `store_latlon`.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V --> Lcom/salesforce/marketingcloud/messages/d$4;-><init>:(Lcom/salesforce/marketingcloud/messages/d; Ljava/lang/String; [Ljava/lang/Object; Lcom/salesforce/marketingcloud/location/LatLon;)V",
+        "Reasoning": "Location is passed as an argument to `store_latlon`."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

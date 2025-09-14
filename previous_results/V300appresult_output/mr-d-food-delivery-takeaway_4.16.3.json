@@ -1,0 +1,241 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; calls android/net/wifi/WifiManager;->getConnectionInfo():Landroid/net/wifi/WifiInfo;",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Origins user personal data by calling sensitive API",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Method Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; passes MAC address to other methods via method invocations.",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Data propagates to other methods",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Method Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; reads MAC address from a file.",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Origins user personal data by reading the MAC address",
+        "Action": "Stored in registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> Stored in registers or variables within the method --> Passed to other methods --> Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data originates from calling a sensitive API, is stored and passed to other methods before reaching a sink point"
+      }
+    ],
+    "Label": "leak"
+  },
+  {},
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "altitude",
+      "accuracy",
+      "double"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location information (latitude, longitude, altitude) and accuracy",
+        "Source Method": "Lbo/app/l1;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "The current method originates user personal data by calling sensitive API calls to get location information.",
+        "Action": "Stored in registers v1, v3, v5, and v6"
+      },
+      {
+        "Step": "Pass location information to constructor of the same class",
+        "Source Method": "Lbo/app/l1;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "The data is then passed to the constructor of the same class through method invocation.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Originate sensitive user personal data through 'c' function call in com/appboy/q/k class",
+        "Source Method": "Lcom/appboy/q/k;->c:(D D)Z",
+        "Reasoning": "The method originates user personal data through sensitive API calls to `com.appboy.q.k.c(D D)Z`.",
+        "Action": "Stored in instance fields h, i, j, and k of the current object"
+      },
+      {
+        "Step": "Pass propagated data to other methods via method invocations",
+        "Source Method": "Lcom/appboy/q/k;->c:(D D)Z",
+        "Reasoning": "The data propagation analysis reveals that the data is passed to other methods via method invocations.",
+        "Action": "Passed via method invocation"
+      }
+    ],
+    "All Sinks": [
+      "Lbo/app/l1;-><init>:(Landroid/location/Location;)V",
+      "Lcom/appboy/q/k;->c:(D D)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lbo/app/l1;<init>(Landroid/location/Location;)V --> Stored in registers v1, v3, v5, and v6 --> Passed via method invocation",
+        "Reasoning": "The location information is stored in registers and then passed to the constructor of the same class."
+      },
+      {
+        "dataflow 2": " Lcom/appboy/q/k;c(D D)Z --> Stored in instance fields h, i, j, and k of the current object --> Passed via method invocation",
+        "Reasoning": "The sensitive user personal data is stored in instance fields and then passed to other methods."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Accessing location permissions and last known location",
+        "Source Method": "Lcom/mrd/food/f/a/c$a;->d:()Lcom/mrd/food/f/a/c$a;",
+        "Reasoning": "Checking location permissions and accessing the last known location.",
+        "Action": "Stored in a Bundle object"
+      },
+      {
+        "Step": "Accessing static field 'g' of class 'MrDFoodApp'",
+        "Source Method": "Lcom/mrd/food/MrDFoodApp;->c:()Lcom/mrd/food/MrDFoodApp;",
+        "Reasoning": "The data is stored in register 'v0' and propagated to the return statement.",
+        "Action": "Stored in register 'v0'"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/mrd/food/f/a/c$a;->d:()Lcom/mrd/food/f/a/c$a; --> Lcom/mrd/food/MrDFoodApp;->c:()Lcom/mrd/food/MrDFoodApp;",
+        "Reasoning": "The latitude and longitude from the first method are propagated to the second method, where they are stored in register 'v0'."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "onLocationResult method of LocationResult class called",
+        "Source Method": "Lcom/google/android/gms/location/LocationResult;->onLocationResult:(Lcom/google/android/gms/location/LocationCallback;)V",
+        "Reasoning": "Data originates from the onLocationResult method of LocationResult class.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Data propagated to other methods via method invocations",
+        "Source Method": "Lcom/mrd/food/presentation/map/MapActivity$h;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The data is propagated to MapActivity.u1, MapActivity.c1, and MapActivity.d1.",
+        "Action": "Method invocations"
+      },
+      {
+        "Step": "Data reaches sinks such as logging and storage",
+        "Source Method": "Lcom/mrd/food/presentation/map/MapActivity$h;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The data is logged or stored.",
+        "Action": "Logging and Storage"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mrd/food/presentation/map/MapActivity$h;->logLocation:(Landroid/location/Location;)V",
+      "Lcom/mrd/food/presentation/map/MapActivity$h;->storeLocation:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/google/android/gms/location/LocationResult;->onLocationResult:(Lcom/google/android/gms/location/LocationCallback;)V --> Lcom/mrd/food/presentation/map/MapActivity$h;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V --> Lcom/mrd/food/presentation/map/MapActivity$h;->logLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The data flows from the onLocationResult method of LocationResult class to MapActivity$h's onLocationResult method, and then to logLocation method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location",
+        "Source Method": "Lcom/mrd/food/presentation/map/MapActivity;->B1:()V",
+        "Reasoning": "The method originates user personal data from the device's location using the `getLatitude()` and `getLongitude()` methods.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Store location in MapActivity class",
+        "Source Method": "Lcom/mrd/food/presentation/map/MapActivity;->B1:()V",
+        "Reasoning": "The data is stored in registers and variables within the method, including the `x` field of the `MapActivity` class, which holds a `Location` object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Propagate location to CameraPosition$a object",
+        "Source Method": "Lcom/mrd/food/presentation/map/MapActivity;->B1:()V",
+        "Reasoning": "The data is propagated to other methods via method invocations, such as `c(LatLng)` and `e(F)`, which modify the `CameraPosition$a` object.",
+        "Action": "Modified"
+      },
+      {
+        "Step": "Log location using kotlin/p/d/j functions",
+        "Source Method": "Lcom/mrd/food/presentation/map/MapActivity;->B1:()V",
+        "Reasoning": "The data reaches sinks like logging and display through the use of `kotlin/p/d/j` functions, specifically `d(Ljava/lang/Object; Ljava/lang/String;)V`, to log strings.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Get view from activity using findViewById",
+        "Source Method": "Lcom/mrd/food/presentation/map/MapActivity;->S0:(I)Landroid/view/View;",
+        "Reasoning": "The method originates user personal data by using the sensitive API call `Landroid/app/Activity;->findViewById(I)Landroid/view/View;` to retrieve a view from the activity.",
+        "Action": "Retrieved"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mrd/food/presentation/map/MapActivity;->B1:()V",
+      "Lcom/mrd/food/presentation/map/MapActivity;->S0:(I)Landroid/view/View;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mrd/food/presentation/map/MapActivity;->B1:()V --> ... --> Lcom/mrd/food/presentation/map/MapActivity;->B1:()V",
+        "Reasoning": "The location data is first stored in the MapActivity class, then propagated to the CameraPosition$a object and finally logged using kotlin/p/d/j functions."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "GoogleMap object",
+      "HashMap instance variable 'L'",
+      "Views"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access Google Maps API to get user location",
+        "Source Method": "Lcom/mrd/food/presentation/map/MapActivity;->O:(Lcom/google/android/gms/maps/c;)V",
+        "Reasoning": "The current method O() in MapActivity originates user personal data from the Google Maps API.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Store and retrieve Views using HashMap instance variable 'L'",
+        "Source Method": "Lcom/mrd/food/presentation/map/MapActivity;->S0:(I)Landroid/view/View;",
+        "Reasoning": "The method originates user personal data by accessing the HashMap instance variable 'L' and using it to store and retrieve Views.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Return a View with sensitive data",
+        "Source Method": "Lcom/mrd/food/presentation/map/MapActivity;->S0:(I)Landroid/view/View;",
+        "Reasoning": "The data is propagated through registers and variables within the method, and it reaches a sink point (display) when returning a View.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mrd/food/presentation/map/MapActivity;->S0:(I)Landroid/view/View;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mrd/food/presentation/map/MapActivity;->O:(Lcom/google/android/gms/maps/c;)V --> Lcom/mrd/food/presentation/map/MapActivity;->S0:(I)Landroid/view/View; ",
+        "Reasoning": "The data is propagated from the Google Maps API to the method S0() in MapActivity, where it is stored and retrieved using a HashMap instance variable 'L', and then returned as a View."
+      }
+    ],
+    "Label": "leak"
+  },
+  {}
+]

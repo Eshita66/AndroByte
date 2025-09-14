@@ -1,0 +1,60 @@
+Processing folder: D:\UBCBAPK_Methods\FactoryMethods1
+Using methods file: D:\UBCBAPK_Methods\FactoryMethods1\FactoryMethods1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V originates user personal data by calling sensitive APIs to get location information. The data is stored in registers v0 (Criteria) and v1 (Location). The location data is then passed to the `getBestProvider` method, which returns a string representing the best provider for location services. This string is used as an argument to the `getLastKnownLocation` method, which returns a Location object containing the user's last known latitude and longitude. The sensitive data (location) reaches a sink point, which is the logging operation.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\FactoryMethods1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\FactoryMethods1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\FactoryMethods1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "Latitude"
+            "Longtitude"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get location information",
+                "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive APIs are called to get location information.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Pass location data to `getBestProvider` method",
+                "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Location data is passed as an argument.",
+                "Action": "Passed"
+            },
+            {
+                "Step": "Pass location provider to `getLastKnownLocation` method",
+                "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The best provider is passed as an argument.",
+                "Action": "Passed"
+            },
+            {
+                "Step": "Log location data",
+                "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Location data reaches a sink point, which is the logging operation.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V --> getBestProvider --> getLastKnownLocation --> Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The location data is passed from `onCreate` to `getBestProvider`, then to `getLastKnownLocation`, and finally logged in the same method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\FactoryMethods1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\FactoryMethods1\output\sensitive_only.json
+Total summary time: 11.500310182571411 seconds

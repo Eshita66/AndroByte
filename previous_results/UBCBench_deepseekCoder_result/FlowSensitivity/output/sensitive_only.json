@@ -1,0 +1,38 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieving TelephonyManager instance",
+                "Source Method": "Llina/ubc/flowsensitivity/FlowSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The method retrieves the TelephonyManager service, which is used to access device-specific information including the device ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Accessing Device ID",
+                "Source Method": "Llina/ubc/flowsensitivity/FlowSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The TelephonyManager instance is used to access the device ID, which is considered sensitive data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging Device ID",
+                "Source Method": "Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method logs the device ID using Log.e, which is a sink for sensitive data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/flowsensitivity/FlowSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The TelephonyManager instance is retrieved and used to access the device ID, which is then logged in the onCreate method."
+            }
+        ],
+        "Label": "leak"
+    }
+]

@@ -1,0 +1,361 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Map"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected in `trackLocation()` method.",
+        "Source Method": "Lcom/adobe/mobile/AnalyticsTrackLocation;->trackLocation:(Landroid/location/Location; Ljava/util/Map;)V",
+        "Reasoning": "Method signature matches the input data type.",
+        "Action": "Stored in HashMap"
+      },
+      {
+        "Step": "HashMap containing user location is passed to `trackInternal()` method.",
+        "Source Method": "Lcom/adobe/mobile/AnalyticsTrackLocation;->trackLocation:(Landroid/location/Location; Ljava/util/Map;)V",
+        "Reasoning": "Method signature matches the input data type.",
+        "Action": "Passed as parameter"
+      },
+      {
+        "Step": "User location is sent to server via `Location` sink.",
+        "Source Method": "Lcom/adobe/mobile/AnalyticsTrackLocation;->trackInternal:(Landroid/location/Location; Ljava/util/Map;)V",
+        "Reasoning": "Location sink is explicitly mentioned in the summary.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adobe/mobile/AnalyticsTrackLocation;->trackInternal:(Landroid/location/Location; Ljava/util/Map;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " trackLocation(...) --> trackInternal(...) --> Location",
+        "Reasoning": "Stepwise analysis of data flow based on method signatures and summaries."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is obtained from getLastLocation() method.",
+        "Source Method": "Lcom/appboy/services/AppboyGeofenceService;->a:(Lcom/google/android/gms/location/LocationResult;)Z",
+        "Reasoning": "Location is stored in v11.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is passed to requestGeofenceRefresh() method.",
+        "Source Method": "Lcom/appboy/services/AppboyGeofenceService;->a:(Lcom/google/android/gms/location/LocationResult;)Z",
+        "Reasoning": "Location is passed via bv object.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Search Text"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location and search text are collected.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in a Bundle object."
+      },
+      {
+        "Step": "Bundle object is passed to GraphRequest constructor.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Passed as argument to GraphRequest constructor."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...)",
+        "Reasoning": "Stepwise flow based on method signature and summary."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location data",
+      "Device ID",
+      "Phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data from device",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle;",
+        "Reasoning": "Method signature indicates location data extraction",
+        "Action": "Stored in bundle"
+      },
+      {
+        "Step": "Include location data in JSON object",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle;",
+        "Reasoning": "Location data is included in JSON object",
+        "Action": "Transmitted in JSON object"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/places/internal/LocationPackage;->toJson:(Lcom/facebook/places/model/CurrentPlaceRequestParams;)Landroid/os/Bundle;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle; --> Lcom/facebook/places/internal/LocationPackage;->toJson:(Lcom/facebook/places/model/CurrentPlaceRequestParams;)Landroid/os/Bundle;",
+        "Reasoning": "Location data is extracted from the method, included in JSON object, and then transmitted in the bundle"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "PlaceSearchRequestParams"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is extracted from PlaceSearchRequestParams.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method argument type",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Location is passed to GraphRequest.",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method argument",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;->executeAndWait:(Ljava/util/concurrent/Callable;)Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation(...) --> Lcom/facebook/GraphRequest;->executeAndWait(...)",
+        "Reasoning": "Method call"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location from intent extras",
+        "Source Method": "Lbo/app/be;->a:(Landroid/content/Intent;)V",
+        "Reasoning": "Method signature and summary mention retrieving location from intent extras",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass location to potentially sensitive method",
+        "Source Method": "Lbo/app/be;->a:(Landroid/content/Intent;)V",
+        "Reasoning": "Method signature and summary mention passing location to another method",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Method where location is logged or transmitted"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbo/app/be;->a:(Landroid/content/Intent;)V --> Method where location is logged or transmitted",
+        "Reasoning": "Overall data flow includes both storing and transmitting location data"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain last known location",
+        "Source Method": "Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method `getLastLocation` obtains the last known location from the `locationManager`.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " getLastLocation(...) --> Collected",
+        "Reasoning": "The last known location is collected by the method `getLastLocation`."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiScanResult"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method call",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The `getConnectedWifi` method returns a `WifiScanResult` object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user location from GPS",
+        "Source Method": "Lcom/webmd/webmdrx/activities/PrescriptionDetailsActivity$23;->run:()V",
+        "Reasoning": "Method summary mentions obtaining location data",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Extract zip code from location",
+        "Source Method": "Lcom/webmd/webmdrx/activities/PrescriptionDetailsActivity$23;->run:()V",
+        "Reasoning": "Method summary mentions using location data to retrieve zip code",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Update user's RxGroup zip code",
+        "Source Method": "Lcom/webmd/webmdrx/activities/PrescriptionDetailsActivity$23;->run:()V",
+        "Reasoning": "Method summary mentions using zip code to update user's RxGroup zip code",
+        "Action": "Updated"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/webmd/webmdrx/activities/PrescriptionDetailsActivity$23;->run:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/webmd/webmdrx/activities/PrescriptionDetailsActivity$23;->run:()V --> Lcom/webmd/webmdrx/activities/PrescriptionDetailsActivity$23;->run:()V --> Lcom/webmd/webmdrx/activities/PrescriptionDetailsActivity$23;->run:()V",
+        "Reasoning": "Data flows from source method to itself, then to itself again, then finally to itself"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Group Information",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location and group information are collected from method arguments.",
+        "Source Method": "Lcom/webmd/webmdrx/manager/ApiManager;->fetchPharmaciesForGroup(...)",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in request object."
+      },
+      {
+        "Step": "Request object is passed to GetPharmaciesForGroupTask task.",
+        "Source Method": "Lcom/webmd/webmdrx/manager/ApiManager;->fetchPharmaciesForGroup(...)",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Executed asynchronously."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/webmd/webmdrx/tasks/GetPharmaciesForGroupTask;->execute(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/webmd/webmdrx/manager/ApiManager;->fetchPharmaciesForGroup(...) --> Lcom/webmd/webmdrx/tasks/GetPharmaciesForGroupTask;->execute(...)",
+        "Reasoning": "Stepwise flow based on method signatures and summary."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Drug ID",
+      "Location",
+      "Pricing Details"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Drug ID is retrieved from user input.",
+        "Source Method": "Lcom/webmd/webmdrx/manager/ApiManager;->fetchPricingDetailsForDrugIdAtLocation(...)",
+        "Reasoning": "Method signature contains the drug ID parameter.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is retrieved from user input.",
+        "Source Method": "Lcom/webmd/webmdrx/manager/ApiManager;->fetchPricingDetailsForDrugIdAtLocation(...)",
+        "Reasoning": "Method signature contains the location parameter.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pricing details are retrieved from API.",
+        "Source Method": "Lcom/webmd/webmdrx/manager/ApiManager;->fetchPricingDetailsForDrugIdAtLocation(...)",
+        "Reasoning": "Method signature contains the API call.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/webmd/webmdrx/intf/IPricingReceivedListener;->onPricingReceived(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " User Input --> API Call --> Pricing Details",
+        "Reasoning": "Data flows from user input through the API call and is retrieved as pricing details."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is checked for validity.",
+        "Source Method": "Lcom/webmd/webmdrx/activities/LocationRequiredActivity;->isUSLocation:(Landroid/location/Location;)V",
+        "Reasoning": "Method checks if location is null.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "Lcom/webmd/webmdrx/activities/pricing/PricingActivity;->locationToText:(Landroid/location/Location;)V",
+        "Reasoning": "Method `locationToText()` retrieves the user's location from the `Location` object.",
+        "Action": "Stored in TextView"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/widget/TextView;->setText:(Ljava/lang/CharSequence;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "PricingActivity;->locationToText(...) --> TextView;->setText(...)",
+        "Reasoning": "The user's location is first retrieved in `locationToText()` and then displayed in the TextView using `setText()`."
+      }
+    ],
+    "Label": "leak"
+  }
+]

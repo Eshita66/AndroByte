@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\ConservativeModel2
+Using methods file: D:\UBCBAPK_Methods\ConservativeModel2\ConservativeModel2_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive device ID originated from getDeviceId(), stored in v3, and propagated through Lorg/apache/http/entity/StringEntity;, reaching a sink via execute() method call.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ConservativeModel2\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ConservativeModel2\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ConservativeModel2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive device ID originated from getDeviceId()",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The sensitive value is still tainted and passed to a sink.",
+                "Action": "Stored, logged, transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lorg/apache/http/client/method/HttpUriRequest;->execute:()Ljava/lang/Object;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> ... --> Lorg/apache/http/client/method/HttpUriRequest;->execute:()Ljava/lang/Object;",
+                "Reasoning": "The sensitive device ID is passed to execute() method call without any overwrite or taint loss."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ConservativeModel2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ConservativeModel2\output\sensitive_only.json
+Total summary time: 15.352250576019287 seconds

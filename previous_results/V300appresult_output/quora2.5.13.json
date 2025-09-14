@@ -1,0 +1,112 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is extracted from Location object.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Passed to GraphRequest.GraphJSONArrayCallback object."
+      },
+      {
+        "Step": "GraphRequest.GraphJSONArrayCallback object potentially logs or transmits data.",
+        "Source Method": "Lcom/facebook/GraphRequest$GraphJSONArrayCallback",
+        "Reasoning": "Callback object may perform sensitive actions.",
+        "Action": "Logging or transmission of user location data."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest$GraphJSONArrayCallback -->",
+        "Reasoning": "Stepwise flow based on method signature and summary."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve WifiSSID",
+        "Source Method": "Lorg/chromium/net/NetworkChangeNotifierAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method `getWifiSSID` explicitly retrieves the WifiSSID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/chromium/net/NetworkChangeNotifierAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> null",
+        "Reasoning": "The WifiSSID is retrieved but not further processed or sent anywhere."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data extraction",
+        "Source Method": "Lorg/chromium/content/browser/LocationProviderFactory$LocationProviderImpl;->updateNewLocation:(Landroid/location/Location;)V",
+        "Reasoning": "Method extracts location data from Location object",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Passing to LocationProviderAdapter",
+        "Source Method": "Lorg/chromium/content/browser/LocationProviderFactory$LocationProviderImpl;->updateNewLocation:(Landroid/location/Location;)V",
+        "Reasoning": "Method passes location data to newLocationAvailable() method",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/chromium/content/browser/LocationProviderAdapter;->newLocationAvailable(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/chromium/content/browser/LocationProviderFactory$LocationProviderImpl;->updateNewLocation(Landroid/location/Location;)V --> Lorg/chromium/content/browser/LocationProviderAdapter;->newLocationAvailable(Landroid/location/Location;)V",
+        "Reasoning": "Location data is extracted in updateNewLocation() method and passed to newLocationAvailable() method where it is likely logged or transmitted."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve last known location",
+        "Source Method": "Lorg/chromium/content/browser/LocationProviderFactory$LocationProviderImpl;->usePassiveOneShotLocation:()Z",
+        "Reasoning": "Passive location provider is enabled",
+        "Action": "Stored in LocationProviderFactory$LocationProviderImpl$1"
+      },
+      {
+        "Step": "Invoke on main thread",
+        "Source Method": "Lorg/chromium/content/browser/LocationProviderFactory$LocationProviderImpl$1;->run:()V",
+        "Reasoning": "LocationProviderFactory$LocationProviderImpl$1 is created",
+        "Action": "Used to access location data"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/chromium/content/browser/LocationProviderFactory$LocationProviderImpl;->usePassiveOneShotLocation:()Z --> Lorg/chromium/content/browser/LocationProviderFactory$LocationProviderImpl$1;->run:()V",
+        "Reasoning": "Location is retrieved and stored in LocationProviderFactory$LocationProviderImpl$1"
+      }
+    ],
+    "Label": "no leak"
+  }
+]

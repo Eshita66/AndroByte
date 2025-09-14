@@ -1,0 +1,40 @@
+Processing folder: D:\UBCBAPK_Methods\LocationFieldSensitivity
+Using methods file: D:\UBCBAPK_Methods\LocationFieldSensitivity\LocationFieldSensitivity_bytecode_instructions.json
+Sensitive method found: Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "This method initializes a LocationManager and retrieves location data. It obtains the best provider using `getBestProvider`, retrieves the last known location, extracts the latitude and location time, and logs the location time to the logcat. The method originates user location data by utilizing the `LocationManager` and `Location` classes. The extracted latitude and location time are logged using `android.util.Log.d`. No sinks are explicitly identified in this method.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\LocationFieldSensitivity\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\LocationFieldSensitivity\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\LocationFieldSensitivity\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "Location",
+            "latitude",
+            "location time"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Initial Location Data Retrieval",
+                "Source Method": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves location data using `LocationManager` and `Location` classes, obtaining the DeviceId.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> android.util.Log.d(deviceId, 'location time')",
+                "Reasoning": "The method retrieves the DeviceId from the LocationManager and logs the location time to logcat.  The summary indicates no sinks are explicitly identified in this method."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\LocationFieldSensitivity\output\refined_method_summaries.json
+Saved 0 'sensitive' subgraphs to: D:\UBCBAPK_Methods\LocationFieldSensitivity\output\sensitive_only.json
+Total summary time: 7.481987237930298 seconds

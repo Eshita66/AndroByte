@@ -1,0 +1,244 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "AppsFlyerProperties instance creation",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties;",
+        "Reasoning": "Sensitive user personal data is originated from APIs such as AppsFlyerProperties and stored in registers or variables.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AppsFlyerProperties getString call",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getBoolean:(Ljava/lang/String; Z)Z",
+        "Reasoning": "This method originates user personal data using the `getString` API call from AppsFlyerProperties.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AFLogger values method call",
+        "Source Method": "Lcom/appsflyer/AFLogger;->values:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "Sensitive user personal data originates from the `values` method of `AFLogger` class.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "AFKeystoreWrapper sget-object call",
+        "Source Method": "Lcom/appsflyer/internal/am;->AFKeystoreWrapper:()Lcom/appsflyer/internal/am;",
+        "Reasoning": "The method originates user personal data using the sensitive API 'sget-object' to retrieve a value from a static field.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AppsFlyerProperties getSharedPreferences call",
+        "Source Method": "Lcom/appsflyer/internal/af;->AFInAppEventType:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The method originates user personal data by calling the `getSharedPreferences` method with a specific key.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AFLogger;->values:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+      "Lcom/appsflyer/AppsFlyerProperties;->getBoolean:(Ljava/lang/String; Z)Z",
+      "Lcom/appsflyer/internal/am;->AFKeystoreWrapper:()Lcom/appsflyer/internal/am;",
+      "Lcom/appsflyer/internal/af;->AFInAppEventType:(Landroid/content/Context;)Landroid/content/SharedPreferences;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "AppsFlyerProperties getInstance(...) --> AppsFlyerProperties getString(...) --> AFLogger values(...)",
+        "Reasoning": "Data is propagated from AppsFlyerProperties instance creation to AFLogger values method call through AppsFlyerProperties getString call."
+      },
+      {
+        "dataflow 2": "AFKeystoreWrapper sget-object(...) --> AppsFlyerProperties getSharedPreferences(...)",
+        "Reasoning": "Data is propagated from AFKeystoreWrapper sget-object call to AppsFlyerProperties getSharedPreferences call."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Landroid/location/Location;",
+      "Ljava/util/concurrent/atomic/AtomicBoolean;",
+      "Lcom/salesforce/marketingcloud/location/LatLon;",
+      "Ljava/lang/String;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from location object",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data from the location object (Landroid/location/Location;) and stores it in an AtomicBoolean (iget-object v0, v6, Lcom/salesforce/marketingcloud/messages/d;->t Ljava/util/concurrent/atomic/AtomicBoolean;) and LatLon object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data by using the sensitive API call",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d$4;-><init>:(Lcom/salesforce/marketingcloud/messages/d; Ljava/lang/String; [Ljava/lang/Object; Lcom/salesforce/marketingcloud/location/LatLon;)V",
+        "Reasoning": "The method originates user personal data by using the sensitive API call to initialize 'a' and 'b' fields with 'LatLon' and 'd' objects respectively.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data through locale object",
+        "Source Method": "Lcom/salesforce/marketingcloud/f/g;-><init>:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The current method originates user personal data through the `sget-object` instruction which retrieves a locale object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Passes data to another method via ExecutorService",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The data is then passed to another method via the ExecutorService (invoke-interface v7, v2, Ljava/util/concurrent/ExecutorService;->execute(Ljava/lang/Runnable;)V).",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/salesforce/marketingcloud/messages/d$4;<init>(...) --> Lcom/salesforce/marketingcloud/messages/d;<a(...) --> Ljava/util/concurrent/ExecutorService;execute(...) ",
+        "Reasoning": "The data is propagated from the initialization method to another method via the ExecutorService."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Lcom/facebook/AccessToken;",
+      "Landroid/location/Location;",
+      "Ljava/lang/String;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is passed to the newPlacesSearchRequest method",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method signature indicates that the newPlacesSearchRequest method takes a Location object as one of its parameters.",
+        "Action": "Stored in v1"
+      },
+      {
+        "Step": "User location is propagated through method invocations",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method signature indicates that the newPlacesSearchRequest method returns a GraphRequest object, which may contain the user's location.",
+        "Action": "Passed to checkFeature method of FeatureManager"
+      },
+      {
+        "Step": "Error message is passed to FacebookException constructor",
+        "Source Method": "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+        "Reasoning": "The method signature indicates that the FacebookException constructor takes a String object as its parameter.",
+        "Action": "Stored in v2"
+      },
+      {
+        "Step": "Error message is propagated through method invocations",
+        "Source Method": "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+        "Reasoning": "The method signature indicates that the FacebookException constructor returns a FacebookException object, which may contain the error message.",
+        "Action": "Passed to checkFeature method of FeatureManager"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+      "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> ... --> Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V]",
+        "Reasoning": "The user's location is passed to the newPlacesSearchRequest method, which returns a GraphRequest object. This object may contain the user's location, which is then propagated through method invocations and stored in the FacebookException constructor."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location",
+        "Source Method": "get_user_location()",
+        "Reasoning": "User location is retrieved from device's GPS",
+        "Action": "Stored in memory"
+      },
+      {
+        "Step": "Extract device ID",
+        "Source Method": "extract_device_id()",
+        "Reasoning": "Device ID is extracted from device's hardware information",
+        "Action": "Logged to file"
+      },
+      {
+        "Step": "Get user phone number",
+        "Source Method": "get_user_phone_number()",
+        "Reasoning": "User phone number is retrieved from device's contact list",
+        "Action": "Transmitted over network"
+      }
+    ],
+    "All Sinks": [
+      "log_to_file()",
+      "transmit_over_network()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[get_user_location() --> extract_device_id() --> log_to_file()]",
+        "Reasoning": "User location is retrieved, device ID is extracted and logged to file"
+      },
+      {
+        "dataflow 2": "[get_user_phone_number() --> transmit_over_network()]",
+        "Reasoning": "User phone number is transmitted over network"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "LocationResult",
+      "lastLatitude",
+      "lastLongitude",
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data retrieved from LocationResult object.",
+        "Source Method": "Lcom/globo/globotv/viewmodel/location/LocationViewModel;->handleLocationRecovery$viewmodel_productionRelease:(Lcom/globo/playkit/commons/MutableSingleLiveData; Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The data is stored in registers and variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Coordinates generated by invoking Coordinates constructor with lastLatitude and lastLongitude.",
+        "Source Method": "Lcom/globo/globotv/viewmodel/location/LocationViewModel;->generateCoordinates$viewmodel_productionRelease:()Lcom/globo/globotv/repository/model/vo/Coordinates;",
+        "Reasoning": "The data originates from sensitive API calls (sget-object) to retrieve user personal location data.",
+        "Action": "Passed as parameters"
+      },
+      {
+        "Step": "User personal data stored in 'latitude' and 'longitude' fields of Coordinates object.",
+        "Source Method": "Lcom/globo/globotv/repository/model/vo/Coordinates;-><init>:(Ljava/lang/Double; Ljava/lang/Double;)V",
+        "Reasoning": "The data is passed to the Coordinates constructor.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Error occurs, user personal data logged through setValue() method.",
+        "Source Method": "Lcom/globo/globotv/viewmodel/location/LocationViewModel;->handleLocationRecovery$viewmodel_productionRelease:(Lcom/globo/playkit/commons/MutableSingleLiveData; Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The data reaches a sink point through logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/globo/globotv/viewmodel/location/LocationViewModel;->handleLocationRecovery$viewmodel_productionRelease:(Lcom/globo/playkit/commons/MutableSingleLiveData; Lcom/google/android/gms/location/LocationResult;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/globo/globotv/viewmodel/location/LocationViewModel;->handleLocationRecovery$viewmodel_productionRelease:(Lcom/globo/playkit/commons/MutableSingleLiveData; Lcom/google/android/gms/location/LocationResult;)V --> Lcom/globo/globotv/repository/model/vo/Coordinates;-><init>:(Ljava/lang/Double; Ljava/lang/Double;)V --> Lcom/globo/globotv/viewmodel/location/LocationViewModel;->handleLocationRecovery$viewmodel_productionRelease:(Lcom/globo/playkit/commons/MutableSingleLiveData; Lcom/google/android/gms/location/LocationResult;)V]",
+        "Reasoning": "The data is retrieved from LocationResult, stored in Coordinates object, and logged through setValue() method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

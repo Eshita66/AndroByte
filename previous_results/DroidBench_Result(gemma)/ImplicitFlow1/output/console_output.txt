@@ -1,0 +1,81 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ImplicitFlow1
+ Using methods file: D:\UBCBAPK_Methods\ImplicitFlow1\ImplicitFlow1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "The activity's `onCreate` method is being executed. It calls `setContentView`, retrieves the device ID, obfuscates it, writes it to a log, copies it, and writes it to a log again. This suggests an attempt to extract and potentially manipulate device identifiers.",
+    "Next Methods": [
+        "Lde/ecspride/ImplicitFlow1;->setContentView(I)",
+        "Lde/ecspride/ImplicitFlow1;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Lde/ecspride/ImplicitFlow1;->obfuscateIMEI(Ljava/lang/String;)Ljava/lang/String;",
+        "Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V",
+        "Lde/ecspride/ImplicitFlow1;->copyIMEI(Ljava/lang/String;)Ljava/lang/String;",
+        "Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/ImplicitFlow1;->copyIMEI(Ljava/lang/String;)Ljava/lang/String; => {
+    "Summary": "The activity's `onCreate` method is being executed. It calls `setContentView`, retrieves the device ID, obfuscates it, writes it to a log, copies it, and writes it to a log again. This suggests an attempt to extract and potentially manipulate device identifiers.",
+    "Next Methods": [
+        "Lcom/example/MyClass;->copyIMEI:(Ljava/lang/String;)Ljava/lang/String;"
+    ]
+}
+[SUMMARY] Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V => {
+    "Summary": "The method writes a string to the log using Log.i. This is a potential sink for device identifiers if the string 'v0' originates from an untrusted source.",
+    "Next Methods": [
+        "Lcom/example/MyClass;->copyStringToLog:(Ljava/lang/String;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/ImplicitFlow1;->obfuscateIMEI(Ljava/lang/String;)Ljava/lang/String; => {
+    "Summary": "The method obfuscates the IMEI string by converting it to a character array, iterating through the characters, and printing each character to `System.err`. This suggests an attempt to obscure device identifiers.",
+    "Next Methods": [
+        "Lcom/example/MyClass;->obfuscateIMEI:(Ljava/lang/String;)Ljava/lang/String;"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ImplicitFlow1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ImplicitFlow1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ImplicitFlow1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieved and obfuscated.",
+                "Source Method": "Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method retrieves the device ID and calls `obfuscateIMEI`.",
+                "Action": "Obfuscation"
+            },
+            {
+                "Step": "Obfuscated IMEI written to log.",
+                "Source Method": "Lde/ecspride/ImplicitFlow1;->obfuscateIMEI(Ljava/lang/String;)Ljava/lang/String;",
+                "Reasoning": "The `obfuscateIMEI` method obfuscates the IMEI string.",
+                "Action": "Logging"
+            },
+            {
+                "Step": "Log entry containing obfuscated IMEI.",
+                "Source Method": "Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V",
+                "Reasoning": "The `writeToLog` method writes the obfuscated IMEI to the log.",
+                "Action": "Logging"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/ImplicitFlow1;->obfuscateIMEI(Ljava/lang/String;)Ljava/lang/String; --> Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V",
+                "Reasoning": "The `onCreate` method calls `obfuscateIMEI`, which then writes the obfuscated IMEI to the log. The `writeToLog` method is a sink. The IMEI was not overwritten."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ImplicitFlow1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\ImplicitFlow1\output\sensitive_only.json
+Total time for folder: 18.58 seconds

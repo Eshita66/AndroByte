@@ -1,0 +1,132 @@
+[
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location and search text are collected",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data from the location and search text.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User access token is retrieved",
+        "Source Method": "Lcom/facebook/GraphRequest;-><init>:(Lcom/facebook/AccessToken; Ljava/lang/String; Landroid/os/Bundle; Lcom/facebook/HttpMethod; Lcom/facebook/GraphRequest$Callback;)V",
+        "Reasoning": "The current method originates user personal data through the sensitive API call to `Lcom/facebook/AccessToken` which likely retrieves user access token.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User phone number is collected",
+        "Source Method": "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the sensitive API call `Lcom/facebook/FacebookSdk;->isInitialized()Z` and stores it in register v1.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User device ID is collected",
+        "Source Method": "Lcom/facebook/internal/FeatureManager;->checkFeature:(Lcom/facebook/internal/FeatureManager$Feature; Lcom/facebook/internal/FeatureManager$Callback;)V",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls to checkNotNullParameter.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User location is logged",
+        "Source Method": "Lcom/facebook/internal/FetchedAppGateKeepersManager;->parseAppGateKeepersFromJSON:(Ljava/lang/String; Lorg/json/JSONObject;)Lorg/json/JSONObject;",
+        "Reasoning": "The method originates user personal data by parsing JSON from a string and storing it in an JSONObject.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/internal/FetchedAppGateKeepersManager;->parseAppGateKeepersFromJSON:(Ljava/lang/String; Lorg/json/JSONObject;)Lorg/json/JSONObject;",
+      "Lcom/facebook/FacebookSdk;->isLoggingBehaviorEnabled:(Lcom/facebook/LoggingBehavior;)Z",
+      "Lcom/facebook/GraphRequest;->setCallback:(Lcom/facebook/GraphRequest$Callback;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest;-><init>(...) --> Lcom/facebook/internal/FetchedAppGateKeepersManager;->parseAppGateKeepersFromJSON(...) ",
+        "Reasoning": "The data is collected in the first method, stored in the second method, and then logged in the third method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WiFi state",
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access WiFi state and SSID",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by accessing the WiFi state and SSID.",
+        "Action": "Stored in registers (v0, v1, v2)"
+      },
+      {
+        "Step": "Get package manager",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The current method originates user personal data through the getPackageManager() and getPackageName() methods of the Context class.",
+        "Action": "Stored in registers"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z --> null",
+        "Reasoning": "The data is propagated through method invocations to eventually reach a return statement which is not considered a sink."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WiFi state",
+      "BSSID",
+      "Package name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access WiFi state and BSSID",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates sensitive user personal data by accessing the WiFi state and BSSID.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get package name",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to get the package name.",
+        "Action": "Stored in registers (v0, v1)"
+      },
+      {
+        "Step": "Pass data to other methods via method invocations",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is passed to other methods via method invocations.",
+        "Action": "Transmitted through method calls"
+      },
+      {
+        "Step": "Return statement as sink point",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point through the return statement.",
+        "Action": "Logged or transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String() --> Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z --> Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String()",
+        "Reasoning": "The WiFi state and BSSID are accessed in the first method, then passed to the second method which gets the package name. The data is then returned through the return statement of the first method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

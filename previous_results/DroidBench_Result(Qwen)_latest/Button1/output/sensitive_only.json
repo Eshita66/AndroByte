@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "IMEI is stored in a field (imei) by onCreate",
+                "Source Method": "Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly stores device IMEI in a field which may be accessed later",
+                "Action": "Stored"
+            },
+            {
+                "Step": "IMEI is leaked via Toast and SMS sending",
+                "Source Method": "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The method directly uses the stored IMEI without indication of overwriting or sanitization",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "IMEI is stored in 'imei' field by onCreate, then directly used in sendMessage without overwriting or sanitization"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "phone number",
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve subscriber ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/MainActivity;->getSubscriberId():int",
+                "Reasoning": "The method retrieves the phone number or IMEI which is considered personal data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Store retrieved subscriber ID in instance variable 's'",
+                "Source Method": "Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method stores the personal data (phone number or IMEI) in an instance variable of type java.lang.String.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send SMS with user-provided phone number and message content",
+                "Source Method": "Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method uses the stored personal data (phone number) without any sanitization or validation to send an SMS.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage(java.lang.String, java.lang.String, java.lang.String, android.os.Handler)V",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Lde/ecspride/MainActivity;->getSubscriberId():int --> Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->sendTextMessage(java.lang.String, java.lang.String, java.lang.String, android.os.Handler)V]",
+                "Reasoning": "The personal data (phone number or IMEI) is retrieved from TelephonyManager, stored in the instance variable 's', and then used without any sanitization to send an SMS."
+            }
+        ],
+        "Label": "leak"
+    }
+]

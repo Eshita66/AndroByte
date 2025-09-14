@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "onCreate() method has potential field-based reader leak",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The onCreate() method has a potential field-based reader leak to Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Stored DeviceId in MainActivity field --> Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V",
+                "Reasoning": "The onCreate() method has a potential field-based reader leak to onAttach() method of ExampleFragment. The DeviceId is stored in the MainActivity field and then passed to the onAttach() method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

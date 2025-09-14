@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "IMEI retrieval and storage",
+                "Source Method": "Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The onCreate method retrieves the device IMEI via TelephonyManager and stores it in a static field 'imei'.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "IMEI transmission via SMS",
+                "Source Method": "Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The sendMessage method uses the static 'imei' field to send data via SMS to '+49'.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The IMEI is stored in a static field 'imei' by onCreate, then directly used in sendMessage to send SMS to '+49' without overwriting or taint removal."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

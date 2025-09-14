@@ -1,0 +1,61 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ActivityLifecycle1
+ Using methods file: D:\UBCBAPK_Methods\ActivityLifecycle1\ActivityLifecycle1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "This method initializes an Activity and retrieves its TelephonyManager to get the device ID, then concatenates this ID with a URL stored in the class.",
+    "Next Methods": [
+        "Lde/ecspride/ActivityLifecycle1;->connect:()V"
+    ]
+}
+[SUMMARY] Lde/ecspride/ActivityLifecycle1;->connect:()V => {
+    "Summary": "This method initializes an Activity and retrieves its TelephonyManager to get the device ID, then concatenates this ID with a URL stored in the class.",
+    "Next Methods": [
+        "Ljava/net/URL;-><init>(Ljava/lang/String;)V",
+        "Ljava/net/URLConnection;->openConnection()Ljava/net/URLConnection;",
+        "Ljava/net/HttpURLConnection;->setRequestMethod(Ljava/lang/String;)V",
+        "Ljava/net/HttpURLConnection;->setDoInput(Z)V",
+        "Ljava/net/HttpURLConnection;->connect()V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ActivityLifecycle1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ActivityLifecycle1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ActivityLifecycle1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get device ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive value retrieved from TelephonyManager",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Concatenate device ID with URL",
+                "Source Method": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive value concatenated with non-sensitive value",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ActivityLifecycle1;->connect:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V(...) --> Lde/ecspride/ActivityLifecycle1;->connect:()V(...) ",
+                "Reasoning": "Sensitive value retrieved from TelephonyManager, concatenated with URL, and passed to connect method"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ActivityLifecycle1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\ActivityLifecycle1\output\sensitive_only.json
+Total time for folder: 13.68 seconds

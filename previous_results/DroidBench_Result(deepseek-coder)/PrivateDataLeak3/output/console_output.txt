@@ -1,0 +1,45 @@
+
+Processing folder: D:\UBCBAPK_Methods\PrivateDataLeak3
+Using methods file: D:\UBCBAPK_Methods\PrivateDataLeak3\PrivateDataLeak3_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => This method initializes the activity and retrieves the device ID from TelephonyManager, which is then written to a file named 'out.txt'. The device ID is considered sensitive information as it can uniquely identify an individual's mobile phone.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieves device ID from TelephonyManager",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method retrieves the device ID, which is considered sensitive personal data.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Writes device ID to 'out.txt'",
+            "Source Method": "Lde/ecspride/MainActivity;->openFileOutput(Ljava/lang/String; I)Ljava/io/FileOutputStream;",
+            "Reasoning": "The method writes the retrieved device ID to a file named 'out.txt'.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+        "Ljava/io/FileOutputStream;->write([B)V",
+      
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> ... --> Sink Method: Ljava/io/FileOutputStream;->write([B)V]",
+            "Reasoning": "The device ID is retrieved from TelephonyManager in onCreate, which then writes it to 'out.txt' via openFileOutput."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\PrivateDataLeak3\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\PrivateDataLeak3\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\PrivateDataLeak3\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\PrivateDataLeak3\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\PrivateDataLeak3\output\sensitive_only.json
+Total time for folder: 639.95 seconds

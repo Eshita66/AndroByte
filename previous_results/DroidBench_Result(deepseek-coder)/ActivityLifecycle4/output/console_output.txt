@@ -1,0 +1,59 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ActivityLifecycle4
+ Using methods file: D:\UBCBAPK_Methods\ActivityLifecycle4\ActivityLifecycle4_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MainActivity;->onResume:()V']
+[SUMMARY] Lde/ecspride/MainActivity;->onResume:()V => {
+    "Summary": [
+        "The method onResume() in de/ecspride/MainActivity invokes super's onResume(), retrieves the phone system service, casts it to TelephonyManager, gets the device ID, and stores it in a static field 'imei'."
+    ],
+    "Next Methods": [
+        "Lde/ecspride/MainActivity;->onPause:()V"
+    ]
+}
+[SUMMARY] Lde/ecspride/MainActivity;->onPause:()V => {
+    "Summary": [
+        "The method onPause() in de/ecspride/MainActivity invokes super's onPause(), retrieves the default SMS manager, constructs a message with a predefined phone number and the stored IMEI value, and sends this message."
+    ],
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ActivityLifecycle4\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ActivityLifecycle4\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ActivityLifecycle4\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/MainActivity;->onResume:()V",
+                "Reasoning": "The method onResume() retrieves the device ID using TelephonyManager and stores it in a static field 'imei'.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send SMS with IMEI value",
+                "Source Method": "Lde/ecspride/MainActivity;->onPause:()V",
+                "Reasoning": "The method onPause() constructs a message containing the stored IMEI value and sends it.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendSMS(Ljava/lang/String;Ljava/lang/String;Landroid/telephony/SmsMessage;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onResume:()V --> Lde/ecspride/MainActivity;->getDeviceId():Ljava/lang/String; --> Lde/ecspride/MainActivity;->onPause:()V --> Lde/ecspride/MainActivity;->sendSMS(Ljava/lang/String;Ljava/lang/String;Landroid/telephony/SmsMessage;)V",
+                "Reasoning": "The Device ID is retrieved in onResume(), stored as 'imei', and then used to construct an SMS message in onPause() before being sent."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ActivityLifecycle4\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\ActivityLifecycle4\output\sensitive_only.json
+Total time for folder: 33.57 seconds

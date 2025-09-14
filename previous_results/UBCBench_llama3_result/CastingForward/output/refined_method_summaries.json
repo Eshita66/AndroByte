@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from device ID",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The sensitive data was passed to the setHint() method of a TextView object.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sensitive data reached a sink (the Log.v() method)",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The sensitive data was passed as an argument to the Log.v() method.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> setHint() method of a TextView object --> Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I ",
+                "Reasoning": "The sensitive data originated from the device ID, was passed to the setHint() method of a TextView object, and then reached a sink (the Log.v() method)."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

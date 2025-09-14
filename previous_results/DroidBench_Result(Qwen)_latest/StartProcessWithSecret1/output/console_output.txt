@@ -1,0 +1,51 @@
+
+ Processing folder: D:\UBCBAPK_Methods\StartProcessWithSecret1
+ Using methods file: D:\UBCBAPK_Methods\StartProcessWithSecret1\StartProcessWithSecret1_bytecode_instructions.json
+Sensitive root methods: ['Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": [
+        "The method retrieves the device ID via TelephonyManager and uses it in a ProcessBuilder command, which could lead to sensitive data leakage if the command is executed without proper sanitization."
+    ],
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\StartProcessWithSecret1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\StartProcessWithSecret1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\StartProcessWithSecret1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved via TelephonyManager",
+                "Source Method": "Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly retrieves the device ID through TelephonyManager, indicating a sensitive source.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is used in a ProcessBuilder command",
+                "Source Method": "Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The summary indicates the device ID is directly passed to a ProcessBuilder command, which could execute external commands.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "java.lang.ProcessBuilder->start:([Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> java.lang.ProcessBuilder->start:([Ljava/lang/String;)V",
+                "Reasoning": "The device ID (sensitive source) is retrieved via TelephonyManager and directly passed to ProcessBuilder's start method, which executes external commands. No overwriting or taint removal is mentioned, so the data remains tainted."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\StartProcessWithSecret1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\StartProcessWithSecret1\output\sensitive_only.json
+Total time for folder: 56.29 seconds

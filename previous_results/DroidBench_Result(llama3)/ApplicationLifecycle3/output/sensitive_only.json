@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Potential field-based reader leak detected",
+                "Source Method": "Lde/ecspride/ContentProvider;->onCreate:()Z",
+                "Reasoning": "Sensitive value (DeviceId) was read from a field without being overwritten.",
+                "Action": "Leaked"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ApplicationLifecyle3;->onCreate:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Lde/ecspride/ContentProvider;->onCreate:()Z --> Lde/ecspride/ApplicationLifecyle3;->onCreate:()V]",
+                "Reasoning": "Sensitive value (DeviceId) was read from a field in ContentProvider and passed to ApplicationLifecyle3 without being overwritten."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

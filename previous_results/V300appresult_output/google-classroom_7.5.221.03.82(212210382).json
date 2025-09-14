@@ -1,0 +1,42 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data through sensitive API calls",
+        "Source Method": "Lpl;->s:(Landroid/content/Context; I)I",
+        "Reasoning": "The current method originates user personal data through sensitive API calls to getApplicationContext() and UiModeManager.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Originate user personal data by invoking the getApplicationContext() method",
+        "Source Method": "Lpl;->P:(Landroid/content/Context;)Lpf;",
+        "Reasoning": "The current method originates user personal data by invoking the getApplicationContext() method and using it to create a LocationManager instance.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Originate sensitive user personal data by using the LocationManager API",
+        "Source Method": "Lpy;-><init>:(Landroid/content/Context; Landroid/location/LocationManager;)V",
+        "Reasoning": "The current method originates sensitive user personal data by using the LocationManager API to access location information.",
+        "Action": "Stored in registers (v0, v1, v2, and v3) and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      "Lpl;->s:(Landroid/content/Context; I)I",
+      "Lpy;-><init>:(Landroid/content/Context; Landroid/location/LocationManager;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lpl;->s:(Landroid/content/Context; I)I --> Lpl;->P:(Landroid/content/Context;)Lpf; --> Lpy;-><init>:(Landroid/content/Context; Landroid/location/LocationManager;)V",
+        "Reasoning": "The data is passed to other methods via method invocations, specifically the P(Landroid/content/Context;)Lpf; method. The sinks for this data are logging (through getApplicationContext()) and transmission (through UiModeManager)."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

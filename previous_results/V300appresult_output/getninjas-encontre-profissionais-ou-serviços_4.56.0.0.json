@@ -1,0 +1,315 @@
+[
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location",
+        "Source Method": "Lbr/com/getninjas/pro/maquininja/util/GpsManager;->getLocation:()Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by calling the getLastKnownLocation() method of LocationManager.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbr/com/getninjas/pro/maquininja/util/GpsManager;->getLocation:()Landroid/location/Location; --> [Stored in register v0] (no sink found)",
+        "Reasoning": "The data is stored in register v0 but no sensitive API calls are made to originate user personal data."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get IMEI from TelephonyManager",
+        "Source Method": "Lbr/com/setis/modem/implementation/ModemInfo;->obtemImei:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "IMEI is obtained using the `getSystemService` and `getDeviceId` methods of the `TelephonyManager`.",
+        "Action": "Stored in register `v1`"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbr/com/setis/modem/implementation/ModemInfo;->obtemImei:(Landroid/content/Context;)Ljava/lang/String; --> Ljava/lang/String;",
+        "Reasoning": "IMEI is obtained from TelephonyManager and stored in a string."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SIM serial number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain SIM serial number",
+        "Source Method": "Lbr/com/setis/modem/implementation/ModemInfo;->obtemSimSerNum:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method uses sensitive API calls to obtain the SIM serial number.",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "Propagate through registers and variables",
+        "Source Method": "Lbr/com/setis/modem/implementation/ModemInfo;->obtemSimSerNum:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated through registers and variables within the method.",
+        "Action": "Passed to subsequent methods"
+      },
+      {
+        "Step": "Return SIM serial number as a string",
+        "Source Method": "Lbr/com/setis/modem/implementation/ModemInfo;->obtemSimSerNum:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data eventually reaches the return statement that returns the SIM serial number as a string.",
+        "Action": "Returned to caller"
+      }
+    ],
+    "All Sinks": [
+      "Lbr/com/setis/modem/implementation/ModemInfo;->obtemSimSerNum:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lbr/com/setis/modem/implementation/ModemInfo;->obtemSimSerNum:(Landroid/content/Context;)Ljava/lang/String;(...) --> Stored in register v1 --> Passed to subsequent methods --> Returned to caller --> Lbr/com/setis/modem/implementation/ModemInfo;->obtemSimSerNum:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The SIM serial number is obtained, stored, propagated and eventually returned as a string."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "LatLng",
+      "Context"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location from Location object",
+        "Source Method": "Lbr/com/getninjas/pro/form/activity/LatLngFieldActivity$1;->onMyLocationChange:(Landroid/location/Location;)V",
+        "Reasoning": "The latitude and longitude are extracted from the Location object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass LatLng to access$100 method",
+        "Source Method": "Lbr/com/getninjas/pro/form/activity/LatLngFieldActivity;->access$100:(Lbr/com/getninjas/pro/form/activity/LatLngFieldActivity; Lcom/google/android/gms/maps/model/LatLng; F)V",
+        "Reasoning": "The LatLng object is passed to the access$100 method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Invoke animateCamera API call",
+        "Source Method": "Lbr/com/getninjas/pro/form/activity/LatLngFieldActivity;->animateCamera:(Lcom/google/android/gms/maps/model/LatLng; F)V",
+        "Reasoning": "The animateCamera API call is invoked.",
+        "Action": "Invoked"
+      },
+      {
+        "Step": "Store LatLng in register v1",
+        "Source Method": "Lbr/com/getninjas/pro/form/activity/-$$Lambda$LatLngFieldActivity$tpXYsTBUEINYpRYHRYZUkZ0Nmiw;-><init>:(Lcom/google/android/gms/maps/model/LatLng; F)V",
+        "Reasoning": "The LatLng object is stored in register v1.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lbr/com/getninjas/pro/form/activity/LatLngFieldActivity$1;->onMyLocationChange:(Landroid/location/Location;)V",
+      "Lbr/com/getninjas/pro/form/activity/LatLngFieldActivity;->access$100:(Lbr/com/getninjas/pro/form/activity/LatLngFieldActivity; Lcom/google/android/gms/maps/model/LatLng; F)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbr/com/getninjas/pro/form/activity/LatLngFieldActivity$1;->onMyLocationChange:(Landroid/location/Location;)V --> Lbr/com/getninjas/pro/form/activity/LatLngFieldActivity;->access$100:(Lbr/com/getninjas/pro/form/activity/LatLngFieldActivity; Lcom/google/android/gms/maps/model/LatLng; F)V",
+        "Reasoning": "The location is extracted from the Location object, passed to access$100 method, and then invoked animateCamera API call."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "br/com/getninjas/pro/maquininja/model/GeoLocation"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location from MachineSession object.",
+        "Source Method": "Lbr/com/getninjas/pro/maquininja/viewmodel/SelectLeadViewModel;->loadLeads:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data by calling the `getUserLocation()` method from the `MachineSession` object.",
+        "Action": "Stored in register v5"
+      },
+      {
+        "Step": "Create GeoLocation object from location.",
+        "Source Method": "Lbr/com/getninjas/pro/maquininja/viewmodel/SelectLeadViewModel;->loadLeads:(Landroid/location/Location;)V",
+        "Reasoning": "The location is then used to create a new `GeoLocation` object.",
+        "Action": "Stored in register v5"
+      },
+      {
+        "Step": "Pass GeoLocation object to loadLeads() method of SelectLeadRepository.",
+        "Source Method": "Lbr/com/getninjas/pro/maquininja/viewmodel/SelectLeadViewModel;->loadLeads:(Landroid/location/Location;)V",
+        "Reasoning": "The data is passed to other methods via method invocations, specifically to the `loadLeads()` method of the `SelectLeadRepository`.",
+        "Action": "Passed as parameter"
+      },
+      {
+        "Step": "Get user personal data from machineSession and geoLocation parameters.",
+        "Source Method": "Lbr/com/getninjas/pro/maquininja/repository/SelectLeadRepository;->loadLeads:(Lbr/com/getninjas/pro/maquininja/model/GeoLocation; Lkotlin/jvm/functions/Function1; Lkotlin/jvm/functions/Function1;)V",
+        "Reasoning": "The method originates user personal data from the 'machineSession' and 'geoLocation' parameters.",
+        "Action": "Stored in registers v0, v1, and v4"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbr/com/getninjas/pro/maquininja/viewmodel/SelectLeadViewModel;->loadLeads:(Landroid/location/Location;)V --> Lbr/com/getninjas/pro/maquininja/repository/SelectLeadRepository;->loadLeads:(Lbr/com/getninjas/pro/maquininja/model/GeoLocation; Lkotlin/jvm/functions/Function1; Lkotlin/jvm/functions/Function1;)V",
+        "Reasoning": "The data is passed to the `loadLeads()` method of the `SelectLeadRepository`."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "java.lang.String",
+      "java.lang.StringBuffer",
+      "java.util.Map",
+      "java.io.File",
+      "java.security.MessageDigest",
+      "java.lang.Throwable",
+      "java.util.regex.Pattern"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "AppsFlyerLib originates user personal data from API calls and stores it in variables.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLib;->\u02cf:(Landroid/content/Context; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Z Landroid/content/SharedPreferences; Z Landroid/content/Intent; Ljava/lang/String;)Ljava/util/Map;",
+        "Reasoning": "The data is then propagated to other methods via method invocations.",
+        "Action": "Stored, logged, transmitted"
+      },
+      {
+        "Step": "AppsFlyerProperties originates user personal data by accessing a static instance of AppsFlyerProperties.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties;",
+        "Reasoning": "The data is stored in register v0 and propagated to the return statement.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AFKeystoreWrapper originates user personal data through the '\u0971' field of AFKeystoreWrapper.",
+        "Source Method": "Lcom/appsflyer/AFKeystoreWrapper;->\u0971:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers v0 and v1, and then passed to the next methods via return statements.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AppsFlyerProperties originates user personal data by using the `set` method of `AppsFlyerProperties` to store a map.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->set:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in register v0 and passed to the `put` method of the map, which is likely used for logging or transmission.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AFLogger originates user personal data using the afErrorLog API call.",
+        "Source Method": "Lcom/appsflyer/AFLogger;->afErrorLog:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data is stored in registers v1 and v2, which are then passed to another method via an invoked static method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AppsFlyerLib;->\u02cf:(Landroid/content/Context; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/appsflyer/r;->afErrorLog:([B)Ljava/lang/String;",
+      "Lcom/appsflyer/AFLogger;->afErrorLog:(Ljava/lang/String; Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "AppsFlyerLib --> AppsFlyerProperties --> AFKeystoreWrapper --> AFLogger",
+        "Reasoning": "The data is propagated through method invocations and stored in various registers and variables."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "altitude",
+      "accuracy",
+      "speed",
+      "bearing",
+      "timestamp",
+      "TAG field",
+      "payload HashMap"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get last known location from LocationManager",
+        "Source Method": "Lcom/snowplowanalytics/snowplow/tracker/utils/Util;->getLastKnownLocation:(Landroid/content/Context;)Landroid/location/Location;",
+        "Reasoning": "The method uses the LocationManager API to determine if GPS and network location providers are enabled.",
+        "Action": "Stored in a Location object"
+      },
+      {
+        "Step": "Extract latitude, longitude, altitude, accuracy, speed, bearing, and timestamp from Location",
+        "Source Method": "Lcom/snowplowanalytics/snowplow/tracker/utils/Util;->getGeoLocationContext:(Landroid/content/Context;)Lcom/snowplowanalytics/snowplow/tracker/payload/SelfDescribingJson;",
+        "Reasoning": "The extracted data is then stored in a HashMap and passed to the SelfDescribingJson constructor.",
+        "Action": "Stored in a HashMap"
+      },
+      {
+        "Step": "Set 'schema' field in a HashMap",
+        "Source Method": "Lcom/snowplowanalytics/snowplow/tracker/payload/SelfDescribingJson;->setSchema:(Ljava/lang/String;)Lcom/snowplowanalytics/snowplow/tracker/payload/SelfDescribingJson;",
+        "Reasoning": "The data is stored in a local variable and then passed to another method via a method invocation.",
+        "Action": "Stored in a HashMap"
+      },
+      {
+        "Step": "Set 'payload' field of SelfDescribingJson class",
+        "Source Method": "Lcom/snowplowanalytics/snowplow/tracker/payload/SelfDescribingJson;->setData:(Ljava/lang/Object;)Lcom/snowplowanalytics/snowplow/tracker/payload/SelfDescribingJson;",
+        "Reasoning": "The data is stored in the 'payload' field of the SelfDescribingJson class and is then returned.",
+        "Action": "Stored in a SelfDescribingJson object"
+      },
+      {
+        "Step": "Store user personal data using isEmpty() method",
+        "Source Method": "Lcom/snowplowanalytics/snowplow/tracker/utils/Util;->addToMap:(Ljava/lang/String; Ljava/lang/Object; Ljava/util/Map;)V",
+        "Reasoning": "The data is stored in registers and variables within the method.",
+        "Action": "Stored in a HashMap"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/snowplowanalytics/snowplow/tracker/utils/Util;->getGeoLocationContext:(Landroid/content/Context;)Lcom/snowplowanalytics/snowplow/tracker/payload/SelfDescribingJson; --> Lcom/snowplowanalytics/snowplow/tracker/payload/SelfDescribingJson;->setData:(Ljava/lang/Object;)Lcom/snowplowanalytics/snowplow/tracker/payload/SelfDescribingJson;",
+        "Reasoning": "The extracted data is then stored in a HashMap and passed to the SelfDescribingJson constructor, which sets the 'payload' field of the SelfDescribingJson class."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is passed as a parameter to the method",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data from the location (latitude and longitude) passed as a parameter.",
+        "Action": "Stored in registers v0, v2, v3, and v4"
+      },
+      {
+        "Step": "ExecutorService is retrieved through sensitive API call",
+        "Source Method": "Lcom/salesforce/marketingcloud/f/l;->a:()Ljava/util/concurrent/ExecutorService;",
+        "Reasoning": "The method originates user personal data by calling a sensitive API (iget-object) to retrieve an ExecutorService.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "LatLon instance is created with user location data",
+        "Source Method": "Lcom/salesforce/marketingcloud/messages/d$4;-><init>:(Lcom/salesforce/marketingcloud/messages/d; Ljava/lang/String; [Ljava/lang/Object; Lcom/salesforce/marketingcloud/location/LatLon;)V",
+        "Reasoning": "The method originates user personal data through sensitive API calls to Lcom/salesforce/marketingcloud/location/LatLon.",
+        "Action": "Passed to the constructor of Lcom/salesforce/marketingcloud/f/g"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/salesforce/marketingcloud/messages/d;->a:(Landroid/location/Location;)V --> Lcom/salesforce/marketingcloud/f/l;->a:()Ljava/util/concurrent/ExecutorService --> ExecutorService to execute a Runnable that likely stores or transmits the geofence message request",
+        "Reasoning": "The data is stored in registers v0, v2, v3, and v4 before being used to create an instance of LatLon. The data is then propagated through the ExecutorService to execute a Runnable that likely stores or transmits the geofence message request."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

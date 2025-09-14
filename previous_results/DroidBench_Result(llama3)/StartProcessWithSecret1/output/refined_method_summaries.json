@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from getDeviceId() API call",
+                "Source Method": "Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Data was tainted by getDeviceId() and passed to start() method of ProcessBuilder.",
+                "Action": "Stored in v0 and potentially transmitted or stored"
+            }
+        ],
+        "All Sinks": [
+            "LProcessBuilder;->start:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> ProcessBuilder;->start:(Ljava/lang/String;)V ",
+                "Reasoning": "Sensitive data (device ID) originated from getDeviceId() API call, stored in v0 and passed to start() method of ProcessBuilder, leading to potential network transmission or storage."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

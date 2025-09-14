@@ -1,0 +1,275 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address",
+        "Source Method": "Lcom/amazon/device/ads/DeviceInfo;->setMacAddress:()V",
+        "Reasoning": "Method attempts to retrieve user's Wi-Fi MAC address.",
+        "Action": "Stored in `sha1_mac` field"
+      },
+      {
+        "Step": "Encode MAC address",
+        "Source Method": "Lcom/amazon/device/ads/DeviceInfo;->setMacAddress:()V",
+        "Reasoning": "MAC address is encoded using SHA-1.",
+        "Action": "Encoded and stored in `sha1_mac` field"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/DeviceInfo;->setMacAddress:()V --> sha1_mac",
+        "Reasoning": "MAC address is retrieved, encoded, and stored in the `sha1_mac` field."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "wifi mac address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User provides wifi mac address",
+        "Source Method": "Lcom/amazon/device/ads/identity/DeviceInfo;->setMacAddress:()V",
+        "Reasoning": "Method invocation",
+        "Action": "Stored in sha1_mac field"
+      },
+      {
+        "Step": "Validate mac address",
+        "Source Method": "Lcom/amazon/device/ads/identity/DeviceInfo;->setMacAddress:()V",
+        "Reasoning": "Validation check",
+        "Action": "Error logging"
+      },
+      {
+        "Step": "Encode sha1 hash",
+        "Source Method": "Lcom/amazon/device/ads/identity/DeviceInfo;->setMacAddress:()V",
+        "Reasoning": "Hashing",
+        "Action": "Stored in sha1_mac field"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/util/Log;->e:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/identity/DeviceInfo;->setMacAddress:()V --> Lcom/amazon/device/ads/identity/DeviceInfo;->sha1_mac:Ljava/lang/String; --> Landroid/util/Log;->e:()V",
+        "Reasoning": "The user provides their wifi mac address, which is stored in the sha1_mac field. The sha1 hash of the mac address is then logged using the Log.e method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve device ID",
+        "Source Method": "Lcom/amazon/identity/auth/device/ef;->getDeviceId:()Ljava/lang/String;",
+        "Reasoning": "Method `getDeviceId()` retrieves the device ID.",
+        "Action": "Stored in `v0` register"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method call",
+        "Source Method": "Lcom/amazon/identity/auth/device/ef;->getLine1Number:()Ljava/lang/String;",
+        "Reasoning": "getLine1Number() method is called to retrieve the phone number.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/auth/device/ef;->getLine1Number:()Ljava/lang/String; --> Collected",
+        "Reasoning": "The phone number is collected by the getLine1Number() method and stored in the data flow."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address",
+        "Source Method": "Lcom/amazon/identity/auth/device/el;->eg:()Ljava/lang/String;",
+        "Reasoning": "Method `eg` explicitly retrieves the MAC address.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/auth/device/el;->eg:()Ljava/lang/String; --> null",
+        "Reasoning": "MAC address is retrieved but not logged, transmitted, or written to any files."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve phone number",
+        "Source Method": "Lcom/amazon/identity/frc/FrcCookiesManager/c;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "TelephonyManager API",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/frc/FrcCookiesManager/c;->f:(Landroid/content/Context;)Ljava/lang/String; --> Stored",
+        "Reasoning": "The phone number is stored in the method's return value."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data from AdLocation object",
+        "Source Method": "Lcom/amazon/device/ads/AAXParameter$GeoLocationParameter;->getDerivedValue:(Lcom/amazon/device/ads/AAXParameter$ParameterData;)Ljava/lang/String;",
+        "Reasoning": "Method documentation specifies extraction of latitude and longitude",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/AAXParameter$GeoLocationParameter;->getDerivedValue:(Lcom/amazon/device/ads/AAXParameter$ParameterData;)Ljava/lang/String; --> null",
+        "Reasoning": "No sink points are identified in the provided data"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Emails"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user emails from AccountManager",
+        "Source Method": "Lcom/audible/application/AppUtil;->getDefaultEmails:(Landroid/content/Context;)Ljava/util/List;",
+        "Reasoning": "Method summary mentions retrieving user emails",
+        "Action": "Stored in a list"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/audible/application/AppUtil;->getDefaultEmails(...) --> Stored in a list",
+        "Reasoning": "Data is retrieved from the source method and stored in a list"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Device ID is retrieved",
+        "Source Method": "Lcom/audible/application/AudibleAndroidSDK;->getDeviceId:()Ljava/lang/String;",
+        "Reasoning": "Method `getDeviceId()` collects the device ID",
+        "Action": "Stored in `cachedDeviceId` field"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/audible/application/AudibleAndroidSDK;->getDeviceId:()Ljava/lang/String; --> cachedDeviceId",
+        "Reasoning": "Device ID is stored in `cachedDeviceId` field"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieving Wi-Fi SSID",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `c()` uses `WifiManager` API to get Wi-Fi SSID.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String; --> null",
+        "Reasoning": "Method `c()` collects Wi-Fi SSID but does not have any sink points."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiManager API data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected from WifiManager API.",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `d()` of `DataPointsNetwork` class collects user personal data from WifiManager API.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to the `b()` method via method invocation.",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method invocation in `d()` method passes the collected data to `b()` method.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kochava/base/network/DataPointsNetwork;->b:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/kochava/base/network/DataPointsNetwork;->b:(Ljava/lang/String;)V",
+        "Reasoning": "Data collected in `d()` method is passed to `b()` method as an argument."
+      }
+    ],
+    "Label": "leak"
+  }
+]

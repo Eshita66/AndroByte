@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from retrieving device ID through TelephonyManager instance.",
+                "Source Method": "Lde/ecspride/MainActivity;->getDeviceId():()V",
+                "Reasoning": "The method getDeviceId() retrieves the device ID, which is a sensitive value.",
+                "Action": "Stored in register v8"
+            },
+            {
+                "Step": "Used in text message sent using SmsManager.",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "The method aliasFlowTest() uses the device ID to send a text message, which is a sink operation.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->getDeviceId():()V --> Stored in register v8 --> Lde/ecspride/MainActivity;->aliasFlowTest:()V --> Transmitted using SmsManager",
+                "Reasoning": "The device ID is retrieved from the TelephonyManager instance, stored in a register, and then used to send a text message using the SmsManager."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

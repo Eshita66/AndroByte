@@ -1,0 +1,55 @@
+
+ Processing folder: D:\UBCBAPK_Methods\RegisterGlobal1
+ Using methods file: D:\UBCBAPK_Methods\RegisterGlobal1\RegisterGlobal1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V']
+[SUMMARY] Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V => {
+    "Summary": "The method logs a debug message and retrieves the device IMEI via TelephonyManager, storing it in the 'imei' field of the ApplicationCallbacks instance. The 'imei' field may be read by subsequent methods like onActivityPaused.",
+    "Next Methods": [
+        "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V => {
+    "Summary": "The method sends an SMS using the device's IMEI as the SC address, potentially leaking sensitive information via SMS. The IMEI is retrieved from the 'imei' field of the ApplicationCallbacks instance.",
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\RegisterGlobal1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\RegisterGlobal1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\RegisterGlobal1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "IMEI retrieval",
+                "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V",
+                "Reasoning": "The method retrieves the device IMEI via TelephonyManager and stores it in the 'imei' field.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "IMEI usage in SMS",
+                "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V",
+                "Reasoning": "The method accesses the 'imei' field and uses it as the SC address for SMS transmission.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V --> Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V",
+                "Reasoning": "The IMEI is stored in the 'imei' field by onActivityStarted and later accessed by onActivityPaused to send SMS, with no indication of taint removal."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\RegisterGlobal1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\RegisterGlobal1\output\sensitive_only.json
+Total time for folder: 2109.11 seconds

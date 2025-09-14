@@ -1,0 +1,43 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID",
+            "IMEI",
+            "Phone Number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve TelephonyManager for device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "TelephonyManager is retrieved to access device-specific information.",
+                "Action": "Stored in memory"
+            },
+            {
+                "Step": "Set IMEI using reflection",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Device ID is used to set an IMEI through reflection.",
+                "Action": "Stored in memory"
+            },
+            {
+                "Step": "Attempt to send text message with hardcoded phone number",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Phone number is hardcoded and potentially involves user personal data.",
+                "Action": "Not a real sink, attempt to send SMS"
+            }
+        ],
+        "All Sinks": [
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Reflection to set IMEI --> Stored in memory",
+                "Reasoning": "Device ID is retrieved from TelephonyManager and used for reflection to manipulate the IMEI, which is then stored in memory."
+            },
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Attempt to send text message with hardcoded phone number",
+                "Reasoning": "Potential leakage of user personal data through the attempt to send a text message."
+            }
+        ],
+        "Label": "no leak"
+    }
+]

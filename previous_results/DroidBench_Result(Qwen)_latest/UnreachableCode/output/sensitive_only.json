@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved via TelephonyManager",
+                "Source Method": "Lde/ecspride/UnreachableCode;->unrechable:()V",
+                "Reasoning": "The method explicitly retrieves the device ID from TelephonyManager, which is a sensitive source.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID is logged using Log.i",
+                "Source Method": "Lde/ecspride/UnreachableCode;->unrechable:()V",
+                "Reasoning": "The method logs the device ID using Log.i, which is a potential sink for sensitive data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log.i"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/UnreachableCode;->unrechable:()V --> android.util.Log.i",
+                "Reasoning": "The device ID is retrieved from TelephonyManager and directly passed to Log.i without being overwritten, maintaining taint."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

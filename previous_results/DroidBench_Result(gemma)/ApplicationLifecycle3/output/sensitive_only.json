@@ -1,0 +1,35 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "SmsManager",
+            "TelephonyManager"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Lde/ecspride/ContentProvider;->onCreate:()Z",
+                "Reasoning": "The method retrieves the device ID from the TelephonyManager.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send SMS with Device ID",
+                "Source Method": "Lde/ecspride/ApplicationLifecyle3;->onCreate:()V",
+                "Reasoning": "The method attempts to send a text message with the value \"+49 1234\" using the SmsManager, which utilizes the Device ID.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ApplicationLifecyle3;->onCreate:()"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ContentProvider;->onCreate:()Z --> Lde/ecspride/ApplicationLifecyle3;->onCreate:()V",
+                "Reasoning": "The ContentProvider method retrieves the Device ID and stores it in the iMei field. This value is then used by the ApplicationLifecycle3 method to send a text message."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

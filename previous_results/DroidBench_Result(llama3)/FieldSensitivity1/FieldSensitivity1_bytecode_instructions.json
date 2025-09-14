@@ -1,0 +1,172 @@
+{
+    "Lde/ecspride/BuildConfig;-><init>:()V": {
+        "node_id": 0,
+        "method_signature": "Lde/ecspride/BuildConfig;-><init>:()V",
+        "instructions": [
+            "invoke-direct v0, Ljava/lang/Object;-><init>()V",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/Datacontainer;-><init>:()V": {
+        "node_id": 1,
+        "method_signature": "Lde/ecspride/Datacontainer;-><init>:()V",
+        "instructions": [
+            "invoke-direct v0, Ljava/lang/Object;-><init>()V",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/Datacontainer;->getDescription:()Ljava/lang/String;": {
+        "node_id": 2,
+        "method_signature": "Lde/ecspride/Datacontainer;->getDescription:()Ljava/lang/String;",
+        "instructions": [
+            "iget-object v0, v1, Lde/ecspride/Datacontainer;->description Ljava/lang/String;",
+            "return-object v0"
+        ]
+    },
+    "Lde/ecspride/Datacontainer;->getSecret:()Ljava/lang/String;": {
+        "node_id": 3,
+        "method_signature": "Lde/ecspride/Datacontainer;->getSecret:()Ljava/lang/String;",
+        "instructions": [
+            "iget-object v0, v1, Lde/ecspride/Datacontainer;->secret Ljava/lang/String;",
+            "return-object v0"
+        ]
+    },
+    "Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V": {
+        "node_id": 4,
+        "method_signature": "Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V",
+        "instructions": [
+            "iput-object v1, v0, Lde/ecspride/Datacontainer;->description Ljava/lang/String;",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V": {
+        "node_id": 5,
+        "method_signature": "Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V",
+        "instructions": [
+            "iput-object v1, v0, Lde/ecspride/Datacontainer;->secret Ljava/lang/String;",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/FieldSensitivity1;-><init>:()V": {
+        "node_id": 6,
+        "method_signature": "Lde/ecspride/FieldSensitivity1;-><init>:()V",
+        "instructions": [
+            "invoke-direct v0, Landroid/app/Activity;-><init>()V",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/FieldSensitivity1;->sendTaint:()V": {
+        "node_id": 7,
+        "method_signature": "Lde/ecspride/FieldSensitivity1;->sendTaint:()V",
+        "instructions": [
+            "const/4 v2, 0",
+            "invoke-static Landroid/telephony/SmsManager;->getDefault()Landroid/telephony/SmsManager;",
+            "move-result-object v0",
+            "const-string v1, \"+49 1234\"",
+            "iget-object v3, v6, Lde/ecspride/FieldSensitivity1;->d1 Lde/ecspride/Datacontainer;",
+            "invoke-virtual v3, Lde/ecspride/Datacontainer;->getDescription()Ljava/lang/String;",
+            "move-result-object v3",
+            "move-object v4, v2",
+            "move-object v5, v2",
+            "invoke-virtual/range v0 ... v5, Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;": {
+        "node_id": 8,
+        "method_signature": "Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;",
+        "instructions": [
+            "new-instance v3, Lde/ecspride/Datacontainer;",
+            "invoke-direct v3, Lde/ecspride/Datacontainer;-><init>()V",
+            "const-string v1, \"abc\"",
+            "invoke-virtual v3, v1, Lde/ecspride/Datacontainer;->setDescription(Ljava/lang/String;)V",
+            "const-string v1, \"phone\"",
+            "invoke-virtual v2, v1, Lde/ecspride/FieldSensitivity1;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "move-result-object v0",
+            "check-cast v0, Landroid/telephony/TelephonyManager;",
+            "invoke-virtual v0, Landroid/telephony/TelephonyManager;->getSimSerialNumber()Ljava/lang/String;",
+            "move-result-object v1",
+            "invoke-virtual v3, v1, Lde/ecspride/Datacontainer;->setSecret(Ljava/lang/String;)V",
+            "return-object v3"
+        ]
+    },
+    "Lde/ecspride/FieldSensitivity1;->onCreate:(Landroid/os/Bundle;)V": {
+        "node_id": 9,
+        "method_signature": "Lde/ecspride/FieldSensitivity1;->onCreate:(Landroid/os/Bundle;)V",
+        "instructions": [
+            "invoke-super v1, v2, Landroid/app/Activity;->onCreate(Landroid/os/Bundle;)V",
+            "const/high16 v0, 2130903040",
+            "invoke-virtual v1, v0, Lde/ecspride/FieldSensitivity1;->setContentView(I)V",
+            "iget-object v0, v1, Lde/ecspride/FieldSensitivity1;->d1 Lde/ecspride/Datacontainer;",
+            "invoke-direct v1, v0, Lde/ecspride/FieldSensitivity1;->setTaint(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;",
+            "move-result-object v0",
+            "iput-object v0, v1, Lde/ecspride/FieldSensitivity1;->d1 Lde/ecspride/Datacontainer;",
+            "invoke-direct v1, Lde/ecspride/FieldSensitivity1;->sendTaint()V",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/R$attr;-><init>:()V": {
+        "node_id": 10,
+        "method_signature": "Lde/ecspride/R$attr;-><init>:()V",
+        "instructions": [
+            "invoke-direct v0, Ljava/lang/Object;-><init>()V",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/R$drawable;-><init>:()V": {
+        "node_id": 11,
+        "method_signature": "Lde/ecspride/R$drawable;-><init>:()V",
+        "instructions": [
+            "invoke-direct v0, Ljava/lang/Object;-><init>()V",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/R$id;-><init>:()V": {
+        "node_id": 12,
+        "method_signature": "Lde/ecspride/R$id;-><init>:()V",
+        "instructions": [
+            "invoke-direct v0, Ljava/lang/Object;-><init>()V",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/R$layout;-><init>:()V": {
+        "node_id": 13,
+        "method_signature": "Lde/ecspride/R$layout;-><init>:()V",
+        "instructions": [
+            "invoke-direct v0, Ljava/lang/Object;-><init>()V",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/R$menu;-><init>:()V": {
+        "node_id": 14,
+        "method_signature": "Lde/ecspride/R$menu;-><init>:()V",
+        "instructions": [
+            "invoke-direct v0, Ljava/lang/Object;-><init>()V",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/R$string;-><init>:()V": {
+        "node_id": 15,
+        "method_signature": "Lde/ecspride/R$string;-><init>:()V",
+        "instructions": [
+            "invoke-direct v0, Ljava/lang/Object;-><init>()V",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/R$style;-><init>:()V": {
+        "node_id": 16,
+        "method_signature": "Lde/ecspride/R$style;-><init>:()V",
+        "instructions": [
+            "invoke-direct v0, Ljava/lang/Object;-><init>()V",
+            "return-void "
+        ]
+    },
+    "Lde/ecspride/R;-><init>:()V": {
+        "node_id": 17,
+        "method_signature": "Lde/ecspride/R;-><init>:()V",
+        "instructions": [
+            "invoke-direct v0, Ljava/lang/Object;-><init>()V",
+            "return-void "
+        ]
+    }
+}

@@ -1,0 +1,37 @@
+Processing folder: D:\UBCBAPK_Methods\ConservativeModel3
+Using methods file: D:\UBCBAPK_Methods\ConservativeModel3\ConservativeModel3_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method originates the IMEI via `Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;` and stores it in the instance field `Ljunbin/ubc/MainActivity;->imei Ljava/lang/String;`. The IMEI is not passed to any further methods or sinks. A logging sink (`Landroid/util/Log;->v(Ljava/lang/String; Ljava/lang/String;)I`) is present but does not involve the IMEI. No sensitive data is propagated beyond this method.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ConservativeModel3\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ConservativeModel3\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ConservativeModel3\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "IMEI retrieval and storage",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves IMEI via TelephonyManager.getDeviceId() and stores it in the instance field 'imei'.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljunbin/ubc/MainActivity;->imei Ljava/lang/String;",
+                "Reasoning": "IMEI is retrieved and stored in an instance field but not passed to any sink methods."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ConservativeModel3\output\refined_method_summaries.json
+Saved 0 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ConservativeModel3\output\sensitive_only.json
+Total summary time: 22.11152458190918 seconds

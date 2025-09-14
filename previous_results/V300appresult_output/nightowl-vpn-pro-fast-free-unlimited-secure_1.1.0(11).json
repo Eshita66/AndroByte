@@ -1,0 +1,246 @@
+[
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is originated by calling 'Lcom/kochava/base/network/DataPointsNetwork;->a(Landroid/content/Context; Ljava/lang/String;)Z' to check for ACCESS_WIFI_STATE permission.",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers and variables within the method, specifically in v0 and v2.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User personal data is propagated through method invocations to 'Lcom/kochava/base/network/DataPointsNetwork;->a(Landroid/content/Context; Ljava/lang/String;)Z' and 'getSystemService'.",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated through method invocations.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "User personal data reaches a sink point when it is returned as a string.",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated to the method 'Lcom/kochava/base/network/DataPointsNetwork;->c(Landroid/content/Context;)Ljava/lang/String' and returned as a string.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "User personal data is originated by using the getPackageManager() and getPackageName() methods from the Context object.",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The permission check is then performed on a sensitive API. If the permission is not granted, the method returns true.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kochava/base/network/DataPointsNetwork;->c(Landroid/content/Context;)Ljava/lang/String",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/kochava/base/network/DataPointsNetwork;->c(Landroid/content/Context;)Ljava/lang/String --> Lcom/kochava/base/network/DataPointsNetwork;->a(Landroid/content/Context; Ljava/lang/String;)Z --> getPackageManager() and getPackageName()",
+        "Reasoning": "The data is originated by calling 'Lcom/kochava/base/network/DataPointsNetwork;->c(Landroid/content/Context;)Ljava/lang/String' to check for ACCESS_WIFI_STATE permission. The data is propagated through method invocations to 'Lcom/kochava/base/network/DataPointsNetwork;->a(Landroid/content/Context; Ljava/lang/String;)Z'. The data reaches a sink point when it is returned as a string."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Context's package name",
+      "User location (implied by ACCESS_WIFI_STATE permission)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data through 'd' method of DataPointsNetwork class",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method uses the ACCESS_WIFI_STATE permission.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Sensitive user personal data is originated from context's package name",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The data is stored in registers v0 and v1.",
+        "Action": "Passed to the PackageManager's checkPermission method via method invocation"
+      },
+      {
+        "Step": "Data is passed to other methods via method invocations, such as a(Landroid/content/Context;Ljava/lang/String;)Z and getApplicationContext()Landroid/content/Context;",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers and variables within the method, specifically in v0 and v2.",
+        "Action": "Passed to other methods"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z --> Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is originated from the context's package name, stored in registers and variables within the method, passed to other methods via method invocations, and finally returned by the 'd' method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "java.util.Map",
+      "java.io.File",
+      "com.appsflyer/internal/j",
+      "AFLogger$LogLevel enum",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected from sensitive API calls.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u0971:(Lcom/appsflyer/internal/j;)Ljava/util/Map;",
+        "Reasoning": "The current method collects user personal data from sensitive API calls, stores it in registers and variables, and passes it to various methods for processing.",
+        "Action": "[Stored, logged, transmitted]"
+      },
+      {
+        "Step": "User personal data is originated using the getInstance() method of AppsFlyerProperties class.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties;",
+        "Reasoning": "The method originates user personal data using the `getInstance()` method of `AppsFlyerProperties` class. The data is stored in register `v0`.",
+        "Action": "[Stored]"
+      },
+      {
+        "Step": "User personal data is originated by creating a new File instance in the app's files directory.",
+        "Source Method": "Lcom/appsflyer/internal/z;->\u02ce:(Landroid/content/Context;)Ljava/io/File;",
+        "Reasoning": "The method originates user personal data by creating a new File instance in the app's files directory. The data is stored in register v0 and passed to the return statement without any sinks identified.",
+        "Action": "[Stored]"
+      },
+      {
+        "Step": "User personal data is originated using the `isTrackingStopped` API.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->isTrackingStopped:()Z",
+        "Reasoning": "The method is using the `isTrackingStopped` API to originate user personal data. The data is stored in register v0 and passed to the return statement without any sinks identified.",
+        "Action": "[Stored]"
+      },
+      {
+        "Step": "User personal data is originated by calling the afInfoLog method with a string parameter.",
+        "Source Method": "Lcom/appsflyer/AFLogger;->afInfoLog:(Ljava/lang/String;)V",
+        "Reasoning": "[This method originates user personal data by calling the afInfoLog method with a string parameter. The data is stored in register v1 and propagated to the afInfoLog method via method invocation.]",
+        "Action": "[Logged]"
+      },
+      {
+        "Step": "User personal data is originated from the AFLogger$LogLevel enum.",
+        "Source Method": "Lcom/appsflyer/AFLogger;->afInfoLog:(Ljava/lang/String; Z)V",
+        "Reasoning": "[This method originates user personal data from the AFLogger$LogLevel enum. The data is stored in registers v0 and v1, then passed to other methods via method invocations.]",
+        "Action": "[Logged]"
+      },
+      {
+        "Step": "User personal data is originated from sensitive API calls.",
+        "Source Method": "Lcom/appsflyer/AFLogger;->\u02cf:(Ljava/lang/String; Z)Ljava/lang/String;",
+        "Reasoning": "[This method originates user personal data from sensitive API calls. The data is stored in registers and variables within the method.]",
+        "Action": "[Logged]"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AFLogger;->afInfoLog:(Ljava/lang/String;)V",
+      "Lcom/appsflyer/AFLogger;->afInfoLog:(Ljava/lang/String; Z)V",
+      "Lcom/appsflyer/AFLogger;->\u02cf:(Ljava/lang/String; Z)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/appsflyer/AppsFlyerLibCore;->\u0971:(Lcom/appsflyer/internal/j;)Ljava/util/Map; --> Lcom/appsflyer/AFLogger;->afInfoLog:(Ljava/lang/String; Z)V]",
+        "Reasoning": "The data is collected from sensitive API calls, stored in registers and variables, and passed to the afInfoLog method via method invocation."
+      },
+      {
+        "dataflow 2": "[Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties; --> Lcom/appsflyer/AFLogger;->afInfoLog:(Ljava/lang/String;)V]",
+        "Reasoning": "The data is originated using the getInstance() method of AppsFlyerProperties class and passed to the afInfoLog method via method invocation."
+      },
+      {
+        "dataflow 3": "[Lcom/appsflyer/internal/z;->\u02ce:(Landroid/content/Context;)Ljava/io/File; --> Lcom/appsflyer/AFLogger;->afInfoLog:(Ljava/lang/String; Z)V]",
+        "Reasoning": "The data is originated by creating a new File instance in the app's files directory and passed to the afInfoLog method via method invocation."
+      },
+      {
+        "dataflow 4": "[Lcom/appsflyer/AppsFlyerLibCore;->isTrackingStopped:()Z --> Lcom/appsflyer/AFLogger;->afInfoLog:(Ljava/lang/String;)V]",
+        "Reasoning": "The data is originated using the `isTrackingStopped` API and passed to the afInfoLog method via method invocation."
+      },
+      {
+        "dataflow 5": "[Lcom/appsflyer/AFLogger;->\u02cf:(Ljava/lang/String; Z)Ljava/lang/String; --> Lcom/appsflyer/AFLogger;->afInfoLog:(Ljava/lang/String;)V]",
+        "Reasoning": "The data is originated from sensitive API calls and passed to the afInfoLog method via method invocation."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "String",
+      "Int"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is stored in registers and variables within the method.",
+        "Source Method": "Le/g/b/d/e/a/u11;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "The current method originates user personal data through sensitive API calls to android.os.Bundle.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is propagated to other methods via method invocations.",
+        "Source Method": "Le/g/b/d/e/a/u11;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "The data is stored in registers and variables within the method, including iget-object v0, v13, Le/g/b/d/e/a/u11;->a Le/g/b/d/e/a/ge1; and iget-object v0, v0, Le/g/b/d/e/a/ge1;->d Le/g/b/d/e/a/sk2.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Data reaches sink points like logging through putString and putInt calls.",
+        "Source Method": "Le/g/b/d/e/a/u11;->b:(Ljava/lang/Object;)V",
+        "Reasoning": "The data is propagated to other methods via method invocations, including invoke-virtual v14, v2, v1, Landroid/os/Bundle;->putString(Ljava/lang/String; Ljava/lang/String;)V and invoke-virtual v14, v4, v1, Landroid/os/Bundle;->putInt(Ljava/lang/String; I)V.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Le/g/b/d/e/a/u11;->b:(Ljava/lang/Object;)V",
+      "Landroid/os/Bundle;->putString(Ljava/lang/String; Ljava/lang/String;)V",
+      "Landroid/os/Bundle;->putInt(Ljava/lang/String; I)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Le/g/b/d/e/a/u11;->b:(Ljava/lang/Object;)V --> Le/g/b/d/e/a/u11;->a Le/g/b/d/e/a/ge1 --> Landroid/os/Bundle;->putString(Ljava/lang/String; Ljava/lang/String;)V]",
+        "Reasoning": "The data is stored in registers and variables within the method, including iget-object v0, v13, Le/g/b/d/e/a/u11;->a Le/g/b/d/e/a/ge1; and iget-object v0, v0, Le/g/b/d/e/a/ge1;->d Le/g/b/d/e/a/sk2. The data is then propagated to other methods via method invocations, including invoke-virtual v14, v2, v1, Landroid/os/Bundle;->putString(Ljava/lang/String; Ljava/lang/String;)V."
+      },
+      {
+        "dataflow 2": "[Le/g/b/d/e/a/u11;->b:(Ljava/lang/Object;)V --> Le/g/b/d/e/a/u11;->a Le/g/b/d/e/a/ge1 --> Landroid/os/Bundle;->putInt(Ljava/lang/String; I)V]",
+        "Reasoning": "The data is stored in registers and variables within the method, including iget-object v0, v13, Le/g/b/d/e/a/u11;->a Le/g/b/d/e/a/ge1; and iget-object v0, v0, Le/g/b/d/e/a/ge1;->d Le/g/b/d/e/a/sk2. The data is then propagated to other methods via method invocations, including invoke-virtual v14, v4, v1, Landroid/os/Bundle;->putInt(Ljava/lang/String; I)V."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user location data",
+        "Source Method": "Lo/b/c/v;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "Calls `getLastKnownLocation` method of the `LocationManager`.",
+        "Action": "Stored in register v3"
+      },
+      {
+        "Step": "Passes location data to logging",
+        "Source Method": "Lo/b/c/m$g;->c:()I",
+        "Reasoning": "Invokes `a` method of `Lo/b/c/v` with a string argument.",
+        "Action": "Logged via `Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I`"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I",
+      "Lo/b/c/m$g;->c:()I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lo/b/c/v;->a:(Ljava/lang/String;)Landroid/location/Location; --> Lo/b/c/m$g;->c:()I --> Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I ",
+        "Reasoning": "The `Lo/b/c/v;->a:(Ljava/lang/String;)Landroid/location/Location;` method originates user location data by calling the `getLastKnownLocation` method of the `LocationManager`. The data is stored in register v3. This data is then passed to the `Lo/b/c/m$g;->c:()I` method, which invokes the `a` method of `Lo/b/c/v` with a string argument. Finally, this data is logged via the `Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I` method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

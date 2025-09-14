@@ -1,0 +1,57 @@
+
+ Processing folder: D:\UBCBAPK_Methods\Reflection1
+ Using methods file: D:\UBCBAPK_Methods\Reflection1\Reflection1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "This method creates an instance of de.ecspride.BaseClass, gets the IMEI and phone number, and sends a SMS using SmsManager.",
+    "Next Methods": [
+        "Landroid/app/Activity;->onCreate(Landroid/os/Bundle;)V",
+        "Lde/ecspride/BaseClass;->setContentView(I)V",
+        "Ljava/lang/Class;->forName(Ljava/lang/String;)Ljava/lang/Class;",
+        "Lde/ecspride/BaseClass;->newInstance()Ljava/lang/Object;",
+        "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Landroid/telephony/SmsManager;->getDefault()Landroid/telephony/SmsManager;"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\Reflection1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\Reflection1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\Reflection1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "IMEI",
+            "PhoneNumber"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get IMEI and phone number",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Sensitive values obtained from unknown sources.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send SMS using SmsManager",
+                "Sink Method": "SmsManager",
+                "Reasoning": "Tainted IMEI and phone number passed to sink method.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V(...) --> SmsManager(...) ",
+                "Reasoning": "IMEI and phone number obtained in onCreate method, passed to SmsManager for transmission."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\Reflection1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\Reflection1\output\sensitive_only.json
+Total time for folder: 12.11 seconds

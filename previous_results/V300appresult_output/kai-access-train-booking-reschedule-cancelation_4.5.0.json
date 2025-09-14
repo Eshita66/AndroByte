@@ -1,0 +1,64 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Call getLastKnownLocation API",
+        "Source Method": "Lcom/getcapacitor/plugin/Geolocation;->getBestLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by calling `getLastKnownLocation` API.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Propagate data to other methods via method invocations",
+        "Source Method": "Lcom/getcapacitor/plugin/Geolocation;->getBestLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The data reaches a sink point, which is the return statement.",
+        "Action": "Propagated to other methods"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/getcapacitor/plugin/Geolocation;->getBestLocation:(Ljava/lang/String;)Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/getcapacitor/plugin/Geolocation;->getBestLocation:(Ljava/lang/String;)Landroid/location/Location; --> Stored in registers and variables within the method --> Lcom/getcapacitor/plugin/Geolocation;->getBestLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The data is stored in registers and variables within the method, then propagated to other methods via method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location from API",
+        "Source Method": "Lcom/getcapacitor/plugin/Geolocation;->getJSObjectForLocation:(Landroid/location/Location;)Lcom/getcapacitor/JSObject;",
+        "Reasoning": "The method originates user personal data by calling sensitive API to get location and other related information.",
+        "Action": "Stored in JSObjects (v0 and v1)"
+      },
+      {
+        "Step": "Store location in JSObject",
+        "Source Method": "Lcom/getcapacitor/JSObject;->put:(Ljava/lang/String; Ljava/lang/Object;)Lcom/getcapacitor/JSObject;",
+        "Reasoning": "The current method originates user personal data through the 'put' method of the 'JSObject' class.",
+        "Action": "Stored in registers and variables within this method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/getcapacitor/plugin/Geolocation;->getJSObjectForLocation:(Landroid/location/Location;)Lcom/getcapacitor/JSObject;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/getcapacitor/plugin/Geolocation;->getJSObjectForLocation:(Landroid/location/Location;)Lcom/getcapacitor/JSObject; --> Lcom/getcapacitor/JSObject;->put:(Ljava/lang/String; Ljava/lang/Object;)Lcom/getcapacitor/JSObject; --> Lcom/getcapacitor/plugin/Geolocation;->getJSObjectForLocation:(Landroid/location/Location;)Lcom/getcapacitor/JSObject;",
+        "Reasoning": "The location data is first obtained from the Geolocation class, then stored in a JSObject using the put method. Finally, it is propagated back to the Geolocation class."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

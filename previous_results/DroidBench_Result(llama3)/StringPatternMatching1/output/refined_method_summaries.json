@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get device ID from TelephonyManager",
+                "Source Method": "Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method originates user personal data by getting the device ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Pass device ID to regular expression matcher",
+                "Source Method": "Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is then passed to a regular expression matcher.",
+                "Action": "Passed"
+            },
+            {
+                "Step": "Log matched string (device ID)",
+                "Source Method": "Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "If it matches, the matched string (which is the device ID) is logged.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i(Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)V(...) --> ... --> Landroid/util/Log;->i(Ljava/lang/String;)I(...)",
+                "Reasoning": "The method originates user personal data by getting the device ID from the TelephonyManager. The device ID is then passed to a regular expression matcher and if it matches, the matched string (which is the device ID) is logged using Landroid/util/Log;->i."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

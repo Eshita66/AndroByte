@@ -1,0 +1,52 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ApplicationLifecycle2
+ Using methods file: D:\UBCBAPK_Methods\ApplicationLifecycle2\ApplicationLifecycle2_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/ApplicationLifecyle2;->onCreate:()V']
+[SUMMARY] Lde/ecspride/ApplicationLifecyle2;->onCreate:()V => {
+    "Summary": "The method initializes the IMEI field with the device ID obtained from the TelephonyManager. This involves calling getDeviceId() on the TelephonyManager and storing the result in the ApplicationLifecycle2's imei field.",
+    "Next Methods": [
+        "Lde/ecspride/ApplicationLifecyle2;->onLowMemory:()V"
+    ]
+}
+[SUMMARY] Lde/ecspride/ApplicationLifecyle2;->onLowMemory:()V => {
+    "Summary": "This method sends a text message using the default SmsManager, likely with a hardcoded phone number (+49 1234).",
+    "Next Methods": [
+        "Lde/ecspride/ApplicationLifecyle2;->onLowMemory:()V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ApplicationLifecycle2\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ApplicationLifecycle2\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ApplicationLifecycle2\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "imei"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID obtained from TelephonyManager.",
+                "Source Method": "Lde/ecspride/ApplicationLifecyle2;->onCreate:()V",
+                "Reasoning": "The summary explicitly states that the method initializes the IMEI field with the device ID obtained from the TelephonyManager using getDeviceId().",
+                "Action": "Store"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ApplicationLifecyle2;->onLowMemory:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ApplicationLifecyle2;->onCreate:()V --> DeviceId --> Lde/ecspride/ApplicationLifecyle2;->onLowMemory:()V",
+                "Reasoning": "The `onCreate` method obtains the DeviceId from the TelephonyManager and passes it as an argument to the `onLowMemory` method.  The `onLowMemory` method sends a text message using this DeviceId."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ApplicationLifecycle2\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\ApplicationLifecycle2\output\sensitive_only.json
+Total time for folder: 10.98 seconds

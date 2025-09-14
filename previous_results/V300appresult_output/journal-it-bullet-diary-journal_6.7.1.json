@@ -1,0 +1,68 @@
+[
+  {
+    "Data Types Collected": [
+      "location",
+      "task result"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access task result and location",
+        "Source Method": "Lapp/journalit/journalit/component/CoordinateProviderImpl$getCoordinate$1$1;->onComplete:(Lcom/google/android/gms/tasks/Task;)V",
+        "Reasoning": "The method originates user personal data by accessing the task result and location.",
+        "Action": "Stored in register v0 and variable $emitter"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lapp/journalit/journalit/component/CoordinateProviderImpl$getCoordinate$1$1;->onComplete:(Lcom/google/android/gms/tasks/Task;)V --> MaybeEmitter onSuccess --> MaybeEmitter onComplete",
+        "Reasoning": "The data is propagated to methods onSuccess and onComplete of MaybeEmitter interface."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "accuracy",
+      "verticalAccuracy",
+      "headingAccuracy",
+      "elapsedRealtimeUncertaintyNanos",
+      "provider",
+      "satellites",
+      "mock status",
+      "altitude",
+      "speed",
+      "speed_accuracy",
+      "bearing",
+      "time"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location data from LocationResult object",
+        "Source Method": "Lcom/lyokone/location/FlutterLocation$2;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The method calls the getter methods of LocationResult to get user personal data.",
+        "Action": "Stored in a HashMap"
+      },
+      {
+        "Step": "Pass location data to getLocationResult MethodChannel$Result object or events EventChannel$EventSink object if not null",
+        "Source Method": "Lcom/lyokone/location/FlutterLocation$2;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The data is passed to either getLocationResult MethodChannel$Result object or events EventChannel$EventSink object if they are not null.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/lyokone/location/FlutterLocation$2;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+      "getLocationResult MethodChannel$Result object or events EventChannel$EventSink object if not null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/lyokone/location/FlutterLocation$2;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V --> Stored in a HashMap --> getLocationResult MethodChannel$Result object or events EventChannel$EventSink object if not null",
+        "Reasoning": "The data is first stored in a HashMap and then passed to either getLocationResult MethodChannel$Result object or events EventChannel$EventSink object if they are not null."
+      }
+    ],
+    "Label": "leak"
+  }
+]

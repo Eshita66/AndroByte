@@ -1,0 +1,58 @@
+
+ Processing folder: D:\UBCBAPK_Methods\RegisterGlobal1
+ Using methods file: D:\UBCBAPK_Methods\RegisterGlobal1\RegisterGlobal1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V']
+[SUMMARY] Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V => {
+    "Summary": "This method retrieves the IMEI of the device and stores it in a field called \"imei\".",
+    "Next Methods": [
+        "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V => {
+    "Summary": "This method sends a SMS with the IMEI of the device using SmsManager.",
+    "Next Methods": [
+        "Landroid/telephony/SmsManager;->getDefault():Landroid/telephony/SmsManager;",
+        "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\RegisterGlobal1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\RegisterGlobal1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\RegisterGlobal1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get IMEI from device",
+                "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V",
+                "Reasoning": "The method retrieves the IMEI of the device and stores it in a field called \"imei\".",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send SMS with IMEI",
+                "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V",
+                "Reasoning": "The method sends a SMS with the IMEI of the device using SmsManager.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V --> Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V ",
+                "Reasoning": "The IMEI is retrieved from the device and then sent as an argument to SmsManager.sendTextMessage() method in onActivityPaused()."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\RegisterGlobal1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\RegisterGlobal1\output\sensitive_only.json
+Total time for folder: 14.18 seconds

@@ -1,0 +1,40 @@
+[
+    {
+        "Data Types Collected": [
+            "java.lang.String"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieves device ID from TelephonyManager using getDeviceId() method",
+                "Source Method": "Lde/ecspride/MyApplication$1;->onLowMemory:()V",
+                "Reasoning": "The method retrieves the device ID and overwrites a field (imei) of type java.lang.String with this value.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Overwrites imei field with retrieved device ID",
+                "Source Method": "Lde/ecspride/MyApplication$1;->onLowMemory:()V",
+                "Reasoning": "The method reads the imei field and modifies it with the retrieved device ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Passes tainted imei to sink methods",
+                "Source Method": "Lde/ecspride/MyApplication$1;->onLowMemory:()V",
+                "Reasoning": "The method passes the modified imei field (now containing a device ID) to subsequent methods without overwriting.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MyApplication$1;->onLowMemory:()V --> Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V",
+                "Reasoning": "The method onLowMemory stores the tainted imei field, which is then passed to onConfigurationChanged without modification."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

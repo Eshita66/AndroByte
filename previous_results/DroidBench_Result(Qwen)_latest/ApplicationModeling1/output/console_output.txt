@@ -1,0 +1,61 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ApplicationModeling1
+ Using methods file: D:\UBCBAPK_Methods\ApplicationModeling1\ApplicationModeling1_bytecode_instructions.json
+Sensitive root methods: ['Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "The method retrieves the device IMEI via TelephonyManager, stores it in the MyApplication class's imei field, and launches AnotherActivity. The IMEI is potentially accessible to AnotherActivity via the application context field.",
+    "Next Methods": [
+        "Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V"
+    ]
+}
+[SUMMARY] Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "The method logs the IMEI retrieved from MyApplication, which may be considered a data leak if sensitive. No further method calls are needed due to the leak detection.",
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ApplicationModeling1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ApplicationModeling1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ApplicationModeling1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "IMEI retrieval",
+                "Source Method": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves device IMEI via TelephonyManager",
+                "Action": "Stored"
+            },
+            {
+                "Step": "IMEI access",
+                "Source Method": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "IMEI is stored in MyApplication class's imei field",
+                "Action": "Transmitted"
+            },
+            {
+                "Step": "IMEI logging",
+                "Source Method": "Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Logs IMEI retrieved from MyApplication",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/application_modelging/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "IMEI is stored in MyApplication's imei field (source) and then accessed by AnotherActivity's onCreate method (sink) without being overwritten with a non-sensitive value"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ApplicationModeling1\output\refined_method_summaries.json
+Saved 0 'leak' subgraphs to D:\UBCBAPK_Methods\ApplicationModeling1\output\sensitive_only.json
+Total time for folder: 293.06 seconds

@@ -1,0 +1,59 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ApplicationModeling1
+ Using methods file: D:\UBCBAPK_Methods\ApplicationModeling1\ApplicationModeling1_bytecode_instructions.json
+Sensitive root methods: ['Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": [
+        "The method onCreate in MainActivity initializes the UI by setting its content view to a predefined resource ID, retrieves the TelephonyManager service for device identification, stores the device's IMEI in an application-specific field, and starts AnotherActivity."
+    ],
+    "Next Methods": [
+        "Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V"
+    ]
+}
+[SUMMARY] Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": [
+        "The onCreate method in AnotherActivity initializes the UI by setting its content view to a predefined resource ID (2130903040), retrieves the application context, logs the device's IMEI using Log.i, and does not read or write any fields."
+    ],
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ApplicationModeling1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ApplicationModeling1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ApplicationModeling1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Initialization of UI in MainActivity",
+                "Source Method": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method initializes the UI and retrieves the TelephonyManager service for device identification, storing the device's IMEI in an application-specific field.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging of DeviceId in AnotherActivity",
+                "Source Method": "Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The onCreate method logs the device's IMEI using Log.i, which is a potential sink for sensitive data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The IMEI is retrieved in onCreate of MainActivity and passed to AnotherActivity for logging."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ApplicationModeling1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\ApplicationModeling1\output\sensitive_only.json
+Total time for folder: 83.87 seconds

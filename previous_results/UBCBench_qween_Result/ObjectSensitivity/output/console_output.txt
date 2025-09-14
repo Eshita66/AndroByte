@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\ObjectSensitivity
+Using methods file: D:\UBCBAPK_Methods\ObjectSensitivity\ObjectSensitivity_bytecode_instructions.json
+Sensitive method found: Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method originates user personal data via the TelephonyManager's getDeviceId() call, which retrieves the device ID. This data is stored in a LinkedList and then passed to the android.util.Log.i sink for logging. The sensitive data is explicitly logged, indicating a data leak to the logging sink.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ObjectSensitivity\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ObjectSensitivity\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ObjectSensitivity\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data retrieval and logging",
+                "Source Method": "Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method calls getDeviceId() to retrieve the device ID, stores it in a LinkedList, and passes it to the android.util.Log.i sink for logging.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log;i:(Ljava/lang/String;Ljava/lang/Object;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V --> android.util.Log;i:(Ljava/lang/String;Ljava/lang/Object;)V",
+                "Reasoning": "The device ID is retrieved via getDeviceId(), stored in a LinkedList, and directly passed to the logging sink without being overwritten by a non-sensitive value."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ObjectSensitivity\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ObjectSensitivity\output\sensitive_only.json
+Total summary time: 17.58332109451294 seconds

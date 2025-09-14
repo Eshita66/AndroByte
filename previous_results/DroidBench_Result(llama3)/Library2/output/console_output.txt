@@ -1,0 +1,49 @@
+Processing folder: D:\UBCBAPK_Methods\Library2
+Using methods file: D:\UBCBAPK_Methods\Library2\Library2_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;
+Processed summary for Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;: {
+    "Summary": "The getIMEI method originates user personal data by calling the TelephonyManager's getDeviceId() method. The device ID is stored in register v1 and passed to the invoked method Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String.",
+    "Next Methods": [
+        "Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String"
+    ]
+}
+Method summaries saved to D:\UBCBAPK_Methods\Library2\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Library2\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Library2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "getDeviceId() is called",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId:()Ljava/lang/String;",
+                "Reasoning": "The TelephonyManager's getDeviceId() method originates user personal data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "IMEI is passed to getIMEI()",
+                "Source Method": "Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+                "Reasoning": "The device ID is stored in register v1 and passed to the invoked method Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String.",
+                "Action": "Passed"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Landroid/telephony/TelephonyManager;->getDeviceId:()Ljava/lang/String; --> Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+                "Reasoning": "The TelephonyManager's getDeviceId() method originates user personal data, which is then passed to the getIMEI() method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Library2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Library2\output\sensitive_only.json
+Total summary time: 12.806400537490845 seconds

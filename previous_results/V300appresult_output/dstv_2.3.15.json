@@ -1,0 +1,163 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "String",
+      "Throwable",
+      "Boolean"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is accessed through LocationManager.",
+        "Source Method": "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by accessing the user's location using the LocationManager API.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "User phone number is accessed through AppboyLogger.d().",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data by calling the sensitive API (AppboyLogger.d) with two String parameters.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "User device ID is accessed through AppboyLogger.v().",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data by invoking the static method Log.v from android.util.Log with two String parameters.",
+        "Action": "Stored in register v2 and propagated through return statements"
+      },
+      {
+        "Step": "User device ID is accessed through AppboyLogger.d().",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String; Z)I",
+        "Reasoning": "Sensitive user personal data originates from the method invocation of AppboyLogger.d() which takes String, String, Throwable, and Boolean parameters.",
+        "Action": "Stored in registers (v0, v1) within the method"
+      },
+      {
+        "Step": "User device ID is accessed through AppboyLogger.appendToDeviceLogData().",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->appendToDeviceLogData:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The method originates user personal data through the `sTestUserDeviceLoggingManager` object.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "User device ID is accessed through AppboyLogger.d().",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I",
+        "Reasoning": "The method originates user personal data using the sensitive API call to `appendToDeviceLogData` and `d`.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "User device ID is accessed through AppboyLogger.appendToDeviceLogData().",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->appendToDeviceLogData:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The method originates user personal data through the `sTestUserDeviceLoggingManager` object.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "User device ID is accessed through AppboyLogger.d().",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "Sensitive user personal data originates from the method invocation of AppboyLogger.d() which takes String, String parameters.",
+        "Action": "Stored in registers (v0, v1) within the method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String;)I",
+      "Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I",
+      "Landroid/util/Log;->d(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I",
+      "Landroid/util/Log;->d(Ljava/lang/String; Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location --> Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String;)I]",
+        "Reasoning": "The user location is accessed through LocationManager and stored in registers. It is then passed to AppboyLogger.d() for logging purposes."
+      },
+      {
+        "dataflow 2": " [Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I --> Landroid/util/Log;->d(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I]",
+        "Reasoning": "The user device ID is accessed through AppboyLogger.v() and stored in register v2. It is then passed to Log.d() for logging purposes."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "altitude",
+      "accuracy",
+      "double"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location API called to get location data",
+        "Source Method": "Lbo/app/i2;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data by using the Location API to get latitude, longitude, altitude, and accuracy.",
+        "Action": "Stored in registers v1, v3, v5, and v6"
+      },
+      {
+        "Step": "isValidLocation static method called to validate location",
+        "Source Method": "Lcom/appboy/support/ValidationUtils;->isValidLocation:(D D)Z",
+        "Reasoning": "The method originates user personal data by comparing location values using sensitive API calls.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Data passed to constructor of current class through method invocation",
+        "Source Method": "Lbo/app/i2;-><init>:(D D Ljava/lang/Double; Ljava/lang/Double;)V",
+        "Reasoning": "The data is stored in instance variables 'a', 'b', 'c', and 'd' of class 'bo/app/i2'. The data propagation analysis shows that the data is passed to other methods via method invocations, specifically the '<init>' constructor.",
+        "Action": "Passed through method invocation"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbo/app/i2;-><init>:(Landroid/location/Location;)V --> Lcom/appboy/support/ValidationUtils;->isValidLocation:(D D)Z --> Lbo/app/i2;-><init>:(D D Ljava/lang/Double; Ljava/lang/Double;)V",
+        "Reasoning": "The data flow is as follows: The Location API in the first method gets location data, which is then passed to the isValidLocation static method. This method validates the location and passes it to the constructor of the current class through method invocation."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "android_id",
+      "device's serial number (Build)",
+      "IMEI (TelephonyManager)",
+      "user phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve android_id from Context",
+        "Source Method": "Lcom/segment/analytics/v/c;->h:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the `getContentResolver()` method from the `Context` object and then retrieving the `android_id` string.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get device's serial number",
+        "Source Method": "Lcom/segment/analytics/v/c;->h:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method then checks if this ID is a known value (e.g., '9774d56d682e549c') or if it's unknown, and returns either the original ID or a default value ('000000000000000'). If the `READ_PHONE_STATE` permission is granted, it retrieves the device's serial number from the `Build` class.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get IMEI",
+        "Source Method": "Lcom/segment/analytics/v/c;->h:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Finally, it tries to get the device's IMEI using the `TelephonyManager`, but if this fails, it returns a random UUID.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get user phone number",
+        "Source Method": "Lcom/segment/analytics/v/c;->u:(Ljava/lang/CharSequence;)Z",
+        "Reasoning": "The method originates user personal data from a sensitive API call to Lcom/segment/analytics/v/c;->t(Ljava/lang/CharSequence;)Z.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/segment/analytics/v/c;->u:(Ljava/lang/CharSequence;)Z",
+      null,
+      null,
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/segment/analytics/v/c;->h:(Landroid/content/Context;)Ljava/lang/String() --> Lcom/segment/analytics/v/c;->u:(Ljava/lang/CharSequence;)Z ",
+        "Reasoning": "The android_id is retrieved from the Context and then stored in a variable. This variable is passed to the method Lcom/segment/analytics/v/c;->u:(Ljava/lang/CharSequence;)Z, where it is used as an argument for the sensitive API call."
+      }
+    ],
+    "Label": "leak"
+  }
+]

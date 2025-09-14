@@ -1,0 +1,228 @@
+[
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected and stored in a variable within the method.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data from the location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Search text is collected and stored in a variable within the method.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data from the search text.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "String object is checked for null or empty within the method.",
+        "Source Method": "Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data by calling the `isNullOrEmpty` method on a string object.",
+        "Action": "Propagated"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;->executeRequest:()V",
+      "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> Lcom/facebook/GraphRequest;->executeRequest:()V",
+        "Reasoning": "The location and search text are stored in variables within the method, then passed to other methods via method invocations. The data is eventually logged or transmitted through network calls."
+      },
+      {
+        "dataflow 2": "Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z --> Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The string object is checked for null or empty within the method, then propagated to other methods via method invocations."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get TelephonyManager instance",
+        "Source Method": "Li20;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Calling getSystemService API to retrieve the TelephonyManager instance.",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "Get device ID from TelephonyManager",
+        "Source Method": "Li20;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Calling getDeviceId on the TelephonyManager instance.",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "Return device ID if not null",
+        "Source Method": "Li20;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "If device ID is not null, it is passed back as a return value.",
+        "Action": "Returned from method"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Li20;->f:(Landroid/content/Context;)Ljava/lang/String; --> Li20;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Li20;->getDeviceId()Ljava/lang/String;",
+        "Reasoning": "The device ID is retrieved from the TelephonyManager instance and then returned as a return value."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get current location",
+        "Source Method": "Lk0;->c:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method calls `isProviderEnabled` and `getLastKnownLocation` to get the user's current location.",
+        "Action": "Stored in registers (`v0`, `v1`, `v2`) and variables (`b`)"
+      }
+    ],
+    "All Sinks": [
+      "Lk0;->c:(Ljava/lang/String;)Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lk0;->c:(Ljava/lang/String;)Landroid/location/Location; --> returns Location object",
+        "Reasoning": "The data is propagated to the return statement, which returns the `Location` object as a result of the method invocation."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from location API",
+        "Source Method": "Lk0;->f:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data from the location API.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Propagates through method invocations to logging sink",
+        "Source Method": "Lk0;->f:(Landroid/location/Location;)V",
+        "Reasoning": "The data propagates through method invocations to reach a sink point, which is logging.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Uses sensitive API calls to originate user personal data",
+        "Source Method": "Lj0;->a:(J D D)V",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Propagates through method invocations and reaches logging sink",
+        "Source Method": "Lj0;->a:(J D D)V",
+        "Reasoning": "The data propagates through method invocations to reach a sink point, which is logging.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Uses sensitive API calls to originate user personal data",
+        "Source Method": "Lj0;->a:(J D D)V",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data.",
+        "Action": "Transmitted over network"
+      }
+    ],
+    "All Sinks": [
+      "Lk0;->f:(Landroid/location/Location;)V",
+      "Lj0;->a:(J D D)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lk0;->f:(Landroid/location/Location;)V --> Lk0;->f:(Landroid/location/Location;)V (logged) ",
+        "Reasoning": "The data originates from the location API, stored in registers and variables, and then logged."
+      },
+      {
+        "dataflow 2": " Lj0;->a:(J D D)V --> Lj0;->a:(J D D)V (logged), Lj0;->a:(J D D)V --> Lj0;->a:(J D D)V (transmitted over network) ",
+        "Reasoning": "The data originates from sensitive API calls, stored in registers and variables, and then logged or transmitted over the network."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "SMS messages",
+      "Device ID",
+      "Phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get SMS messages from Intent",
+        "Source Method": "Lcom/kakao/util/apicompatibility/APILevel19Compatibility;->getSmsMessage:(Landroid/content/Intent;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the getMessagesFromIntent function which retrieves SMS messages from an Intent.",
+        "Action": "Stored in register (v6)"
+      },
+      {
+        "Step": "Get default tag",
+        "Source Method": "Lcom/kakao/util/helper/log/Logger;->getDefaultTag()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data from the `getDefaultTag()` method of the `loggerConfig` object.",
+        "Action": "Stored in register (v0)"
+      },
+      {
+        "Step": "Get phone number",
+        "Source Method": "Lcom/kakao/util/helper/log/Logger;->e:(Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data by using the sensitive API call to get a default tag from LoggerConfig.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get device ID",
+        "Source Method": "Lcom/kakao/util/helper/log/Logger;->dt:(Lcom/kakao/util/helper/log/Tag; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data by invoking the printLog method, which likely logs sensitive information.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get device ID (continued)",
+        "Source Method": "Lcom/kakao/util/helper/log/Logger;->et:(Lcom/kakao/util/helper/log/Tag; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data from the 'et' method of Logger class, which likely involves logging or storing sensitive information.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get device ID (continued)",
+        "Source Method": "Lcom/kakao/util/helper/log/Logger;->printLog:(Lcom/kakao/util/helper/log/Tag; I Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data through the 'getMessage' and 'isPrintLoggable' API calls.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get device ID (continued)",
+        "Source Method": "Lcom/kakao/util/helper/log/LoggerConfig;->isPrintLoggable:(I)Z",
+        "Reasoning": "The method originates user personal data by accessing the printLoggerLevel field of the LoggerConfig class.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get device ID (continued)",
+        "Source Method": "Lcom/kakao/util/helper/log/Logger;->printLogPartially:(I Ljava/lang/String; Ljava/lang/String; I)I",
+        "Reasoning": "The method originates user personal data through the 'length()' function on a string.",
+        "Action": "Stored in registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kakao/util/helper/log/Logger;->d:(Ljava/lang/String;)I",
+      "Lcom/kakao/util/helper/log/Logger;->e:(Ljava/lang/String;)I",
+      "Lcom/kakao/util/helper/log/Logger;->dt:(Lcom/kakao/util/helper/log/Tag; Ljava/lang/String;)I",
+      "Lcom/kakao/util/helper/log/Logger;->et:(Lcom/kakao/util/helper/log/Tag; Ljava/lang/String;)I",
+      "Lcom/kakao/util/helper/log/Logger;->printLog:(Lcom/kakao/util/helper/log/Tag; I Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/kakao/util/apicompatibility/APILevel19Compatibility;->getSmsMessage:(Landroid/content/Intent;)Ljava/lang/String; --> Lcom/kakao/util/apicompatibility/APILevel19Compatibility;->getMessagesFromIntent(Ljava/util/List;)V --> Lcom/kakao/util/helper/log/Logger;->dt:(Lcom/kakao/util/helper/log/Tag; Ljava/lang/String;)I",
+        "Reasoning": "The data is propagated from the `getSmsMessage` method to the `printLog` method through several intermediate methods."
+      },
+      {
+        "dataflow 2": "Lcom/kakao/util/helper/log/LoggerConfig;->isPrintLoggable:(I)Z --> Lcom/kakao/util/helper/log/Logger;->printLogPartially:(I Ljava/lang/String; Ljava/lang/String; I)I",
+        "Reasoning": "The data is propagated from the `isPrintLoggable` method to the `printLogPartially` method."
+      }
+    ],
+    "Label": "leak"
+  }
+]

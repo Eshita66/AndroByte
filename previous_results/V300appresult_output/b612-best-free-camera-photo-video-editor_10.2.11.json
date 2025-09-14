@@ -1,0 +1,254 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Search Text"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location and search text are collected.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method summary.",
+        "Action": "Stored in bundle."
+      },
+      {
+        "Step": "Bundle is passed to GraphRequest constructor.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method summary.",
+        "Action": "Passed as parameter."
+      },
+      {
+        "Step": "GraphRequest object sends request to Facebook API.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Method summary.",
+        "Action": "Transmitted."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...) ",
+        "Reasoning": "Stepwise explanation of how data is propagated and transformed."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User data is collected",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u0269:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Sensitive API call detected",
+        "Action": "Stored in a map"
+      },
+      {
+        "Step": "Data is passed to sensor manager",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u0269:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Sensitive API call detected",
+        "Action": "Passed to AFSensorManager"
+      },
+      {
+        "Step": "Data is sent to AppsFlyer",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u0269:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Sensitive API call detected",
+        "Action": "Sent to AppsFlyer"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AFSensorManager;->\u0269:(Landroid/content/Context;)Lcom/appsflyer/AFSensorManager;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/AppsFlyerLibCore;->\u0269:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; --> Lcom/appsflyer/AFSensorManager;->\u0269:(Landroid/content/Context;)Lcom/appsflyer/AFSensorManager; --> Lcom/appsflyer/AFDeepLinkManager;->\u0269:(Landroid/content/Intent; Landroid/content/Context; Ljava/util/Map;)V",
+        "Reasoning": "Sensitive data is collected, passed to sensor manager, and sent to AppsFlyer"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Location",
+        "Source Method": "Lg63;->e:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "Method retrieves the last known location.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lg63;->e(...) --> [Stored in Location]",
+        "Reasoning": "The location is stored in the `Location` object."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location coordinates are retrieved.",
+        "Source Method": "Lg63;->onLocationChanged",
+        "Reasoning": "Method signature and summary mention location coordinates.",
+        "Action": "Stored in `b` field of `Lg63` instance."
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lg63;->onLocationChanged --> b field of Lg63 instance",
+        "Reasoning": "Data is stored in the instance field, indicating no further processing or transmission."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": " ContentValues creation and population",
+        "Source Method": "Lx33;->b(...)",
+        "Reasoning": " ContentValues object is populated with user data including location, device ID, and phone number.",
+        "Action": "Stored"
+      },
+      {
+        "Step": " ContentValues insertion",
+        "Source Method": "Lx33;->b(...)",
+        "Reasoning": " ContentValues object is inserted into the MediaStore.Video.Media or MediaStore.Images.Media table.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "android.content.ContentResolver.insert()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lx33;->b(...) --> android.content.ContentResolver.insert()",
+        "Reasoning": " ContentValues object is first stored in the MediaStore.Video.Media or MediaStore.Images.Media table using the insert() method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected.",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->D:()V",
+        "Reasoning": "Method summary",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Sensitive data is appended to StringBuilder.",
+        "Source Method": "Lcom/mopub/common/BaseUrlGenerator;->b:(Ljava/lang/String;Ljava/lang/String;)V",
+        "Reasoning": "Method summary",
+        "Action": "Appended"
+      },
+      {
+        "Step": "Data is encoded and appended to StringBuilder.",
+        "Source Method": "Lcom/mopub/common/BaseUrlGenerator;->b:(Ljava/lang/String;Ljava/lang/String;)V",
+        "Reasoning": "Method summary",
+        "Action": "Encoded and appended"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mopub/common/BaseUrlGenerator;->b:(Ljava/lang/String;Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mopub/common/AdUrlGenerator;->D:()V --> Lcom/mopub/common/BaseUrlGenerator;->b:(Ljava/lang/String;Ljava/lang/String;)V",
+        "Reasoning": "Overall data flow summary"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user ID",
+      "year of birth",
+      "device IP",
+      "location details",
+      "gender",
+      "device information",
+      "ad parameters"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User information is collected.",
+        "Source Method": "Lcom/naver/gfpsdk/WaterfallOperation;->getQueryParams:()Ljava/util/Map;",
+        "Reasoning": "Method summary describes data collection.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Query map is built with sensitive information.",
+        "Source Method": "Lcom/naver/gfpsdk/WaterfallOperation;->getQueryParams:()Ljava/util/Map;",
+        "Reasoning": "Method summary specifies sensitive data.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/naver/gfpsdk/WaterfallOperation;->getQueryParams:()Ljava/util/Map; --> Transmitted --> null",
+        "Reasoning": "Data is collected and transmitted but no sink is specified in the method summary."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location Data (Latitude, Longitude, Altitude)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data from Lg63 object",
+        "Source Method": "Lg83;->H:()Ljava/lang/String;",
+        "Reasoning": "Method signature and summary description",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Format location string using Locale.ENGLISH",
+        "Source Method": "Lg83;->H:()Ljava/lang/String;",
+        "Reasoning": "Method signature and summary description",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lg83;->H:()Ljava/lang/String; --> Transmitted",
+        "Reasoning": "Data is extracted and formatted before being transmitted"
+      }
+    ],
+    "Label": "no leak"
+  }
+]

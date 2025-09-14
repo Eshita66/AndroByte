@@ -1,0 +1,371 @@
+[
+  {
+    "Data Types Collected": [
+      "AccessToken",
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location and access token are collected from user input.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User location and access token are passed to other methods for further processing.",
+        "Source Method": "Lcom/facebook/GraphRequest$3;-><init>:(Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)V",
+        "Reasoning": "The method originates user personal data through the 'iput-object' instruction, which stores a reference to an instance of 'Lcom/facebook/GraphRequest$GraphJSONArrayCallback;' in register v0.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "User location and access token are used for network transmission.",
+        "Source Method": "Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data from a string parameter.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest$3;-><init>:(Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)V --> Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> Lcom/facebook/GraphRequest;",
+        "Reasoning": "The data is propagated from the constructor of GraphRequest$3 to newPlacesSearchRequest, where it is used for network transmission."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Access device's location",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle;",
+        "Reasoning": "The method originates user personal data by accessing the device's location.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Pass location to other methods",
+        "Source Method": "Lcom/facebook/places/model/CurrentPlaceRequestParams;->getLocation:()Landroid/location/Location;",
+        "Reasoning": "The getLocation method of CurrentPlaceRequestParams originates user personal data from the 'location' field.",
+        "Action": "Passed to a return statement"
+      },
+      {
+        "Step": "Data propagation and transformation",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle;",
+        "Reasoning": "The data propagates through registers and variables, ultimately passing to other methods via method invocations.",
+        "Action": "Logged or transmitted"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/PlaceManager;->getCurrentPlaceParameters:(Lcom/facebook/places/model/CurrentPlaceRequestParams; Lcom/facebook/places/internal/LocationPackage;)Landroid/os/Bundle; --> Lcom/facebook/places/model/CurrentPlaceRequestParams;->getLocation:()Landroid/location/Location; --> null",
+        "Reasoning": "The data originates from the device's location, is passed to other methods via method invocations, and ultimately reaches sinks such as logging or transmission."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "java/util/Set",
+      "I",
+      "Ljava/lang/String;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Accessing 'fields' Set in PlaceSearchRequestParams",
+        "Source Method": "Lcom/facebook/places/model/PlaceSearchRequestParams;->getFields:()Ljava/util/Set;",
+        "Reasoning": "The method originates user personal data by accessing the 'fields' Set in PlaceSearchRequestParams.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Accessing 'limit' field of PlaceSearchRequestParams",
+        "Source Method": "Lcom/facebook/places/model/PlaceSearchRequestParams;->getLimit:()I",
+        "Reasoning": "The current method originates user personal data from the 'limit' field of PlaceSearchRequestParams.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Accessing 'searchText' field of PlaceSearchRequestParams",
+        "Source Method": "Lcom/facebook/places/model/PlaceSearchRequestParams;->getSearchText:()Ljava/lang/String;",
+        "Reasoning": "This method originates user personal data from the 'searchText' field of the PlaceSearchRequestParams object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Invoking sensitive API calls",
+        "Source Method": "Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data through the invocation of sensitive API calls, specifically from the `getSearchText()` and `getLimit()` methods.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/facebook/places/model/PlaceSearchRequestParams;->getFields:()Ljava/util/Set; --> Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The 'fields' Set in PlaceSearchRequestParams is accessed and then propagated to the `newPlaceSearchRequestForLocation` method, where it is transmitted via network."
+      },
+      {
+        "dataflow 2": "Lcom/facebook/places/model/PlaceSearchRequestParams;->getLimit:()I --> Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The 'limit' field in PlaceSearchRequestParams is accessed and then propagated to the `newPlaceSearchRequestForLocation` method, where it is transmitted via network."
+      },
+      {
+        "dataflow 3": "Lcom/facebook/places/model/PlaceSearchRequestParams;->getSearchText:()Ljava/lang/String; --> Lcom/facebook/places/PlaceManager;->newPlaceSearchRequestForLocation:(Lcom/facebook/places/model/PlaceSearchRequestParams; Landroid/location/Location;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The 'searchText' field in PlaceSearchRequestParams is accessed and then propagated to the `newPlaceSearchRequestForLocation` method, where it is transmitted via network."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get last known location from API",
+        "Source Method": "Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by calling the getLastKnownLocation API to retrieve the last known location.",
+        "Action": "Stored in register v5"
+      },
+      {
+        "Step": "Get timestamp of location",
+        "Source Method": "Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The data is stored in register v5 and then passed to the getTime() method to get the timestamp of the location.",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Check if location is not older than max age",
+        "Source Method": "Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "If the location is not older than the maximum age specified in LocationPackageRequestParams, it is returned as the last location.",
+        "Action": ""
+      },
+      {
+        "Step": "Get last location max age in milliseconds",
+        "Source Method": "Lcom/facebook/places/internal/LocationPackageRequestParams;->getLastLocationMaxAgeMs:()J",
+        "Reasoning": "The method originates sensitive user personal data by calling a sensitive API to get the last location max age in milliseconds.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location;",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/internal/LocationPackageRequestParams;->getLastLocationMaxAgeMs:()J --> Lcom/facebook/places/internal/LocationScannerImpl;->getLastLocation:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The last location max age in milliseconds is used to check if the location is not older than the maximum age. If it's not, the location is returned as the last location."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID",
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getConnectedWifi() API call",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The method originates user personal data by calling the getConnectionInfo() API.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Propagation to other methods",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The data is propagated to other methods via method invocations.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Storage or logging",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult;",
+        "Reasoning": "The data reaches sinks such as logging and storage.",
+        "Action": "Logged/ Stored"
+      },
+      {
+        "Step": "WiFi SSID string check",
+        "Source Method": "Lcom/facebook/places/internal/WifiScannerImpl;->isWifiSsidBlacklisted:(Ljava/lang/String;)Z;",
+        "Reasoning": "The method uses the `endsWith` and `contains` methods to check if a WiFi SSID is blacklisted or opted out.",
+        "Action": "Checked"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/places/internal/WifiScannerImpl;->logWifiInfo:(Ljava/lang/String;)V",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/places/internal/WifiScannerImpl;->getConnectedWifi:()Lcom/facebook/places/internal/WifiScanResult; --> Lcom/facebook/places/internal/WifiScannerImpl;->logWifiInfo:(Ljava/lang/String;)V ",
+        "Reasoning": "The getConnectedWifi() API call originates user personal data, which is stored in registers and variables. The data is then propagated to other methods via method invocations and reaches sinks such as logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Android ID",
+      "Device serial number",
+      "Phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device unique identifier (Android ID)",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data from the device's unique identifier (Android ID) and/or the device's serial number.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Get phone number",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->getSystemService:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/Object;",
+        "Reasoning": "The method originates user personal data from the `getSystemService` API call.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Check if CharSequence is empty",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->isEmpty:(Ljava/lang/CharSequence;)Z",
+        "Reasoning": "The method checks if a CharSequence is empty using the length() method.",
+        "Action": "Result stored in register v0"
+      },
+      {
+        "Step": "Get trimmed length of CharSequence",
+        "Source Method": "Lcom/segment/analytics/internal/Utils;->getTrimmedLength:(Ljava/lang/CharSequence;)I",
+        "Reasoning": "The method originates user personal data by calling the length() API on a CharSequence object.",
+        "Action": "Stored in registers v0 and v1"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/segment/analytics/internal/Utils;->getSystemService:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/segment/analytics/internal/Utils;->getDeviceId:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/segment/analytics/internal/Utils;->getSystemService:(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/Object; --> Sink in getDeviceId",
+        "Reasoning": "Data is propagated from getDeviceId to getSystemService, then stored in a sink (getDeviceId)"
+      },
+      {
+        "dataflow 2": "Lcom/segment/analytics/internal/Utils;->isEmpty:(Ljava/lang/CharSequence;)Z --> Lcom/segment/analytics/internal/Utils;->getTrimmedLength:(Ljava/lang/CharSequence;)I",
+        "Reasoning": "Data is propagated from isEmpty to getTrimmedLength"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "accuracy",
+      "staleness value"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data from getLastKnownLocation API",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->setLocation:()V",
+        "Reasoning": "The method originates user personal data using `getLastKnownLocation` API.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Pass location data to addParam method",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->setLocation:()V",
+        "Reasoning": "The latitude, longitude, and accuracy are extracted and passed to the `BaseUrlGenerator` method through `addParam`. Additionally, a staleness value is calculated and passed as a parameter.",
+        "Action": "transmitted"
+      },
+      {
+        "Step": "Originates user personal data from boolean field mFirstParam",
+        "Source Method": "Lcom/mopub/common/BaseUrlGenerator;->getParamDelimiter:()Ljava/lang/String;",
+        "Reasoning": "[This method originates user personal data from a boolean field mFirstParam in the class Lcom/mopub/common/BaseUrlGenerator. The data is stored in register v0 and passed to other methods via return statements.]",
+        "Action": "stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mopub/common/AdUrlGenerator;->setLocation:()V",
+      "Lcom/mopub/common/BaseUrlGenerator;->getParamDelimiter:()Ljava/lang/String;",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mopub/common/AdUrlGenerator;->setLocation:()V --> Lcom/mopub/common/BaseUrlGenerator;->addParam:(Ljava/lang/String; Ljava/lang/String;)V --> Lcom/mopub/common/AdUrlGenerator;->setLocation:()V",
+        "Reasoning": "The data flows from `setLocation` method to `addParam` method and then back to `setLocation` method."
+      },
+      {
+        "dataflow 2": "Lcom/mopub/common/BaseUrlGenerator;->getParamDelimiter:()Ljava/lang/String; --> Lcom/mopub/common/BaseUrlGenerator;->encode:(Ljava/lang/String;)V",
+        "Reasoning": "The data flows from `getParamDelimiter` method to `encode` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "LocationClientListener"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "onLocationChanged() is called with Location object",
+        "Source Method": "Lcom/ua/sdk/recorder/datasource/sensor/location/AndroidLocationClient$MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data through the Location object.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "access$000() is called with LocationClientListener object",
+        "Source Method": "Lcom/ua/sdk/recorder/datasource/sensor/location/AndroidLocationClient;->access$000:(Lcom/ua/sdk/recorder/datasource/sensor/location/AndroidLocationClient;)Lcom/ua/sdk/recorder/datasource/sensor/location/LocationClient$LocationClientListener;",
+        "Reasoning": "The method originates user personal data by accessing the location client listener.",
+        "Action": "Propagated to return statement"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/ua/sdk/UaLog;->warn(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/ua/sdk/recorder/datasource/sensor/location/AndroidLocationClient$MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V --> Lcom/ua/sdk/UaLog;->warn(Ljava/lang/String;)V ",
+        "Reasoning": "The Location object is passed to onLocationChanged() and then propagated through access$000() until it reaches the sink point at warn()"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude",
+      "Altitude",
+      "Bearing"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location data from Android Location object",
+        "Source Method": "Lcom/ua/sdk/recorder/datasource/sensor/location/LocationSensorDataSource$MyLocationClientListener;->onLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The method invokes the `getLatitude()`, `getLongitude()`, `getAltitude()`, and `getBearing()` methods on an Android Location object.",
+        "Action": "Stored in DataPointImpl objects"
+      },
+      {
+        "Step": "Send location data to SensorDataSource",
+        "Source Method": "Lcom/ua/sdk/recorder/datasource/sensor/location/LocationSensorDataSource$MyLocationClientListener;->onLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The DataPointImpl objects are then sent to a SensorDataSource using the sendData method.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Update device's health information with location accuracy",
+        "Source Method": "Lcom/ua/sdk/recorder/datasource/sensor/location/LocationSensorDataSource$MyLocationClientListener;->onLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The location accuracy is used to update the device's health information.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/ua/sdk/recorder/datasource/sensor/location/LocationSensorDataSource$MyLocationClientListener;->sendData:(Ljava/util/List;)V",
+      "Lcom/ua/sdk/recorder/datasource/sensor/location/LocationSensorDataSource$MyLocationClientListener;->updateHealthInfo:(F)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/ua/sdk/recorder/datasource/sensor/location/LocationSensorDataSource$MyLocationClientListener;->onLocation:(Landroid/location/Location;)V --> Stored in DataPointImpl objects --> Transmitted to SensorDataSource --> Stored in device's health information",
+        "Reasoning": "The location data is collected from the Android Location object, stored in DataPointImpl objects, transmitted to the SensorDataSource, and finally stored in the device's health information."
+      }
+    ],
+    "Label": "leak"
+  }
+]

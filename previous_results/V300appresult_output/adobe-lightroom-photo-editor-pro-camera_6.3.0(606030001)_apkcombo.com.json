@@ -1,0 +1,112 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is received from Location object.",
+        "Source Method": "Lcom/adobe/capturemodule/e/b$a;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary specifies logging and storage of location data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is logged with tag 'CaptureLocationProvider'.",
+        "Source Method": "Lcom/adobe/capturemodule/e/b$a;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary specifies logging of location data.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adobe/capturemodule/e/b$a;->onLocationChanged:(Landroid/location/Location;)V",
+      "Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adobe/capturemodule/e/b$a;->onLocationChanged:(Landroid/location/Location;)V --> Lcom/adobe/capturemodule/e/b$a;->onLocationChanged:(Landroid/location/Location;)V --> Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I",
+        "Reasoning": "Location data is first stored in the 'a' field of the 'b$a' object and then logged with the tag 'CaptureLocationProvider'."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location and device data is collected",
+        "Source Method": "Lcom/adobe/capturemodule/b/b;->a:(Landroid/content/Context; Lcom/adobe/capturemodule/c/k;)Lcom/adobe/capturemodule/b/b;",
+        "Reasoning": "Method signature indicates data collection",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to logging method",
+        "Source Method": "Lcom/adobe/capturemodule/b/b;->a:(Landroid/content/Context; Lcom/adobe/capturemodule/c/k;)Lcom/adobe/capturemodule/b/b;",
+        "Reasoning": "Method call within 'a' method",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Data is passed to network transmission method",
+        "Source Method": "Lcom/adobe/capturemodule/b/b;->a:(Landroid/content/Context; Lcom/adobe/capturemodule/c/k;)Lcom/adobe/capturemodule/b/b;",
+        "Reasoning": "Method call within 'a' method",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Data is written to persistent storage",
+        "Source Method": "Lcom/adobe/capturemodule/b/b;->a:(Landroid/content/Context; Lcom/adobe/capturemodule/c/k;)Lcom/adobe/capturemodule/b/b;",
+        "Reasoning": "Method call within 'a' method",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adobe/capturemodule/b/b;->b(Ljava/lang/String;)V",
+      "Lcom/adobe/capturemodule/b/b;->c(Ljava/lang/String;)V",
+      "Lcom/adobe/capturemodule/b/b;->a(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adobe/capturemodule/b/b;->a:(Landroid/content/Context; Lcom/adobe/capturemodule/c/k;)Lcom/adobe/capturemodule/b/b; --> Lcom/adobe/capturemodule/b/b;->b(Ljava/lang/String;)V --> Lcom/adobe/capturemodule/b/b;->c(Ljava/lang/String;)V --> Lcom/adobe/capturemodule/b/b;->a(Ljava/lang/String;)V",
+        "Reasoning": "Data flows through various methods within the 'b' class, logging, transmitting, and storing it."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "Lcom/adobe/capturemodule/e/a;->a:()Landroid/location/Location;",
+        "Reasoning": "Method `a` explicitly retrieves user location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Set location in CameraParameters",
+        "Source Method": "Lcom/adobe/capturemodule/c/o;->d:(Landroid/hardware/Camera$Parameters;)Landroid/hardware/Camera$Parameters;",
+        "Reasoning": "Method `d` takes CameraParameters as input and sets the location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Log location",
+        "Source Method": "Lcom/adobe/capturemodule/c/o;->d:(Landroid/hardware/Camera$Parameters;)Landroid/hardware/Camera$Parameters;",
+        "Reasoning": "Location is logged in `CaptureActivity`.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adobe/capturemodule/c/o;->d:(Landroid/hardware/Camera$Parameters;)Landroid/hardware/Camera$Parameters;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adobe/capturemodule/e/a;->a:()Landroid/location/Location; --> Lcom/adobe/capturemodule/c/o;->d:(Landroid/hardware/Camera$Parameters;)Landroid/hardware/Camera$Parameters; --> Lcom/adobe/capturemodule/c/o;->d:(Landroid/hardware/Camera$Parameters;)Landroid/hardware/Camera$Parameters;",
+        "Reasoning": "Location is passed between methods within the `com.adobe.capturemodule` package and eventually logged in `CaptureActivity`."
+      }
+    ],
+    "Label": "leak"
+  }
+]

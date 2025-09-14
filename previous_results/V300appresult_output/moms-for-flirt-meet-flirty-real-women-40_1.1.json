@@ -1,0 +1,184 @@
+[
+  {
+    "Data Types Collected": [
+      "WiFi SSID",
+      "PhoneNumber"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WiFi SSID from Context",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data through sensitive API calls to get the WiFi SSID.",
+        "Action": "Stored in register v2"
+      },
+      {
+        "Step": "Get Phone Number from Context",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data by calling the getPackageManager() and getPackageName() methods from the Context.",
+        "Action": "Stored in register v1"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String; --> ... --> Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The WiFi SSID is passed between methods via method invocations and reaches a sink point, which is the return statement in Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;. The phone number is also propagated to the same sink point."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "BSSID (MAC address)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get Context object",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data from the Context object through the getApplicationContext() and getSystemService() methods.",
+        "Action": "Stored in register v2 as a WifiManager object"
+      },
+      {
+        "Step": "Retrieve BSSID (MAC address)",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is then stored in register v2 as a WifiManager object, which is used to retrieve the BSSID (MAC address) of the connected Wi-Fi network.",
+        "Action": "Stored in register v2"
+      },
+      {
+        "Step": "Get package manager and package name",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The current method originates user personal data by calling sensitive API getPackageManager() and getPackageName().",
+        "Action": "Stored in registers v0 and v1"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String; --> null",
+        "Reasoning": "The BSSID (MAC address) is stored in register v2 and no sink point is identified."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "com/onesignal/OneSignal$LOG_LEVEL",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data through sget-object instruction",
+        "Source Method": "Lcom/onesignal/LocationController;->fireCompleteForLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data by loading a sensitive API level from a static field.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Propagate data to other methods via method invocations",
+        "Source Method": "Lcom/onesignal/LocationController;->fireCompleteForLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The data is propagated through method invocations.",
+        "Action": "Passed as parameters"
+      },
+      {
+        "Step": "Originate sensitive user personal data through the fireComplete method",
+        "Source Method": "Lcom/onesignal/LocationController;->fireComplete:(Lcom/onesignal/LocationController$LocationPoint;)V",
+        "Reasoning": "The method originates sensitive user personal data by calling the fireComplete method.",
+        "Action": "Stored in locationHandlers map"
+      },
+      {
+        "Step": "Propagate data to the onComplete method of each location handler",
+        "Source Method": "Lcom/onesignal/LocationController;->fireComplete:(Lcom/onesignal/LocationController$LocationPoint;)V",
+        "Reasoning": "The data is propagated to the onComplete method of each location handler.",
+        "Action": "Passed as parameters"
+      },
+      {
+        "Step": "Originate user personal data through the Log method of OneSignal",
+        "Source Method": "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data by calling the Log method.",
+        "Action": "Stored in registers v1 and v2"
+      },
+      {
+        "Step": "Propagate to other methods via method invocations",
+        "Source Method": "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String;)V",
+        "Reasoning": "The data is propagated through method invocations.",
+        "Action": "Passed as parameters"
+      },
+      {
+        "Step": "Originate user personal data from the logCatLevel and visualLogLevel static fields of the OneSignal class",
+        "Source Method": "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The method originates user personal data by accessing the logCatLevel and visualLogLevel static fields.",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "Propagate through various comparisons, assignments, and method invocations",
+        "Source Method": "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data is propagated through various comparisons, assignments, and method invocations.",
+        "Action": "Passed as parameters"
+      },
+      {
+        "Step": "Originate user personal data by accessing the main looper and thread",
+        "Source Method": "Lcom/onesignal/OSUtils;->runOnMainUIThread:(Ljava/lang/Runnable;)V",
+        "Reasoning": "The method originates user personal data by accessing the main looper and thread.",
+        "Action": "Stored in registers (v0) and variables (v1)"
+      },
+      {
+        "Step": "Propagate through method invocations to post a runnable on the main handler",
+        "Source Method": "Lcom/onesignal/OSUtils;->runOnMainUIThread:(Ljava/lang/Runnable;)V",
+        "Reasoning": "The data is propagated through method invocations.",
+        "Action": "Passed as parameters"
+      },
+      {
+        "Step": "Originate user personal data by calling the getActivityLifecycleHandler() method from com.onesignal.ActivityLifecycleListener class",
+        "Source Method": "Lcom/onesignal/OneSignal;->getCurrentActivity:()Landroid/app/Activity;",
+        "Reasoning": "The method originates user personal data by calling the getActivityLifecycleHandler() method.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Propagate to other methods via method invocations",
+        "Source Method": "Lcom/onesignal/OneSignal;->getCurrentActivity:()Landroid/app/Activity;",
+        "Reasoning": "The data is propagated through method invocations.",
+        "Action": "Passed as parameters"
+      },
+      {
+        "Step": "Originate user personal data using the 'getCurActivity' method",
+        "Source Method": "Lcom/onesignal/ActivityLifecycleHandler;->getCurActivity:()Landroid/app/Activity;",
+        "Reasoning": "The method originates user personal data by calling the 'getCurActivity' method.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String;)V",
+      "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String; Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/onesignal/LocationController;->fireCompleteForLocation:(Landroid/location/Location;)V --> Lcom/onesignal/LocationController;->fireComplete:(Lcom/onesignal/LocationController$LocationPoint;)V --> Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String;)V",
+        "Reasoning": "The data originates from the fireCompleteForLocation method, propagated to the fireComplete method, and then logged using the Log method."
+      },
+      {
+        "dataflow 2": "Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String;)V --> Lcom/onesignal/OneSignal;->Log:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data is logged using the Log method, which then propagates to other methods."
+      },
+      {
+        "dataflow 3": "Lcom/onesignal/LocationController;->fireCompleteForLocation:(Landroid/location/Location;)V --> Lcom/onesignal/OneSignal;->getCurrentActivity:()Landroid/app/Activity;",
+        "Reasoning": "The data originates from the fireCompleteForLocation method and is then propagated to the getCurrentActivity method."
+      },
+      {
+        "dataflow 4": "Lcom/onesignal/OSUtils;->runOnMainUIThread:(Ljava/lang/Runnable;)V --> Lcom/onesignal/OneSignal;->getCurrentActivity:()Landroid/app/Activity;",
+        "Reasoning": "The data originates from the runOnMainUIThread method and is then propagated to the getCurrentActivity method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

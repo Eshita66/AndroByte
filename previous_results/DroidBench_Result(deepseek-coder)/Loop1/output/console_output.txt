@@ -1,0 +1,44 @@
+
+Processing folder: D:\UBCBAPK_Methods\Loop1
+Using methods file: D:\UBCBAPK_Methods\Loop1\Loop1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the device ID from the TelephonyManager using getDeviceId(), which represents user-specific information, and then constructs a new string by appending an underscore to each character of the device ID. This process does not directly pass or store sensitive data in a way that could be considered a real sink without further processing.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieving device ID from TelephonyManager",
+            "Source Method": "Lde/ecspride/LoopExample1;->getDeviceId():Ljava/lang/String;",
+            "Reasoning": "The method retrieves the unique device identifier which is user-specific information.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Constructing new string by appending underscore to each character of the device ID",
+            "Source Method": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The device ID is processed within the onCreate method without direct exposure to sinks.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+        null
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Lde/ecspride/LoopExample1;->getDeviceId():Ljava/lang/String;) --> ... --> Sink Method(null)]",
+            "Reasoning": "The device ID is retrieved and processed within the method but not exposed to sinks without further processing."
+        }
+    ],
+    "Label": "no leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Loop1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Loop1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Loop1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Loop1\output\visited_graph
+Saved 0 'leak' subgraphs to: D:\UBCBAPK_Methods\Loop1\output\sensitive_only.json
+Total time for folder: 518.93 seconds

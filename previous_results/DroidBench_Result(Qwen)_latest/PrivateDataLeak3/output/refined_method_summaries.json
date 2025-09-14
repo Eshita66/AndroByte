@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved from TelephonyManager",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+                "Reasoning": "This is the initial source of the sensitive data",
+                "Action": "Stored in register v1"
+            },
+            {
+                "Step": "Data is converted to bytes and written to storage",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly writes the data to a file using FileOutputStream",
+                "Action": "Transmitted to storage sink"
+            }
+        ],
+        "All Sinks": [
+            "Ljava/io/FileOutputStream;->write([B)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljava/io/FileOutputStream;->write([B)V ",
+                "Reasoning": "The device ID is retrieved from TelephonyManager, stored in register v1, converted to bytes, and directly passed to FileOutputStream.write() without overwriting"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

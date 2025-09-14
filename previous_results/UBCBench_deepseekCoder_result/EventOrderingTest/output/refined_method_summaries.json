@@ -1,0 +1,26 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieval and Storage",
+                "Source Method": "Llina/ubc/eventorderingtest/ActivityWithFlow;->assignSensitivityInfo:()V",
+                "Reasoning": "The method retrieves device ID from TelephonyManager and stores it in a class variable 'deviceId'.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/eventorderingtest/ActivityWithFlow;->onCreate:(Landroid/os/Bundle;)V",
+            "Log.i(...) is considered a real sink if it logs tainted data."
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/eventorderingtest/ActivityWithFlow;->assignSensitivityInfo:()V --> deviceId stored in class variable",
+                "Reasoning": "The method retrieves the device ID from TelephonyManager and stores it directly in a class variable, which is then potentially logged in onCreate()."
+            }
+        ],
+        "Label": "no leak"
+    }
+]

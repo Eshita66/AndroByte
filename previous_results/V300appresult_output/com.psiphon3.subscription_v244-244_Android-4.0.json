@@ -1,0 +1,103 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user location",
+        "Source Method": "Lcom/moat/analytics/mobile/mpub/o;->f:()Landroid/location/Location;",
+        "Reasoning": "Method `f()` explicitly obtains user location.",
+        "Action": "Stored in `v0` register"
+      },
+      {
+        "Step": "Return location",
+        "Source Method": "Lcom/moat/analytics/mobile/mpub/o;->f:()Landroid/location/Location;",
+        "Reasoning": "Method returns the location stored in `v0`.",
+        "Action": "Returned as result"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/moat/analytics/mobile/mpub/o;->f:()Landroid/location/Location; --> Return",
+        "Reasoning": "Location is obtained and immediately returned."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location extraction",
+        "Source Method": "Lcom/moat/analytics/mobile/mpub/z;->b:(Landroid/location/Location;)Ljava/util/Map;",
+        "Reasoning": "Method extracts location data from Location object",
+        "Action": "Stored in HashMap"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID",
+      "IP address",
+      "Operator ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Accessing network information",
+        "Source Method": "Lca/psiphon/PsiphonTunnel;->getNetworkID:()Ljava/lang/String;",
+        "Reasoning": "The method `getNetworkID()` accesses BSSID, IP address, and operator ID.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Combining and returning data",
+        "Source Method": "Lca/psiphon/PsiphonTunnel;->getNetworkID:()Ljava/lang/String;",
+        "Reasoning": "The collected data is combined and returned as a string.",
+        "Action": "Processed"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lca/psiphon/PsiphonTunnel;->getNetworkID:()Ljava/lang/String; --> Processed --> null",
+        "Reasoning": "The collected network information is processed and returned as a string without being stored, logged, or transmitted."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting location data from device",
+        "Source Method": "Lcom/mopub/common/AdUrlGenerator;->setLocation:(Landroid/location/Location;)V",
+        "Reasoning": "Method documentation specifies data collection",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/mopub/common/AdUrlGenerator;->setLocation:(Landroid/location/Location;)V --> Stored",
+        "Reasoning": "Location data is stored in the AdUrlGenerator object"
+      }
+    ],
+    "Label": "no leak"
+  }
+]

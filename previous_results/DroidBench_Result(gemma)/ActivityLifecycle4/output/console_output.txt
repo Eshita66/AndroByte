@@ -1,0 +1,67 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ActivityLifecycle4
+ Using methods file: D:\UBCBAPK_Methods\ActivityLifecycle4\ActivityLifecycle4_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MainActivity;->onResume:()V']
+[SUMMARY] Lde/ecspride/MainActivity;->onResume:()V => {
+    "Summary": "The method calls getDeviceId() on a TelephonyManager instance and stores the device ID in a field (imei) of MainActivity. This operation potentially exposes device identifiers, which are considered sensitive data.",
+    "Next Methods": [
+        "Lde/ecspride/MainActivity;->onPause:()V"
+    ]
+}
+[ERROR] ollama_chat: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=300)
+[ERROR] ollama_chat: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=300)
+[SUMMARY] Lde/ecspride/MainActivity;->onPause:()V => {
+    "Summary": "The method calls sendTextMessage with a potentially sensitive device ID (+49 1234) through the SmsManager. This operation potentially exposes device identifiers, which are considered sensitive data.",
+    "Next Methods": [
+        "Lde/ecspride/MainActivity;->onPause:()V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ActivityLifecycle4\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ActivityLifecycle4\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ActivityLifecycle4\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "imei",
+            "+49 1234"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "getDeviceId() called",
+                "Source Method": "Lde/ecspride/MainActivity;->onResume:()V",
+                "Reasoning": "The method calls getDeviceId() to obtain the Device ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID stored in imei field",
+                "Source Method": "Lde/ecspride/MainActivity;->onResume:()V",
+                "Reasoning": "The method stores the Device ID obtained from getDeviceId() in the imei field of MainActivity.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "sendTextMessage called with Device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->onPause:()V",
+                "Reasoning": "The method calls sendTextMessage with the Device ID (+49 1234) through the SmsManager.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->onPause:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onResume:()V --> Lde/ecspride/MainActivity;->onPause:()V",
+                "Reasoning": "The `onResume` method calls `getDeviceId()` which stores the Device ID in the `imei` field.  This value is then used as an argument in the `onPause` method's `sendTextMessage` call."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ActivityLifecycle4\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\ActivityLifecycle4\output\sensitive_only.json
+Total time for folder: 639.04 seconds

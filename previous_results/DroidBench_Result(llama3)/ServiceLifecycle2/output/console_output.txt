@@ -1,0 +1,50 @@
+
+Processing folder: D:\UBCBAPK_Methods\ServiceLifecycle2
+Using methods file: D:\UBCBAPK_Methods\ServiceLifecycle2\ServiceLifecycle2_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I']
+[SUMMARY] Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I => This method originates user data by obtaining the device ID using `getDeviceId()` from the `TelephonyManager`. This device ID, a unique identifier, is then stored within the `value` field of the `MyService` object. Critically, the `Log.i()` call logs the device ID to logcat, which constitutes a real sink for sensitive data. Therefore, the device ID is originated, stored, and passed to a real sink via logging.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Device ID obtained via TelephonyManager.",
+            "Source Method": "Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I",
+            "Reasoning": "The `onStartCommand` method uses `getDeviceId()` to retrieve the device ID from the `TelephonyManager`. This is a key step in collecting personal data.",
+            "Action": "Collected"
+        },
+        {
+            "Step": "Device ID stored in MyService object.",
+            "Source Method": "Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I",
+            "Reasoning": "The retrieved device ID is stored within the `value` field of the `MyService` object.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Device ID logged to logcat.",
+            "Source Method": "Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I",
+            "Reasoning": "The `Log.i()` call logs the device ID to logcat. This constitutes a real sink for sensitive data.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I --> Log.i(..., device ID) --> logcat",
+            "Reasoning": "The `onStartCommand` method initiates the data flow. It retrieves the device ID, stores it, and then logs it to logcat.  The logging of the device ID to logcat represents a data leak."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ServiceLifecycle2\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ServiceLifecycle2\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ServiceLifecycle2\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ServiceLifecycle2\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ServiceLifecycle2\output\sensitive_only.json
+Total time for folder: 9.22 seconds

@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\StringFormatter1
+Using methods file: D:\UBCBAPK_Methods\StringFormatter1\StringFormatter1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/string_formatter/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/string_formatter/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method originates user personal data via `Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;`, which retrieves the device ID. The data is stored in register v2, formatted into a string, and then passed to `Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I` for logging, a known sink. No further propagation occurs as the data is directly logged.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\StringFormatter1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\StringFormatter1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\StringFormatter1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve sensitive data",
+                "Source Method": "Ledu/mit/string_formatter/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method calls `Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;` to obtain the device ID, a sensitive source.",
+                "Action": "Stored in register v2"
+            },
+            {
+                "Step": "Format and log data",
+                "Source Method": "Ledu/mit/string_formatter/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is formatted into a string and passed to `Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I` for logging.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/string_formatter/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String; (DeviceId) --> Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I",
+                "Reasoning": "The device ID is retrieved from `getDeviceId()`, stored in register v2, formatted into a string, and passed to `Log.i()` as the second argument. No overwriting or taint removal is mentioned in the summary."
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\StringFormatter1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\StringFormatter1\output\sensitive_only.json
+Total summary time: 18.174011707305908 seconds

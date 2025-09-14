@@ -1,0 +1,263 @@
+[
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates sensitive user personal data by calling a sensitive API (ACCESS_WIFI_STATE)",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates sensitive user personal data by calling a sensitive API",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Propagates the sensitive data through registers",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is passed to other methods via method invocations, ultimately reaching sinks like network transmission",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Originates personal data from the context using getPackageManager() and getPackageName().",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method originates personal data from the context.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z --> Lcom/kochava/base/network/DataPointsNetwork;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated from the first method to the second, and then passed back to the first method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WiFi BSSID",
+      "Package manager status",
+      "Permission status"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check for ACCESS_WIFI_STATE permission and retrieve WiFi BSSID",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by checking for the ACCESS_WIFI_STATE permission and retrieving the WiFi BSSID.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Call sensitive APIs to retrieve package manager and permission status",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The current method originates user personal data by calling sensitive APIs to retrieve package manager and permission status.",
+        "Action": "Stored in registers (v0, v1)"
+      },
+      {
+        "Step": "Pass retrieved data through method invocations",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is passed to other methods via method invocations.",
+        "Action": "Propagated through method invocations"
+      },
+      {
+        "Step": "Return retrieved WiFi BSSID",
+        "Source Method": "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point through the return statement.",
+        "Action": "Logged or transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/kochava/base/network/DataPointsNetwork;->a:(Landroid/content/Context; Ljava/lang/String;)Z --> Lcom/kochava/base/network/DataPointsNetwork;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The WiFi BSSID is retrieved, passed to other methods, and returned as a string."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WiFi MAC address",
+      "String (sensitive value)",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data by accessing WiFi MAC address.",
+        "Source Method": "Le/e/d/r/h/b;->D:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by accessing the device's WiFi MAC address.",
+        "Action": "Stored in register v6"
+      },
+      {
+        "Step": "Originates user personal data from the 'sget-object' instruction, which retrieves a sensitive value.",
+        "Source Method": "Le/e/d/k/c;->e:(Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data from the 'sget-object' instruction, which retrieves a sensitive value.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Originates user personal data through the use of sensitive API calls to checkSelfPermission and getPackageManager.",
+        "Source Method": "Le/e/d/r/h/b;->b:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls to checkSelfPermission and getPackageManager.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Originates sensitive user personal data by calling the `equalsIgnoreCase` method on a string.",
+        "Source Method": "Le/e/d/k/l;->a:(Ljava/lang/String;)Z",
+        "Reasoning": "The method originates sensitive user personal data by calling the `equalsIgnoreCase` method on a string.",
+        "Action": "Stored in registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      "Le/e/d/r/h/b;->b:(Landroid/content/Context; Ljava/lang/String;)Z",
+      "Le/e/d/k/c;->e:(Ljava/lang/String;)Z",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Le/e/d/r/h/b;->D:(Landroid/content/Context;)Ljava/lang/String; --> Le/e/d/r/h/b;->b:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The WiFi MAC address is accessed and stored in register v6. The method then propagates this data to other methods via method invocations, reaching a sink point where the data is logged or displayed."
+      },
+      {
+        "dataflow 2": " Le/e/d/k/c;->e:(Ljava/lang/String;)Z --> Le/e/d/k/l;->a:(Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data from the 'sget-object' instruction, which retrieves a sensitive value. The data is stored in register v0 and propagated to subsequent methods via method invocations."
+      },
+      {
+        "dataflow 3": " Le/e/d/k/l;->a:(Ljava/lang/String;)Z --> Le/e/d/r/h/b;->b:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method originates sensitive user personal data by calling the `equalsIgnoreCase` method on a string. The data is stored in registers and variables within the method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "IMEI (International Mobile Equipment Identity)",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from IMEI using TelephonyManager.",
+        "Source Method": "Le/e/d/r/h/b;->t:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method uses the TelephonyManager to get the device's IMEI, which is then stored in registers and variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to `sget-object` and `sget-boolean`. The data is stored in registers `v0` and `v1` before being passed to other methods.",
+        "Source Method": "Le/e/d/k/c;->e:(Ljava/lang/String;)Z",
+        "Reasoning": "The method uses sensitive API calls to get user personal data, which is then stored in registers.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates sensitive user personal data by invoking the `checkSelfPermission` method on the context object. The data is stored in register v1 and passed to other methods via method invocations.",
+        "Source Method": "Le/e/d/r/h/b;->b:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method uses the `checkSelfPermission` method to get sensitive user personal data, which is then stored in a register and passed to other methods.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Originates user personal data from the 'a' function of Le/e/d/k/l class. The data is stored in register v0 and v1. It propagates to other methods via method invocations like 'containsKey' and 'get'.",
+        "Source Method": "Le/e/d/k/g;->c:(Ljava/lang/String;)Z",
+        "Reasoning": "The method uses the 'a' function of Le/e/d/k/l class to get user personal data, which is then stored in registers and propagated to other methods.",
+        "Action": "Propagated"
+      }
+    ],
+    "All Sinks": [
+      "Le/e/d/r/h/e;->l(Ljava/lang/String; [Ljava/lang/Object;)V",
+      "Le/e/d/k/c;->e:(Ljava/lang/String;)Z",
+      "PackageManager.checkPermission"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Le/e/d/r/h/b;->t:(Landroid/content/Context;)Ljava/lang/String; --> Le/e/d/r/h/b;->b(Landroid/content/Context; Ljava/lang/String;)Z --> Le/e/d/r/h/e;->l(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The IMEI data is obtained from the TelephonyManager, passed to the 'b' method of Le/e/d/r/h/b class, and then logged using the 'l' method of Le/e/d/r/h/e class."
+      },
+      {
+        "dataflow 2": "Le/e/d/k/c;->e:(Ljava/lang/String;)Z --> Le/e/d/k/c;->e(Ljava/lang/String;)Z",
+        "Reasoning": "The user personal data is obtained through sensitive API calls, stored in registers, and then passed to the 'e' method of Le/e/d/k/c class."
+      },
+      {
+        "dataflow 3": "Le/e/d/r/h/b;->b:(Landroid/content/Context; Ljava/lang/String;)Z --> PackageManager.checkPermission",
+        "Reasoning": "The sensitive user personal data is obtained by invoking the `checkSelfPermission` method, stored in a register, and then passed to the `PackageManager.checkPermission` method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "IMEI",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates sensitive user personal data by calling the getImei method of TelephonyManager.",
+        "Source Method": "Le/e/d/r/h/b;->w:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates sensitive user personal data by calling the `getImei` method of the TelephonyManager. The data is stored in register `v5`. It then checks if the device ID is not empty and if the permission to read phone state is granted.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data using the sensitive API sget-object to retrieve a string value from a static field.",
+        "Source Method": "Le/e/d/k/c;->e:(Ljava/lang/String;)Z",
+        "Reasoning": "The method e() in the class Le/e/d/k/c originates user personal data using the sensitive API sget-object to retrieve a string value from a static field. The data is stored in registers (v0, v1) and propagated through method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data through the 'checkSelfPermission' API call and propagates it to other methods.",
+        "Source Method": "Le/e/d/r/h/b;->b:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "This method originates user personal data through the 'checkSelfPermission' API call and propagates it to other methods. The data is stored in registers and variables within the method.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Originates sensitive user personal data by calling the 'equalsIgnoreCase' method on a string input.",
+        "Source Method": "Le/e/d/k/l;->a:(Ljava/lang/String;)Z",
+        "Reasoning": "The current method 'a' in class Le/e/d/k/l originates sensitive user personal data by calling the 'equalsIgnoreCase' method on a string input. The data is stored in register v1 and propagated through registers.",
+        "Action": "Returned"
+      },
+      {
+        "Step": "Originates user personal data through the invocation of sensitive API call `Le/e/d/k/l;a(Ljava/lang/String;)Z`.",
+        "Source Method": "Le/e/d/k/g;->c:(Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data through the invocation of sensitive API call `Le/e/d/k/l;a(Ljava/lang/String;)Z`. The data is stored in registers or variables within the method, specifically in register `v2` and variable `a Ljava/util/Map;`.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Le/e/d/r/h/b;->w:(Landroid/content/Context;)Ljava/lang/String;",
+      "Le/e/d/k/c;->e:(Ljava/lang/String;)Z",
+      "Le/e/d/r/h/b;->b:(Landroid/content/Context; Ljava/lang/String;)Z",
+      "Le/e/d/k/l;->a:(Ljava/lang/String;)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Le/e/d/r/h/b;->w(Landroid/content/Context;)Ljava/lang/String; --> Le/e/d/r/h/b;->b(Landroid/content/Context; Ljava/lang/String;)Z --> Le/e/d/k/c;->e(Ljava/lang/String;)Z",
+        "Reasoning": "The data flow starts with the method w() in class Le/e/d/r/h/b, which originates sensitive user personal data by calling the getImei method of TelephonyManager. The data is then propagated to method b() in the same class, where it is checked if the device ID is not empty and if the permission to read phone state is granted. Finally, the data reaches a sink point through logging."
+      },
+      {
+        "dataflow 2": " Le/e/d/k/c;->e(Ljava/lang/String;)Z --> null",
+        "Reasoning": "The method e() in class Le/e/d/k/c originates user personal data using the sensitive API sget-object to retrieve a string value from a static field. However, no sinks like logging, network transmission, or storage are identified within this method."
+      },
+      {
+        "dataflow 3": " Le/e/d/r/h/b;->b(Landroid/content/Context; Ljava/lang/String;)Z --> Le/e/d/k/l;->a(Ljava/lang/String;)Z",
+        "Reasoning": "This method originates user personal data through the 'checkSelfPermission' API call and propagates it to other methods. The data is then propagated to method a() in class Le/e/d/k/l, where it is used as input for the 'equalsIgnoreCase' method."
+      },
+      {
+        "dataflow 4": " Le/e/d/k/g;->c(Ljava/lang/String;)Z --> null",
+        "Reasoning": "The method originates user personal data through the invocation of sensitive API call `Le/e/d/k/l;a(Ljava/lang/String;)Z`. However, no sinks like logging, network transmission, or storage are identified within this method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

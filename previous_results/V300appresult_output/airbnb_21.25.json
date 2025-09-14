@@ -1,0 +1,287 @@
+[
+  {
+    "Data Types Collected": [
+      "WifiSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve WifiSSID",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "Method `getWifiSSID()` explicitly retrieves WifiSSID",
+        "Action": "Stored in variable `v0`"
+      },
+      {
+        "Step": "Check for Non-Empty SSID",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "Checks if WifiSSID is not empty",
+        "Action": "Returns WifiSSID if not empty, otherwise returns an empty string"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User location data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected.",
+        "Source Method": "Lcom/cardinalcommerce/shared/cs/f/f;-><init>:(Lcom/cardinalcommerce/shared/cs/f/g; Landroid/content/Context;)V",
+        "Reasoning": "getLastKnownLocation() method",
+        "Action": "Stored in v7 register"
+      },
+      {
+        "Step": "User location data is passed to the \u0131() method.",
+        "Source Method": "Lcom/cardinalcommerce/shared/cs/f/f;-><init>:(Lcom/cardinalcommerce/shared/cs/f/g; Landroid/content/Context;)V",
+        "Reasoning": "Method call",
+        "Action": "Transmitted or logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/cardinalcommerce/shared/cs/f/g;->\u0131:(Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/cardinalcommerce/shared/cs/f/f;-><init>:(Lcom/cardinalcommerce/shared/cs/f/g; Landroid/content/Context;)V --> Lcom/cardinalcommerce/shared/cs/f/g;->\u0131:(Ljava/lang/Object;)V",
+        "Reasoning": "User location data is collected and then transmitted or logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiManager API"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WifiManager API -> `\u01c3` field",
+        "Source Method": "Lcom/cardinalcommerce/shared/cs/f/h;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "Sensitive data originates from the WifiManager API.",
+        "Action": "Stored in `\u01c3` field"
+      },
+      {
+        "Step": "`\u01c3` field -> `\u01c3()` method",
+        "Source Method": "Lcom/cardinalcommerce/shared/cs/f/h;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "Data is passed to the `\u01c3()` method.",
+        "Action": "Passed to `\u01c3()` method"
+      },
+      {
+        "Step": "`\u01c3()` method -> `\u0131()` method",
+        "Source Method": "Lcom/cardinalcommerce/shared/cs/f/h;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "Data is passed to the `\u0131()` method.",
+        "Action": "Passed to `\u0131()` method"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/cardinalcommerce/shared/cs/f/h;-><init>:(Landroid/content/Context;)V --> ... --> null",
+        "Reasoning": "Sensitive data is passed to the `\u0131()` method but no sink point is identified."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI",
+      "subscriber ID",
+      "group ID level 1",
+      "phone number",
+      "MMS user agent profile URL",
+      "telephony-related information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "TelephonyManager collects sensitive user data",
+        "Source Method": "Lcom/cardinalcommerce/shared/cs/f/l;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "TelephonyManager is used to retrieve IMEI, subscriber ID, group ID level 1, phone number, MMS user agent profile URL, and other telephony-related information.",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "Data is passed to other methods via method invocations",
+        "Source Method": "Lcom/cardinalcommerce/shared/cs/f/l;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "Sensitive user data is passed to other methods through method invocations.",
+        "Action": "Passed to other methods"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "TelephonyManager(...) --> Other Methods(...)",
+        "Reasoning": "Sensitive user data is collected by TelephonyManager and then passed to other methods."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Session ID",
+      "Start Time",
+      "Location Coordinates",
+      "Location Accuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Origination",
+        "Source Method": "Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V",
+        "Reasoning": "Sensitive user data is originated from the `InternalSession` object.",
+        "Action": "Stored in `a` field"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mparticle/internal/c0/a;-><init>:(Lcom/mparticle/internal/c0/b; Lcom/mparticle/internal/InternalSession; Landroid/location/Location; J)V --> null",
+        "Reasoning": "Sensitive user data is originated from the `InternalSession` object but no sink points are identified in the provided data."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WifiManager.getConnectionInfo()",
+      "NetworkInterface.getHardwareAddress()"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting Wifi and Network Data",
+        "Source Method": "Lcom/kount/api/FingerprintCollector;->\u01c3:()Ljava/lang/String;",
+        "Reasoning": "Methods getConnectionInfo() and getHardwareAddress() are used to retrieve user data.",
+        "Action": "Stored in ArrayList"
+      },
+      {
+        "Step": "Passing Data to FingerprintCollector.\u03b9()",
+        "Source Method": "Lcom/kount/api/FingerprintCollector;->\u01c3:()Ljava/lang/String;",
+        "Reasoning": "Data is passed to the FingerprintCollector.\u03b9() method.",
+        "Action": "Passed as argument"
+      },
+      {
+        "Step": "Logging Data",
+        "Source Method": "Lcom/kount/api/FingerprintCollector;->\u03b9:()V",
+        "Reasoning": "Data is logged to the console using System.out.println().",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kount/api/FingerprintCollector;->\u03b9:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/kount/api/FingerprintCollector;->\u01c3:()Ljava/lang/String; --> Lcom/kount/api/FingerprintCollector;->\u03b9:()V",
+        "Reasoning": "Data is collected, passed to the method, and then logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected from the Location object.",
+        "Source Method": "Lcom/kount/api/LocationCollector;->\u0268()",
+        "Reasoning": "Method summary indicates data collection from Location object.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Collected location is transmitted to the LocationCollector class.",
+        "Source Method": "Lcom/kount/api/LocationCollector;->\u0268()",
+        "Reasoning": "Method summary mentions data transmission to LocationCollector.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Location data is sent to the server using the PostKey class.",
+        "Source Method": "Lcom/kount/api/LocationCollector;->\u0268()",
+        "Reasoning": "Method summary mentions data transmission to server.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kount/api/LocationCollector;->\u0268()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/kount/api/LocationCollector;->\u0268() --> Lcom/kount/api/LocationCollector;->\u0268() --> Lcom/kount/api/LocationCollector;->\u0268()",
+        "Reasoning": "Stepwise flow based on method summaries."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Error"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved.",
+        "Source Method": "Lcom/kount/api/LocationCollector;->\u0269:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method `\u0269` calls `getLastKnownLocation()` to retrieve user location.",
+        "Action": "Stored in `v2`."
+      },
+      {
+        "Step": "User location is passed to another method.",
+        "Source Method": "Lcom/kount/api/LocationCollector;->\u0269:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method `\u0269` calls `\u03b9` with the retrieved location.",
+        "Action": "Passed to `\u03b9`."
+      },
+      {
+        "Step": "Error is logged.",
+        "Source Method": "Lcom/kount/api/LocationCollector;->\u03b9(Ljava/lang/String;)V",
+        "Reasoning": "The method `\u03b9` logs the error.",
+        "Action": "Logged."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kount/api/LocationCollector;->\u03b9(Ljava/lang/Boolean; Lcom/kount/api/DataCollector$Error;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/kount/api/LocationCollector;->\u0269 --> Lcom/kount/api/LocationCollector;->\u03b9 --> Lcom/kount/api/LocationCollector;->\u03b9",
+        "Reasoning": "The user location is retrieved, passed to another method, and then logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected.",
+        "Source Method": "Lcom/kount/api/LocationCollector;->\u0456:(Landroid/location/Location; Ljava/lang/String; Ljava/util/Date;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in LocationCollector object."
+      },
+      {
+        "Step": "Location data is logged.",
+        "Source Method": "Lcom/kount/api/LocationCollector;->\u0456:(Landroid/location/Location; Ljava/lang/String; Ljava/util/Date;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Logged to console."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/kount/api/LocationCollector;->\u03b9:(Landroid/location/Location;)V",
+      "Lcom/kount/api/LocationCollector;->\u03b9:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/kount/api/LocationCollector;->\u0456:(Landroid/location/Location; Ljava/lang/String; Ljava/util/Date;)V --> Lcom/kount/api/LocationCollector;->\u03b9:(Landroid/location/Location;)V --> Lcom/kount/api/LocationCollector;->\u03b9:(Landroid/location/Location;)V",
+        "Reasoning": "Data flows from the source method to the two sink methods."
+      }
+    ],
+    "Label": "leak"
+  }
+]

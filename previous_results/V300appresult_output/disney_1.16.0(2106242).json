@@ -1,0 +1,82 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Timestamp"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location and timestamp are collected through LocationManager API calls.",
+        "Source Method": "Lbo/app/j1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The method uses sensitive API calls to LocationManager to collect user personal data.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "User location and timestamp are propagated between methods via method invocations.",
+        "Source Method": "Lbo/app/j1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The data is passed as arguments to other methods within the same class.",
+        "Action": "Passed as arguments"
+      },
+      {
+        "Step": "User location and timestamp are logged through Log.v function calls.",
+        "Source Method": "Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "The method logs a message using the `Log.v` function, which propagates user personal data.",
+        "Action": "Logged through Log.v"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbo/app/j1;->a:(Landroid/location/LocationManager;)Landroid/location/Location --> Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "The user location and timestamp are collected through LocationManager API calls, propagated between methods via method invocations, and finally logged through Log.v function calls."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "altitude",
+      "accuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location API call",
+        "Source Method": "Lbo/app/i2;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "The current method is using the Location API to originate user personal data.",
+        "Action": "Stored in registers v1-v6"
+      },
+      {
+        "Step": "Data validation and comparison",
+        "Source Method": "Lcom/appboy/support/ValidationUtils;->isValidLocation:(D D)Z",
+        "Reasoning": "This method checks if a location is valid by comparing the latitude and longitude to certain values.",
+        "Action": "Returned true or false"
+      },
+      {
+        "Step": "Data passed to other methods via method invocations",
+        "Source Method": "Lbo/app/i2;-><init>:(D D Ljava/lang/Double; Ljava/lang/Double;)V",
+        "Reasoning": "The data is passed to other methods via method invocations.",
+        "Action": "Passed as arguments"
+      }
+    ],
+    "All Sinks": [
+      "Lbo/app/i2;-><init>:(D D Ljava/lang/Double; Ljava/lang/Double;)V",
+      "Lcom/appboy/support/ValidationUtils;->isValidLocation:(D D)Z"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lbo/app/i2;-><init>:(Landroid/location/Location;)V --> Lcom/appboy/support/ValidationUtils;->isValidLocation:(D D)Z --> Lbo/app/i2;-><init>:(D D Ljava/lang/Double; Ljava/lang/Double;)V",
+        "Reasoning": "The data is collected by the Location API, validated and compared in isValidLocation method, and then passed to another method"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

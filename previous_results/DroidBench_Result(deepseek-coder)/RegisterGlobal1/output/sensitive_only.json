@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieval of IMEI from TelephonyManager",
+                "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V",
+                "Reasoning": "The method retrieves the device ID (IMEI) which is personal data and stored in a class field.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Potential exposure of IMEI via SMS",
+                "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V",
+                "Reasoning": "The method sends the stored IMEI to a predefined phone number using SMS, potentially exposing user personal data.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V",
+            "Potential Log Sink (indirect evidence)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V --> Stored in class field --> Potential Log Sink (indirect evidence) --> Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V]",
+                "Reasoning": "The IMEI is retrieved and potentially logged, which indirectly leads to its transmission via SMS when the activity pauses."
+            }
+        ],
+        "Label": "leak"
+    }
+]

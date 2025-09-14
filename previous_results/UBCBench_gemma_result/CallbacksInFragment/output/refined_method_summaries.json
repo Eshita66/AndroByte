@@ -1,0 +1,52 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval and logging",
+                "Source Method": "Ljunbin/ubc/MyFragment;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "The method directly accesses TelephonyManager.getDeviceId() (sensitive source) and passes it to android.util.Log.v (sink) without overwriting or taint removal.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MyFragment;->onClick:(Landroid/view/View;)V --> Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The device ID (sensitive source) is directly passed to the logging sink without being overwritten or sanitized."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    },
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval and logging",
+                "Source Method": "Ljunbin/ubc/MyFragment;->onCreateView:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View;",
+                "Reasoning": "The method calls getDeviceId() (source) and passes the result to Log.v() (sink) without overwriting the sensitive value.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->v(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MyFragment;->onCreateView(...) --> Landroid/telephony/TelephonyManager;->getDeviceId() --> Landroid/util/Log;->v(...)",
+                "Reasoning": "The device ID is directly retrieved from TelephonyManager and passed to the logging sink without being overwritten by a non-sensitive value."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

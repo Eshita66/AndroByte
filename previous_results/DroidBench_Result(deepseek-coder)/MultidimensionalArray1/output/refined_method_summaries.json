@@ -1,0 +1,31 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieving device ID from TelephonyManager",
+                "Source Method": "Ledu/mit/array_slice/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The method retrieves the TelephonyManager service, which provides access to device-specific information including the IMEI or MEID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging device ID using Log.i",
+                "Source Method": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method logs the retrieved device ID, which could expose sensitive information.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/array_slice/MainActivity;->Log.i(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(Ledu/mit/array_slice/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;) --> ... --> Sink Method(Ledu/mit/array_slice/MainActivity;->Log.i(Ljava/lang/String; Ljava/lang/String;)I)]",
+                "Reasoning": "The device ID is retrieved from the TelephonyManager and passed to Log.i for logging, which logs potentially sensitive information."
+            }
+        ],
+        "Label": "leak"
+    }
+]

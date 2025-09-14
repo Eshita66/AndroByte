@@ -1,0 +1,48 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieving the device ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/Exceptions2;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The method getSystemService is called with 'telephone' argument to retrieve the TelephonyManager service, which provides access to device-specific information including the device ID.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Constructing a message using the retrieved device ID",
+                "Source Method": "Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is used to construct a message in the onCreate method, which handles UI creation and initialization logic.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sending the constructed message via SMS using SmsManager",
+                "Source Method": "Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The message, now containing sensitive information (device ID), is sent through the SmsManager, which facilitates sending SMS messages.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Exceptions2;->setContentView(I)",
+            "Ljava/lang/Math;->sqrt(D)",
+            "Log.i(...)",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Exceptions2;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Exceptions2;->setContentView(I)",
+                "Reasoning": "The device ID is retrieved from TelephonyManager and used to construct a message in onCreate, but the final step does not involve transmitting or logging this data. It only initializes the UI without any further interaction with potentially sensitive sinks."
+            },
+            {
+                "dataflow 1": "Lde/ecspride/Exceptions2;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V --> Log.i(...)",
+                "Reasoning": "This path involves retrieving the device ID and using it to log an informational message, indicating a potential leak."
+            },
+            {
+                "dataflow 1": "Lde/ecspride/Exceptions2;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V --> Toast.makeText(...)",
+                "Reasoning": "This path involves retrieving the device ID and using it to show a toast message, which is not considered a sensitive sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]

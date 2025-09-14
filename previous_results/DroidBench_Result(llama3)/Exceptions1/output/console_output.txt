@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\Exceptions1
+Using methods file: D:\UBCBAPK_Methods\Exceptions1\Exceptions1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V originates sensitive data by calling the getDeviceId() method from TelephonyManager. This device ID is stored in register v3 and then passed to the sendTextMessage method of SmsManager, which is a sink for this sensitive data.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\Exceptions1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Exceptions1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Exceptions1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "onCreate() originates sensitive data by calling getDeviceId()",
+                "Source Method": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "getDeviceId() method from TelephonyManager is called and the device ID is stored in register v3",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Pass device ID to SmsManager's sendTextMessage method",
+                "Source Method": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is passed as an argument to the sendTextMessage method of SmsManager, which is a sink for this sensitive data.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V --> getDeviceId() method from TelephonyManager --> SmsManager's sendTextMessage method",
+                "Reasoning": "The device ID is obtained in the onCreate() method and passed to the SmsManager's sendTextMessage method, which is a sink for this sensitive data."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Exceptions1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Exceptions1\output\sensitive_only.json
+Total summary time: 18.662260055541992 seconds

@@ -1,0 +1,25 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieval of device ID",
+                "Source Method": "Lde/ecspride/MainActivity$A;->getString:()Ljava/lang/String;",
+                "Reasoning": "The method retrieves the device ID from TelephonyManager, which is considered personal data.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity$A;->getString:()Ljava/lang/String; --> Retrieves device ID from TelephonyManager --> Potential sink identified as Log.i(...) if used for logging",
+                "Reasoning": "The method retrieves personal data (device ID) which could be logged without proper handling, thus potentially leading to a leak."
+            }
+        ],
+        "Label": "leak"
+    }
+]

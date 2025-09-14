@@ -1,0 +1,40 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user location",
+        "Source Method": "Log;->u:(Landroid/content/Context; I)I",
+        "Reasoning": "Calling sensitive APIs such as ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Propagate location to other methods",
+        "Source Method": "Log;->u:(Landroid/content/Context; I)I",
+        "Reasoning": "Method invocations, including Log;->Q(Landroid/content/Context;)Loa and Log;->R(Landroid/content/Context;)Loa.",
+        "Action": "Propagated to other methods"
+      },
+      {
+        "Step": "Reach sink point",
+        "Source Method": "Log;->u:(Landroid/content/Context; I)I",
+        "Reasoning": "Network transmission or storage.",
+        "Action": "Logged, transmitted, etc."
+      }
+    ],
+    "All Sinks": [
+      "Log;->Q(Landroid/content/Context;)Loa",
+      "Log;->R(Landroid/content/Context;)Loa"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Log;->u:(Landroid/content/Context; I)I --> Log;->Q(Landroid/content/Context;)Loa --> Sink (Network transmission or storage)",
+        "Reasoning": "Location data is originated by calling sensitive APIs, propagated to other methods via method invocations, and finally reaches the sink point through network transmission or storage."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

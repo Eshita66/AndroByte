@@ -1,0 +1,47 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\Loop1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\Loop1\Loop1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method `onCreate` first calls `getDeviceId` via `TelephonyManager.getDeviceId()`. This instruction `invoke-virtual v8, Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;` is a sensitive API call. The returned string from `getDeviceId` is then used as the message body (`vText`) in `SmsManager.sendTextMessage`. This instruction `invoke-virtual/range v0 ... v5, Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V` is a sink. The `vText` argument to `sendTextMessage` is tainted, therefore this is a leak.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\Loop1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\Loop1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\Loop1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "deviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain device ID",
+                "Source Method": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The method calls `getDeviceId` to retrieve the device ID.",
+                "Action": "Retrieve"
+            },
+            {
+                "Step": "Send SMS with device ID",
+                "Source Method": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)",
+                "Reasoning": "The retrieved device ID is used as the message body in `sendTextMessage`.",
+                "Action": "Transmit"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/LoopExample1;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/LoopExample1;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)",
+                "Reasoning": "The `getDeviceId` method retrieves the device ID. This ID is then used as the message body (`vText`) in `sendTextMessage`. The `sendTextMessage` method is a sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\Loop1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\Loop1\output\sensitive_only.json
+Total summary time: 61.87159276008606 seconds

@@ -1,0 +1,56 @@
+
+ Processing folder: D:\UBCBAPK_Methods\FragmentLifecycle2
+ Using methods file: D:\UBCBAPK_Methods\FragmentLifecycle2\FragmentLifecycle2_bytecode_instructions.json
+Sensitive root methods: ['Ledu/mit/fragments/HeadlinesFragment;->onListItemClick:(Landroid/widget/ListView; Landroid/view/View; I J)V']
+[SUMMARY] Ledu/mit/fragments/HeadlinesFragment;->onListItemClick:(Landroid/widget/ListView; Landroid/view/View; I J)V => {
+    "Summary": [
+        "The method handles list item clicks by retrieving the device ID via TelephonyManager, notifying the callback with the ID, and marking the item as checked in the list view."
+    ],
+    "Next Methods": [
+        "android/app/Activity->getSystemService:(Ljava/lang/String;)Ljava/lang/Object;",
+        "android/telephony/TelephonyManager->getDeviceId:()Ljava/lang/String;",
+        "edu/mit/fragments/HeadlinesFragment$OnHeadlineSelectedListener->onArticleSelected:(I Ljava/lang/String;)V",
+        "android/widget/ListView->setItemChecked:(I Z)V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\FragmentLifecycle2\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\FragmentLifecycle2\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\FragmentLifecycle2\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval",
+                "Source Method": "Ledu/mit/fragments/HeadlinesFragment;->onListItemClick:(Landroid/widget/ListView; Landroid/view/View; I J)V",
+                "Reasoning": "The method retrieves the device ID via TelephonyManager, which is a sensitive source.",
+                "Action": "Retrieved"
+            },
+            {
+                "Step": "Callback notification",
+                "Source Method": "Ledu/mit/fragments/HeadlinesFragment;->onListItemClick:(Landroid/widget/ListView; Landroid/view/View; I J)V",
+                "Reasoning": "The device ID is passed to a callback method, which is a potential sink.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/fragments/HeadlinesFragment;->onListItemClick:(Landroid/widget/ListView; Landroid/view/View; I J)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/fragments/HeadlinesFragment;->onListItemClick:(Landroid/widget/ListView; Landroid/view/View; I J)V --> Ledu/mit/fragments/HeadlinesFragment;->onListItemClick:(Landroid/widget/ListView; Landroid/view/View; I J)V",
+                "Reasoning": "The device ID is retrieved via TelephonyManager and passed to a callback method, which is a sink. No overwriting or taint loss is mentioned."
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\FragmentLifecycle2\output\refined_method_summaries.json
+Saved 0 'leak' subgraphs to D:\UBCBAPK_Methods\FragmentLifecycle2\output\sensitive_only.json
+Total time for folder: 229.71 seconds

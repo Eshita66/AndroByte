@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID",
+            "Phone Number (+49 1234)"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "MainActivity initializes with onCreate, retrieving device ID via TelephonyManager and storing it in static field MainActivity.im.",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method initiates the lifecycle and immediately retrieves the device ID using `TelephonyManager.getDeviceId()`. This is the initial collection of personal data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "StaticInitClass1 sends SMS message with hardcoded phone number (+49 1234).",
+                "Source Method": "Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V",
+                "Reasoning": "The `StaticInitClass1` method directly uses `SmsManager` to send an SMS containing the phone number. This represents a significant risk due to the hardcoded nature of the phone number.",
+                "Action": "Transmitted"
+            },
+            {
+                "Step": "Data flows from device ID to MainActivity lifecycle.",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID retrieved in `onCreate` is now stored in the `MainActivity.im` field, making it accessible throughout the application's lifecycle.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Lde/ecspride/MainActivity;->setContentView(I)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; and Lde/ecspride/MainActivity;->setContentView(I)V",
+                "Reasoning": "The `onCreate` method retrieves the device ID. This data is then stored in `MainActivity.im`. The `getSystemService` and `setContentView` methods are called, but they do not directly process the device ID. They are likely part of the UI initialization and do not represent a sink in this specific data flow."
+            }
+        ],
+        "Label": "leak"
+    }
+]

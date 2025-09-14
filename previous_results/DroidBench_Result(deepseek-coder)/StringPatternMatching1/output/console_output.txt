@@ -1,0 +1,50 @@
+
+Processing folder: D:\UBCBAPK_Methods\StringPatternMatching1
+Using methods file: D:\UBCBAPK_Methods\StringPatternMatching1\StringPatternMatching1_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the device ID from TelephonyManager and uses a regular expression to match against a pattern. If the pattern matches, it extracts a group from the matched result and logs it using Log.i(). The device ID is considered sensitive data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval of Device ID from TelephonyManager",
+            "Source Method": "Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The device ID is retrieved using the getDeviceId() method from TelephonyManager.",
+            "Action": "Retrieved"
+        },
+        {
+            "Step": "Pattern Matching with Regular Expression",
+            "Source Method": "Ljava/util/regex/Pattern;->compile(Ljava/lang/String;)Ljava/util/regex/Pattern;",
+            "Reasoning": "The retrieved device ID is checked against a pattern using regular expressions.",
+            "Action": "Checked"
+        },
+        {
+            "Step": "Logging the Device ID",
+            "Source Method": "Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;",
+            "Reasoning": "If the device ID matches the pattern, it is extracted as a group and logged using Log.i().",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/pattern_matcher/MainActivity;->Log.i((Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> java.util.regex.Pattern.compile(deviceID) --> java.util.regex.Matcher.matches() --> Log.i((matchedGroup))",
+            "Reasoning": "The device ID is retrieved, checked against a pattern, and if matched, logged using Log.i()."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\StringPatternMatching1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\StringPatternMatching1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\StringPatternMatching1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\StringPatternMatching1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\StringPatternMatching1\output\sensitive_only.json
+Total time for folder: 842.10 seconds

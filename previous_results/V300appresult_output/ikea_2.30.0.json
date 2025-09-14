@@ -1,0 +1,239 @@
+[
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data using sensitive API calls",
+        "Source Method": "Ld/b/a/a/a/g;->t:(Ljava/util/List;)V",
+        "Reasoning": "The data is stored in registers and variables within the method, and propagated through method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by invoking a sensitive API call to 'Ld/b/a/a/a/g;->j:(Ljava/util/List; Ljava/lang/String; Ljava/lang/String; ZI)V'",
+        "Source Method": "Ld/b/a/a/a/g;->n:(Ljava/util/List; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in registers v0-v5 and passed to the invoked method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data originates from the method's parameters, specifically List and String",
+        "Source Method": "Ld/b/a/a/a/g;->l:(Ljava/util/List; Ljava/lang/String; Z)V",
+        "Reasoning": "The data is stored in registers v3 and v0.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data using sensitive API calls to `Ld/b/a/a/a/g` class",
+        "Source Method": "Ld/b/a/a/a/g;->h:(Ljava/util/List; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in registers v0-v5 and variables v6-v9.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data from sensitive API calls",
+        "Source Method": "Ld/b/a/a/a/g;->j:(Ljava/util/List; Ljava/lang/String; Ljava/lang/String; Z I)V",
+        "Reasoning": "The data is stored in registers and variables within the method, then passed to other methods via method invocations.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data propagates through network transmission",
+        "Source Method": "Ld/b/a/a/a/g;->h:(Ljava/util/List; Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data reaches a sink point through network transmission.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Ld/b/a/a/a/g;->h:(Ljava/util/List; Ljava/lang/String; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Ld/b/a/a/a/g;->t:(Ljava/util/List;)V --> Ld/b/a/a/a/g;->n:(Ljava/util/List; Ljava/lang/String; Ljava/lang/String;)V --> Ld/b/a/a/a/g;->h:(Ljava/util/List; Ljava/lang/String; Ljava/lang/String;)V]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get latitude and longitude from Location object",
+        "Source Method": "Landroid/location/Location;",
+        "Reasoning": "getLatitude() and getLongitude() methods are invoked on the Location object.",
+        "Action": "Stored in a StringBuilder"
+      },
+      {
+        "Step": "Append string to StringBuilder",
+        "Source Method": "Lcom/ingka/ikea/app/base/location/geocode/network/GoogleGeocodeNetworkService;->getCountryFromLocation:(Landroid/location/Location;)Ljava/util/List;",
+        "Reasoning": "The latitude and longitude values are then stored in a StringBuilder and appended to a string.",
+        "Action": "Passed to GoogleGeocodeNetworkService$b class"
+      },
+      {
+        "Step": "Return List object",
+        "Source Method": "Lcom/ingka/ikea/app/base/location/geocode/network/GoogleGeocodeNetworkService;->getCountryFromLocation:(Landroid/location/Location;)Ljava/util/List;",
+        "Reasoning": "The string is passed to the GoogleGeocodeNetworkService$b class, which returns a List object.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Landroid/location/Location; --> Lcom/ingka/ikea/app/base/location/geocode/network/GoogleGeocodeNetworkService;->getCountryFromLocation:(Landroid/location/Location;)Ljava/util/List;",
+        "Reasoning": "The getLatitude() and getLongitude() methods are invoked on the Location object, storing the values in a StringBuilder. The string is then passed to the GoogleGeocodeNetworkService$b class, which returns a List object."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location obtained from API",
+        "Source Method": "Lcom/ingka/ikea/app/base/fragments/BaseMapFragment;->addUserMarker:(Landroid/location/Location;)V",
+        "Reasoning": "Method originates user personal data from the location API.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Data propagated through method invocations",
+        "Source Method": "Lcom/ingka/ikea/app/base/fragments/BaseMapFragment;->addUserMarker:(Landroid/location/Location;)V",
+        "Reasoning": "The data is stored in registers and variables within the method. It propagates through method invocations to update the user marker on the map.",
+        "Action": "Propagated"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/ingka/ikea/app/base/fragments/BaseMapFragment;->addUserMarker:(Landroid/location/Location;)V --> ... --> null",
+        "Reasoning": "The data is propagated through method invocations to update the user marker on the map, but no sinks are identified."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "user location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location collected from device",
+        "Source Method": "Lcom/ingka/ikea/app/base/fragments/BaseMapFragment;->findUserOnMap:()V",
+        "Reasoning": "The method originates user personal data from the user's location.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Location permissions checked",
+        "Source Method": "Lcom/ingka/ikea/app/base/fragments/BaseMapFragment;->checkLocationSettings:(Z)V",
+        "Reasoning": "The method checkLocationSettings originates user personal data through the use of sensitive API calls to check location permissions.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Last known location requested",
+        "Source Method": "Lcom/ingka/ikea/app/base/fragments/BaseMapFragment;->requestLastLocation:(Landroid/app/Activity;)V",
+        "Reasoning": "The method originates user personal data by requesting the last known location using a sensitive API call.",
+        "Action": "Passed between methods"
+      },
+      {
+        "Step": "Location request created",
+        "Source Method": "Lcom/ingka/ikea/app/base/fragments/BaseMapFragment;->createLocationRequest:()Lcom/google/android/gms/location/LocationRequest;",
+        "Reasoning": "The method originates user personal data by invoking the LocationRequest class's static methods to create a location request.",
+        "Action": "Stored in register v0 and variables"
+      },
+      {
+        "Step": "Static field accessed",
+        "Source Method": "Lcom/ingka/ikea/app/base/fragments/BaseMapFragmentKt;->access$getLOCATION_REQUEST_INTERVAL$p:()J",
+        "Reasoning": "The method originates user personal data by accessing a static field LOCATION_REQUEST_INTERVAL of class BaseMapFragmentKt.",
+        "Action": "Returned without further processing"
+      },
+      {
+        "Step": "Location request propagated to other methods",
+        "Source Method": "Lcom/ingka/ikea/app/base/fragments/BaseMapFragment;->createLocationRequest:()Lcom/google/android/gms/location/LocationRequest;",
+        "Reasoning": "The data is propagated through method invocations to other classes.",
+        "Action": "Passed between methods"
+      },
+      {
+        "Step": "Data reaches sink point through logging",
+        "Source Method": "Lcom/ingka/ikea/app/base/fragments/BaseMapFragment;->createLocationRequest:()Lcom/google/android/gms/location/LocationRequest;",
+        "Reasoning": "The data reaches a sink point through the logging statement.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lk/a0/d/l;->g()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/ingka/ikea/app/base/fragments/BaseMapFragment;->findUserOnMap:()V --> Lcom/ingka/ikea/app/base/fragments/BaseMapFragment;->checkLocationSettings:(Z)V --> Lk/a0/d/l;->g()",
+        "Reasoning": "The data is collected from the user's location, then checked for location permissions, and finally logged."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location from Geocoder.getFromLocation() method of ManualPostalCodeBottomSheet instance.",
+        "Source Method": "Lcom/ingka/ikea/app/mcommerce/postalcode/ManualPostalCodeBottomSheet$a;->a:()Ljava/util/List;",
+        "Reasoning": "The current method originates user personal data from the 'a' field of ManualPostalCodeBottomSheet instance and propagates it to getFromLocation() method of Geocoder.",
+        "Action": "Stored in a List"
+      },
+      {
+        "Step": "Get device ID from DeviceUtils class.",
+        "Source Method": "Lcom/ingka/ikea/app/mcommerce/utils/DeviceUtils;->getDeviceId()Ljava/lang/String;",
+        "Reasoning": "The current method originates user personal data from the 'getDeviceId()' method of DeviceUtils class and propagates it to unknown sink.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Get phone number from PhoneNumberManager class.",
+        "Source Method": "Lcom/ingka/ikea/app/mcommerce/utils/PhoneNumberManager;->getPhoneNumber()Ljava/lang/String;",
+        "Reasoning": "The current method originates user personal data from the 'getPhoneNumber()' method of PhoneNumberManager class and propagates it to unknown sink.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/ingka/ikea/app/mcommerce/utils/NetworkUtils;->sendRequest(Ljava/lang/String;)V",
+      "Lcom/ingka/ikea/app/mcommerce/utils/FileUtils;->writeToFile(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[ManualPostalCodeBottomSheet$a.a() --> Geocoder.getFromLocation() --> List] --> Lcom/ingka/ikea/app/mcommerce/utils/NetworkUtils;->sendRequest(Ljava/lang/String;)V",
+        "Reasoning": "The current method originates user personal data from the 'a' field of ManualPostalCodeBottomSheet instance and propagates it to getFromLocation() method of Geocoder. The result is stored in a List and passed back as return value. The List is then transmitted to sendRequest() method of NetworkUtils class."
+      },
+      {
+        "dataflow 2": "[DeviceUtils.getDeviceId() --> unknown sink]",
+        "Reasoning": "The current method originates user personal data from the 'getDeviceId()' method of DeviceUtils class and propagates it to unknown sink. The device ID is transmitted to unknown sink."
+      },
+      {
+        "dataflow 3": "[PhoneNumberManager.getPhoneNumber() --> unknown sink]",
+        "Reasoning": "The current method originates user personal data from the 'getPhoneNumber()' method of PhoneNumberManager class and propagates it to unknown sink. The phone number is stored in unknown sink."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

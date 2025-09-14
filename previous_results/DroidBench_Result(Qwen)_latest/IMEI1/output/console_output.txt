@@ -1,0 +1,64 @@
+Processing folder: D:\UBCBAPK_Methods\IMEI1
+Using methods file: D:\UBCBAPK_Methods\IMEI1\IMEI1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves the device ID (IMEI) via TelephonyManager.getDeviceId(), processes it into a substring, and logs it using android.util.Log.d. The IMEI is also sent via SMS using android.telephony.SmsManager.sendTextMessage. Both logging and SMS transmission are identified as sinks, so no further method calls are tracked.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\IMEI1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\IMEI1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\IMEI1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID (IMEI) is retrieved from TelephonyManager.getDeviceId()",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method directly accesses the device ID through TelephonyManager.getDeviceId()",
+                "Action": "Stored"
+            },
+            {
+                "Step": "IMEI is processed into a substring",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method performs substring operations on the retrieved IMEI",
+                "Action": "Transformed"
+            },
+            {
+                "Step": "Processed IMEI is logged via android.util.Log.d",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method calls android.util.Log.d with the processed IMEI",
+                "Action": "Logged"
+            },
+            {
+                "Step": "Processed IMEI is transmitted via SMS using android.telephony.SmsManager.sendTextMessage",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method calls android.telephony.SmsManager.sendTextMessage with the processed IMEI",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log.d",
+            "android.telephony.SmsManager.sendTextMessage"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> android.util.Log.d(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The IMEI is retrieved from TelephonyManager.getDeviceId(), processed into a substring, and passed as an argument to android.util.Log.d()"
+            },
+            {
+                "dataflow 2": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> android.telephony.SmsManager.sendTextMessage(Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V",
+                "Reasoning": "The IMEI is retrieved from TelephonyManager.getDeviceId(), processed into a substring, and passed as an argument to android.telephony.SmsManager.sendTextMessage()"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\IMEI1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\IMEI1\output\sensitive_only.json
+Total summary time: 999.519478559494 seconds

@@ -1,0 +1,40 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\Serialization1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\Serialization1\Serialization1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/serialization/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/serialization/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method `onCreate` first calls `System.getSystemService` which returns a `TelephonyManager` instance. This instance then calls `getDeviceId()`, which returns a `String`. This `String` is then used to construct an `ObjectOutputStream` and `ObjectInputStream`, indicating serialization and deserialization.  The `getDeviceId()` call is the source of the sensitive data. The `Log.i` call is a sink, but it does not constitute a leak because the `getDeviceId()` call directly provides the argument to the sink. The flow is: `[TelephonyManager->getDeviceId() -> String -> Log.i]`.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\Serialization1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\Serialization1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\Serialization1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "String"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain device ID",
+                "Source Method": "Ledu/mit/serialization/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `TelephonyManager` instance obtained via `System.getSystemService` is used to retrieve the device ID.",
+                "Action": "Retrieve"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/serialization/MainActivity;->Log.i:(Ljava/lang/String;Z)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/serialization/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/serialization/MainActivity;->System.getSystemService:(...) --> Ledu/mit/serialization/MainActivity;->TelephonyManager;->getDeviceId():String --> Ledu/mit/serialization/MainActivity;->Log.i:(String, true)"
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\Serialization1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\Serialization1\output\sensitive_only.json
+Total summary time: 79.17732882499695 seconds

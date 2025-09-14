@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval",
+                "Source Method": "Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method retrieves the device ID using `TelephonyManager.getDeviceId()`.",
+                "Action": "Retrieval"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/objectsensitivity/ObjectSensitivity;->log:(Ljava/lang/String;Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V --> Llina/ubc/objectsensitivity/ObjectSensitivity;->log:(Ljava/lang/String;Ljava/lang/String;)V",
+                "Reasoning": "The `onCreate` method retrieves the device ID ('123') via `TelephonyManager.getDeviceId()` and adds it to a LinkedList.  The method then logs 'ObjectSensitivity1' and 'ObjectSensitivity2' to the logcat. The device ID is passed as an argument to the `log` method, which is a sink."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

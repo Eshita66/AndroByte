@@ -1,0 +1,144 @@
+[
+  {
+    "Data Types Collected": [
+      "Lcom/reactnativecommunity/netinfo/a/b;",
+      "Landroid/net/ConnectivityManager;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve instance field values",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/b;->f:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "iget-object instructions retrieve values from instance fields of type Lcom/reactnativecommunity/netinfo/a/b;",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Pass to other methods",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/b;->f:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "Method invocations pass data to WritableNativeMap instances",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Access Android system API",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/d;->a:([B)V",
+        "Reasoning": "The method originates user personal data by accessing the Android system API",
+        "Action": "Stored in registers (v1 and v2)"
+      },
+      {
+        "Step": "Invoke sensitive API call",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/b;->d:()Landroid/net/ConnectivityManager;",
+        "Reasoning": "The method originates user personal data through the invocation of sensitive API call to get the ConnectivityManager",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Store in registers and variables",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/d;->a:([B)V",
+        "Reasoning": "The data is stored in registers (v1 and v2) and passed to other methods through method invocations",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Log or transmit data",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/b;->f:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The data reaches sinks such as logging (via putString, putBoolean, etc.) and transmission/storage (via a([B)V calls)",
+        "Action": "Logged or transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/reactnativecommunity/netinfo/b;->f:()Lcom/facebook/react/bridge/WritableMap;",
+      "Lcom/reactnativecommunity/netinfo/d;->a:([B)V",
+      "Lcom/reactnativecommunity/netinfo/b;->d:()Landroid/net/ConnectivityManager;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/reactnativecommunity/netinfo/b;->f:()Lcom/facebook/react/bridge/WritableMap; --> ... --> Lcom/reactnativecommunity/netinfo/b;->f:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The data is retrieved from instance fields, passed to other methods, stored in registers and variables, and finally logged or transmitted"
+      },
+      {
+        "dataflow 2": " Lcom/reactnativecommunity/netinfo/d;->a:([B)V --> ... --> Lcom/reactnativecommunity/netinfo/b;->f:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "The data is stored in registers (v1 and v2), passed to other methods, and finally logged or transmitted"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "mac address",
+      "wifi info"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getMacAddressSync() called",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "Method originates user personal data by calling getMacAddressSync() method.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "getApplicationContext() and getSystemService() called",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "Method originates user personal data by calling getApplicationContext() and getSystemService() methods.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "getConnectionInfo() called",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "Data reaches a sink point through the getConnectionInfo() method.",
+        "Action": "Logged or transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String; --> Stored in registers and variables within the method --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "Data is propagated through various operations and reaches a sink point when returned as a result."
+      },
+      {
+        "dataflow 2": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo; --> Stored in register v0 --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getConnectionInfo:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "Data is propagated through various operations and reaches a sink point when logged or transmitted."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check permissions",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "Permissions check for accessing user personal data",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Retrieve phone number from TelephonyManager",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "Access to user personal data via TelephonyManager",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Return 'unknown' if checks fail",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "Default return value when accessing user personal data fails",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;( --> Stored in TelephonyManager --> Retrieved via Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String; )",
+        "Reasoning": "Data is retrieved from TelephonyManager and stored in the method's return value"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

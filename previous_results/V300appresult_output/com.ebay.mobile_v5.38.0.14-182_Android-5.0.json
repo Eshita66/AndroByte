@@ -1,0 +1,657 @@
+[
+  {
+    "Data Types Collected": [
+      "latitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve latitude from location",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/c/f$d;->c:(Landroid/content/Context;)Ljava/lang/Double;",
+        "Reasoning": "Method `c()` calls `getLocation()` method to get latitude",
+        "Action": "Stored in a Double object"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adyen/threeds2/internal/c/a/c/f$d;->b(Ljava/lang/Double;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adyen/threeds2/internal/c/a/c/f$d;->c:(Landroid/content/Context;)Ljava/lang/Double; --> Lcom/adyen/threeds2/internal/c/a/c/f$d;->b(Ljava/lang/Double;)V",
+        "Reasoning": "Latitude retrieved in `c()` method is passed to `b()` method as an argument"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve longitude from user's location",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/c/f$f;->c:(Landroid/content/Context;)Ljava/lang/Double;",
+        "Reasoning": "Method signature indicates the method retrieves longitude",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Convert longitude to Double",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/c/f$f;->c:(Landroid/content/Context;)Ljava/lang/Double;",
+        "Reasoning": "Method signature indicates the method converts longitude to Double",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adyen/threeds2/internal/c/a/c/f$f;->c:(Landroid/content/Context;)Ljava/lang/Double;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adyen/threeds2/internal/c/a/c/f$f;->c:(Landroid/content/Context;)Ljava/lang/Double; --> Lcom/adyen/threeds2/internal/c/a/c/f$f;->c:(Landroid/content/Context;)Ljava/lang/Double;",
+        "Reasoning": "Data is stored and transmitted within the same method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract Device ID",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/i/b;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method extracts device ID from TelephonyManager",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adyen/threeds2/internal/c/a/i/b;->d:(Landroid/content/Context;)Ljava/lang/String; --> Stored",
+        "Reasoning": "Device ID is extracted and stored"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "IMEI",
+      "device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "TelephonyManager retrieval",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/i/a;->c:(Landroid/content/Context;)Landroid/telephony/TelephonyManager;",
+        "Reasoning": "Method throws exception due to unsupported platform or deprecated nature.",
+        "Action": "N/A"
+      },
+      {
+        "Step": "IMEI and device ID extraction",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/i/e;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method retrieves IMEI and device ID from TelephonyManager.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "N/A"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user's phone number",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/i/l;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method uses `getLine1Number()` to extract the phone number.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/content/Context;->getSharedPreferences:(Ljava/lang/String;I)Landroid/content/SharedPreferences;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adyen/threeds2/internal/c/a/i/l;->d(...) --> Landroid/content/Context;->getSharedPreferences(...)",
+        "Reasoning": "The phone number is stored in shared preferences using the `getSharedPreferences()` method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "SIM serial number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "SIM serial number retrieved from TelephonyManager",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/i/x;->d:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature and summary provide the data flow",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract BSSID",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/j/b;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the provided summary.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adyen/threeds2/internal/c/a/j/b;->e:(Landroid/content/Context;)Ljava/lang/String; --> Stored",
+        "Reasoning": "Data is extracted and stored in the BSSID field."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve SSID from WifiManager",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/j/k;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `e()` calls `d()` which retrieves the SSID from WifiInfo",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adyen/threeds2/internal/c/a/j/k;->e:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adyen/threeds2/internal/c/a/j/k;->e:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/adyen/threeds2/internal/c/a/j/k;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The SSID is retrieved and stored in the method `e()`"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address",
+        "Source Method": "Lcom/adyen/threeds2/internal/c/a/j/l;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature matches the description",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adyen/threeds2/internal/c/a/j/l;->e:(Landroid/content/Context;)Ljava/lang/String; --> Stored",
+        "Reasoning": "MAC address is retrieved and stored"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user location",
+        "Source Method": "Lcom/ebay/mobile/search/refine/details/ItemLocationFragment$1;->run:()V",
+        "Reasoning": "Method uses Geocoder API to retrieve user location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Extract postal code",
+        "Source Method": "Lcom/ebay/mobile/search/refine/details/ItemLocationFragment$1;->run:()V",
+        "Reasoning": "Geocoder API returns postal code.",
+        "Action": "Extracted"
+      },
+      {
+        "Step": "Send message to zipUpdateHandler",
+        "Source Method": "Lcom/ebay/mobile/search/refine/details/ItemLocationFragment$1;->run:()V",
+        "Reasoning": "Message contains postal code.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/ebay/mobile/search/refine/details/ItemLocationFragment$1;->zipUpdateHandler:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/ebay/mobile/search/refine/details/ItemLocationFragment$1;->run:()V --> Lcom/ebay/mobile/search/refine/details/ItemLocationFragment$1;->zipUpdateHandler:()V",
+        "Reasoning": "User location is obtained, extracted, and sent to zipUpdateHandler."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Postal Code"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved using getLastKnownLocationOrNull() method.",
+        "Source Method": "Lcom/ebay/mobile/search/refine/types/ItemLocationHelper;->getCurrentLocation:(Landroid/content/Context; Lcom/ebay/nautilus/domain/EbaySite;)Ljava/lang/String;",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is used to get the postal code using Geocoder.",
+        "Source Method": "Lcom/ebay/mobile/search/refine/types/ItemLocationHelper;->getCurrentLocation:(Landroid/content/Context; Lcom/ebay/nautilus/domain/EbaySite;)Ljava/lang/String;",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/ebay/mobile/search/refine/types/ItemLocationHelper;->getCurrentLocation:(Landroid/content/Context; Lcom/ebay/nautilus/domain/EbaySite;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/ebay/mobile/search/refine/types/ItemLocationHelper;->getCurrentLocation:(Landroid/content/Context; Lcom/ebay/nautilus/domain/EbaySite;)Ljava/lang/String; --> Lcom/ebay/mobile/search/refine/types/ItemLocationHelper;->getCurrentLocation:(Landroid/content/Context; Lcom/ebay/nautilus/domain/EbaySite;)Ljava/lang/String;",
+        "Reasoning": "User location is retrieved and then transmitted as postal code."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude",
+      "Altitude",
+      "Bearing",
+      "Speed",
+      "Accuracy",
+      "Timestamp"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected",
+        "Source Method": "Lcom/ebay/mobile/util/LocationUtil;->addGeoTagsToTrackingData(...)",
+        "Reasoning": "Method signature matches the description",
+        "Action": "Stored in tracking data builder"
+      },
+      {
+        "Step": "Tracking data is created",
+        "Source Method": "Lcom/ebay/mobile/util/LocationUtil;->addGeoTagsToTrackingData(...)",
+        "Reasoning": "Tracking data builder is used to create a tracking data object",
+        "Action": "Created"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/ebay/nautilus/domain/analytics/model/TrackingData$Builder;->build()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/ebay/mobile/util/LocationUtil;->addGeoTagsToTrackingData(...) --> Lcom/ebay/nautilus/domain/analytics/model/TrackingData$Builder;->build() --> null",
+        "Reasoning": "Location data is collected and added to the tracking data builder, but the data is not further processed or transmitted"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "postal code"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location retrieved",
+        "Source Method": "com.ebay.mobile.util.LocationUtil.getAvailableLocation(...)",
+        "Reasoning": "Method explicitly retrieves location data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive data logged",
+        "Source Method": "com.ebay.mobile.util.LocationUtil.getLastKnownLocationOrNull(...)",
+        "Reasoning": "Sensitive API call detected using getLastKnownLocation().",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Data initialized",
+        "Source Method": "com.ebay.common.net.api.inventory.LookupAvailabilityRequest$PhysicalLocation.<init>(...)",
+        "Reasoning": "Method initializes with retrieved location data.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "com.ebay.mobile.util.LocationUtil.getLastKnownLocationOrNull(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "com.ebay.mobile.util.LocationUtil.getAvailableLocation(...) --> com.ebay.common.net.api.inventory.LookupAvailabilityRequest$PhysicalLocation.<init>(...) --> com.ebay.mobile.util.LocationUtil.getLastKnownLocationOrNull(...)",
+        "Reasoning": "Location data is first stored, then logged, then initialized in another object."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "UserAgent",
+      "Device Specifications"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract device information",
+        "Source Method": "Lcom/ebay/nautilus/domain/net/EbayCosRequest;->buildEndUserContext(...)",
+        "Reasoning": "Method signature indicates data extraction",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Encode context string",
+        "Source Method": "Lcom/ebay/nautilus/domain/net/EbayCosRequest;->buildEndUserContext(...)",
+        "Reasoning": "Method encodes the context string",
+        "Action": "Encoded"
+      }
+    ],
+    "All Sinks": [
+      "Method not provided in the input data"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/ebay/nautilus/domain/net/EbayCosRequest;->buildEndUserContext(...) --> Encoded --> Method not provided in the input data",
+        "Reasoning": "Data is encoded and potentially sent to an unknown sink point"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "LocationUtil.getLastKnownLocationOrNull()",
+        "Reasoning": "Method call",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Set user location in selectedStoreInfo",
+        "Source Method": "StorePickerActivity.setSelectedStoreUserLocation()",
+        "Reasoning": "Method call",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "LocationUtil.getLastKnownLocationOrNull() --> StorePickerActivity.setSelectedStoreUserLocation()",
+        "Reasoning": "User location is passed from one method to another"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is extracted from Location object.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "Method signature matches the input data type.",
+        "Action": "Passed to GraphRequest object."
+      },
+      {
+        "Step": "GraphRequest object is passed to GraphJSONArrayCallback.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "GraphJSONArrayCallback is an argument of the method.",
+        "Action": "Potentially logged or transmitted."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest$GraphJSONArrayCallback",
+        "Reasoning": "GraphJSONArrayCallback is the final destination of the data flow."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "TelephonyManager",
+      "Settings.Secure"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is retrieved from TelephonyManager and Settings.Secure.",
+        "Source Method": "Lcom/forter/mobile/fortersdk/utils/i;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/forter/mobile/fortersdk/utils/i;->a:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/forter/mobile/fortersdk/utils/i;->a:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/forter/mobile/fortersdk/utils/i;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method invocation within the same method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID",
+      "Network Type"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve SSID",
+        "Source Method": "Lcom/forter/mobile/fortersdk/utils/j;->e:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method retrieves SSID using WifiManager API.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Retrieve Network Type",
+        "Source Method": "Lcom/forter/mobile/fortersdk/utils/i;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method retrieves network type if telephony manager is available.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/forter/mobile/fortersdk/utils/i;->c:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/forter/mobile/fortersdk/utils/j;->e:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/forter/mobile/fortersdk/utils/i;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "SSID retrieved by the first method is passed to the second method as an argument."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Account Information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract user account information",
+        "Source Method": "Lcom/forter/mobile/fortersdk/utils/k;->d:(Landroid/content/Context;)Lorg/json/JSONArray;",
+        "Reasoning": "Method summary",
+        "Action": "Stored in JSONArray"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/forter/mobile/fortersdk/utils/k;->d:(Landroid/content/Context;)Lorg/json/JSONArray; --> null",
+        "Reasoning": "No sink points found"
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve device ID",
+        "Source Method": "Lcom/riskident/device/aa;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `b()` retrieves the device ID using `TelephonyManager`.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Obfuscate device ID",
+        "Source Method": "Lcom/riskident/device/aa;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The retrieved device ID is obfuscated using `ac.c()`.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/riskident/device/aa;->b:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/riskident/device/aa;->b:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/riskident/device/aa;->b:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The device ID is first retrieved and then obfuscated before being transmitted."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved from LocationManager.",
+        "Source Method": "Lcom/riskident/device/w;->a:(Landroid/content/Context;)Lcom/riskident/device/Geo;",
+        "Reasoning": "Method summary specifies retrieving user location.",
+        "Action": "Stored in b field of w object."
+      },
+      {
+        "Step": "Geo object is returned after countdown latch.",
+        "Source Method": "Lcom/riskident/device/w;->a:(Landroid/content/Context;)Lcom/riskident/device/Geo;",
+        "Reasoning": "Method returns Geo object.",
+        "Action": "Returned from method."
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID",
+      "SSID",
+      "RSSI",
+      "Type"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting user data from Wi-Fi",
+        "Source Method": "Lcom/threatmetrix/TrustDefender/n;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "Method signature and summary mention collecting user data from Wi-Fi",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Logging user data",
+        "Source Method": "Lcom/threatmetrix/TrustDefender/n;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "Method signature and summary mention logging user data",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/threatmetrix/TrustDefender/n;-><init>:(Landroid/content/Context;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/threatmetrix/TrustDefender/n;-><init>:(Landroid/content/Context;)V --> Lcom/threatmetrix/TrustDefender/n;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "Data flows from method where it is collected to method where it is logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Read user's phone number",
+        "Source Method": "Lcom/threatmetrix/TrustDefender/r;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method reads phone number using READ_PHONE_STATE permission",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Return phone number",
+        "Source Method": "Lcom/threatmetrix/TrustDefender/r;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method returns phone number",
+        "Action": "Returned as string"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/threatmetrix/TrustDefender/r;->c:(Landroid/content/Context;)Ljava/lang/String; --> Return",
+        "Reasoning": "Phone number is returned as a string"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Location Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected.",
+        "Source Method": "Lcom/threatmetrix/TrustDefender/s;->m:()Lcom/threatmetrix/TrustDefender/h;",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Stored in file"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/threatmetrix/TrustDefender/s;->m:()Lcom/threatmetrix/TrustDefender/h;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/threatmetrix/TrustDefender/s;->m:()Lcom/threatmetrix/TrustDefender/h; --> Lcom/threatmetrix/TrustDefender/s;->m:()Lcom/threatmetrix/TrustDefender/h;",
+        "Reasoning": "User location data is collected and then stored in a file."
+      }
+    ],
+    "Label": "leak"
+  }
+]

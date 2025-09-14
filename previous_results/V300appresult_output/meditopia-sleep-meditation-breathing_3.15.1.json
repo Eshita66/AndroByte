@@ -1,0 +1,320 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method invocation to load MAC address from system file",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by reading the MAC address from a system file.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Method invocation to get raw MAC address",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling sensitive API to load MAC address from various sources.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Return statement transmitting the MAC address",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point through the return statement, which transmits the MAC address.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The MAC address is loaded from a system file, then stored in registers and variables within the getRawMacAddress method before being transmitted through its return statement."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "AccessToken",
+      "Location",
+      "Bundle",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "[The method originates user personal data through the `newPlacesSearchRequest` method, which takes an `AccessToken`, a `Location`, and other parameters.]",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "[The method takes an `AccessToken`, a `Location`, and other parameters.]",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "[The data is propagated to other methods via method invocations, such as the `isNullOrEmpty` method from the `Utility` class.]",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "[The data is propagated through method invocations.]",
+        "Action": "Passed to the `isNullOrEmpty` method."
+      },
+      {
+        "Step": "[The `isNullOrEmpty` method checks if the input string is null or empty and uses the 'isNullOrEmpty' sensitive API to originate user personal data.]",
+        "Source Method": "Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z",
+        "Reasoning": "[The method takes an input string and checks if it's null or empty.]",
+        "Action": "Stored in register v0."
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z (propagated through method invocations) --> No explicit sink identified.",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "accuracy type",
+      "device ID",
+      "user ID",
+      "API method",
+      "Leanplum version",
+      "development mode status",
+      "request ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates location and accuracy type data from the `doInBackground` method.",
+        "Source Method": "Lcom/leanplum/internal/LeanplumInternal$7$1;->doInBackground:([Ljava/lang/Void;)Ljava/lang/Void;",
+        "Reasoning": "The data is stored in variables and propagated through registers. It reaches a sink point by posting to Leanplum's server.",
+        "Action": "Stored, logged"
+      },
+      {
+        "Step": "Originates user personal data from the `post` method of the current class.",
+        "Source Method": "Lcom/leanplum/internal/RequestOld;->post:(Ljava/lang/String; Ljava/util/Map;)Lcom/leanplum/internal/RequestOld;",
+        "Reasoning": "The data is stored in registers and variables within the method. It is propagated to other methods via method invocations, particularly to logging methods.",
+        "Action": "Stored, logged"
+      },
+      {
+        "Step": "Originates user personal data by accessing device ID, user ID, API method, Leanplum version, development mode status, and request ID in the `createArgsDictionary` method.",
+        "Source Method": "Lcom/leanplum/internal/RequestOld;->createArgsDictionary:()Ljava/util/Map;",
+        "Reasoning": "The data is stored in a HashMap and passed to the next methods. The method also checks for the presence of a token before adding it to the map.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data through the 'incrementCount' method call with a String parameter in the `incrementCount` method.",
+        "Source Method": "Lcom/leanplum/internal/CountAggregator;->incrementCount:(Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in register v1 and passed to the 'incrementCount' method. There are no sink points identified.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data by calling the name() method on an Enum object (LeanplumLogType) in the `generateTag` method.",
+        "Source Method": "Lcom/leanplum/internal/Log;->generateTag:(Lcom/leanplum/internal/Log$LeanplumLogType;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in a StringBuilder instance variable and then passed to the toString() method, which returns the final string. However, there are no sink points like logging, network transmission, or storage within this method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data through the 'post' API call to send a log in the `maybeSendLog` method.",
+        "Source Method": "Lcom/leanplum/internal/Log;->maybeSendLog:(Ljava/lang/String;)V",
+        "Reasoning": "[This method originates user personal data through the 'post' API call to send a log. The data is stored in registers and variables within the method and propagated via method invocations. The data reaches a sink point, which is network transmission.]",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Originates user personal data by accessing the 'enabledCounters' and 'counts' maps in the `incrementCount` method.",
+        "Source Method": "Lcom/leanplum/internal/CountAggregator;->incrementCount:(Ljava/lang/String; I)V",
+        "Reasoning": "The data is stored in registers v0, v1, and propagated through method invocations to update the counts map. No sinks are identified.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data by calling the name() method on an Enum object (LeanplumLogType) in the `generateTag` method.",
+        "Source Method": "Lcom/leanplum/internal/Log;->generateTag:(Lcom/leanplum/internal/Log$LeanplumLogType;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in a StringBuilder instance variable and then passed to the toString() method, which returns the final string. However, there are no sink points like logging, network transmission, or storage within this method.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V",
+      "Lcom/leanplum/internal/OsHandler;->getInstance:()Lcom/leanplum/internal/OsHandler;",
+      "Lcom/leanplum/internal/Util;->handleException:(Ljava/lang/Throwable;)V",
+      "Lcom/leanplum/internal/Log;->e:([Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/leanplum/internal/LeanplumInternal$7$1;->doInBackground:([Ljava/lang/Void;)Ljava/lang/Void--> Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V] ",
+        "Reasoning": "The data is stored in variables and propagated through registers. It reaches a sink point by posting to Leanplum's server."
+      },
+      {
+        "dataflow 2": " [Lcom/leanplum/internal/RequestOld;->post:(Ljava/lang/String; Ljava/util/Map;)Lcom/leanplum/internal/RequestOld--> Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V] ",
+        "Reasoning": "The data is stored in registers and variables within the method. It is propagated to other methods via method invocations, particularly to logging methods."
+      },
+      {
+        "dataflow 3": " [Lcom/leanplum/internal/RequestOld;->createArgsDictionary:()Ljava/util/Map--> Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V] ",
+        "Reasoning": "The data is stored in a HashMap and passed to the next methods. The method also checks for the presence of a token before adding it to the map."
+      },
+      {
+        "dataflow 4": " [Lcom/leanplum/internal/CountAggregator;->incrementCount:(Ljava/lang/String;)V--> Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V] ",
+        "Reasoning": "The data is stored in register v1 and passed to the 'incrementCount' method. There are no sink points identified."
+      },
+      {
+        "dataflow 5": " [Lcom/leanplum/internal/Log;->generateTag:(Lcom/leanplum/internal/Log$LeanplumLogType;)Ljava/lang/String--> Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V] ",
+        "Reasoning": "The data is stored in a StringBuilder instance variable and then passed to the toString() method, which returns the final string. However, there are no sink points like logging, network transmission, or storage within this method."
+      },
+      {
+        "dataflow 6": " [Lcom/leanplum/internal/Log;->maybeSendLog:(Ljava/lang/String;)V--> Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V] ",
+        "Reasoning": "[This method originates user personal data through the 'post' API call to send a log. The data is stored in registers and variables within the method and propagated via method invocations. The data reaches a sink point, which is network transmission.]"
+      },
+      {
+        "dataflow 7": " [Lcom/leanplum/internal/CountAggregator;->incrementCount:(Ljava/lang/String; I)V--> Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V] ",
+        "Reasoning": "The data is stored in registers v0, v1, and propagated through method invocations to update the counts map. No sinks are identified."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WiFi MAC address hash",
+      "User phone number",
+      "Device ID",
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain WiFi MAC address hash",
+        "Source Method": "Lcom/leanplum/internal/Util;->getWifiMacAddressHash:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method uses the `getWifiMacAddressHash` function to obtain the WiFi MAC address hash.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Concatenate user personal data",
+        "Source Method": "Lcom/leanplum/internal/Log;->w:([Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data by using the `sget-object` instruction to retrieve a warning log type from the `Lcom/leanplum/internal/Log$LeanplumLogType;` enum.",
+        "Action": "Concatenated with other strings"
+      },
+      {
+        "Step": "Store device ID and phone number",
+        "Source Method": "Lcom/leanplum/internal/RequestOld;->post:(Ljava/lang/String; Ljava/util/Map;)Lcom/leanplum/internal/RequestOld;",
+        "Reasoning": "The method originates user personal data from the 'post' API call.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Log location",
+        "Source Method": "Lcom/leanplum/internal/Log;->maybeSendLog:(Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data by logging a message using the `post` method from `RequestOld`.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/leanplum/internal/Log;->maybeSendLog:(Ljava/lang/String;)V",
+      "Lcom/leanplum/internal/Log;->log:(Lcom/leanplum/internal/Log$LeanplumLogType; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/leanplum/internal/Util;->getWifiMacAddressHash:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/leanplum/internal/Log;->w:([Ljava/lang/Object;)V --> Lcom/leanplum/internal/Log;->maybeSendLog:(Ljava/lang/String;)V",
+        "Reasoning": "The WiFi MAC address hash is obtained, concatenated with other strings, and then logged."
+      },
+      {
+        "dataflow 2": "Lcom/leanplum/internal/RequestOld;->post:(Ljava/lang/String; Ljava/util/Map;)Lcom/leanplum/internal/RequestOld; --> Lcom/leanplum/internal/Log;->maybeSendLog:(Ljava/lang/String;)V",
+        "Reasoning": "The device ID and phone number are stored, then logged."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is stored in registers and variables within LocationController.",
+        "Source Method": "Lcom/onesignal/LocationController;->c:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data through the Location object (v6). The data is stored in various registers and variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User location data is accessed using sget-object instruction in LocationController.",
+        "Source Method": "Lcom/onesignal/LocationController;->b:(Lcom/onesignal/LocationController$d;)V",
+        "Reasoning": "The method uses the `sget-object` instruction to access a sensitive field (`b`) of the `LocationController` class, which is used to store user location data.",
+        "Action": "Accessed"
+      },
+      {
+        "Step": "User personal data is stored in register v0 and passed to other methods via method invocations in OneSignal.",
+        "Source Method": "Lcom/onesignal/OneSignal;->a:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data through the `a` method of the `OneSignal` class, which takes a log level and a string as parameters.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User personal data is accessed using sget-object instruction in OneSignal.",
+        "Source Method": "Lcom/onesignal/OneSignal;->b:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The current method is using the `sget-object` instruction to retrieve a sensitive user personal data (log level) from the `OneSignal` class.",
+        "Action": "Accessed"
+      },
+      {
+        "Step": "User personal data is stored in register v0 and passed to other methods via method invocations in y1.",
+        "Source Method": "Lcom/onesignal/y1;->l:(Ljava/lang/String; Ljava/lang/String; J)V",
+        "Reasoning": "The method originates user personal data through the invocation of `Ljava/lang/Long;->valueOf(J)Ljava/lang/Long` which takes a sensitive value (J) and stores it in register v2.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User personal data is accessed using sget-object instruction in y1.",
+        "Source Method": "Lcom/onesignal/y1;->i:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Object;)V",
+        "Reasoning": "The method originates user personal data by using the `sget-object` instruction to retrieve a sensitive API result from `Lcom/onesignal/y1;->b`. The data is stored in register `v0` as a `HashMap`.",
+        "Action": "Accessed"
+      },
+      {
+        "Step": "User personal data is accessed using sget-object instruction in y1$a.",
+        "Source Method": "Lcom/onesignal/y1$a;->o:()V",
+        "Reasoning": "The method originates sensitive user personal data by invoking a static method from the class com.onesignal.y1$a. The data is stored in register v0 and passed to another method via method invocation.",
+        "Action": "Accessed"
+      },
+      {
+        "Step": "User personal data is accessed using sget-object instruction in y1$a.",
+        "Source Method": "Lcom/onesignal/y1$a;->e:()V",
+        "Reasoning": "The method originates user personal data by invoking the 'f()' and 'd()' methods, which likely access sensitive API calls. The data is stored in register v0 and propagated to other methods via method invocations.",
+        "Action": "Accessed"
+      },
+      {
+        "Step": "User personal data is accessed using sget-object instruction in y1$a.",
+        "Source Method": "Lcom/onesignal/y1$a;->f:()V",
+        "Reasoning": "The method originates sensitive user personal data by invoking the start() method of HandlerThread. The data is stored in registers and variables within the method.",
+        "Action": "Accessed"
+      },
+      {
+        "Step": "User personal data is accessed using sget-object instruction in y1$a.",
+        "Source Method": "Lcom/onesignal/y1$a;->d:()V",
+        "Reasoning": "The method originates user personal data by accessing a Handler object and removing callbacks. It then retrieves the current time in milliseconds, adds 200ms to it, and schedules a delayed task using this value.",
+        "Action": "Accessed"
+      },
+      {
+        "Step": "User personal data is stored in field 'c' of y1$a$a.",
+        "Source Method": "Lcom/onesignal/y1$a$a;-><init>:(Lcom/onesignal/y1$a;)V",
+        "Reasoning": "The method originates user personal data by invoking the constructor of Object and storing it in a field 'c'. The data is then propagated to other methods via method invocations.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/onesignal/OneSignal;->b:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String; Ljava/lang/Throwable;)V",
+      "Lcom/onesignal/y1;->i:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/onesignal/LocationController;->c:(Landroid/location/Location;)V --> Lcom/onesignal/OneSignal;->a:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String;)V --> Lcom/onesignal/OneSignal;->b:(Lcom/onesignal/OneSignal$LOG_LEVEL; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data flow starts from LocationController, where user location data is stored. This data is then passed to OneSignal's a() method, which takes a log level and a string as parameters. Finally, the data is accessed in OneSignal's b() method using sget-object instruction."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

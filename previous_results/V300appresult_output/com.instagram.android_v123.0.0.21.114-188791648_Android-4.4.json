@@ -1,0 +1,1207 @@
+[
+  {
+    "Data Types Collected": [
+      "Phone Type",
+      "Country ISO",
+      "Operator",
+      "Sim Operator Name",
+      "Line Number",
+      "SerialNumber",
+      "Subscriber ID",
+      "Device Locale"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "TelephonyManager collects user data",
+        "Source Method": "LX/0eH;->A01:(LX/0LA;)V",
+        "Reasoning": "Method signature matches the provided summary",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is transmitted to logging mechanism",
+        "Source Method": "LX/0eH;->A01:(LX/0LA;)V",
+        "Reasoning": "Logging is mentioned in the summary",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "LX/0eH;->A01:(LX/0LA;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/0eH;->A01:(LX/0LA;)V --> LX/0eH;->A01:(LX/0LA;)V",
+        "Reasoning": "Data flows from source method to logging mechanism"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method Initialization",
+        "Source Method": "LX/15y;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      "Logging"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/15y;-><init>:(Landroid/content/Context;)V --> Logging",
+        "Reasoning": "Sensitive API call detected. Data is collected and sent to logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is originated in the discover/topical_explore/ API call.",
+        "Source Method": "LX/1Kb;->AOZ:(LX/0Et; Ljava/lang/String; Z)LX/0bd;",
+        "Reasoning": "API call parameters",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive user personal data is passed to the LX/1Lv;->A04() method.",
+        "Source Method": "LX/1Kb;->AOZ:(LX/0Et; Ljava/lang/String; Z)LX/0bd;",
+        "Reasoning": "Method argument",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Sensitive user personal data is logged using the LX/0rg;->A03() method.",
+        "Source Method": "LX/1Lv;->A04()",
+        "Reasoning": "Method call",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "LX/0rg;->A03()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/1Kb;->AOZ() --> LX/1Lv;->A04() --> LX/0rg;->A03()",
+        "Reasoning": "Sensitive user personal data is logged after being passed to the LX/1Lv;->A04() method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "TelephonyManager API retrieves phone number",
+        "Source Method": "LX/1Rh;-><init>:(Landroid/content/Context; LX/0Et;)V",
+        "Reasoning": "TelephonyManager API is used to retrieve the phone number.",
+        "Action": "Stored in local variable"
+      },
+      {
+        "Step": "Phone number is passed to LX/1Rh;-><init> method",
+        "Source Method": "LX/1Rh;-><init>:(Landroid/content/Context; LX/0Et;)V",
+        "Reasoning": "Phone number is passed as an argument to the LX/1Rh;-><init> method.",
+        "Action": "Stored in LX/1Rh;-><init> method"
+      },
+      {
+        "Step": "Phone number is stored in shared preferences",
+        "Source Method": "LX/1Rh;-><init>:(Landroid/content/Context; LX/0Et;)V",
+        "Reasoning": "Shared preferences are used to store the phone number.",
+        "Action": "Stored in shared preferences"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " TelephonyManager API(...) --> LX/1Rh;-><init> method(...) --> Shared Preferences(...)",
+        "Reasoning": "Phone number is retrieved from TelephonyManager API, passed to LX/1Rh;-><init> method, and then stored in shared preferences."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user location",
+        "Source Method": "LX/1ah;->A00:()Z",
+        "Reasoning": "getLastKnownLocation() method is used to retrieve user location",
+        "Action": "Stored in v7"
+      },
+      {
+        "Step": "Calculate distance traveled and time spent",
+        "Source Method": "LX/1ah;->A00:()Z",
+        "Reasoning": "Location data is used to calculate distance and time",
+        "Action": "Calculated and stored in internal variables"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/1ah;->A00:()Z --> Calculated and stored in internal variables",
+        "Reasoning": "Location data is obtained, processed, and stored in memory but not logged, transmitted, or displayed"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Location Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location data",
+        "Source Method": "LX/1j0;->A00:()V",
+        "Reasoning": "Method summary indicates location data retrieval",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Send location data to server",
+        "Source Method": "LX/1j0;->A00:()V",
+        "Reasoning": "Method summary mentions sending data to a server",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Unknown method signature"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/1j0;->A00:()V --> Unknown method signature",
+        "Reasoning": "Data is collected from the source method and then transmitted to the sink method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "LX/1jG;->A03:()V",
+        "Reasoning": "Method summary mentions retrieving location data",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Log location data",
+        "Source Method": "LX/1jG;->A03:()V",
+        "Reasoning": "Method summary mentions logging location data",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "LX/9Se"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/1jG;->A03:()V --> LX/9Se",
+        "Reasoning": "Location data is retrieved and logged in LX/9Se"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "is_ad",
+      "scan_number",
+      "image_size_kb",
+      "estimated_bandwidth",
+      "network_type",
+      "network_subtype",
+      "device_lat",
+      "device_long",
+      "client_sample_rate"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User input is collected through various fields.",
+        "Source Method": "LX/1jc;->A01:(Landroid/content/Context; LX/0Tu; LX/0bk; Z Z)V",
+        "Reasoning": "Sensitive data fields are explicitly mentioned in the summary.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is logged and tracked using LgptLogger.",
+        "Source Method": "LX/1jc;->A01:(Landroid/content/Context; LX/0Tu; LX/0bk; Z Z)V",
+        "Reasoning": "LgptLogger.log() and LgptLogger.track() are called in the summary.",
+        "Action": "Logged, Tracked"
+      }
+    ],
+    "All Sinks": [
+      "LgptLogger.log()",
+      "LgptLogger.track()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/1jc;->A01(...) --> LgptLogger.log(...) --> LgptLogger.track(...)",
+        "Reasoning": "Data flows from the source method through LgptLogger.log() and then LgptLogger.track(). The reasoning is provided in the Overall Data Flow section."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Origination",
+        "Source Method": "LX/1tO;->A00:()LX/0LA;",
+        "Reasoning": "Sensitive API calls detected",
+        "Action": "Originated"
+      },
+      {
+        "Step": "Propagation",
+        "Source Method": "LX/1tO;->A00:()LX/0LA;",
+        "Reasoning": "User data is propagated",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Logging",
+        "Source Method": "LX/1tO;->A00:()LX/0LA;",
+        "Reasoning": "Potentially logged",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "LX/1tO;->A00:()LX/0LA;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/1tO;->A00:()LX/0LA; --> LX/1tO;->A00:()LX/0LA; --> LX/1tO;->A00:()LX/0LA;",
+        "Reasoning": "User data is originated, propagated, and potentially logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Reading Device ID",
+        "Source Method": "LX/2k0;->A09:(I)Ljava/lang/String;",
+        "Reasoning": "Method reads the device ID using TelephonyManager API.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": " ContentValues is created with latitude and longitude",
+        "Source Method": "LX/3qI;->A03:(Landroid/content/ContentResolver; Ljava/lang/String; J Landroid/location/Location; Ljava/lang/String; Ljava/lang/String; [I)V",
+        "Reasoning": "Method parameters",
+        "Action": "Stored"
+      },
+      {
+        "Step": " ContentValues is passed to ContentResolver.insert()",
+        "Source Method": "LX/3qI;->A03:(Landroid/content/ContentResolver; Ljava/lang/String; J Landroid/location/Location; Ljava/lang/String; Ljava/lang/String; [I)V",
+        "Reasoning": "Method call",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "ContentResolver.insert()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/3qI;->A03(...) --> ContentResolver.insert(...)",
+        "Reasoning": " ContentValues is passed to ContentResolver.insert() method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "ExifInterface"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract Location Data",
+        "Source Method": "LX/3r5;->A04:(Landroid/location/Location; Ljava/lang/String;)V",
+        "Reasoning": "Method extracts latitude, longitude, latitude reference, and longitude reference from a Location object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Set Exif Data",
+        "Source Method": "LX/3r5;->A04:(Landroid/location/Location; Ljava/lang/String;)V",
+        "Reasoning": "Method sets latitude, longitude, latitude reference, and longitude reference in an ExifInterface object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/3r5;->A04:(Landroid/location/Location; Ljava/lang/String;)V --> LX/3r5;->A04:(Landroid/location/Location; Ljava/lang/String;)V",
+        "Reasoning": "Location data is extracted from the Location object and set in the ExifInterface object."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location object is obtained from the input parameter",
+        "Source Method": "LX/3r7;->A05:(Landroid/location/Location;)LX/3r7;",
+        "Reasoning": "Method signature and summary",
+        "Action": "Stored in v2 and v0"
+      },
+      {
+        "Step": "Latitude and longitude are extracted from the Location object",
+        "Source Method": "LX/3r7;->A02:(Landroid/location/Location;)Ljava/lang/String;",
+        "Reasoning": "Method signature and summary",
+        "Action": "Stored in PendingMedia object"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/3r7;->A05:(Landroid/location/Location;)LX/3r7 --> LX/3r7;->A02:(Landroid/location/Location;)Ljava/lang/String --> null",
+        "Reasoning": "Data flows from source method to sink method via the overall data flow"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data",
+        "Source Method": "LX/3r7;->A06:(Landroid/location/Location;)LX/3r7;",
+        "Reasoning": "Method extracts latitude and longitude from Location object",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/3r7;->A06:(Landroid/location/Location;)LX/3r7 --> null",
+        "Reasoning": "Location data is extracted but not further processed or sent to any sink points"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location from Location object",
+        "Source Method": "LX/3rB;->A04:(LX/0Et; LX/3r9; Ljava/lang/Integer; LX/2m2; LX/3pT; Landroid/location/Location; Ljava/lang/Integer;)V",
+        "Reasoning": "Method signature",
+        "Action": "Stored in v4"
+      },
+      {
+        "Step": "Determine action based on v1",
+        "Source Method": "LX/3rB;->A04:(LX/0Et; LX/3r9; Ljava/lang/Integer; LX/2m2; LX/3pT; Landroid/location/Location; Ljava/lang/Integer;)V",
+        "Reasoning": "Method logic",
+        "Action": "Logged, transmitted, or saved to database"
+      }
+    ],
+    "All Sinks": [
+      "LX/3GF",
+      "LX/3GF",
+      "LX/3GF"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/3rB;->A04(...) --> LX/3GF(...) --> LX/3GF(...) --> LX/3GF(...)",
+        "Reasoning": "Method calls and actions based on v1 value"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "LX/5iT;->run:()V",
+        "Reasoning": "Sensitive API `getLastLocation()` is used",
+        "Action": "Stored in `v2`"
+      },
+      {
+        "Step": "Set latitude and longitude",
+        "Source Method": "LX/0rg;->A08()",
+        "Reasoning": "`v2` contains user location",
+        "Action": "Set `lat` and `lng` fields"
+      }
+    ],
+    "All Sinks": [
+      "LX/0bd;->A03()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/5iT;->run:()V --> LX/0rg;->A08() --> LX/0bd;->A03()",
+        "Reasoning": "User location is retrieved, stored, and then passed to a task scheduler"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "name",
+      "email",
+      "phone number",
+      "geolocation"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Origination",
+        "Source Method": "LX/5s1;->A00:()LX/0bd;",
+        "Reasoning": "Sensitive user data originates from LX/5s1 class.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data Transformation",
+        "Source Method": "...",
+        "Reasoning": "...",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Logging",
+        "Source Method": "...",
+        "Reasoning": "...",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "...",
+      "..."
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/5s1;->A00:()LX/0bd; --> ... --> ... --> ... --> ...",
+        "Reasoning": "Sensitive user data flows through various methods before being logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user input"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User input is stored in `v3` object.",
+        "Source Method": "LX/5vf;->A02:(Z Z LX/0bh;)V",
+        "Reasoning": "Method summary specifies user input is stored in `v3`.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to `LX/5zE;->A04()` method.",
+        "Source Method": "LX/5vf;->A02:(Z Z LX/0bh;)V",
+        "Reasoning": "Method summary specifies data is passed to `LX/5zE;->A04()`.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is logged to console.",
+        "Source Method": "LX/5zE;->A04()",
+        "Reasoning": "Method summary specifies data is logged.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "LX/5zE;->A04()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/5vf;->A02:(Z Z LX/0bh;)V --> LX/5zE;->A04()",
+        "Reasoning": "Overall data flow summarizes the data flow between these methods."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive location data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Venue object provides location data",
+        "Source Method": "LX/60y;->A00:(Landroid/content/Context; LX/0Et; Lcom/instagram/model/venue/Venue;)Ljava/lang/String;",
+        "Reasoning": "Venue object contains location data",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Formatted and returned as string",
+        "Source Method": "LX/60y;->A00:(Landroid/content/Context; LX/0Et; Lcom/instagram/model/venue/Venue;)Ljava/lang/String;",
+        "Reasoning": "Formatting and string conversion",
+        "Action": "Formatted"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/60y;->A00(...) --> Stored",
+        "Reasoning": "Location data is stored in the application"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is collected in the `A00` method.",
+        "Source Method": "LX/61A;->A00:(Ljava/lang/String; Ljava/lang/String;)LX/0bd;",
+        "Reasoning": "Method summary indicates data origin.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is passed through `A06`, `A08`, `A09`, and `A03` methods.",
+        "Source Method": "LX/61A;->A00:(Ljava/lang/String; Ljava/lang/String;)LX/0bd;",
+        "Reasoning": "Method calls within the flow.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is sent to the `igtv/search/` endpoint.",
+        "Source Method": "LX/61A;->A00:(Ljava/lang/String; Ljava/lang/String;)LX/0bd;",
+        "Reasoning": "Endpoint mentioned in method summary.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "igtv/search/"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/61A;->A00:(Ljava/lang/String; Ljava/lang/String;)LX/0bd --> igtv/search/",
+        "Reasoning": "Data is passed through methods and sent to the endpoint."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Personal Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is originated in LX/6BN;->A04() method.",
+        "Source Method": "LX/6BN;->A04()",
+        "Reasoning": "API calls, stored in registers and variables.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to LX/6BK;->A00() method.",
+        "Source Method": "LX/6BN;->A04()",
+        "Reasoning": "Passed as argument.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is passed to LX/6BM;-><init>() method.",
+        "Source Method": "LX/6BK;->A00()",
+        "Reasoning": "Passed as argument.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is passed to LX/6BP;-><init>() method.",
+        "Source Method": "LX/6BM;-><init>()",
+        "Reasoning": "Passed as argument.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is passed to LX/6BL;-><init>() method.",
+        "Source Method": "LX/6BP;-><init>()",
+        "Reasoning": "Passed as argument.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is passed to LX/1LY;->A02() method.",
+        "Source Method": "LX/6BL;-><init>()",
+        "Reasoning": "Passed as argument.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is logged.",
+        "Source Method": "LX/1LY;->A02()",
+        "Reasoning": "Logging call.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "LX/1LY;->A02()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/6BN;->A04() --> LX/6BK;->A00() --> LX/6BM;-><init>() --> LX/6BP;-><init>() --> LX/6BL;-><init>() --> LX/1LY;->A02()",
+        "Reasoning": "Sensitive user personal data is passed through each method and finally logged in LX/1LY;->A02() method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is originated in the `FollowersShareFragment` method.",
+        "Source Method": "Lcom/instagram/creation/fragment/FollowersShareFragment;->A0H:(Lcom/instagram/model/venue/Venue; I)V",
+        "Reasoning": "Method summary",
+        "Action": "Stored, transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/instagram/creation/fragment/FollowersShareFragment;->A0H:(Lcom/instagram/model/venue/Venue; I)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/instagram/creation/fragment/FollowersShareFragment;->A0H:(Lcom/instagram/model/venue/Venue; I)V --> Lcom/instagram/creation/fragment/FollowersShareFragment;->A0H:(Lcom/instagram/model/venue/Venue; I)V",
+        "Reasoning": "Sensitive user personal data is stored and potentially transmitted."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected.",
+        "Source Method": "LX/6DI;->A00(...)",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Stored in registers."
+      },
+      {
+        "Step": "Location is passed to another method.",
+        "Source Method": "LX/6DI;->A00(...)",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Passed to LX/0rg;->A03() method."
+      },
+      {
+        "Step": "Method potentially logs the data.",
+        "Source Method": "LX/0rg;->A03()",
+        "Reasoning": "Method signature suggests logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "LX/0rg;->A03()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/6DI;->A00(...) --> LX/0rg;->A03(...) ",
+        "Reasoning": "Location is collected in LX/6DI;->A00(...), passed to LX/0rg;->A03(...), and logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved.",
+        "Source Method": "LX/6IZ;->A98:(LX/0Et; Landroid/content/Context; Ljava/lang/String;)LX/0rg;",
+        "Reasoning": "Sensitive API is used to get user location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is logged.",
+        "Source Method": "LX/6IZ;->A98:(LX/0Et; Landroid/content/Context; Ljava/lang/String;)LX/0rg;",
+        "Reasoning": "Data is logged.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Location is sent to the network.",
+        "Source Method": "LX/6IZ;->A98:(LX/0Et; Landroid/content/Context; Ljava/lang/String;)LX/0rg;",
+        "Reasoning": "Data is sent to the network.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "LX/6IZ;->A98:(LX/0Et; Landroid/content/Context; Ljava/lang/String;)LX/0rg;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/6IZ;->A98:(LX/0Et; Landroid/content/Context; Ljava/lang/String;)LX/0rg; --> LX/6IZ;->A98:(LX/0Et; Landroid/content/Context; Ljava/lang/String;)LX/0rg; --> LX/6IZ;->A98:(LX/0Et; Landroid/content/Context; Ljava/lang/String;)LX/0rg;",
+        "Reasoning": "User location is retrieved, logged, and sent to the network."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved from the Location object.",
+        "Source Method": "LX/6W5;->A00:(LX/0Et; Ljava/lang/Integer; Landroid/location/Location;)LX/0bd;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in LX/0rg object."
+      },
+      {
+        "Step": "Data is transmitted to LX/6Wd class.",
+        "Source Method": "LX/6W5;->A00:(LX/0Et; Ljava/lang/Integer; Landroid/location/Location;)LX/0bd;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Transmitted using A06() method."
+      }
+    ],
+    "All Sinks": [
+      "LX/6Wd;->A06:(Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/6W5;->A00(...) --> LX/6Wd;->A06(...)",
+        "Reasoning": "Overall data flow based on the method summaries."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location data",
+        "Source Method": "Lcom/facebook/cameracore/mediapipeline/dataproviders/location/implementation/LocationDataProviderImpl;->getCurrentLocationData:()Lcom/facebook/cameracore/mediapipeline/dataproviders/location/interfaces/LocationData;",
+        "Reasoning": "Sensitive API is used to retrieve user location data",
+        "Action": "Stored in LocationData object"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "LocationDataProviderImpl;->getCurrentLocationData() --> LocationData",
+        "Reasoning": "Location data is retrieved and stored in the LocationData object"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location Data is collected by LocationDataProviderImpl",
+        "Source Method": "LX/7LM;->Axk:(LX/0kn;)V",
+        "Reasoning": "Method invocation in LX/7LM;->Axk",
+        "Action": "Stored in NativeDataPromise"
+      },
+      {
+        "Step": "Location Data is passed to LocationData object",
+        "Source Method": "LX/7LM;->Axk:(LX/0kn;)V",
+        "Reasoning": "Method invocation in LX/7LM;->Axk",
+        "Action": "Passed as an argument"
+      },
+      {
+        "Step": "Location Data is passed to LocationDataProviderImpl",
+        "Source Method": "LX/7LM;->Axk:(LX/0kn;)V",
+        "Reasoning": "Method invocation in LX/7LM;->Axk",
+        "Action": "Passed as an argument"
+      },
+      {
+        "Step": "Location Data is passed to NativeDataPromise",
+        "Source Method": "LX/7LM;->Axk:(LX/0kn;)V",
+        "Reasoning": "Method invocation in LX/7LM;->Axk",
+        "Action": "Passed as an argument"
+      }
+    ],
+    "All Sinks": [
+      "NativeDataPromise"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/7LM;->Axk --> NativeDataPromise",
+        "Reasoning": "Location Data is collected by LocationDataProviderImpl and passed to NativeDataPromise"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "TelephonyManager API call `getLine1Number()`",
+        "Source Method": "LX/7nc;->A00:(Landroid/content/Context; LX/0Uw; LX/2no; LX/2nn;)LX/7nZ;",
+        "Reasoning": "Method signature contains `getLine1Number()`",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Passed to `LX/7nZ`",
+        "Source Method": "LX/7nc;->A00:(Landroid/content/Context; LX/0Uw; LX/2no; LX/2nn;)LX/7nZ;",
+        "Reasoning": "Method signature matches",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Logged",
+        "Source Method": "LX/7nZ",
+        "Reasoning": "Method signature matches",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "LX/7nZ"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/7nc;->A00(...) --> LX/7nZ -->",
+        "Reasoning": "Data flows from source method to sink method through logging"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve WiFi SSID",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The method directly accesses and returns the WiFi SSID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> null",
+        "Reasoning": "The method does not reach any sink points, therefore there is no data flow."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Personal Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user personal data is originated from the Android account manager.",
+        "Source Method": "LX/82Q;->A01:(Landroid/content/Context; LX/0Uw; Ljava/lang/String; LX/0Tu;)Ljava/util/List;",
+        "Reasoning": "Method summary indicates data originates from Android account manager.",
+        "Action": "Stored in ArrayList"
+      },
+      {
+        "Step": "Data is passed to the A00() method for logging.",
+        "Source Method": "LX/82Q;->A01:(Landroid/content/Context; LX/0Uw; Ljava/lang/String; LX/0Tu;)Ljava/util/List;",
+        "Reasoning": "Method summary indicates data is passed to A00() method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "LX/82Q;->A00(Ljava/util/List;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/82Q;->A01(...) --> LX/82Q;->A00(...)",
+        "Reasoning": "Data flows from A01 method to A00 method through logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user account information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User account information is retrieved from the AccountManager.",
+        "Source Method": "LX/82Q;->A02()",
+        "Reasoning": "AccountManager.getAccounts() method is called.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "User account information is passed to the LX/82Q;->A04() method.",
+        "Source Method": "LX/82Q;->A02()",
+        "Reasoning": "AccountManager.getAccounts() method returns user account information.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "User account information is passed to the LX/82Q;->A03() method.",
+        "Source Method": "LX/82Q;->A04()",
+        "Reasoning": "LX/82Q;->A04() method receives user account information.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "User account information is logged using LX/0de;->A1Y.",
+        "Source Method": "LX/82Q;->A03()",
+        "Reasoning": "LX/82Q;->A03() method logs user account information.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "LX/0de;->A1Y"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/82Q;->A02() --> LX/82Q;->A04() --> LX/82Q;->A03() --> LX/0de;->A1Y",
+        "Reasoning": "User account information is collected, passed, logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Account Names",
+      "Account Types"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract user account names",
+        "Source Method": "LX/82R;->A00:(Landroid/content/Context;)Ljava/util/List;",
+        "Reasoning": "Method signature indicates the method extracts user account names.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check account association with Google accounts",
+        "Source Method": "LX/82R;->A00:(Landroid/content/Context;)Ljava/util/List;",
+        "Reasoning": "Sensitive data flow based on the provided summary.",
+        "Action": "N/A"
+      }
+    ],
+    "All Sinks": [
+      "N/A"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/82R;->A00:(Landroid/content/Context;)Ljava/util/List; --> Sensitive Data Flow --> N/A",
+        "Reasoning": "Sensitive data flow identified in the method summary."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location",
+        "Source Method": "Lcom/facebook/react/modules/location/LocationModule;->getCurrentPosition(...)V",
+        "Reasoning": "Method signature indicates location retrieval",
+        "Action": "Stored in local variable"
+      },
+      {
+        "Step": "Map location data",
+        "Source Method": "Lcom/facebook/react/modules/location/LocationModule;->locationToMap(...)V",
+        "Reasoning": "Method name implies location transformation",
+        "Action": "Passed to success callback"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/react/bridge/Callback;->invoke(...)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/react/modules/location/LocationModule;->getCurrentPosition(...)V --> Lcom/facebook/react/modules/location/LocationModule;->locationToMap(...)V --> Lcom/facebook/react/bridge/Callback;->invoke(...)V",
+        "Reasoning": "Data flows from location retrieval to success callback"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive location data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve sensitive location data",
+        "Source Method": "LX/8nQ;->A01:(Z)V",
+        "Reasoning": "`checkSelfPermission()` and `getLastKnownLocation()` methods are used to retrieve sensitive location data.",
+        "Action": "Stored in `A00`"
+      },
+      {
+        "Step": "Update map view",
+        "Source Method": "LX/8nQ;->A01:(Z)V",
+        "Reasoning": "The retrieved sensitive location data is used to update a map view.",
+        "Action": "Map view updated with sensitive location data"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/8nQ;->A01:(Z)V --> LX/8nQ;->A01:(Z)V --> null",
+        "Reasoning": "Sensitive location data is retrieved, used to update the map view, and no sinks are identified."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is retrieved from getLastLocation() method.",
+        "Source Method": "LX/9hv;->A00:(LX/0Et;)Lcom/facebook/android/maps/model/LatLng;",
+        "Reasoning": "Sensitive user location data is originated in getLastLocation() method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is passed to new-instance to create a LatLng object.",
+        "Reasoning": "The LatLng object is created from the location data.",
+        "Action": "Created"
+      },
+      {
+        "Step": "LatLng object is returned as the result of the method.",
+        "Reasoning": "The LatLng object is returned as the result of the method.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "LX/9hv;->A00:(LX/0Et;)Lcom/facebook/android/maps/model/LatLng;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/9hv;->A00:(LX/0Et;)Lcom/facebook/android/maps/model/LatLng; --> LX/9hv;->A00:(LX/0Et;)Lcom/facebook/android/maps/model/LatLng;",
+        "Reasoning": "Location data is retrieved from getLastLocation() method and returned as the result of the method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User location",
+      "Device ID",
+      "Phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected from LX/A41 class.",
+        "Source Method": "LX/A3r;->A02:(Ljava/lang/String; Ljava/util/List; Ljava/lang/String; Ljava/lang/Integer; Ljava/lang/Boolean;)LX/A3u",
+        "Reasoning": "Sensitive user location data is originated from the LX/A41 class.",
+        "Action": "Stored in a list within LX/A42."
+      },
+      {
+        "Step": "Data is passed to LX/A3u method.",
+        "Source Method": "LX/A3r;->A02:(Ljava/lang/String; Ljava/util/List; Ljava/lang/String; Ljava/lang/Integer; Ljava/lang/Boolean;)LX/A3u",
+        "Reasoning": "Data is passed to the LX/A3u method.",
+        "Action": "Potentially logged or transmitted based on A0B and A0D fields."
+      }
+    ],
+    "All Sinks": [
+      "LX/A3u"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/A41 --> LX/A3u",
+        "Reasoning": "User location is collected from LX/A41 and passed to LX/A3u."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user location data is collected.",
+        "Source Method": "LX/A3y;->A02:(Landroid/os/Parcel; LX/A41;)V",
+        "Reasoning": "The `A02()` method receives a `Location` object as input.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is written to a Parcel object.",
+        "Source Method": "LX/A3y;->A02:(Landroid/os/Parcel; LX/A41;)V",
+        "Reasoning": "The `A02()` method writes the `Location` object to a Parcel object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Parcel object is written to Android operating system.",
+        "Source Method": "LX/A3y;->A03:(Landroid/os/Parcel;)V",
+        "Reasoning": "The `A03()` method receives the Parcel object and writes it to the Android operating system.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "LX/A3y;->A03:(Landroid/os/Parcel;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " LX/A3y;->A02:(Landroid/os/Parcel; LX/A41;)V --> LX/A3y;->A03:(Landroid/os/Parcel;)V",
+        "Reasoning": "The `Location` object collected in `A02()` is written to the Parcel object and then to the Android operating system in `A03()`."
+      }
+    ],
+    "Label": "leak"
+  }
+]

@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieves device ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID, which is considered sensitive personal data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Writes device ID to 'out.txt'",
+                "Source Method": "Lde/ecspride/MainActivity;->openFileOutput(Ljava/lang/String; I)Ljava/io/FileOutputStream;",
+                "Reasoning": "The method writes the retrieved device ID to a file named 'out.txt'.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Ljava/io/FileOutputStream;->write([B)V",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> ... --> Sink Method: Ljava/io/FileOutputStream;->write([B)V]",
+                "Reasoning": "The device ID is retrieved from TelephonyManager in onCreate, which then writes it to 'out.txt' via openFileOutput."
+            }
+        ],
+        "Label": "leak"
+    }
+]

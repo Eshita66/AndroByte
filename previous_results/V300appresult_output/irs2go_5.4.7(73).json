@@ -1,0 +1,51 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Latitude",
+      "Longitude",
+      "Address",
+      "Postal Code",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location and geocode it.",
+        "Source Method": "Lgov/irs/irs2go/activity/FreeTaxPrepProviderActivity;->P:()V",
+        "Reasoning": "The method originates user personal data by getting the location and geocoding it.",
+        "Action": "Stored in registers v1 and v2"
+      },
+      {
+        "Step": "Extract postal code from address.",
+        "Source Method": "Lgov/irs/irs2go/activity/FreeTaxPrepProviderActivity;->P:()V",
+        "Reasoning": "The latitude and longitude are then used to get an address, which is further processed to extract the postal code.",
+        "Action": "Stored in registers v1 and v2"
+      },
+      {
+        "Step": "Use extracted data to make network request.",
+        "Source Method": "Lgov/irs/irs2go/webservice/ClientManager;->b:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The postal code is set as the text of the EditText widget, which is then used to make a network request using the ClientManager.",
+        "Action": "Transmitted through Retrofit"
+      },
+      {
+        "Step": "Use API call to get user personal data.",
+        "Source Method": "Lgov/irs/irs2go/webservice/ClientManager;->b:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "This method originates user personal data by using the sensitive API call `getFreeTaxPrepLocations` from `irs/TaxHelpApi`.",
+        "Action": "Stored in registers and variables within the method"
+      }
+    ],
+    "All Sinks": [
+      "Lgov/irs/irs2go/webservice/ClientManager;->b:(Ljava/lang/String; Ljava/lang/String;)V",
+      "Lgov/irs/irs2go/webservice/ClientManager$7;-><init>:(Lgov/irs/irs2go/webservice/ClientManager;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lgov/irs/irs2go/activity/FreeTaxPrepProviderActivity;->P:()V --> Lgov/irs/irs2go/webservice/ClientManager;->b:(Ljava/lang/String; Ljava/lang/String;)V --> Retrofit",
+        "Reasoning": "The method originates user personal data by getting the location and geocoding it. The latitude and longitude are then used to get an address, which is further processed to extract the postal code. If any exception occurs during this process, the error message is displayed in the EditText widget. Otherwise, the postal code is set as the text of the EditText widget, which is then used to make a network request using the ClientManager."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

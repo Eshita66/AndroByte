@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\DirectLeak1
+Using methods file: D:\UBCBAPK_Methods\DirectLeak1\DirectLeak1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves the device ID via TelephonyManager.getDeviceId() and uses SmsManager.sendTextMessage() to transmit it as part of an SMS. This constitutes a network transmission sink, so no further method tracing is required.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\DirectLeak1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\DirectLeak1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\DirectLeak1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved and transmitted via SMS",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method directly uses the device ID from TelephonyManager.getDeviceId() without overwriting it, then passes it to SmsManager.sendTextMessage()",
+                "Action": "transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V",
+                "Reasoning": "The device ID from TelephonyManager.getDeviceId() is passed as the third argument to SmsManager.sendTextMessage() without being overwritten by a non-sensitive value"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\DirectLeak1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\DirectLeak1\output\sensitive_only.json
+Total summary time: 636.1094827651978 seconds

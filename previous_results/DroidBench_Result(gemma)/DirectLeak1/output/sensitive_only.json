@@ -1,0 +1,31 @@
+[
+    {
+        "Data Types Collected": [
+            "device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID Retrieval",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method calls `getDeviceId` via `TelephonyManager`.",
+                "Action": "Device ID stored in register `v6`."
+            },
+            {
+                "Step": "Message Construction",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID (from `v6`) is used as the message body for `sendTextMessage`.",
+                "Action": "Message constructed with device ID."
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;[Ljava/lang/String;I)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->getDeviceId()Ljava/lang/String; --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;[Ljava/lang/String;I)V",
+                "Reasoning": "The `getDeviceId` method retrieves the device ID. This ID is then stored in register `v6`. Subsequently, this value is used as the `vText` argument to the `sendTextMessage` method."
+            }
+        ],
+        "Label": "leak"
+    }
+]

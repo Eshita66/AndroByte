@@ -1,0 +1,25 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieval of Device ID",
+                "Source Method": "Llina/ubc/sharedpreference2/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is retrieved from TelephonyManager and passed to SharedPreferences for storage.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/sharedpreference2/MainActivity;->getSystemService:(Ljava/lang/String;)Ljava/lang/Object;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(Llina/ubc/sharedpreference2/MainActivity;->onCreate:(Landroid/os/Bundle;)V) --> TelephonyManager.getDeviceId() --> SharedPreferences.edit().putString(...) --> Implicit Sink(Log.i(...))]",
+                "Reasoning": "The device ID is first retrieved from the TelephonyManager and then stored in SharedPreferences, which could be used implicitly by Log.i(...) if it logs this data."
+            }
+        ],
+        "Label": "leak"
+    }
+]

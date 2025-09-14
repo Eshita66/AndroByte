@@ -1,0 +1,36 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID",
+            "Phone number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Initialization of static fields with sensitive data",
+                "Source Method": "Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V",
+                "Reasoning": "The method retrieves device ID from TelephonyManager using the application context and stores it in a static field of MainActivity, which is considered sensitive.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sending SMS with hardcoded phone number",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method sends an SMS message containing a hardcoded phone number (sensitive data) directly to the default SMS application without any sanitization or encryption.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "null"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity$StaticInitClass1;-><clinit>:()V --> MainActivity static field --> potentially accessible by other parts of the app or through debugging tools",
+                "Reasoning": "The device ID is retrieved and stored in a static field, which could be accessed later by any part of the application if not properly secured."
+            },
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> sendTextMessage(String, String, PendingIntent) --> default SMS application",
+                "Reasoning": "The hardcoded phone number is sent directly to the SMS sending API without any data handling best practices applied, potentially exposing it to unintended recipients."
+            }
+        ],
+        "Label": "leak"
+    }
+]

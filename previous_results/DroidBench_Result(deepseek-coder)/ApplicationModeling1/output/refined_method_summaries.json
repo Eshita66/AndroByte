@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Initialization of UI in MainActivity",
+                "Source Method": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method initializes the UI and retrieves the TelephonyManager service for device identification, storing the device's IMEI in an application-specific field.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Logging of DeviceId in AnotherActivity",
+                "Source Method": "Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The onCreate method logs the device's IMEI using Log.i, which is a potential sink for sensitive data.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/application_modeling/AnotherActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The IMEI is retrieved in onCreate of MainActivity and passed to AnotherActivity for logging."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

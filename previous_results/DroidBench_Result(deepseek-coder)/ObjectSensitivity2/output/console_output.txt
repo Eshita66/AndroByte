@@ -1,0 +1,45 @@
+
+Processing folder: D:\UBCBAPK_Methods\ObjectSensitivity2
+Using methods file: D:\UBCBAPK_Methods\ObjectSensitivity2\ObjectSensitivity2_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/OverwiteValue;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/OverwiteValue;->onCreate:(Landroid/os/Bundle;)V => The method 'onCreate' in the class 'OverwiteValue' retrieves user-specific information including device ID and stores it in an instance of 'DataStore'. It then uses this data to send SMS messages with the phone number and a custom message containing placeholders for later replacement. The device ID is directly stored in the DataStore object, which could be considered as originating sensitive data from the user's device.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "User-specific information",
+        "Custom message"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve user-specific information (device ID) from the Bundle and store it in an instance of DataStore.",
+            "Source Method": "Lde/ecspride/OverwiteValue;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method retrieves device ID directly from the Bundle, which is part of the user's data and considered sensitive.",
+            "Action": "Stored in DataStore"
+        },
+        {
+            "Step": "Use the stored device ID to send SMS messages with a custom message containing placeholders for later replacement.",
+            "Source Method": "Lde/ecspride/OverwiteValue;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The device ID is used in the context of sending SMS, which involves handling user-specific data.",
+            "Action": "Transmitted via SMS"
+        }
+    ],
+    "All Sinks": [
+        "null"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Lde/ecspride/OverwiteValue;->onCreate:(Landroid/os/Bundle;)V --> Store device ID in DataStore --> Use device ID to send SMS with custom message]",
+            "Reasoning": "The method retrieves the device ID from the Bundle, stores it in an instance of DataStore, and then uses this data to send SMS messages."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ObjectSensitivity2\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ObjectSensitivity2\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ObjectSensitivity2\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ObjectSensitivity2\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ObjectSensitivity2\output\sensitive_only.json
+Total time for folder: 593.08 seconds

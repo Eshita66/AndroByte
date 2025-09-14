@@ -1,0 +1,120 @@
+[
+  {
+    "Data Types Collected": [
+      "com.facebook.AccessToken",
+      "android.location.Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User personal data is collected through sensitive APIs.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data through the use of sensitive APIs.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is stored in registers and variables within the method.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The data is stored in registers and variables within the method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data propagates to other methods via method invocations.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The data reaches sinks such as logging and storage.",
+        "Action": "Logged, Stored"
+      },
+      {
+        "Step": "User personal data is collected through the GraphJSONArrayCallback object.",
+        "Source Method": "Lcom/facebook/GraphRequest$3;-><init>:(Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)V",
+        "Reasoning": "The method originates user personal data through the GraphJSONArrayCallback object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/internal/Logger;->log:(Ljava/lang/String; Ljava/lang/Object;)V",
+      "Lcom/facebook/GraphRequest;->executeAsync:(Lcom/facebook/GraphRequest$Callback;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/facebook/GraphRequest$3;<init>(Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)V --> Lcom/facebook/GraphRequest;->newPlacesSearchRequest(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> Lcom/facebook/internal/Logger;<log>(Ljava/lang/String; Ljava/lang/Object;)V",
+        "Reasoning": "The data flows from the GraphJSONArrayCallback object to the newPlacesSearchRequest method, which then logs the data."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "SSID",
+      "BSSID",
+      "Supplicant State"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get SSID, BSSID, and Supplicant State from WifiInfo object",
+        "Source Method": "Lcom/koalametrics/sdk/reporting/model/WifiInfo;-><init>:(Landroid/net/wifi/WifiInfo;)V",
+        "Reasoning": "The method initializes the WifiInfo object with sensitive data from android.net.wifi.WifiInfo.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/koalametrics/sdk/reporting/model/WifiInfo;-><init>:(Landroid/net/wifi/WifiInfo;)V --> Stored in object's fields (ssid, bssid, state) --> No sinks found",
+        "Reasoning": "The data is stored in the object's fields but no sinks like logging or transmission are found."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "SSID",
+      "BSSID",
+      "SupplicantState",
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get SSID, BSSID, and SupplicantState from WifiInfo",
+        "Source Method": "Lcom/koalametrics/sdk/b/b/j;-><init>:(Landroid/net/wifi/WifiInfo; Landroid/location/Location;)V",
+        "Reasoning": "Sensitive API calls to get SSID, BSSID, and SupplicantState.",
+        "Action": "Stored in instance variables a, b, c, d, e, and f"
+      },
+      {
+        "Step": "Get location information from Location API",
+        "Source Method": "Lcom/koalametrics/sdk/b/b/f;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "Using sensitive API calls to get location information.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Pass location data to other methods via method invocations",
+        "Source Method": "Lcom/koalametrics/sdk/b/b/f;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "Data is then passed to other methods via method invocations.",
+        "Action": "Passed to a new instance of Lcom/koalametrics/sdk/b/b/f"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/koalametrics/sdk/b/b/j;->toString:()Ljava/lang/String;",
+      "null",
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/koalametrics/sdk/b/b/j;-><init>:(Landroid/net/wifi/WifiInfo; Landroid/location/Location;)V --> Stored in instance variables a, b, c, d, e, and f --> Lcom/koalametrics/sdk/b/b/j;->toString:()Ljava/lang/String;",
+        "Reasoning": "SSID, BSSID, SupplicantState are stored in instance variables and then passed to toString() method for display"
+      },
+      {
+        "dataflow 2": "Lcom/koalametrics/sdk/b/b/f;-><init>:(Landroid/location/Location;)V --> Stored in registers and variables within the method --> Lcom/koalametrics/sdk/b/b/f;->a:(Landroid/location/Location;)Lcom/koalametrics/sdk/b/b/f;",
+        "Reasoning": "Location data is stored in registers and variables within the method, then passed to a new instance of Lcom/koalametrics/sdk/b/b/f via constructor invocation"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

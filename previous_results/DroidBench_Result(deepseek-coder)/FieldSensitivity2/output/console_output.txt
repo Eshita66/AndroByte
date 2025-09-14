@@ -1,0 +1,58 @@
+
+Processing folder: D:\UBCBAPK_Methods\FieldSensitivity2
+Using methods file: D:\UBCBAPK_Methods\FieldSensitivity2\FieldSensitivity2_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V => The method Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V involves the creation of a Datacontainer object, setting its description to 'abc', retrieving and using the SIM serial number from the TelephonyManager service for setting the secret in the Datacontainer, and sending an SMS message with the description as content. The SIM serial number is considered sensitive information.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Datacontainer",
+        "SIM serial number"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Creation of Datacontainer object and setting its description to 'abc'",
+            "Source Method": "Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method creates a Datacontainer object and sets its description to 'abc'.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Retrieving SIM serial number from TelephonyManager service for setting the secret in Datacontainer",
+            "Source Method": "Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method retrieves the SIM serial number which is considered sensitive information.",
+            "Action": "Retrieved"
+        },
+        {
+            "Step": "Setting the secret in Datacontainer using the retrieved SIM serial number",
+            "Source Method": "Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method uses the sensitive information (SIM serial number) to set a secret in Datacontainer.",
+            "Action": "Used"
+        },
+        {
+            "Step": "Sending an SMS message with the description as content",
+            "Source Method": "Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method sends an SMS message which contains sensitive information (description).",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/Datacontainer;->setSecret(Ljava/lang/String;)V",
+        "Log.i(...)"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Datacontainer;->setDescription('abc') --> Lde/ecspride/Datacontainer;->setSecret(SIM serial number) --> Log.i(...)]",
+            "Reasoning": "The SIM serial number is retrieved from the TelephonyManager service and used to set the secret in Datacontainer, which is then logged via Log.i(...) which is a real sink."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\FieldSensitivity2\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\FieldSensitivity2\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\FieldSensitivity2\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\FieldSensitivity2\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\FieldSensitivity2\output\sensitive_only.json
+Total time for folder: 370.15 seconds

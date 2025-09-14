@@ -1,0 +1,46 @@
+
+Processing folder: D:\UBCBAPK_Methods\Reflection4
+Using methods file: D:\UBCBAPK_Methods\Reflection4\Reflection4_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/ConcreteClass;->foo:(Landroid/content/Context;)Ljava/lang/String;']
+[SUMMARY] Lde/ecspride/ConcreteClass;->foo:(Landroid/content/Context;)Ljava/lang/String; => The method retrieves the 'phone' system service from the provided Context object, which is used to access the device ID through the TelephonyManager instance. The device ID is then returned as a string.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Context",
+        "TelephonyManager",
+        "String"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve TelephonyManager from Context",
+            "Source Method": "Lde/ecspride/ConcreteClass;->foo:(Landroid/content/Context;)Ljava/lang/String;",
+            "Reasoning": "The method accesses the 'phone' system service which includes TelephonyManager, providing access to device ID.",
+            "Action": "Stored in memory as part of method return value."
+        },
+        {
+            "Step": "Access Device ID through TelephonyManager",
+            "Source Method": "Lde/ecspride/ConcreteClass;->foo:(Landroid/content/Context;)Ljava/lang/String;",
+            "Reasoning": "TelephonyManager provides access to device-specific information including the device ID.",
+            "Action": "Used directly in method return value."
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/ConcreteClass;->logDeviceID:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/ConcreteClass;->foo:(Landroid/content/Context;)Ljava/lang/String; --> TelephonyManager.getDeviceId() --> Log.i(...)",
+            "Reasoning": "The method retrieves the device ID through TelephonyManager and directly logs it using Log.i(...), indicating a potential leak."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Reflection4\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Reflection4\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Reflection4\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Reflection4\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\Reflection4\output\sensitive_only.json
+Total time for folder: 91.52 seconds

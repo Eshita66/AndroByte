@@ -1,0 +1,51 @@
+
+Processing folder: D:\UBCBAPK_Methods\PathSensitivity
+Using methods file: D:\UBCBAPK_Methods\PathSensitivity\PathSensitivity_bytecode_instructions.json
+Source methods with sensitive calls: ['Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the device ID from TelephonyManager and logs it using Log.i() if certain conditions are met, involving a random number generation.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieving TelephonyManager instance",
+            "Source Method": "Llina/ubc/pathsensitivity/PathSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The method retrieves the TelephonyManager service, which is necessary to access device-specific information including the device ID.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Accessing Device ID",
+            "Source Method": "Llina/ubc/pathsensitivity/PathSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "After retrieving the TelephonyManager instance, accessing its getDeviceId() method retrieves the device ID.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Logging Device ID",
+            "Source Method": "Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method logs the device ID if certain conditions are met, involving a random number generation which is not explicitly mentioned in the provided data.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Llina/ubc/pathsensitivity/PathSensitivity;->log(Ljava/lang/String;)I",
+     
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Llina/ubc/pathsensitivity/PathSensitivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Llina/ubc/pathsensitivity/PathSensitivity;->access$000()I --> Llina/ubc/pathsensitivity/PathSensitivity;->log(Ljava/lang/String;)I]",
+            "Reasoning": "The device ID is accessed from TelephonyManager and then logged using Log.i(), which is considered a sink for tainted data."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\PathSensitivity\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\PathSensitivity\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\PathSensitivity\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\PathSensitivity\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\PathSensitivity\output\sensitive_only.json
+Total time for folder: 146.82 seconds

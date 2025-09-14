@@ -1,0 +1,146 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getRawMacAddress() method call",
+        "Source Method": "Lcom/adjust/sdk/plugin/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data through the getRawMacAddress() method call.",
+        "Action": "stored in registers and variables within the method"
+      },
+      {
+        "Step": "loadAddress() method call",
+        "Source Method": "Lcom/adjust/sdk/plugin/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by reading the MAC address from a file in /sys/class/net/, which is a sensitive API call.",
+        "Action": "stored in registers and variables within the method"
+      },
+      {
+        "Step": "propagation to other methods",
+        "Source Method": "Lcom/adjust/sdk/plugin/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data propagates to other methods via method invocations.",
+        "Action": "transmitted"
+      },
+      {
+        "Step": "propagation to other methods",
+        "Source Method": "Lcom/adjust/sdk/plugin/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The data propagates to other methods via method invocations.",
+        "Action": "transmitted"
+      },
+      {
+        "Step": "sink point: logging",
+        "Source Method": "Lcom/adjust/sdk/plugin/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point, which is logging or storage.",
+        "Action": "logged"
+      },
+      {
+        "Step": "sink point: logging",
+        "Source Method": "Lcom/adjust/sdk/plugin/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "A sink point, logging, is identified.",
+        "Action": "logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adjust/sdk/plugin/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/adjust/sdk/plugin/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adjust/sdk/plugin/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/adjust/sdk/plugin/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/adjust/sdk/plugin/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The MAC address is obtained through getRawMacAddress() method call, then propagated to loadAddress() method and finally logged."
+      },
+      {
+        "dataflow 2": " Lcom/adjust/sdk/plugin/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/adjust/sdk/plugin/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The MAC address is obtained through loadAddress() method call, then propagated to getRawMacAddress() method and finally logged."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Float",
+      "Boolean",
+      "Integer",
+      "Long",
+      "Double"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "LocationController method invocation",
+        "Source Method": "Li/l/c0;->b:(Landroid/location/Location;)V",
+        "Reasoning": "Invokes getAccuracy(), getTime(), and getLatitude()/getLongitude() methods on an android.location.Location object.",
+        "Action": "Stored in registers or variables"
+      },
+      {
+        "Step": "Propagation through method invocations",
+        "Source Method": "Li/l/c0;->b:(Landroid/location/Location;)V",
+        "Reasoning": "Data is propagated to other methods via method invocations, specifically Li/l/c0;->a(Li/l/c0$d;)V and sget-object v6, Li/l/c0;->g Landroid/content/Context;",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Accessing static fields",
+        "Source Method": "Li/l/c0;->a:(Li/l/c0$d;)V",
+        "Reasoning": "sget-object instructions access static fields of class Li/l/c0, specifically b and f.",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "Logging method invocation",
+        "Source Method": "Li/l/m3;->a(I Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "Data reaches a sink point through the invocation of Li/l/m3;->a(I Ljava/lang/String; Ljava/lang/Throwable;)V, which is a logging method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Li/l/m3;->a(I Ljava/lang/String; Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Li/l/c0;->b:(Landroid/location/Location;)V --> Li/l/c0;->a(Li/l/c0$d;)V --> Li/l/m3;->a(I Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "Data originates from the LocationController method, propagated through method invocations and stored in registers or variables before being logged."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getLastKnownLocation API call",
+        "Source Method": "Lq1/b/c/s;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data through the getLastKnownLocation API call.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass to return statement",
+        "Source Method": "Lq1/b/c/s;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The data is stored in register v3 and then passed to the return statement.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Logging statement using Log.d",
+        "Source Method": "Lq1/b/c/s;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "A sink point is identified as a logging statement using Log.d.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lq1/b/c/s;->a:(Ljava/lang/String;)Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lq1/b/c/s;->a:(Ljava/lang/String;)Landroid/location/Location;(getLastKnownLocation API call) --> Stored in register v3 --> Passed to return statement --> Logged using Log.d(Lq1/b/c/s;->a:(Ljava/lang/String;)Landroid/location/Location;) ",
+        "Reasoning": "The data flow starts with the getLastKnownLocation API call, then stored in register v3 and passed to the return statement. Finally, it is logged using a logging statement."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

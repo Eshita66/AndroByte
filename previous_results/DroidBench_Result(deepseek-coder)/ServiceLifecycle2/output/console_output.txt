@@ -1,0 +1,38 @@
+
+Processing folder: D:\UBCBAPK_Methods\ServiceLifecycle2
+Using methods file: D:\UBCBAPK_Methods\ServiceLifecycle2\ServiceLifecycle2_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I']
+[SUMMARY] Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I => This method retrieves the device ID from the TelephonyManager and logs it, potentially exposing user personal data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieves device ID from TelephonyManager",
+            "Source Method": "Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I",
+            "Reasoning": "The method retrieves the device ID which is considered personal data.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/service_lifecycle/MyService;->Log.i(...)"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I --> Log.i(...)",
+            "Reasoning": "The device ID is retrieved from TelephonyManager and passed directly to Log.i(...) which logs it."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ServiceLifecycle2\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ServiceLifecycle2\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ServiceLifecycle2\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ServiceLifecycle2\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\ServiceLifecycle2\output\sensitive_only.json
+Total time for folder: 757.90 seconds

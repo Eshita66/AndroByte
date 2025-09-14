@@ -1,0 +1,120 @@
+[
+  {
+    "Data Types Collected": [
+      "AccessToken",
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "newPlacesSearchRequest method called with AccessToken and Location",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data through the 'newPlacesSearchRequest' method",
+        "Action": "stored in registers and variables within the method"
+      },
+      {
+        "Step": "isNullOrEmpty method checks for null or empty string",
+        "Source Method": "Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data by checking if a string is null or empty",
+        "Action": "stored in register v2 and propagated through registers"
+      },
+      {
+        "Step": "FacebookException constructor called with string parameter",
+        "Source Method": "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+        "Reasoning": "The method Lcom/facebook/FacebookException;<init>:(Ljava/lang/String;)V originates user personal data from the 'v3' register, which is a string",
+        "Action": "propagated to other methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;->executeForCache(Lcom/facebook/GraphRequest;)V",
+      "Lcom/facebook/FacebookException;->logStackTrace()V",
+      "Lcom/facebook/internal/FeatureManager;checkFeature(Lcom/facebook/internal/FeatureManager$Feature;Lcom/facebook/internal/FeatureManager$Callback;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[newPlacesSearchRequest(...) --> executeForCache(...)]",
+        "Reasoning": "The data is passed to other methods via method invocations, specifically to the 'executeForCache' method in GraphRequest class."
+      },
+      {
+        "dataflow 2": "[FacebookException<init>(...) --> logStackTrace(...)]",
+        "Reasoning": "The data reaches a sink point in the form of error reporting through the 'logStackTrace' method in FacebookException class."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "Ljava/lang/String;",
+      "java.lang.Throwable"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from android.content.Context.",
+        "Source Method": "Lcom/appsflyer/internal/ae;->AFInAppEventParameterName:(Landroid/content/Context;)Z",
+        "Reasoning": "The method AFInAppEventParameterName originates sensitive user personal data by calling a sensitive API values from android.content.Context.",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "Originate user personal data from input parameters 'Ljava/lang/String;' and 'java.lang.Throwable'.",
+        "Source Method": "Lcom/appsflyer/AFLogger;->AFInAppEventType:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The method AFLogger::AFInAppEventType originates user personal data from the input parameters 'Ljava/lang/String;' and 'java.lang.Throwable'.",
+        "Action": "Stored in registers v0 and v1"
+      },
+      {
+        "Step": "Originate user personal data by using the `getSharedPreferences` API to retrieve a SharedPreferences instance.",
+        "Source Method": "Lcom/appsflyer/internal/ae;->values:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The current method originates sensitive user personal data by using the `getSharedPreferences` API to retrieve a SharedPreferences instance.",
+        "Action": "Stored in the `sendPushNotificationData` field of an object"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AFLogger;->AFInAppEventType:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+      "Lcom/appsflyer/internal/ae;->values:(Landroid/content/Context;)Landroid/content/SharedPreferences;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/appsflyer/internal/ae;->AFInAppEventParameterName(Landroid/content/Context)Z --> Lcom/appsflyer/internal/ae;->values(Landroid/content/Context)Landroid/content/SharedPreferences --> Lcom/appsflyer/internal/ae;->values(Landroid/content/SharedPreferences)Ljava/util/Map",
+        "Reasoning": "The data flows from AFInAppEventParameterName to values, which then returns a SharedPreferences instance used in the values method."
+      },
+      {
+        "dataflow 2": "Lcom/appsflyer/AFLogger;->AFInAppEventType(Ljava/lang/String; Ljava/lang/Throwable)V --> Lcom/appsflyer/AFLogger;->AFKeystoreWrapper(Ljava/lang/String; Ljava/lang/Throwable; ZZ)V",
+        "Reasoning": "The data flows from AFInAppEventType to AFKeystoreWrapper, which logs the sensitive information."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "phone number",
+      "network country ISO",
+      "network operator name",
+      "SIM country ISO",
+      "SIM operator",
+      "timezone"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get device information",
+        "Source Method": "Lcom/meetville/graphql/request/UserRegistrationMutation$ScammerInfo;-><init>:()V",
+        "Reasoning": "This method originates user personal data by calling sensitive APIs to get device information.",
+        "Action": "Stored in registers or variables"
+      },
+      {
+        "Step": "Pass data to other methods",
+        "Source Method": "Lcom/meetville/graphql/request/UserRegistrationMutation$ScammerInfo;-><init>:()V",
+        "Reasoning": "The data is passed to other methods via method invocations.",
+        "Action": "Passed via method invocation"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/meetville/graphql/request/UserRegistrationMutation$ScammerInfo;-><init>:()V --> Lcom/meetville/graphql/request/UserRegistrationMutation$ScammerInfo;->getDeviceInformation:()Ljava/util/HashMap; --> Lcom/meetville/graphql/request/UserRegistrationMutation$ScammerInfo;->passDataToOtherMethods:()V",
+        "Reasoning": "The method gets device information, stores it in a HashMap, and then passes it to other methods."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

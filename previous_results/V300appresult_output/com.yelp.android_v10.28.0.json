@@ -1,0 +1,89 @@
+[
+  {
+    "Data Types Collected": [
+      "user location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected",
+        "Source Method": "Lcom/google/android/gms/location/LocationResult;",
+        "Reasoning": "LocationResult contains location data",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Location data is passed to AppboyGeofenceService",
+        "Source Method": "Lcom/appboy/services/AppboyGeofenceService;->a:(Lcom/google/android/gms/location/LocationResult;)Z",
+        "Reasoning": "AppboyGeofenceService receives LocationResult",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Location data is logged",
+        "Source Method": "com.yelp.android.az.c",
+        "Reasoning": "com.yelp.android.az.c logs location data",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "com.yelp.android.az.c"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/google/android/gms/location/LocationResult; --> Lcom/appboy/services/AppboyGeofenceService;->a:(Lcom/google/android/gms/location/LocationResult;)Z --> com.yelp.android.az.c",
+        "Reasoning": "Location data is collected, passed to AppboyGeofenceService, and logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "wifi ssid"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve wifi ssid",
+        "Source Method": "Lcom/comscore/utils/d;->a:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Sensitive API call `com.comscore.utils.j.a()` is used to check for wifi connectivity. If connected, the ssid is retrieved and returned.",
+        "Action": "Retrieved"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/comscore/utils/d;->a:(Landroid/content/Context;)Ljava/lang/String; --> null",
+        "Reasoning": "The retrieved wifi ssid is not stored, logged, or transmitted to any other methods."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Location Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected in method `bo.app.ao.a()`",
+        "Source Method": "bo.app.ao.a(Lbo/app/ao; Landroid/content/Intent;)V",
+        "Reasoning": "Method summary indicates location data is originated in this method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is logged to console in method `bo.app.ao.a()`",
+        "Source Method": "bo.app.ao.a(Lbo/app/ao; Landroid/content/Intent;)V",
+        "Reasoning": "Method summary indicates location data is logged.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "bo.app.ao.a(Lbo/app/ao; Landroid/content/Intent;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "bo.app.ao.a() --> Console",
+        "Reasoning": "Location data is collected in `bo.app.ao.a()` and logged to console."
+      }
+    ],
+    "Label": "leak"
+  }
+]

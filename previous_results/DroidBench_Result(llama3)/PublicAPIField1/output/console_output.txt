@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\PublicAPIField1
+Using methods file: D:\UBCBAPK_Methods\PublicAPIField1\PublicAPIField1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive data (IMEI) was originated by calling getSystemService to retrieve a TelephonyManager instance and then processed further. The IMEI reached a sink point through logging.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\PublicAPIField1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\PublicAPIField1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\PublicAPIField1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated by calling getSystemService",
+                "Source Method": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "IMEI was retrieved through TelephonyManager instance",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sensitive data processed further and reached a sink point",
+                "Source Method": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "IMEI was logged as a sink point",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljava/util/logging/Logger;->info(Ljava/lang/String;)V",
+                "Reasoning": "Sensitive data (IMEI) was originated by calling getSystemService to retrieve a TelephonyManager instance and then processed further. The IMEI reached a sink point through logging."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\PublicAPIField1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\PublicAPIField1\output\sensitive_only.json
+Total summary time: 12.946855068206787 seconds

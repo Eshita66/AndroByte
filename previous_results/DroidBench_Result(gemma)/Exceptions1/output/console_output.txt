@@ -1,0 +1,53 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\Exceptions1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\Exceptions1\Exceptions1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The `onCreate` method first calls `invoke-super` to initialize the `Activity`. Then, it obtains the device ID using `getDeviceId` from `TelephonyManager`.  Following this, it attempts to send a text message with the device ID as the message body via `SmsManager.sendTextMessage`. The device ID is passed as the `vDest` argument to this sink.  The `vText` argument is tainted because it's the value of `v3` (the device ID).",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\Exceptions1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\Exceptions1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\Exceptions1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Activity initialization via `invoke-super`.",
+                "Source Method": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Standard Android Activity lifecycle method.",
+                "Action": "Initialization"
+            },
+            {
+                "Step": "Obtain device ID from TelephonyManager.",
+                "Source Method": "Lde/ecspride/Exceptions1;->getDeviceId()V",
+                "Reasoning": "The method explicitly retrieves the device ID using `TelephonyManager`.",
+                "Action": "Data Extraction"
+            },
+            {
+                "Step": "Send device ID as SMS message.",
+                "Source Method": "Lde/ecspride/Exceptions1;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+                "Reasoning": "The `sendTextMessage` method uses the device ID as the message body (`vDest`).",
+                "Action": "Transmission"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Exceptions1;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Exceptions1;->getDeviceId()V --> Lde/ecspride/Exceptions1;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)",
+                "Reasoning": "The device ID is obtained from `TelephonyManager` and then directly passed as the `vDest` argument to the `sendTextMessage` method, resulting in a data leak."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\Exceptions1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\Exceptions1\output\sensitive_only.json
+Total summary time: 17.712860822677612 seconds

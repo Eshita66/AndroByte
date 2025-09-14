@@ -1,0 +1,39 @@
+Processing folder: D:\withoutcallgraphResult\testagain\VirtualDispatch2
+Using methods file: D:\withoutcallgraphResult\testagain\VirtualDispatch2\VirtualDispatch2_bytecode_instructions.json
+Sensitive method found: Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String;
+Processed summary for Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String;: {
+    "Summary": "The method `Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String;` first retrieves the device ID using `getDeviceId()` from the `TelephonyManager` (via `sget-object v0, Landroid/telephony/TelephonyManager;`). The `getDeviceId()` call is a sensitive API. The result of this call (a `String`) is then returned. The `sget-object` instruction maps `v0` to the `TelephonyManager` instance. The `getDeviceId()` call is the sink. The device ID is returned as the result of the method.",
+    "Next Methods": []
+}
+Method summaries saved to D:\withoutcallgraphResult\testagain\VirtualDispatch2\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\testagain\VirtualDispatch2\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\testagain\VirtualDispatch2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "device_id"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID",
+                "Source Method": "Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String;",
+                "Reasoning": "The method calls `getDeviceId()` via `TelephonyManager`.",
+                "Action": "Retrieval"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String; --> getDeviceId() --> Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String;",
+                "Reasoning": "The method `Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String;` initiates the flow by calling `getDeviceId()` on the `TelephonyManager` instance. This call is the sink, directly returning the device ID."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\testagain\VirtualDispatch2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\testagain\VirtualDispatch2\output\sensitive_only.json
+Total summary time: 16.603453397750854 seconds

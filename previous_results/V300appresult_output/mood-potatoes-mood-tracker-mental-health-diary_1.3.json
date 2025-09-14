@@ -1,0 +1,146 @@
+[
+  {
+    "Data Types Collected": [
+      "AccessToken",
+      "Location",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "newPlacesSearchRequest originates user personal data from AccessToken, Location, and searchText parameters.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The data is stored in registers and variables within the method, including a new instance of android/os/Bundle.",
+        "Action": "stored"
+      },
+      {
+        "Step": "FacebookException originates user personal data through a sensitive API call to Ljava/lang/RuntimeException;-><init>(Ljava/lang/String;)V.",
+        "Source Method": "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in registers v2 and v3.",
+        "Action": "stored"
+      },
+      {
+        "Step": "FacebookSdk originates sensitive user personal data by calling the sdkInitialized() method from Validate class.",
+        "Source Method": "Lcom/facebook/FacebookSdk;->getApplicationContext:()Landroid/content/Context;",
+        "Reasoning": "The data is stored in register v0 as an android.content.Context object and then returned.",
+        "Action": "stored"
+      },
+      {
+        "Step": "Validate originates user personal data by calling the sensitive API isInitialized() from FacebookSdk.",
+        "Source Method": "Lcom/facebook/internal/Validate;->sdkInitialized:()V",
+        "Reasoning": "The data is stored in register v0 and propagated to other methods via method invocations.",
+        "Action": "stored"
+      },
+      {
+        "Step": "FetchedAppGateKeepersManager originates user personal data from the application's context and preferences.",
+        "Source Method": "Lcom/facebook/internal/FetchedAppGateKeepersManager;->loadAppGateKeepersAsync:(Lcom/facebook/internal/FetchedAppGateKeepersManager$Callback;)V",
+        "Reasoning": "The data is stored in variables `v1` and `v6`. It propagates through registers and passes to other methods via method invocations.",
+        "Action": "stored"
+      },
+      {
+        "Step": "FetchedAppGateKeepersManager originates user personal data from the 'fetchedAppGateKeepers' map.",
+        "Source Method": "Lcom/facebook/internal/FetchedAppGateKeepersManager;->parseAppGateKeepersFromJSON:(Ljava/lang/String; Lorg/json/JSONObject;)Lorg/json/JSONObject;",
+        "Reasoning": "The data is stored in a JSONObject and then propagated to other methods via method invocations.",
+        "Action": "stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+      "Lcom/facebook/internal/Validate;->sdkInitialized:()V",
+      "Lcom/facebook/internal/FetchedAppGateKeepersManager;->parseAppGateKeepersFromJSON:(Ljava/lang/String; Lorg/json/JSONObject;)Lorg/json/JSONObject;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "newPlacesSearchRequest(...) --> FacebookException(...) --> logging",
+        "Reasoning": "The data is propagated from newPlacesSearchRequest to FacebookException and then logged."
+      },
+      {
+        "dataflow 2": "FacebookSdk(...) --> Validate(...) --> FacebookException(...) --> logging",
+        "Reasoning": "The data is propagated from FacebookSdk to Validate, then to FacebookException, and finally logged."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WiFi information",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling sensitive API to get WiFi information.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Pass between methods",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The data is passed between methods via method invocations.",
+        "Action": "Passed between methods"
+      },
+      {
+        "Step": "Logged through WiFi information",
+        "Source Method": "java/net/NetworkInterface",
+        "Reasoning": "The data reaches a sink point through logging (via `java/net/NetworkInterface` class).",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Stored in storage",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point through storage (via `getMacAddress()` method).",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "java/net/NetworkInterface",
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String; --> java/net/NetworkInterface --> null",
+        "Reasoning": "The method originates user personal data by calling sensitive API to get WiFi information, which includes the MAC address. The data is stored in register v0 and passed between methods via method invocations. The data reaches a sink point through logging (via `java/net/NetworkInterface` class) and storage (via `getMacAddress()` method)."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check permissions and get phone number",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "Method uses TelephonyManager to get the phone number.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Propagate through method invocations",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "Method calls other methods to perform operations.",
+        "Action": "Passed as parameters"
+      },
+      {
+        "Step": "Log error message if TelephonyManager is null",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "Method logs an error message if the TelephonyManager is null.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->logError(Ljava/lang/String;)V;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String; --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->logError(Ljava/lang/String;)V;",
+        "Reasoning": "The phone number is propagated from getPhoneNumberSync method to logError method, where it is logged as an error message if the TelephonyManager is null."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

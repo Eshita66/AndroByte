@@ -1,0 +1,38 @@
+Processing folder: D:\UBCBAPK_Methods\ReflectionRes
+Using methods file: D:\UBCBAPK_Methods\ReflectionRes\ReflectionRes_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method originates the device ID via Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;. The device ID is then processed using reflection (Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method; and Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;) but does not reach any sink. No sensitive data is passed to logging, network, or storage.",
+    "Next Methods": [
+        "Ljunbin/ubc/MainActivity;->setContentView(I)V",
+        "Ljunbin/ubc/MainActivity;->getString(I)Ljava/lang/String;",
+        "Ljava/lang/Object;->getClass()Ljava/lang/Class;",
+        "Ljava/lang/Class;->getMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;",
+        "Ljava/lang/reflect/Method;->invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;"
+    ]
+}
+Method summaries saved to D:\UBCBAPK_Methods\ReflectionRes\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ReflectionRes\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ReflectionRes\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval and reflection processing",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID via getDeviceId() and processes it using reflection, but does not pass it to any sink.",
+                "Action": "Processed but not passed to any sink"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": null,
+        "Label": "no leak"
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ReflectionRes\output\refined_method_summaries.json
+Saved 0 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ReflectionRes\output\sensitive_only.json
+Total summary time: 42.719637870788574 seconds

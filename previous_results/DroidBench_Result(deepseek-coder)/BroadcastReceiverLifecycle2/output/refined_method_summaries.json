@@ -1,0 +1,26 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain Device ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is obtained and used to create a BroadcastReceiver instance, which could be considered sensitive.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendBroadcast(Landroid/content/Intent;)V",
+            "Lde/ecspride/MainActivity;->registerReceiver(Landroid/content/BroadcastReceiver; Landroid/content/IntentFilter;)Landroid/content/Intent;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method: Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Use device ID to create BroadcastReceiver instance --> Potential sink: sendBroadcast or registerReceiver]",
+                "Reasoning": "The device ID is used in a way that could expose it, although the exact method of exposure (sendBroadcast or registerReceiver) cannot be determined without more context."
+            }
+        ],
+        "Label": "leak"
+    }
+]

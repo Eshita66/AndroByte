@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain Device ID",
+                "Source Method": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V",
+                "Reasoning": "The `onResume` method obtains the device ID from the TelephonyManager and stores it in the `imei` field.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V --> Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V",
+                "Reasoning": "The `onResume` method obtains the DeviceId and passes it to the `onStop` method. The `onStop` method logs a message. The DeviceId was not overwritten."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

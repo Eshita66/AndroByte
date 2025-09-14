@@ -1,0 +1,31 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve and store IMEI in static field",
+                "Source Method": "Lde/ecspride/ContentProvider;->onCreate:()Z",
+                "Reasoning": "The method retrieves the device ID (IMEI) from TelephonyManager associated with the context of the ContentProvider.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send SMS containing IMEI without proper consent or necessary permissions",
+                "Source Method": "Lde/ecspride/ApplicationLifecyle3;->onCreate:()V",
+                "Reasoning": "The method sends an SMS message containing the IMEI of the device to a predefined number using the SmsManager, which involves accessing and transmitting user-specific information without proper consent.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ApplicationLifecyle3;->onCreate:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Lde/ecspride/ContentProvider;->onCreate:()Z --> Lde/ecspride/ContentProvider;->getContext()Landroid/content/Context; --> Lde/ecspride/ApplicationLifecyle3;->onCreate:()V]",
+                "Reasoning": "The IMEI is retrieved from the TelephonyManager associated with the context of the ContentProvider, which provides the context for accessing and sending the SMS containing the IMEI without proper consent."
+            }
+        ],
+        "Label": "leak"
+    }
+]

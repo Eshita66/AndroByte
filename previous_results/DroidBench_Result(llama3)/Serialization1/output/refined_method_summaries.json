@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from device ID API call",
+                "Source Method": "getDeviceId",
+                "Reasoning": "Tainted data is stored in memory and passed to ObjectOutputStream",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Data is written to ObjectInputStream",
+                "Source Method": "ObjectOutputStream",
+                "Reasoning": "Data is read back into memory by ObjectInputStream",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/serialization/MainActivity;->log:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId(...) --> ObjectOutputStream(...) --> ObjectInputStream(...) --> log(...)",
+                "Reasoning": "Data is propagated from getDeviceId to log through ObjectOutputStream and ObjectInputStream"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

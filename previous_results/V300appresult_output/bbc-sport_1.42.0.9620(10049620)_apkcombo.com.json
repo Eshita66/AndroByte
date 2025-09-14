@@ -1,0 +1,74 @@
+[
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve SSID",
+        "Source Method": "Lcom/comscore/utils/Connectivity;->getCurrentSSID:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method retrieves the current SSID.",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/comscore/utils/Connectivity;->getCurrentSSID:(Landroid/content/Context;)Ljava/lang/String; --> Collected]",
+        "Reasoning": "The SSID is collected by the method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method Initialization",
+        "Source Method": "Lde/spring/mobile/SpringStreams;-><init>:(Ljava/lang/String; Ljava/lang/String; Landroid/content/Context; Ljava/lang/String;)V",
+        "Reasoning": "Data is passed as arguments during object creation.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "device ID",
+      "advertising ID",
+      "Android ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "SpringStreams.generateEventObject()",
+        "Source Method": "Lde/spring/mobile/SpringStreams;->generateEventObject:(Ljava/util/Map; Ljava/util/Map; Z)Ljava/lang/Object;",
+        "Reasoning": "Sensitive data is originated in this method.",
+        "Action": "Stored in an array of objects"
+      },
+      {
+        "Step": "SpringStreams.getDeviceId()",
+        "Source Method": "Lde/spring/mobile/SpringStreams;->getDeviceId()Ljava/lang/String;",
+        "Reasoning": "Data is retrieved from the array created in the previous step.",
+        "Action": "Returned as a string"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lde/spring/mobile/SpringStreams;->generateEventObject() --> Lde/spring/mobile/SpringStreams;->getDeviceId() --> null",
+        "Reasoning": "Sensitive data is generated in the first method, then retrieved in the second method, but no sink points are identified."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

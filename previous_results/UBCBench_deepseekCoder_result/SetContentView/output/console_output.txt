@@ -1,0 +1,45 @@
+
+Processing folder: D:\UBCBAPK_Methods\SetContentView
+Using methods file: D:\UBCBAPK_Methods\SetContentView\SetContentView_bytecode_instructions.json
+Source methods with sensitive calls: ['Ljunbin/ubc/MainActivity;->buttonClick:(Landroid/view/View;)V']
+[SUMMARY] Ljunbin/ubc/MainActivity;->buttonClick:(Landroid/view/View;)V => The method retrieves the device ID from the TelephonyManager obtained through getSystemService using the 'phone' key, which can be considered sensitive information. This device ID is then logged via Log.v with a tag 'TAG'. The device ID itself is not directly passed to another method or stored in a way that would compromise privacy without explicit consent and proper handling as per data protection regulations.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve Device ID from TelephonyManager",
+            "Source Method": "Ljunbin/ubc/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The method retrieves the device ID through getSystemService with 'phone' key, which is sensitive information.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Log Device ID using Log.v",
+            "Source Method": "Ljunbin/ubc/MainActivity;->buttonClick:(Landroid/view/View;)V",
+            "Reasoning": "The device ID is logged via Log.v, which can expose sensitive information.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ljunbin/ubc/MainActivity;->buttonClick:(Landroid/view/View;)V",
+        "Log.v"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Ljunbin/ubc/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;) --> ... --> Sink Method(Log.v)]",
+            "Reasoning": "The device ID is obtained from TelephonyManager and directly logged using Log.v without any intermediate processing that would comply with data protection regulations."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\SetContentView\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\SetContentView\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\SetContentView\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\SetContentView\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\SetContentView\output\sensitive_only.json
+Total time for folder: 194.04 seconds

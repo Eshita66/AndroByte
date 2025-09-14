@@ -1,0 +1,515 @@
+[
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location",
+        "Source Method": "Lp0;->c:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "Method c() retrieves the last known location.",
+        "Action": "Retrieved"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lp0;->c:(Ljava/lang/String;)Landroid/location/Location; --> null",
+        "Reasoning": "Location is retrieved but not further processed or stored."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected from the user's device.",
+        "Source Method": "Lp0;->f:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary indicate data collection.",
+        "Action": "Stored in Lp0$a object"
+      },
+      {
+        "Step": "Location data is used to calculate the user's location at different times.",
+        "Source Method": "Lp0;->f:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary suggests location calculations.",
+        "Action": "N/A"
+      },
+      {
+        "Step": "Location data is logged to the console.",
+        "Source Method": "Lp0;->f:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary mentions logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lp0;->a()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lp0;->f:(Landroid/location/Location;)V --> Lp0;->a()V",
+        "Reasoning": "Location data is collected, calculated, and logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "userEmails"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive API call detected",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u03b9:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "AppsFlyerProperties.getString(\"userEmails\")",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/AppsFlyerLibCore;->\u03b9:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; --> null",
+        "Reasoning": "Sensitive API call detected, data is stored but not sent to any sink."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected from Location object.",
+        "Source Method": "Lkh3;->c:(Landroid/location/Location;)V",
+        "Reasoning": "Method c() explicitly stores the location in a Lkh3$d object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is logged using Lg3.",
+        "Source Method": "Lkh3;->c:(Landroid/location/Location;)V",
+        "Reasoning": "Method c() logs the location using Lg3.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lgj3"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lkh3;->c:(Landroid/location/Location;)V --> Lg3",
+        "Reasoning": "Location is collected in method c() and logged using Lg3."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user location data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is extracted from the `Landroid/location/Location` object.",
+        "Source Method": "Lzv9;->c:(J Lw25;)Ljava/lang/Object;",
+        "Reasoning": "Method summary",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User location data is transformed into a `Lcom/google/android/gms/maps/model/LatLng` object.",
+        "Source Method": "Lzv9;->c:(J Lw25;)Ljava/lang/Object;",
+        "Reasoning": "Method summary",
+        "Action": "Transformed"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lzv9;->c:(J Lw25;)Ljava/lang/Object; --> Transformed --> null",
+        "Reasoning": "Data is transformed but not sent anywhere"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "AddressInfo",
+      "W25"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected from Location object.",
+        "Source Method": "Lfe8;->a:(Landroid/location/Location; Lnet/appsynth/allmember/sevennow/domain/model/AddressInfo; Lw25;)Ljava/lang/Object;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to the a() method of the fe8 class.",
+        "Source Method": "Lfe8;->a:(Landroid/location/Location; Lnet/appsynth/allmember/sevennow/domain/model/AddressInfo; Lw25;)Ljava/lang/Object;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Passed to method"
+      },
+      {
+        "Step": "Data is logged using the k05 class.",
+        "Source Method": "Lfe8;->a:(Landroid/location/Location; Lnet/appsynth/allmember/sevennow/domain/model/AddressInfo; Lw25;)Ljava/lang/Object;",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lfe8;->a(Landroid/location/Location; Lnet/appsynth/allmember/sevennow/domain/model/AddressInfo; Lw25;)Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lfe8;->a(Landroid/location/Location; Lnet/appsynth/allmember/sevennow/domain/model/AddressInfo; Lw25;)Ljava/lang/Object; --> Lfe8;->a(Landroid/location/Location; Lnet/appsynth/allmember/sevennow/domain/model/AddressInfo; Lw25;)Ljava/lang/Object; --> Lfe8;->a(Landroid/location/Location; Lnet/appsynth/allmember/sevennow/domain/model/AddressInfo; Lw25;)Ljava/lang/Object;",
+        "Reasoning": "Stepwise analysis of data flow based on method signature and summary."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain location data",
+        "Source Method": "Lnx9$a;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "Sensitive location data is obtained from the LocationResult object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Log location data",
+        "Source Method": "Lnx9$a;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "Sensitive location data is passed to the h() method of the Ll95 interface.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lnx9$a;->h:(Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lnx9$a;->onLocationResult --> Lnx9$a;->h",
+        "Reasoning": "Sensitive location data is obtained from the LocationResult object and then logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is received from LocationResult object.",
+        "Source Method": "Ls09$b;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "Method summary provides this information.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Latitude and longitude are extracted from Location object.",
+        "Source Method": "Ls09$b;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "Method summary provides this information.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "LatLng object is created with latitude and longitude.",
+        "Source Method": "Ls09$b;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "Method summary provides this information.",
+        "Action": "Created"
+      },
+      {
+        "Step": "LatLng object is passed to h() method of Ll95 object.",
+        "Source Method": "Ls09$b;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "Method summary provides this information.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Ll95$h;->a(Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Ls09$b;->onLocationResult --> Ll95$h;->a",
+        "Reasoning": "Overall Data Flow provides this information."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is collected",
+        "Source Method": "Lsd8;->a:(Landroid/location/Location; Lw25;)Ljava/lang/Object;",
+        "Reasoning": "Sensitive user location data is originated in the `invoke-interface` instruction",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is passed to Ltn7",
+        "Source Method": "Lsd8;->a:(Landroid/location/Location; Lw25;)Ljava/lang/Object;",
+        "Reasoning": "Data is passed to the `b()` method of the `Ltn7` object",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Location is logged",
+        "Source Method": "Ltn7;->a(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Data is passed to the `a()` method of the `Ltn7` object",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Ltn7;->a(Ljava/lang/Object;)Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lsd8;->a:(Landroid/location/Location; Lw25;)Ljava/lang/Object; --> Ltn7;->b(Ljava/lang/Object;)Ljava/lang/Object; --> Ltn7;->a(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Location is collected, passed to Ltn7, and then logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user location",
+        "Source Method": "Lhz9$d;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Method summary indicates location data is obtained",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Process user location",
+        "Source Method": "Lhz9$d;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Method summary indicates location data is processed",
+        "Action": "Processed"
+      },
+      {
+        "Step": "Send user location to server",
+        "Source Method": "Lhz9$d;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Method summary indicates location data is sent to a server",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lhz9$d;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lhz9$d;->invokeSuspend(...) --> Lhz9$d;->invokeSuspend(...) --> Lhz9$d;->invokeSuspend(...)",
+        "Reasoning": "Data flows through each step in the method summaries"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "LatLng",
+      "AddressInfo"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location information from Location object",
+        "Source Method": "Loj8$c;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Method invocation",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Convert location to LatLng object",
+        "Source Method": "Loj8$c;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Method invocation",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Create AddressInfo object with location information",
+        "Source Method": "Loj8$c;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Method invocation",
+        "Action": "Created"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Loj8$c;->invokeSuspend(...) --> ... --> null",
+        "Reasoning": "Location information is collected but not stored, logged, or transmitted."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User's location could not be retrieved due to a timeout.",
+        "Source Method": "Loj8$g;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Timeout during location retrieval.",
+        "Action": "Not stored, not logged, not transmitted"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Loj8$g;->invokeSuspend --> Not Stored, Not Logged, Not Transmitted",
+        "Reasoning": "Timeout during location retrieval, preventing data from being stored, logged, or transmitted."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is collected in `invokeSuspend` method.",
+        "Source Method": "Lpj8$g;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Method summary indicates data origin.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Data is passed to `n1` method.",
+        "Source Method": "Lpj8$g;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Method signature matches.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is used to create a `LatLng` object.",
+        "Source Method": "Lpj8$g;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Method summary indicates data transformation.",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Data is passed to `q` method of `cb6` object.",
+        "Source Method": "Lpj8$g;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Method signature matches.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is returned by `H1` method.",
+        "Source Method": "Lpj8$g;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Method signature matches.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lpj8$g;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object; --> null",
+        "Reasoning": "Sensitive data is collected but not explicitly logged, transmitted, or written to files."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User location data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is originated.",
+        "Source Method": "Lpz9$a;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "User location data is passed between methods via method invocations.",
+        "Source Method": "Lpz9$a;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "User location data is logged.",
+        "Source Method": "Lpz9$a;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Sensitive API call detected.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lpz9$a;->j1()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lpz9$a;->invokeSuspend() --> Lpz9$a;->j1() ",
+        "Reasoning": "User location data is logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data",
+        "Source Method": "Lwj8$a;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Method extracts latitude and longitude from user's location",
+        "Action": "Stored in `p$` field"
+      },
+      {
+        "Step": "Pass data to `A1()`",
+        "Source Method": "Lwj8$a;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Method calls `A1()` with latitude and longitude",
+        "Action": "Passed as arguments to `A1()`"
+      }
+    ],
+    "All Sinks": [
+      "Lwj8$a;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lwj8$a;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object; --> Lwj8$a;->invokeSuspend:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "Location data is extracted and passed to `A1()`"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Wi-Fi SSID",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "Method returns Wi-Fi SSID",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> Collected",
+        "Reasoning": "Wi-Fi SSID is collected by the method getWifiSSID()"
+      }
+    ],
+    "Label": "no leak"
+  }
+]

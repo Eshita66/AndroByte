@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\Exceptions3
+Using methods file: D:\UBCBAPK_Methods\Exceptions3\Exceptions3_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/Exceptions3;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/Exceptions3;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The device ID is originated from the method call to getDeviceId() and is stored in register v3. This sensitive data reaches a sink (sendTextMessage) where it is used for sending text messages over the network.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\Exceptions3\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Exceptions3\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Exceptions3\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "device ID originated from getDeviceId()",
+                "Source Method": "Lde/ecspride/Exceptions3;->getDeviceId:()Ljava/lang/String;",
+                "Reasoning": "sensitive data reached a sink (sendTextMessage)",
+                "Action": "transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String;Ljava/lang/String; Landroid/content/SendingEndpointReference; Landroid/content/SendingEndpointReference;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId() --> stored in register v3 --> sendTextMessage(...)",
+                "Reasoning": "device ID originated from getDeviceId(), stored in register, and then passed to sendTextMessage()"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Exceptions3\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Exceptions3\output\sensitive_only.json
+Total summary time: 14.569593667984009 seconds

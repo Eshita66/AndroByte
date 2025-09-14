@@ -1,0 +1,60 @@
+Processing folder: D:\UBCBAPK_Methods\FieldSensitivity1
+Using methods file: D:\UBCBAPK_Methods\FieldSensitivity1\FieldSensitivity1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;
+Processed summary for Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;: {
+    "Summary": "The method originates user personal data via the Android TelephonyManager's getSimSerialNumber() API, which retrieves the SIM serial number. This sensitive data is stored in the Datacontainer object's setSecret method. No sinks were identified in this method for the tracked data.",
+    "Next Methods": [
+        "Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V",
+        "Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V"
+    ]
+}
+Processed summary for Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V: {
+    "Summary": "The method stores the SIM serial number (originated from TelephonyManager.getSimSerialNumber()) into the 'secret' field of the Datacontainer object. No further propagation or sinks were observed in this method.",
+    "Next Methods": []
+}
+Processed summary for Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V: {
+    "Summary": "The method sets the 'description' field of the Datacontainer object with the provided string value. No sensitive data is originated here, and the data is not passed to any methods or sinks. The data was previously originated via TelephonyManager's getSimSerialNumber() in the setSecret method.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\FieldSensitivity1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\FieldSensitivity1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\FieldSensitivity1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Originates sensitive data",
+                "Source Method": "Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;",
+                "Reasoning": "The method originates user personal data via TelephonyManager.getSimSerialNumber() which retrieves the SIM serial number (DeviceId).",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Stores sensitive data",
+                "Source Method": "Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V",
+                "Reasoning": "The method stores the SIM serial number (originated from TelephonyManager.getSimSerialNumber()) into the 'secret' field of the Datacontainer object.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sets non-sensitive description",
+                "Source Method": "Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V",
+                "Reasoning": "The method sets the 'description' field with a provided string value, which was previously originated from the setSecret method.",
+                "Action": "Not passed to sinks"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer; --> Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V --> Lde/ecspride/Datacontainer;->setDescription:(Ljava/lang/String;)V ",
+                "Reasoning": "The SIM serial number (DeviceId) is originated via TelephonyManager.getSimSerialNumber() in setTaint, stored in setSecret, and then used to set the description field in setDescription. No sink methods are called with the tainted data."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\FieldSensitivity1\output\refined_method_summaries.json
+Saved 0 'sensitive' subgraphs to: D:\UBCBAPK_Methods\FieldSensitivity1\output\sensitive_only.json
+Total summary time: 798.4473304748535 seconds

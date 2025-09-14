@@ -1,0 +1,59 @@
+
+Processing folder: D:\UBCBAPK_Methods\Serialization1
+Using methods file: D:\UBCBAPK_Methods\Serialization1\Serialization1_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/serialization/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/serialization/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method 'onCreate' in the class 'MainActivity' of the app 'serialization' retrieves the device ID from the TelephonyManager using the system service 'phone', which is obtained by calling getSystemService with the argument 'phone'. This device ID is then used to create an instance of a custom class 'S' and serialized into a byte array. The serialized data, which contains the potentially sensitive information (device ID), is then deserialized back into an object. Throughout this process, including logging it via Log.i, there is a clear flow of user personal data from the TelephonyManager to the custom class 'S', and ultimately to be logged or stored in some form.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve device ID from TelephonyManager",
+            "Source Method": "Ledu/mit/serialization/MainActivity;->getSystemService:(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The method 'getSystemService' is called with the argument 'phone', which returns a system service for telephony-related functions, including access to device ID.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Serialize device ID into byte array",
+            "Source Method": "Ledu/mit/serialization/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The retrieved device ID is used to create an instance of a custom class 'S' and then serialized.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Deserialize byte array back into object",
+            "Source Method": "(No method signature found)",
+            "Reasoning": "The deserialization process is implicit in the creation of an instance of 'S' during serialization.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Log serialized data via Log.i",
+            "Source Method": "(No method signature found)",
+            "Reasoning": "The serialized data, containing the device ID, is logged using Log.i which can potentially log sensitive information.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ljava/io/ObjectInputStream;->readObject()Ljava/lang/Object;",
+        "Ljava/io/ObjectOutputStream;->writeObject(Ljava/lang/Object;)V",
+        "Log.i(...)"
+     
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Ledu/mit/serialization/MainActivity;->getSystemService:(Ljava/lang/String;)Ljava/lang/Object; --> Ledu/mit/serialization/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> java.io.ObjectOutputStream->writeObject(Ljava/lang/Object;)V --> Log.i(...)]",
+            "Reasoning": "The device ID is retrieved from the TelephonyManager, serialized into a byte array, and then logged via Log.i which can potentially log sensitive information."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Serialization1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Serialization1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Serialization1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Serialization1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\Serialization1\output\sensitive_only.json
+Total time for folder: 736.88 seconds

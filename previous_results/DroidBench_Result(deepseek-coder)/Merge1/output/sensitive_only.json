@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data (DeviceId) is obtained from TelephonyManager and stored in a register.",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "The device ID is sourced directly from the TelephonyManager, which is considered sensitive information.",
+                "Action": "Stored in register v8"
+            },
+            {
+                "Step": "Instance of MainActivity$A is created and its field b is set with the DeviceId.",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "The device ID, now stored in register v8, is passed to an instance of MainActivity$A where it overwrites field b.",
+                "Action": "Overwritten and set as field b"
+            },
+            {
+                "Step": "DeviceId is used to send an SMS via SmsManager.",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "The DeviceId, now part of the instance field b in MainActivity$A, is passed to SmsManager for potential transmission as SMS content.",
+                "Action": "Used to send SMS"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;."
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Lde/ecspride/MainActivity;->aliasFlowTest:()V --> Stored in register v8 --> Overwritten and set as field b in Lde/ecspride/MainActivity$A --> Used to send SMS via Landroid/telephony/SmsManager;.]",
+                "Reasoning": "Step-by-step explanation of how the sensitive data (DeviceId) is propagated, stored, overwritten, and eventually used without proper handling."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

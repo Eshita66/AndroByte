@@ -1,0 +1,61 @@
+
+ Processing folder: D:\UBCBAPK_Methods\AsynchronousEventOrdering1
+ Using methods file: D:\UBCBAPK_Methods\AsynchronousEventOrdering1\AsynchronousEventOrdering1_bytecode_instructions.json
+Sensitive root methods: ['Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V']
+[SUMMARY] Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V => {
+    "Summary": [
+        "The onResume method retrieves the device ID and stores it in the imei field, which may be accessed by subsequent methods like onStop."
+    ],
+    "Next Methods": [
+        "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V"
+    ]
+}
+[SUMMARY] Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V => {
+    "Summary": [
+        "The onStop method logs the imei field retrieved from the MainActivity instance, which was set in the onResume method."
+    ],
+    "Next Methods": [
+        "Landroid/util/Log;->i:(Ljava/lang/String; Ljava/lang/String;)I"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved and stored in imei field",
+                "Source Method": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V",
+                "Reasoning": "The onResume method explicitly retrieves the device ID and stores it in the imei field",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Stored device ID is logged",
+                "Source Method": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V",
+                "Reasoning": "The onStop method accesses the imei field from the MainActivity instance",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V --> Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V",
+                "Reasoning": "The device ID retrieved in onResume is stored in the imei field, which is then accessed and logged in onStop without any indication of taint removal"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\AsynchronousEventOrdering1\output\sensitive_only.json
+Total time for folder: 132.23 seconds

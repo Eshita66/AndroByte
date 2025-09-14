@@ -1,0 +1,38 @@
+
+Processing folder: D:\UBCBAPK_Methods\DirectLeak1
+Using methods file: D:\UBCBAPK_Methods\DirectLeak1\DirectLeak1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the device ID from the TelephonyManager and uses it to send an SMS message, potentially exposing user personal data.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieving Device ID from TelephonyManager",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method retrieves the device ID to potentially send an SMS, which involves sensitive personal data.",
+            "Action": "Stored and used to send an SMS"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->Log.i:(Ljava/lang/String; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V) --> ... --> Sink Method(Lde/ecspride/MainActivity;->Log.i:(Ljava/lang/String; Ljava/lang/String;)V)]",
+            "Reasoning": "The device ID is retrieved in onCreate, used to send an SMS which involves logging it for debugging purposes."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\DirectLeak1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\DirectLeak1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\DirectLeak1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\DirectLeak1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\DirectLeak1\output\sensitive_only.json
+Total time for folder: 182.02 seconds

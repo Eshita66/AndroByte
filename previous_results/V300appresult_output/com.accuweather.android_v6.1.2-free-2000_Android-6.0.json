@@ -1,0 +1,597 @@
+[
+  {
+    "Data Types Collected": [
+      "WIFI MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "WIFI MAC address is obtained and stored in the `f` field.",
+        "Source Method": "Lcom/amazon/device/ads/l;->b:(Landroid/content/Context;)V",
+        "Reasoning": "Method summary",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Unique identifier is generated based on WIFI MAC address.",
+        "Source Method": "Lcom/amazon/device/ads/l;->b:(Landroid/content/Context;)V",
+        "Reasoning": "Method summary",
+        "Action": "Generated"
+      },
+      {
+        "Step": "Unique identifier is passed to the `a()` method.",
+        "Source Method": "Lcom/amazon/device/ads/l;->b:(Landroid/content/Context;)V",
+        "Reasoning": "Method call",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Unique identifier is stored in the `f` field.",
+        "Source Method": "Lcom/amazon/device/ads/l;->a(Ljava/lang/String;)V",
+        "Reasoning": "Method summary",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Unique identifier is passed to the `b()` method.",
+        "Source Method": "Lcom/amazon/device/ads/l;->a(Ljava/lang/String;)V",
+        "Reasoning": "Method call",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Unique identifier is logged using the `s()` method.",
+        "Source Method": "Lcom/amazon/device/ads/l;->b(Ljava/lang/String;)V",
+        "Reasoning": "Method call",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/device/ads/l;->s(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/l;->b:(Landroid/content/Context;)V --> Lcom/amazon/device/ads/l;->a(Ljava/lang/String;)V --> Lcom/amazon/device/ads/l;->b(Ljava/lang/String;)V --> Lcom/amazon/device/ads/l;->s(Ljava/lang/String;)V",
+        "Reasoning": "Stepwise data flow based on method summaries and calls"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude",
+      "Accuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data",
+        "Source Method": "Lcom/amazon/device/ads/p;->a:()Ljava/lang/String;",
+        "Reasoning": "Method signature and summary match.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/p;->a:()Ljava/lang/String; --> Stored",
+        "Reasoning": "Data is extracted and stored in a variable."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Latitude",
+      "Longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location object creation",
+        "Source Method": "Lcom/bosch/myspin/serversdk/maps/MySpinMap;->addRoute:(Lcom/bosch/myspin/serversdk/maps/MySpinLatLng;)V",
+        "Reasoning": "Location object is passed as an argument to the addRoute() method.",
+        "Action": "Created"
+      },
+      {
+        "Step": "MySpinLatLng object creation",
+        "Source Method": "Lcom/bosch/myspin/serversdk/maps/MySpinLatLng;-><init>:(D D)V",
+        "Reasoning": "Location object is used to initialize a MySpinLatLng object.",
+        "Action": "Created"
+      },
+      {
+        "Step": "Route addition",
+        "Source Method": "Lcom/bosch/myspin/serversdk/maps/MySpinMap;->addRoute:(Lcom/bosch/myspin/serversdk/maps/MySpinLatLng;)V",
+        "Reasoning": "MySpinLatLng object is passed to the addRoute() method.",
+        "Action": "Added"
+      }
+    ],
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "MySpinLatLng",
+      "MySpinDirectionsOptions"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected from the `Location` object.",
+        "Source Method": "Lcom/bosch/myspin/serversdk/maps/MySpinMap;->addRoute:(Lcom/bosch/myspin/serversdk/maps/MySpinLatLng; Lcom/bosch/myspin/serversdk/maps/MySpinDirectionsOptions;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in MySpinLatLng objects."
+      },
+      {
+        "Step": "MySpinLatLng objects are passed to the `addRoute` method.",
+        "Source Method": "Lcom/bosch/myspin/serversdk/maps/MySpinMap;->addRoute:(Lcom/bosch/myspin/serversdk/maps/MySpinLatLng; Lcom/bosch/myspin/serversdk/maps/MySpinDirectionsOptions;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Passed as arguments."
+      }
+    ],
+    "All Sinks": null,
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved.",
+        "Source Method": "Lcom/bosch/myspin/serversdk/maps/MySpinMapView;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The `onLocationChanged` method receives the user location.",
+        "Action": "Stored in `f` field."
+      },
+      {
+        "Step": "Location is transmitted to JavaScript handler.",
+        "Source Method": "Lcom/bosch/myspin/serversdk/maps/MySpinMapView;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The `webViewExecuteCommand` method transmits the location to JavaScript.",
+        "Action": "Transmitted to JavaScript handler."
+      },
+      {
+        "Step": "Location is passed to MySpinMap object.",
+        "Source Method": "Lcom/bosch/myspin/serversdk/maps/MySpinMapView;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The location is passed to the `MySpinMap` object.",
+        "Action": "Passed to MySpinMap object."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/bosch/myspin/serversdk/maps/MySpinMapView;->webViewExecuteCommand:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/bosch/myspin/serversdk/maps/MySpinMapView;->onLocationChanged:(Landroid/location/Location;)V --> Lcom/bosch/myspin/serversdk/maps/MySpinMapView;->webViewExecuteCommand:(Ljava/lang/String;)V --> Lcom/bosch/myspin/serversdk/maps/MySpinMap;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The user location is retrieved, transmitted to JavaScript, and passed to the MySpinMap object."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "FoursquareLocation"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve last known location from network",
+        "Source Method": "Lcom/foursquare/internal/a/a;->a:(Landroid/content/Context;)Lcom/foursquare/api/FoursquareLocation;",
+        "Reasoning": "Method signature and summary indicate location retrieval",
+        "Action": "Stored in FoursquareLocation object"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/foursquare/internal/a/a;->a:(Landroid/content/Context;)Lcom/foursquare/api/FoursquareLocation; --> Stored in FoursquareLocation object",
+        "Reasoning": "Overall data flow includes storing the retrieved location in an object"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract SSID",
+        "Source Method": "Lcom/foursquare/internal/network/d;->a:(Landroid/net/wifi/WifiInfo;)Ljava/lang/String;",
+        "Reasoning": "Method signature indicates SSID extraction",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " WifiInfo --> Extract SSID --> Stored",
+        "Reasoning": "Data flow starts from WifiInfo object, is extracted by the method, and is then stored."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Receive Location Object",
+        "Source Method": "Lcom/accuweather/bosch/listener/BoschGpsLocationListener;->getGpsLocationDataLoader:(Landroid/location/Location;)V",
+        "Reasoning": "Input parameter of the method",
+        "Action": "Store in service field"
+      },
+      {
+        "Step": "Create LatLong Object",
+        "Source Method": "Lcom/accuweather/bosch/listener/BoschGpsLocationListener;->getGpsLocationDataLoader:(Landroid/location/Location;)V",
+        "Reasoning": "Extract latitude and longitude from Location object",
+        "Action": "Store in service field"
+      },
+      {
+        "Step": "Call run() method",
+        "Source Method": "Lcom/accuweather/bosch/listener/BoschGpsLocationListener;->getGpsLocationDataLoader:(Landroid/location/Location;)V",
+        "Reasoning": "Service field is not null",
+        "Action": "Call run() method of BoschGpsLocationListener$getGpsLocationDataLoader$1"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/accuweather/bosch/listener/BoschGpsLocationListener$getGpsLocationDataLoader$1;->run()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/accuweather/bosch/listener/BoschGpsLocationListener;->getGpsLocationDataLoader:(Landroid/location/Location;)V --> Lcom/accuweather/bosch/listener/BoschGpsLocationListener$getGpsLocationDataLoader$1;->run()V",
+        "Reasoning": "Data flows from the method to the run method of the inner class"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected from the Location object.",
+        "Source Method": "Lcom/accuweather/d/a;->b:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in the c field of the a object."
+      },
+      {
+        "Step": "Location data is passed to the a() method of the c object.",
+        "Source Method": "Lcom/accuweather/d/a;->b:(Landroid/location/Location;)V",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Logged by the a() method."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/accuweather/d/a;->a(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/accuweather/d/a;->b:(Landroid/location/Location;)V --> Lcom/accuweather/d/a;->a(Ljava/lang/String;)V",
+        "Reasoning": "Overall Data Flow summarizes the data flow."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Receive Location Data",
+        "Source Method": "Lcom/accuweather/d/a;->b:(Landroid/location/Location; Landroid/location/Location;)Z",
+        "Reasoning": "Method receives two Location objects as input.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Calculate Distance",
+        "Source Method": "Lcom/accuweather/d/a;->b:(Landroid/location/Location; Landroid/location/Location;)Z",
+        "Reasoning": "Distance calculation is performed based on the received Location objects.",
+        "Action": "Processed"
+      },
+      {
+        "Step": "Return Boolean Result",
+        "Source Method": "Lcom/accuweather/d/a;->b:(Landroid/location/Location; Landroid/location/Location;)Z",
+        "Reasoning": "Based on the distance threshold, the method returns true or false.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/accuweather/d/a;->b:(Landroid/location/Location; Landroid/location/Location;)Z --> Processed --> Returned",
+        "Reasoning": "Location data is received, processed, and returned as a boolean result."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is collected in `a()` method of `b` class.",
+        "Source Method": "Lcom/accuweather/d/b;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary states that location is collected in `a()` method.",
+        "Action": "Stored in `e` field of `b` class."
+      },
+      {
+        "Step": "Location is passed to `a()` method of `p` class.",
+        "Source Method": "Lcom/accuweather/d/b;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Instance of `b$4` is created and passed to `a()` method of `p` class.",
+        "Action": "Passed as an argument to `a()` method of `p` class."
+      },
+      {
+        "Step": "Location is logged using `a()` method of `p` class.",
+        "Source Method": "Lcom/accuweather/d/b;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary states that location is logged in `a()` method of `p` class.",
+        "Action": "Logged using `a()` method of `p` class."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/accuweather/d/p;->a:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/accuweather/d/b;->a:(Landroid/location/Location;)V --> Lcom/accuweather/d/p;->a:(Ljava/lang/String;)V",
+        "Reasoning": "Location is collected in `a()` method of `b` class, then passed to `a()` method of `p` class, and finally logged using `a()` method of `p` class."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve latitude",
+        "Source Method": "Lcom/accuweather/locations/CurrentLocation;->getLatitude:()D",
+        "Reasoning": "Method `getLatitude()` retrieves the latitude from the `gpsLocation` field.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/accuweather/locations/CurrentLocation;->getLatitude:()D --> Stored",
+        "Reasoning": "The latitude is retrieved and stored in the `gpsLocation` field."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve longitude",
+        "Source Method": "Lcom/accuweather/locations/CurrentLocation;->getLongitude:()D",
+        "Reasoning": "Method `getLongitude()` extracts the longitude value from the `gpsLocation` field.",
+        "Action": "Stored in local variable"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "installDate",
+      "counter",
+      "iaecounter"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is collected in a map.",
+        "Source Method": "Lcom/appsflyer/h;->a(...)",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in a map."
+      },
+      {
+        "Step": "Map is passed to the `com.appsflyer.ac` class.",
+        "Source Method": "Lcom/appsflyer/h;->a(...)",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Passed as an argument."
+      },
+      {
+        "Step": "Result is passed to the `a()` method.",
+        "Source Method": "Lcom/appsflyer/ac;->b(...)",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Passed as an argument."
+      },
+      {
+        "Step": "Data is stored in a map with keys `af_v2`, `is_stop_tracking_used`, and `istu`. ",
+        "Source Method": "Lcom/appsflyer/h;->a(...)",
+        "Reasoning": "Method signature and summary.",
+        "Action": "Stored in a map."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/h;->a(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/h;->a(...) --> Lcom/appsflyer/ac;->b(...) --> Lcom/appsflyer/h;->a(...) ",
+        "Reasoning": "Stepwise explanation of data flow through the methods."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "altitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location data",
+        "Source Method": "Lcom/mapbox/mapboxsdk/geometry/LatLng;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "Method extracts latitude, longitude, and altitude from Location object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Location Object --> LatLng Object",
+        "Reasoning": "Location data is extracted and stored in a LatLng object."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [],
+    "Overall Data Flow": [],
+    "All Sinks": [],
+    "Complete Data Flow": null,
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive data is extracted from InternalSession object.",
+        "Source Method": "Lcom/mparticle/internal/t$a;-><init>:(Lcom/mparticle/internal/t$b;)V",
+        "Reasoning": "Summary states that sensitive data originates from InternalSession object.",
+        "Action": "Stored in JSONObject"
+      },
+      {
+        "Step": "JSONObject containing sensitive data is passed to put() method.",
+        "Source Method": "Lcom/mparticle/internal/t$a;-><init>:(Lcom/mparticle/internal/t$b;)V",
+        "Reasoning": "Implicit action of put() method.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mparticle/internal/t$a;->put:(Ljava/lang/String;Ljava/lang/Object;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mparticle/internal/t$a;-><init>:(Lcom/mparticle/internal/t$b;)V --> Lcom/mparticle/internal/t$a;->put:(Ljava/lang/String;Ljava/lang/Object;)V",
+        "Reasoning": "Sensitive data is extracted from InternalSession object and passed to put() method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "TelephonyManager"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "TelephonyManager data is retrieved",
+        "Source Method": "Lcom/smartdevicelink/trace/TraceDeviceInfo;->getTelephonyHeader:()Ljava/lang/String;",
+        "Reasoning": "Method `getTelephonyHeader` calls `TelephonyManager` to retrieve data",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is logged",
+        "Source Method": "Lcom/smartdevicelink/trace/TraceDeviceInfo;->getTelephonyHeader:()Ljava/lang/String;",
+        "Reasoning": "Data is logged using `Log.d` method",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Data is transmitted",
+        "Source Method": "Lcom/smartdevicelink/trace/TraceDeviceInfo;->getTelephonyHeader:()Ljava/lang/String;",
+        "Reasoning": "Data is transmitted through an unspecified mechanism",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Log.d",
+      "Transmitted"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/smartdevicelink/trace/TraceDeviceInfo;->getTelephonyHeader:()Ljava/lang/String; --> Log.d --> Transmitted",
+        "Reasoning": "Data flows through the `getTelephonyHeader`, `Log.d`, and `Transmitted` methods"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected from the `Location` object.",
+        "Source Method": "Lcom/mparticle/kits/AppsFlyerKit;->setLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The `setLocation()` method receives a `Location` object as an argument.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location data is passed to the `AppsFlyerKit.a()` method.",
+        "Source Method": "Lcom/mparticle/kits/AppsFlyerKit;->setLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The `setLocation()` method calls the `AppsFlyerKit.a()` method with the `Location` object.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Location data is logged using the `AppsFlyerKit.a()` method.",
+        "Source Method": "Lcom/mparticle/kits/AppsFlyerKit;->setLocation:(Landroid/location/Location;)V",
+        "Reasoning": "The `AppsFlyerKit.a()` method logs the `Location` object.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/mparticle/kits/AppsFlyerKit;->a(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mparticle/kits/AppsFlyerKit;->setLocation:(Landroid/location/Location;)V --> Lcom/mparticle/kits/AppsFlyerKit;->a(Ljava/lang/String;)V",
+        "Reasoning": "The location data collected in `setLocation()` is transmitted and logged in `AppsFlyerKit.a()`."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Latitude",
+      "Longitude",
+      "Provider",
+      "Accuracy",
+      "Altitude",
+      "Speed"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected from the Location object.",
+        "Source Method": "Lcom/urbanairship/analytics/l;-><init>:(Landroid/location/Location; I I I Z)V",
+        "Reasoning": "Method signature matches the input data type.",
+        "Action": "Stored in separate fields."
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Location object --> Stored in separate fields",
+        "Reasoning": "Data is collected and stored in the method's fields."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

@@ -1,0 +1,45 @@
+[
+    {
+        "Data Types Collected": [
+            "device ID",
+            "phone number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved from TelephonyManager.getDeviceId()",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly uses TelephonyManager.getDeviceId() as a source of device ID data",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Phone number is sent to SMS service",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method calls sendTextMessage with a phone number derived from device ID",
+                "Action": "Transmitted"
+            },
+            {
+                "Step": "Device ID is logged",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method uses Log.i to log the device ID",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app.PendingIntent;)V",
+            "Ljava/util/logging/Log;->i:(Ljava/lang/String;Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app.PendingIntent;)V",
+                "Reasoning": "Device ID is passed to sendTextMessage as a phone number argument without being overwritten"
+            },
+            {
+                "dataflow 2": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljava/util/logging/Log;->i:(Ljava/lang/String;Ljava/lang/String;)V",
+                "Reasoning": "Device ID is passed to Log.i without being overwritten"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

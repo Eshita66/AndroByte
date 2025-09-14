@@ -1,0 +1,44 @@
+
+Processing folder: D:\UBCBAPK_Methods\Parcel1
+Using methods file: D:\UBCBAPK_Methods\Parcel1\Parcel1_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V => In the given method, sensitive user personal data is obtained from the TelephonyManager instance and passed to another method for potential storage or logging. The device ID obtained from the TelephonyManager is cast to a String and then passed to the 'writeParcel' method.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Obtain device ID from TelephonyManager",
+            "Source Method": "Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "Device ID is obtained and cast to a String within the onCreate method.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Pass device ID to writeParcel method",
+            "Source Method": "Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "After obtaining the device ID, it is passed to writeParcel for potential storage or logging.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/parcel/MainActivity;->writeParcel(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> writeParcel method]",
+            "Reasoning": "Data flows from onCreate to writeParcel, where it could be potentially logged or stored without appropriate security measures."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\Parcel1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\Parcel1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\Parcel1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\Parcel1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\Parcel1\output\sensitive_only.json
+Total time for folder: 618.16 seconds

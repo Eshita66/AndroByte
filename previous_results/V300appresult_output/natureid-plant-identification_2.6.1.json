@@ -1,0 +1,128 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "load MAC address from file",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by reading the MAC address from a file at '/sys/class/net/<interface>/address'.",
+        "Action": "Stored in register v4"
+      },
+      {
+        "Step": "pass MAC address to other methods",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The data is passed to other methods.",
+        "Action": "Passed between methods via method invocations"
+      },
+      {
+        "Step": "get MAC address from device",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling sensitive API to load MAC address from the device.",
+        "Action": "Stored in register v0"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The MAC address is loaded from a file and then passed to the getRawMacAddress method, which calls sensitive API to load the MAC address from the device."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from sensitive API calls",
+        "Source Method": "Lcom/appsflyer/internal/ah;->AFKeystoreWrapper:(Lcom/appsflyer/internal/h;)Ljava/util/Map;",
+        "Reasoning": "The current method uses sensitive API calls to originate user personal data, stores it in registers and variables.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Propagate personal data through method invocations",
+        "Source Method": "Lcom/appsflyer/internal/ah;->AFKeystoreWrapper:(Lcom/appsflyer/internal/h;)Ljava/util/Map;",
+        "Reasoning": "The data is propagated to the return statement.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Originate user personal data from static get method",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties;",
+        "Reasoning": "The data origin is from the static get method AppsFlyerProperties.AFKeystoreWrapper, which originates sensitive user personal data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Retrieve boolean value from object",
+        "Source Method": "Lcom/appsflyer/internal/h;->AFInAppEventParameterName:()Z",
+        "Reasoning": "The method AFInAppEventParameterName() uses the getBoolean function to retrieve a boolean value from the onInstallConversionDataLoadedNative field of an object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data from sensitive API sget-object",
+        "Source Method": "Lcom/appsflyer/internal/ag;->AFKeystoreWrapper:()Lcom/appsflyer/internal/ag;",
+        "Reasoning": "The current method AFKeystoreWrapper() originates user personal data from the sensitive API sget-object using the class com.appsflyer.internal.ag.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/internal/ah;->AFKeystoreWrapper:(Lcom/appsflyer/internal/h;)Ljava/util/Map;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties; --> Lcom/appsflyer/internal/ag;->AFKeystoreWrapper:()Lcom/appsflyer/internal/ag; --> Lcom/appsflyer/internal/ah;->AFKeystoreWrapper:(Lcom/appsflyer/internal/h;)Ljava/util/Map;",
+        "Reasoning": "The data is propagated from AppsFlyerProperties to AFKeystoreWrapper and then to AFKeystoreWrapper in ah class."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain location permissions and get last known location",
+        "Source Method": "Lf/b/c/h$h;->c:()I",
+        "Reasoning": "Accesses location permissions to retrieve the last known location.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Call getLastKnownLocation to retrieve the last known location",
+        "Source Method": "Lf/b/c/r;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "Calls `getLastKnownLocation` which retrieves the last known location.",
+        "Action": "Stored in register v3"
+      },
+      {
+        "Step": "Use sensitive APIs to get device ID and phone number",
+        "Source Method": "Lf/k/b/e;->j:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "Uses sensitive APIs such as `myPid()` and `getPackageName()`.",
+        "Action": "Passed to other methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lf/b/c/h$h;->c:()I",
+      "Lf/k/b/e;->j:(Landroid/content/Context; Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lf/b/c/r;->a:(Ljava/lang/String;)Landroid/location/Location; --> Lf/b/c/h$h;->c:()I --> logging",
+        "Reasoning": "The last known location is retrieved and passed to the method that logs it."
+      },
+      {
+        "dataflow 2": "Lf/k/b/e;->j:(Landroid/content/Context; Ljava/lang/String;)I --> noteProxyOpNoThrow() --> logging or transmission",
+        "Reasoning": "The device ID and phone number are used in the `noteProxyOpNoThrow()` method, which logs or transmits the data."
+      }
+    ],
+    "Label": "leak"
+  }
+]

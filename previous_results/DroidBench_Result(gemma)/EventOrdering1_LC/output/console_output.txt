@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\EventOrdering1_LC
+Using methods file: D:\UBCBAPK_Methods\EventOrdering1_LC\EventOrdering1_LC_bytecode_instructions.json
+Sensitive method found: Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V
+Processed summary for Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V: {
+    "Summary": "This method retrieves the device's IMEI using the `android.telephony.TelephonyManager` and logs it with the message \"phone\". The IMEI is then stored in the `imei` instance field of the `MainActivity` object. This method utilizes a sensitive API (`getDeviceId()`) to obtain user personal data (device ID). The data is ultimately logged using `android.util.Log`.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\EventOrdering1_LC\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\EventOrdering1_LC\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\EventOrdering1_LC\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V",
+                "Reasoning": "The method retrieves the device's IMEI using `getDeviceId()` which is a sensitive API.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "android.util.Log.d(..., ...)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V --> android.util.Log.d(..., ...)",
+                "Reasoning": "The `onLowMemory` method retrieves the DeviceId from `getDeviceId()`. This value is then logged using `android.util.Log.d`. Since the DeviceId is not overwritten, this constitutes a potential leak."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\EventOrdering1_LC\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\EventOrdering1_LC\output\sensitive_only.json
+Total summary time: 14.660387992858887 seconds

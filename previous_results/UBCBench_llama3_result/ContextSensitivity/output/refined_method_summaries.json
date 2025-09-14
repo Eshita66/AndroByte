@@ -1,0 +1,58 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive DeviceId value obtained from getDeviceId() method",
+                "Source Method": "getDeviceId()",
+                "Reasoning": "Propagation through registers and methods until sink point",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getDeviceId() --> ... --> Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I",
+                "Reasoning": "Propagation through registers and methods until sink point"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    },
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originates from getSimSerialNumber() method call",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->getSimSerialNumber:()Ljava/lang/String;",
+                "Reasoning": "The sensitive value is stored in register v0.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sensitive data passed to logging method",
+                "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun2:()V",
+                "Reasoning": "The sensitive value is passed as an argument to the logging method.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/contextsensitivity/ContextSensitivity;->log:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "getSimSerialNumber(...) --> fun2(...) --> log(...)",
+                "Reasoning": "The sensitive data is passed from getSimSerialNumber() to fun2(), and then to the logging method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

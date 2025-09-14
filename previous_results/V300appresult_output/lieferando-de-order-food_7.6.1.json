@@ -1,0 +1,344 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC addresses"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Load MAC address from system",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method loads the MAC address using sensitive API calls.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Construct file path for MAC address",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method uses a StringBuilder to construct the file path.",
+        "Action": "Stored in String object"
+      },
+      {
+        "Step": "Read contents of MAC address file",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method reads the contents of the file using a BufferedReader.",
+        "Action": "Stored in String object"
+      },
+      {
+        "Step": "Return MAC address as string",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method returns the MAC address as a string.",
+        "Action": "Returned to caller"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data flows from getRawMacAddress to loadAddress, and then back to getRawMacAddress."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from 'location' and 'searchText' parameters",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The data is propagated through registers and variables within the method",
+        "Action": "Stored in a new GraphRequest object"
+      },
+      {
+        "Step": "Check for null values of 'location' or 'searchText'",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method checks for null values and throws an exception if either is null",
+        "Action": "None (exception thrown)"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> (stored in a new GraphRequest object)]",
+        "Reasoning": "The data is propagated through registers and variables within the method"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "accuracy type",
+      "device ID",
+      "user ID",
+      "token",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from location and accuracy type",
+        "Source Method": "Lcom/leanplum/internal/LeanplumInternal$7$1;->run:()V",
+        "Reasoning": "The method originates user personal data from the location and accuracy type.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Originate user personal data by invoking withSetUserAttributesAction() method",
+        "Source Method": "Lcom/leanplum/internal/RequestBuilder;->withSetUserAttributesAction:()Lcom/leanplum/internal/RequestBuilder;",
+        "Reasoning": "The method originates user personal data by invoking the withSetUserAttributesAction() method from the RequestBuilder class.",
+        "Action": "Stored in register v0 and propagated through registers"
+      },
+      {
+        "Step": "Originate user personal data by sending a request",
+        "Source Method": "Lcom/leanplum/internal/RequestSender;->send:(Lcom/leanplum/internal/Request;)V",
+        "Reasoning": "The method originates user personal data by invoking the sendEventually() method with a Request object.",
+        "Action": "Stored in registers v9 and v10, and propagated to other methods via method invocations"
+      },
+      {
+        "Step": "Originate user personal data from params field of current object",
+        "Source Method": "Lcom/leanplum/internal/RequestBuilder;->andParams:(Ljava/util/Map;)Lcom/leanplum/internal/RequestBuilder;",
+        "Reasoning": "The method originates user personal data from the `params` field of the current object.",
+        "Action": "Stored in register v0 and then passed to the `putAll` method of the `Map` interface"
+      },
+      {
+        "Step": "Originate user personal data through apiAction and params fields",
+        "Source Method": "Lcom/leanplum/internal/RequestBuilder;->create:()Lcom/leanplum/internal/Request;",
+        "Reasoning": "The method originates user personal data through the `apiAction` and `params` fields of the `RequestBuilder` class.",
+        "Action": "Stored in an array of objects and then passed to a static method of the `Log` class for logging purposes"
+      },
+      {
+        "Step": "Originate user personal data from constructor",
+        "Source Method": "Lcom/leanplum/internal/RequestBuilder;-><init>:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "Data originates from the constructor of RequestBuilder using two String parameters.",
+        "Action": "Stored in instance variables httpMethod and apiAction within the method"
+      },
+      {
+        "Step": "Originate user personal data through sensitive API calls to check if error logs should be sent",
+        "Source Method": "Lcom/leanplum/internal/RequestSender;->sendEventually:(Lcom/leanplum/internal/Request;)V",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls to check if error logs should be sent.",
+        "Action": "Stored in registers and variables within the method, and it propagates to other methods via method invocations"
+      },
+      {
+        "Step": "Originate user personal data by invoking a sensitive API call to log debug messages",
+        "Source Method": "Lcom/leanplum/internal/Log;->d:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "[The current method originates user personal data by invoking a sensitive API call to log debug messages.",
+        "Action": "Stored in registers and passed to the `log` method via method invocation"
+      },
+      {
+        "Step": "Originate user personal data from createRequest method of Lcom/leanplum/internal/RequestFactory",
+        "Source Method": "Lcom/leanplum/internal/RequestFactory;->createRequest:(Ljava/lang/String; Ljava/lang/String; Ljava/util/Map;)Lcom/leanplum/internal/Request;",
+        "Reasoning": "Sensitive user personal data originates from the `createRequest` method of `Lcom/leanplum/internal/RequestFactory`.",
+        "Action": "Stored in register v2 (Ljava/lang/String), v3 (Ljava/lang/String), and v4 (Ljava/util/Map)"
+      },
+      {
+        "Step": "Originate user personal data through the use of sensitive API calls to get the application context and database manager",
+        "Source Method": "Lcom/leanplum/internal/LeanplumEventDataManager;-><init>:()V",
+        "Reasoning": "The method originates user personal data through the use of sensitive API calls to get the application context and database manager.",
+        "Action": "Stored in registers and variables within the method, including ContentValues and a SQLiteDatabase instance"
+      },
+      {
+        "Step": "Originate user personal data by calling sensitive API calls to get device ID, user ID, and token",
+        "Source Method": "Lcom/leanplum/internal/RequestSender;->createArgsDictionary:(Lcom/leanplum/internal/Request;)Ljava/util/Map;",
+        "Reasoning": "The method originates user personal data by calling sensitive API calls to get device ID, user ID, and token.",
+        "Action": "Stored in a HashMap and propagated through registers"
+      },
+      {
+        "Step": "Originate user personal data by logging messages",
+        "Source Method": "Lcom/leanplum/internal/Log;->handleLogMessage:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The method originates user personal data by logging messages.",
+        "Action": "Propagated through registers and variables within the method, and it reaches a sink point, which is network transmission"
+      },
+      {
+        "Step": "Originate user personal data by using the Looper.getMainLooper() and Executors.newCachedThreadPool() APIs",
+        "Source Method": "Lcom/leanplum/internal/OperationQueue;-><init>:()V",
+        "Reasoning": "This method originates user personal data by using the `Looper.getMainLooper()` and `Executors.newCachedThreadPool()` APIs to create a Handler and an ExecutorService respectively.",
+        "Action": "Stored in registers and variables within the method, specifically in the `uiHandler` and `executor` fields of the OperationQueue instance"
+      },
+      {
+        "Step": "Originate user personal data through invoke-static instruction that calls Log.e with a string and an array of objects",
+        "Source Method": "Lcom/leanplum/internal/LeanplumEventDataManager;->handleSQLiteError:(Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The method handleSQLiteError originates user personal data through the invoke-static instruction that calls Log.e with a string and an array of objects.",
+        "Action": "Stored in register v1 as an array of objects"
+      },
+      {
+        "Step": "Originate user personal data by accessing the INSTANCE field of APIConfig",
+        "Source Method": "Lcom/leanplum/internal/APIConfig;->getInstance:()Lcom/leanplum/internal/APIConfig;",
+        "Reasoning": "The method originates user personal data by accessing the INSTANCE field of APIConfig.",
+        "Action": "Stored in register v0 and propagated to the return statement"
+      },
+      {
+        "Step": "Originate user personal data using the sensitive API call to get the device ID",
+        "Source Method": "Lcom/leanplum/internal/APIConfig;->deviceId:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data using the sensitive API call to get the device ID.",
+        "Action": "Stored in register v0 and propagated through it"
+      },
+      {
+        "Step": "Originate user personal data by calling the 'userId' getter from the APIConfig class",
+        "Source Method": "Lcom/leanplum/internal/APIConfig;->userId:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the 'userId' getter from the APIConfig class.",
+        "Action": "Stored in register v0 and propagated via return statement"
+      },
+      {
+        "Step": "Originate user personal data by calling the 'token' getter method from APIConfig class",
+        "Source Method": "Lcom/leanplum/internal/APIConfig;->token:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the 'token' getter method from APIConfig class.",
+        "Action": "Stored in register v0 and propagated to the return statement"
+      },
+      {
+        "Step": "Originate user personal data by using the sensitive API call `iget-object` to retrieve a map of parameters",
+        "Source Method": "Lcom/leanplum/internal/RequestBuilder;->andParam:(Ljava/lang/String; Ljava/lang/Object;)Lcom/leanplum/internal/RequestBuilder;",
+        "Reasoning": "The method originates user personal data by using the sensitive API call `iget-object` to retrieve a map of parameters from the object.",
+        "Action": "Stored in the `params` field of the object and passed to other methods via method invocations"
+      },
+      {
+        "Step": "Originate user personal data through sensitive API calls to get the version name and exception message",
+        "Source Method": "Lcom/leanplum/internal/Log;->exception:(Ljava/lang/Throwable;)V",
+        "Reasoning": "The current method originates user personal data through sensitive API calls to get the version name and exception message.",
+        "Action": "Stored in registers and variables within the method, and it is then passed to other methods via method invocations"
+      },
+      {
+        "Step": "Originate user personal data by calling the log() function with a string and an array of objects",
+        "Source Method": "Lcom/leanplum/internal/Log;->e:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "[The method originates user personal data by calling the log() function with a string and an array of objects.",
+        "Action": "Stored in registers v1 and v2 before being passed to the log() function"
+      },
+      {
+        "Step": "Originate user personal data through sensitive API calls to check if error logs should be sent",
+        "Source Method": "Lcom/leanplum/internal/RequestSender;->withLogAction:()Lcom/leanplum/internal/RequestBuilder;",
+        "Reasoning": "The method originates user personal data by invoking the withLogAction() method which likely logs or transmits user log actions.",
+        "Action": "Stored in registers v0 and v1, then passed to the <init> method of RequestBuilder via invoke-direct instruction"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/leanplum/internal/Log;->d:(Ljava/lang/String; [Ljava/lang/Object;)V",
+      "Lcom/leanplum/internal/Log;->e:(Ljava/lang/String; [Ljava/lang/Object;)V",
+      "Lcom/leanplum/internal/Log;->exception:(Ljava/lang/Throwable;)V",
+      "Lcom/leanplum/internal/RequestSender;->sendEventually:(Lcom/leanplum/internal/Request;)V",
+      "Lcom/leanplum/internal/APIConfig;->deviceId:()Ljava/lang/String;",
+      "Lcom/leanplum/internal/APIConfig;->userId:()Ljava/lang/String;",
+      "Lcom/leanplum/internal/APIConfig;->token:()Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/leanplum/internal/LeanplumInternal$7$1;->run:()V --> Lcom/leanplum/internal/RequestSender;->sendEventually:(Lcom/leanplum/internal/Request;)V]",
+        "Reasoning": "The data originates from the run method of LeanplumInternal$7$1 and is propagated to the sendEventually method of RequestSender via method invocations."
+      },
+      {
+        "dataflow 2": "[Lcom/leanplum/internal/RequestBuilder;->withSetUserAttributesAction:()Lcom/leanplum/internal/RequestBuilder; --> Lcom/leanplum/internal/RequestSender;->sendEventually:(Lcom/leanplum/internal/Request;)V]",
+        "Reasoning": "The data originates from the withSetUserAttributesAction method of RequestBuilder and is propagated to the sendEventually method of RequestSender via method invocations."
+      },
+      {
+        "dataflow 3": "[Lcom/leanplum/internal/RequestSender;->send:(Lcom/leanplum/internal/Request;)V --> Lcom/leanplum/internal/Log;->e:(Ljava/lang/String; [Ljava/lang/Object;)V]",
+        "Reasoning": "The data originates from the send method of RequestSender and is propagated to the e method of Log via method invocations."
+      },
+      {
+        "dataflow 4": "[Lcom/leanplum/internal/RequestBuilder;->andParams:(Ljava/util/Map;)Lcom/leanplum/internal/RequestBuilder; --> Lcom/leanplum/internal/APIConfig;->deviceId:()Ljava/lang/String;]",
+        "Reasoning": "The data originates from the andParams method of RequestBuilder and is propagated to the deviceId method of APIConfig via method invocations."
+      },
+      {
+        "dataflow 5": "[Lcom/leanplum/internal/RequestBuilder;->create:()Lcom/leanplum/internal/Request; --> Lcom/leanplum/internal/APIConfig;->token:()Ljava/lang/String;]",
+        "Reasoning": "The data originates from the create method of RequestBuilder and is propagated to the token method of APIConfig via method invocations."
+      },
+      {
+        "dataflow 6": "[Lcom/leanplum/internal/RequestSender;->createArgsDictionary:(Lcom/leanplum/internal/Request;)Ljava/util/Map; --> Lcom/leanplum/internal/APIConfig;->userId:()Ljava/lang/String;]",
+        "Reasoning": "The data originates from the createArgsDictionary method of RequestSender and is propagated to the userId method of APIConfig via method invocations."
+      },
+      {
+        "dataflow 7": "[Lcom/leanplum/internal/Log;->handleLogMessage:(Ljava/lang/String; Ljava/lang/String;)V --> Lcom/leanplum/internal/APIConfig;->token:()Ljava/lang/String;]",
+        "Reasoning": "The data originates from the handleLogMessage method of Log and is propagated to the token method of APIConfig via method invocations."
+      },
+      {
+        "dataflow 8": "[Lcom/leanplum/internal/LeanplumEventDataManager;-><init>:()V --> Lcom/leanplum/internal/APIConfig;->deviceId:()Ljava/lang/String;]",
+        "Reasoning": "The data originates from the <init> method of LeanplumEventDataManager and is propagated to the deviceId method of APIConfig via method invocations."
+      },
+      {
+        "dataflow 9": "[Lcom/leanplum/internal/APIConfig;->getInstance:()Lcom/leanplum/internal/APIConfig; --> Lcom/leanplum/internal/APIConfig;->deviceId:()Ljava/lang/String;]",
+        "Reasoning": "The data originates from the getInstance method of APIConfig and is propagated to the deviceId method of APIConfig via method invocations."
+      },
+      {
+        "dataflow 10": "[Lcom/leanplum/internal/APIConfig;->userId:()Ljava/lang/String; --> Lcom/leanplum/internal/APIConfig;->token:()Ljava/lang/String;]",
+        "Reasoning": "The data originates from the userId method of APIConfig and is propagated to the token method of APIConfig via method invocations."
+      },
+      {
+        "dataflow 11": "[Lcom/leanplum/internal/RequestBuilder;->andParam:(Ljava/lang/String; Ljava/lang/Object;)Lcom/leanplum/internal/RequestBuilder; --> Lcom/leanplum/internal/APIConfig;->token:()Ljava/lang/String;]",
+        "Reasoning": "The data originates from the andParam method of RequestBuilder and is propagated to the token method of APIConfig via method invocations."
+      },
+      {
+        "dataflow 12": "[Lcom/leanplum/internal/Log;->exception:(Ljava/lang/Throwable;)V --> Lcom/leanplum/internal/APIConfig;->token:()Ljava/lang/String;]",
+        "Reasoning": "The data originates from the exception method of Log and is propagated to the token method of APIConfig via method invocations."
+      },
+      {
+        "dataflow 13": "[Lcom/leanplum/internal/Log;->e:(Ljava/lang/String; [Ljava/lang/Object;)V --> Lcom/leanplum/internal/APIConfig;->token:()Ljava/lang/String;]",
+        "Reasoning": "The data originates from the e method of Log and is propagated to the token method of APIConfig via method invocations."
+      },
+      {
+        "dataflow 14": "[Lcom/leanplum/internal/RequestSender;->withLogAction:()Lcom/leanplum/internal/RequestBuilder; --> Lcom/leanplum/internal/APIConfig;->token:()Ljava/lang/String;]",
+        "Reasoning": "The data originates from the withLogAction method of RequestSender and is propagated to the token method of APIConfig via method invocations."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "phone number",
+      "location",
+      "device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get Wi-Fi MAC address hash",
+        "Source Method": "Lcom/leanplum/internal/Util;->getWifiMacAddressHash:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the `getWifiMacAddressHash` function.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get device ID",
+        "Source Method": "Lcom/leanplum/internal/APIConfig;->deviceId:()Ljava/lang/String;",
+        "Reasoning": "The current method originates user personal data by calling the deviceId sensitive API.",
+        "Action": "Stored in register v0 and returned as a String"
+      },
+      {
+        "Step": "Get user ID",
+        "Source Method": "Lcom/leanplum/internal/APIConfig;->userId:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling a sensitive API (getUserId) to retrieve the user ID.",
+        "Action": "Stored in register v0 and returned as a String"
+      },
+      {
+        "Step": "Get location",
+        "Source Method": "Lcom/leanplum/internal/Util;->checkDeviceId:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data through sensitive API calls to `isValidDeviceId` and stores it in registers.",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "Get phone number",
+        "Source Method": "Lcom/leanplum/internal/RequestSender;->createArgsDictionary:(Lcom/leanplum/internal/Request;)Ljava/util/Map;",
+        "Reasoning": "The current method originates user personal data by using the `deviceId()` and `userId()` methods from `APIConfig` to get the device ID and user ID respectively.",
+        "Action": "Stored in a HashMap called `argsDictionary`"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/leanplum/internal/Log;->e:(Ljava/lang/String; [Ljava/lang/Object;)V",
+      "Lcom/leanplum/internal/Log;->d:(Ljava/lang/String; [Ljava/lang/Object;)V",
+      "Lcom/leanplum/internal/RequestSender;->sendEventually:(Lcom/leanplum/internal/Request;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/leanplum/internal/Util;->getWifiMacAddressHash:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/leanplum/internal/Util;->md5:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/leanplum/internal/Log;->e:(Ljava/lang/String; [Ljava/lang/Object;)V ",
+        "Reasoning": "The data flow starts from the `getWifiMacAddressHash` method, which stores the Wi-Fi MAC address hash in registers. This data is then passed to the `md5` method, which hashes the string and returns it as a String. Finally, this hashed data is logged using the `e` method of the Log class."
+      },
+      {
+        "dataflow 2": " Lcom/leanplum/internal/APIConfig;->deviceId:()Ljava/lang/String; --> Lcom/leanplum/internal/RequestSender;->createArgsDictionary:(Lcom/leanplum/internal/Request;)Ljava/util/Map; --> Lcom/leanplum/internal/Log;->e:(Ljava/lang/String; [Ljava/lang/Object;)V ",
+        "Reasoning": "The data flow starts from the `deviceId` method of the APIConfig class, which returns the device ID as a String. This data is then passed to the `createArgsDictionary` method of the RequestSender class, which stores it in a HashMap called `argsDictionary`. Finally, this data is logged using the `e` method of the Log class."
+      },
+      {
+        "dataflow 3": " Lcom/leanplum/internal/APIConfig;->userId:()Ljava/lang/String; --> Lcom/leanplum/internal/RequestSender;->createArgsDictionary:(Lcom/leanplum/internal/Request;)Ljava/util/Map; --> Lcom/leanplum/internal/Log;->e:(Ljava/lang/String; [Ljava/lang/Object;)V ",
+        "Reasoning": "The data flow starts from the `userId` method of the APIConfig class, which returns the user ID as a String. This data is then passed to the `createArgsDictionary` method of the RequestSender class, which stores it in a HashMap called `argsDictionary`. Finally, this data is logged using the `e` method of the Log class."
+      }
+    ],
+    "Label": "leak"
+  }
+]

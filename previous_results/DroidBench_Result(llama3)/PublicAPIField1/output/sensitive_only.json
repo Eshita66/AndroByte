@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated by calling getSystemService",
+                "Source Method": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "IMEI was retrieved through TelephonyManager instance",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sensitive data processed further and reached a sink point",
+                "Source Method": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "IMEI was logged as a sink point",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljava/util/logging/Logger;->info(Ljava/lang/String;)V",
+                "Reasoning": "Sensitive data (IMEI) was originated by calling getSystemService to retrieve a TelephonyManager instance and then processed further. The IMEI reached a sink point through logging."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

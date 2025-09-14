@@ -1,0 +1,159 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Search Text"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location or search text is checked for validity.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Validation of input parameters.",
+        "Action": "Stored in Bundle object"
+      },
+      {
+        "Step": "Bundle object is passed to GraphRequest object.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Construction of GraphRequest object.",
+        "Action": "Passed to GraphRequest object"
+      },
+      {
+        "Step": "GraphRequest object executes the request.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "GraphRequest execution.",
+        "Action": "Network request"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...)"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest$GraphJSONArrayCallback;->onActivityResult(...)",
+        "Reasoning": "GraphRequest execution result is passed to GraphJSONArrayCallback's onActivityResult method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Origination",
+        "Source Method": "Lcom/flurry/sdk/ads/cf;->a()",
+        "Reasoning": "User location is retrieved from this method.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Transfer",
+        "Source Method": "Lcom/flurry/sdk/ads/cf;->a()",
+        "Reasoning": "User location is passed to the `Lcom/flurry/sdk/ads/ew;->a()` method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Storage",
+        "Source Method": "Lcom/flurry/sdk/ads/ew;->a()",
+        "Reasoning": "User location is stored in various fields of `Lcom/flurry/sdk/ads/ew`.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/flurry/sdk/ads/cf;->a() --> Lcom/flurry/sdk/ads/ew;->a() --> Storage",
+        "Reasoning": "User location is collected in `Lcom/flurry/sdk/ads/cf;->a()`, then passed to `Lcom/flurry/sdk/ads/ew;->a()`, and finally stored in various fields."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude",
+      "Altitude",
+      "Speed",
+      "Bearing",
+      "Accuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method invocation",
+        "Source Method": "Lcom/flurry/sdk/iw;->a:()Lorg/json/JSONObject;",
+        "Reasoning": "Method signature matches the provided summary.",
+        "Action": "Stored in JSONObject"
+      },
+      {
+        "Step": "Return JSONObject",
+        "Source Method": "Lcom/flurry/sdk/iw;->a:()Lorg/json/JSONObject;",
+        "Reasoning": "Method returns JSONObject containing sensitive data.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/flurry/sdk/iw;->a:()Lorg/json/JSONObject; --> Returned",
+        "Reasoning": "Sensitive data is returned by the method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location data",
+        "Source Method": "Lcom/flurry/sdk/at;->d:()Landroid/location/Location;",
+        "Reasoning": "Sensitive API `getLastKnownLocation()` is used",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/flurry/sdk/at;->d:()Landroid/location/Location; --> Stored",
+        "Reasoning": "Sensitive API `getLastKnownLocation()` is used to retrieve user location data and store it in a variable"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected from GPS and network providers.",
+        "Source Method": "Lmnn/Android/helper/LocationHelper;->getLocation:(Lmnn/Android/helper/LocationHelper$Callback;)V",
+        "Reasoning": "Method documentation specifies data collection.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location details are logged to the console.",
+        "Source Method": "Lmnn/Android/helper/LocationHelper;->getLocation:(Lmnn/Android/helper/LocationHelper$Callback;)V",
+        "Reasoning": "Method documentation specifies logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lmnn/Android/helper/LocationHelper;->getLocation:(Lmnn/Android/helper/LocationHelper$Callback;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lmnn/Android/helper/LocationHelper;->getLocation:(Lmnn/Android/helper/LocationHelper$Callback;)V --> Lmnn/Android/helper/LocationHelper;->getLocation:(Lmnn/Android/helper/LocationHelper$Callback;)V",
+        "Reasoning": "Data is stored and logged within the same method."
+      }
+    ],
+    "Label": "leak"
+  }
+]

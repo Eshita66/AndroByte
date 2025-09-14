@@ -1,0 +1,472 @@
+[
+  {
+    "Data Types Collected": [
+      "BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve BSSID",
+        "Source Method": "Lir/nasim/il0;->c:()Ljava/lang/String;",
+        "Reasoning": "Checks for ACCESS_WIFI_STATE permission and retrieves BSSID",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lir/nasim/il0;->c:()Ljava/lang/String; --> Stored",
+        "Reasoning": "BSSID is stored in memory"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved",
+        "Source Method": "Lir/nasim/xk0;->a:()Lir/nasim/cl0;",
+        "Reasoning": "Method signature and summary mention retrieving location data",
+        "Action": "Stored in bl0 object"
+      },
+      {
+        "Step": "Address is retrieved",
+        "Source Method": "Lir/nasim/xk0;->a:()Lir/nasim/cl0;",
+        "Reasoning": "Method signature and summary mention using Geocoder to get address",
+        "Action": "Stored in bl0 object"
+      },
+      {
+        "Step": "Data is passed to cl0 object",
+        "Source Method": "Lir/nasim/xk0;->a:()Lir/nasim/cl0;",
+        "Reasoning": "Method signature and summary mention passing data to cl0 object",
+        "Action": "Passed to cl0 object"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lir/nasim/xk0;->a:()Lir/nasim/cl0; --> Lir/nasim/cl0;-><init>:(Ljava/lang/Double; Ljava/lang/Double; Lir/nasim/bl0;)V",
+        "Reasoning": "Overall data flow shows data being passed from Lir/nasim/xk0;->a:()Lir/nasim/cl0; to Lir/nasim/cl0;-><init>:(Ljava/lang/Double; Ljava/lang/Double; Lir/nasim/bl0;)V"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is stored in a register.",
+        "Source Method": "Lcom/otaliastudios/cameraview/video/a;->m:(Lcom/otaliastudios/cameraview/g$a; Z)Z",
+        "Reasoning": "Method summary indicates location is stored.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location is passed to MediaRecorder via setLocation() method.",
+        "Source Method": "Lcom/otaliastudios/cameraview/video/a;->m:(Lcom/otaliastudios/cameraview/g$a; Z)Z",
+        "Reasoning": "Method summary mentions setLocation() method.",
+        "Action": "Passed to MediaRecorder"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/otaliastudios/cameraview/video/a;->m:(Lcom/otaliastudios/cameraview/g$a; Z)Z --> MediaRecorder",
+        "Reasoning": "Overall data flow shows location is passed to MediaRecorder."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive user data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive user data is originated from API calls.",
+        "Source Method": "Lir/nasim/xg0;->a:()Ljava/util/Map;",
+        "Reasoning": "API calls store sensitive user data in the `v4` register.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive user data is passed to the `gj0` method.",
+        "Source Method": "Lir/nasim/xg0;->a:()Ljava/util/Map;",
+        "Reasoning": "The `gj0` method receives sensitive user data from the `v4` register.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Sensitive user data is used to create a map with the key `screen`. ",
+        "Source Method": "Lir/nasim/xg0;->a:()Ljava/util/Map;",
+        "Reasoning": "The map creation uses sensitive user data.",
+        "Action": "Used"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lir/nasim/xg0;->a:()Ljava/util/Map; --> gj0 --> map with key 'screen'",
+        "Reasoning": "Sensitive user data is stored in the map with the key 'screen'."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location object creation",
+        "Source Method": "Lir/nasim/to;->Z1:(Landroid/hardware/Camera$Parameters; Landroid/location/Location;)Z",
+        "Reasoning": "Method signature indicates the method receives a Location object as an argument.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "GPS location parameters setting",
+        "Source Method": "Lir/nasim/to;->Z1:(Landroid/hardware/Camera$Parameters; Landroid/location/Location;)Z",
+        "Reasoning": "Method summary describes setting GPS location parameters based on the Location object.",
+        "Action": "Used"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lir/nasim/to;->Z1:(Landroid/hardware/Camera$Parameters; Landroid/location/Location;)Z --> GPS location parameters setting",
+        "Reasoning": "Data flows from the method argument to the method body where GPS location parameters are set."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location",
+        "Source Method": "Lir/nasim/features/map/MapDirection$g;->onClick:(Landroid/view/View;)V",
+        "Reasoning": "Method summary specifies getting user location",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Create LatLng object",
+        "Source Method": "Lir/nasim/features/map/MapDirection$g;->onClick:(Landroid/view/View;)V",
+        "Reasoning": "Location is used to create LatLng object",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Zoom map camera",
+        "Source Method": "Lir/nasim/features/map/MapDirection$g;->onClick:(Landroid/view/View;)V",
+        "Reasoning": "LatLng object is used to zoom map camera",
+        "Action": "Used"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lir/nasim/features/map/MapDirection$g;->onClick:(Landroid/view/View;)V --> null",
+        "Reasoning": "Location is collected but not explicitly sent or logged anywhere"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user location from Google Maps API",
+        "Source Method": "Lir/nasim/features/map/MapLocation$f;->onClick:(Landroid/view/View;)V",
+        "Reasoning": "Method summary indicates obtaining location data",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Display location on map",
+        "Source Method": "Lir/nasim/features/map/MapLocation$f;->onClick:(Landroid/view/View;)V",
+        "Reasoning": "Method summary indicates displaying location",
+        "Action": "Displayed"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lir/nasim/features/map/MapLocation$f;->onClick:(Landroid/view/View;)V --> Display",
+        "Reasoning": "Location is collected and displayed without being stored or transmitted"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sim State"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "TelephonyManager.getSimState() is called to retrieve user personal data.",
+        "Source Method": "Lir/nasim/utils/k0;->l:(Landroid/content/Context;)Lir/nasim/utils/k0;",
+        "Reasoning": "Sensitive API call.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to k.j.",
+        "Source Method": "Lir/nasim/utils/k0;->l:(Landroid/content/Context;)Lir/nasim/utils/k0;",
+        "Reasoning": "Method call.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is logged.",
+        "Source Method": "Lir/nasim/utils/k0;->l:(Landroid/content/Context;)Lir/nasim/utils/k0;",
+        "Reasoning": "Method call.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lir/nasim/utils/k0;->y:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lir/nasim/utils/k0;->l:(Landroid/content/Context;)Lir/nasim/utils/k0; --> Lir/nasim/utils/k0;->j:(Ljava/lang/String;)V --> Lir/nasim/utils/k0;->y:(Ljava/lang/String;)V",
+        "Reasoning": "Data is passed from the source method to the sink method via the k.j method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "GeoInfo",
+      "UserExtraInfo"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location data from LocationManager",
+        "Source Method": "Lir/tapsell/sdk/g/k/a;->c:()V",
+        "Reasoning": "Method summary",
+        "Action": "Stored in list of strings"
+      },
+      {
+        "Step": "Check location type",
+        "Source Method": "Lir/tapsell/sdk/g/k/a;->c:()V",
+        "Reasoning": "Method summary",
+        "Action": "Pass to another method if passive location"
+      },
+      {
+        "Step": "Get last known location",
+        "Source Method": "Lir/tapsell/sdk/g/k/a;->c:()V",
+        "Reasoning": "Method summary",
+        "Action": "Pass to another method"
+      },
+      {
+        "Step": "Add location to geoList",
+        "Source Method": "Lir/tapsell/sdk/g/k/a;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary",
+        "Action": "Pass to UserExtraInfo"
+      },
+      {
+        "Step": "Add UserExtraInfo to geoList",
+        "Source Method": "Lir/tapsell/sdk/g/k/a;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary",
+        "Action": "Pass to UserExtraInfo"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lir/tapsell/sdk/g/k/a;->c:()V --> Lir/tapsell/sdk/g/k/a;->a:(Landroid/location/Location;)V --> null",
+        "Reasoning": "Data flows from method c to method a, but no sink is identified in method a"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location obtained from Location object",
+        "Source Method": "Lir/nasim/features/map/MapDirection$a;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method argument",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Location message constructed",
+        "Source Method": "Lir/nasim/features/map/MapDirection$a;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method logic",
+        "Action": "Created"
+      },
+      {
+        "Step": "Location message logged",
+        "Source Method": "Lir/nasim/features/map/MapDirection$a;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method logic",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lir/nasim/features/map/MapDirection$a;->a:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lir/nasim/features/map/MapDirection$a;->a:(Landroid/location/Location;)V --> Lir/nasim/features/map/MapDirection$a;->a:(Landroid/location/Location;)V --> Lir/nasim/features/map/MapDirection$a;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method argument passed to itself and logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected",
+        "Source Method": "Lir/nasim/features/map/MapDirection$d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method `a` receives location data as an argument",
+        "Action": "Stored in field `a`"
+      },
+      {
+        "Step": "Data is passed to other methods",
+        "Source Method": "Lir/nasim/features/map/MapDirection$d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Data is passed to `H0`, `d1`, and `G0` methods",
+        "Action": "Passed as arguments to these methods"
+      },
+      {
+        "Step": "Data is logged",
+        "Source Method": "Lir/nasim/features/map/MapDirection$d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Data is logged using `Log.d()` with the tag 'MapDirection'",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lir/nasim/features/map/MapDirection$d;->a:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lir/nasim/features/map/MapDirection$d;->a:(Landroid/location/Location;)V --> Lir/nasim/features/map/MapDirection$d;->a:(Landroid/location/Location;)V --> Lir/nasim/features/map/MapDirection$d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Data flows through the entire method chain and is eventually logged"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is collected",
+        "Source Method": "Lir/nasim/features/map/MapLocation$c;->a(Landroid/location/Location;)V",
+        "Reasoning": "Sensitive user location data is originated in this method.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Marker is added on map",
+        "Source Method": "Lir/nasim/features/map/MapLocation$c;->a(Landroid/location/Location;)V",
+        "Reasoning": "Location is passed to Google Maps API to add a marker.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lir/nasim/features/map/MapLocation$c;->a(Landroid/location/Location;)V --> Lcom/google/android/gms/maps/GoogleMap;->addMarker(Lcom/google/android/gms/maps/model/MarkerOptions;)Lcom/google/android/gms/maps/model/Marker;",
+        "Reasoning": "Location is collected and then transmitted to Google Maps API to add a marker."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "Lir/nasim/features/map/MapLocation$m;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Method receives a Location object as input",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Extract latitude and longitude",
+        "Source Method": "Lir/nasim/features/map/MapLocation$m;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Location object contains latitude and longitude",
+        "Action": "Extracted"
+      },
+      {
+        "Step": "Create LatLng object",
+        "Source Method": "Lir/nasim/features/map/MapLocation$m;->a:(Landroid/location/Location;)V",
+        "Reasoning": "LatLng object requires latitude and longitude",
+        "Action": "Created"
+      },
+      {
+        "Step": "Add marker to map",
+        "Source Method": "Lir/nasim/features/map/MapLocation$m;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Marker requires LatLng object",
+        "Action": "Marker added"
+      },
+      {
+        "Step": "Move camera to marker location",
+        "Source Method": "Lir/nasim/features/map/MapLocation$m;->a:(Landroid/location/Location;)V",
+        "Reasoning": "Camera needs to be positioned",
+        "Action": "Camera moved"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lir/nasim/features/map/MapLocation$m;->a:(Landroid/location/Location;)V --> [Marker added] --> [Camera moved]",
+        "Reasoning": "Location data is used to create a marker and move the camera"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Longitude",
+      "Latitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Checks for GPS permission",
+        "Source Method": "Lir/nasim/i34$a;->d:(Lir/nasim/ao3; Lir/nasim/features/controllers/activity/BaseActivity; Landroid/content/DialogInterface; I)V",
+        "Reasoning": "Method summary mentions logging longitude and latitude",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lir/nasim/i34$a;->d:(Lir/nasim/ao3; Lir/nasim/features/controllers/activity/BaseActivity; Landroid/content/DialogInterface; I)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lir/nasim/i34$a;->d:(Lir/nasim/ao3; Lir/nasim/features/controllers/activity/BaseActivity; Landroid/content/DialogInterface; I)V --> Lir/nasim/i34$a;->d:(Lir/nasim/ao3; Lir/nasim/features/controllers/activity/BaseActivity; Landroid/content/DialogInterface; I)V",
+        "Reasoning": "Logging of longitude and latitude"
+      }
+    ],
+    "Label": "leak"
+  }
+]

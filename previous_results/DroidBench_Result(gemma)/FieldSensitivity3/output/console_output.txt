@@ -1,0 +1,50 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\FieldSensitivity3
+Using methods file: D:\withoutcallgraphResult\TestAcessess\FieldSensitivity3\FieldSensitivity3_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method `onCreate` first calls `invoke-super`, which is a standard activity lifecycle method and does not introduce any sensitive data. Then, `setContentView` is called, which is a standard activity method. Next, `Datacontainer` objects are created and populated. `getSimSerialNumber` is called, retrieving the device's SIM serial number. This is a sensitive API call. The `SmsManager.sendTextMessage` is then invoked, passing the SIM serial number (`v1`) as the destination phone number (`vDest`), the SIM serial number as the message body (`vText`), and the default `SmsManager` instance.  This constitutes a clear flow from a sensitive API (`getSimSerialNumber`) to a sensitive sink (`sendTextMessage`). Specifically, instruction `invoke-virtual/range {v0, vDest, vSC, vText, vSent, vDel}` maps `vText` to the SIM serial number, establishing a traceable flow. The SIM serial number is directly used in the `sendTextMessage` sink.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\FieldSensitivity3\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\FieldSensitivity3\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\FieldSensitivity3\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "SIM serial number",
+            "phone number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve SIM serial number",
+                "Source Method": "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle)",
+                "Reasoning": "The `getSimSerialNumber` method is called, directly retrieving the device's SIM serial number.",
+                "Action": "Data retrieval"
+            },
+            {
+                "Step": "Send SMS with SIM serial number",
+                "Source Method": "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle)",
+                "Reasoning": "The retrieved SIM serial number is used as the destination phone number and message body in the `sendTextMessage` method.",
+                "Action": "Data transmission"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/FieldSensitivity3;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Landroid/app/SmsManager;)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle) --> Lde/ecspride/FieldSensitivity3;->getSimSerialNumber:( ) --> Lde/ecspride/FieldSensitivity3;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Landroid/app/SmsManager;)",
+                "Reasoning": "The SIM serial number is initially retrieved via `getSimSerialNumber`. This value is then directly used as the destination phone number and message body within the `sendTextMessage` method.  The `vText` argument in `sendTextMessage` is mapped to the SIM serial number."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\FieldSensitivity3\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\FieldSensitivity3\output\sensitive_only.json
+Total summary time: 30.08267617225647 seconds

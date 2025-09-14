@@ -1,0 +1,55 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\ListAccess1
+Using methods file: D:\withoutcallgraphResult\TestAcessess\ListAccess1\ListAccess1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method `Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V` first calls the superclass constructor. Then, it initializes a `LinkedList` named `listData` and adds two strings: \"phone\" and \"neutral text\" to it.  Crucially, it then uses `SmsManager.getDefault()` to obtain an instance of `SmsManager`.  It then calls `SmsManager.sendTextMessage` with the phone number \"+49 1234\" (passed as the `destAddr` argument) and the content of the `listData` (which is the string \"neutral text\") as the message body. This constitutes a clear flow from the `SmsManager` sink to the `sendTextMessage` sink, with the phone number being the source of the taint.  The `SmsManager` is obtained via `getSystemService`, a sensitive API, further solidifying this flow.  The instruction `iget-object v1, v6, Lde/ecspride/ListAccess1;->listData Ljava/util/List;` is critical because it establishes the `listData` object as the origin of the string passed to `sendTextMessage`.  The `const/4 v5, 2` instruction sets the value of `v5` to 2, and the subsequent `move-object v5, v2` instruction propagates this value to `v5`, indicating that the `v5` is initialized with a constant value. The `aget-object` instruction is not present, so no array indexing is involved.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\ListAccess1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\ListAccess1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\ListAccess1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "phone number",
+            "neutral text"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Initialization of `listData` with \"phone\" and \"neutral text\".",
+                "Source Method": "Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method initializes a `LinkedList` named `listData` and populates it with the strings \"phone\" and \"neutral text\".",
+                "Action": "Storage"
+            },
+            {
+                "Step": "Obtaining `SmsManager` instance.",
+                "Source Method": "Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method uses `SmsManager.getDefault()` to obtain an instance of `SmsManager` via `getSystemService`.",
+                "Action": "Network Call"
+            },
+            {
+                "Step": "Sending SMS message with tainted phone number.",
+                "Source Method": "Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `SmsManager.sendTextMessage` method is called with the phone number \"+49 1234\" as the destination address (`destAddr`) and the content of `listData` (\"neutral text\") as the message body.",
+                "Action": "Network Call"
+            }
+        ],
+        "All Sinks": [
+            "android.telephony.SmsManager.sendTextMessage(String, String)",
+            "android.telephony.SmsManager.sendTextMessage(String, String)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V --> android.telephony.SmsManager.sendTextMessage(String, String)",
+                "Reasoning": "The `listData` object, initialized with \"phone\" and \"neutral text\", is used to populate the message body for `sendTextMessage`. The destination address is the phone number \"+49 1234\", which is derived from the initial content of `listData`."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\ListAccess1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\ListAccess1\output\sensitive_only.json
+Total summary time: 10.383198976516724 seconds

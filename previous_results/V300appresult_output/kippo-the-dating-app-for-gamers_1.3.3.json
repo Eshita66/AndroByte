@@ -1,0 +1,202 @@
+[
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "com.appsflyer.AFEvent",
+      "com.appsflyer.AppsFlyerLibCore",
+      "java.util.Map",
+      "Landroid/os/IBinder",
+      "Lcom/appsflyer/AppsFlyerProperties",
+      "Lcom/appsflyer/internal/v$a",
+      "Lcom/appsflyer/internal/v$b"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "AppsFlyerLibCore getInstance() is called.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->getInstance:()Lcom/appsflyer/AppsFlyerLibCore;",
+        "Reasoning": "The method originates user personal data by calling a sensitive API (getInstance) to get an instance of AppsFlyerLibCore.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AppsFlyerProperties getInstance() is called.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties;",
+        "Reasoning": "The method originates user personal data by calling the sensitive API `getInstance()` from `AppsFlyerProperties` class.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AFEvent context() is called.",
+        "Source Method": "Lcom/appsflyer/AFEvent;->context:()Landroid/content/Context;",
+        "Reasoning": "This method originates user personal data from the context and a WeakReference.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "EventDataCollector get() is called with SharedPreferences.",
+        "Source Method": "Lcom/appsflyer/internal/EventDataCollector;->get:(Ljava/lang/String;)J",
+        "Reasoning": "The method originates user personal data by calling SharedPreferences.get() with a sensitive key (v4).",
+        "Action": "Stored"
+      },
+      {
+        "Step": "x \u0269() is called.",
+        "Source Method": "Lcom/appsflyer/internal/x;->\u0269:(Landroid/content/Context; Ljava/util/Map;)V",
+        "Reasoning": "[Summary of data origin, storage, propagation, and sinks within this method]",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AppsFlyerLibCore getSharedPreferences() is called.",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->getSharedPreferences:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "[The method originates user personal data by calling the getInstance() method and then accessing SharedPreferences. The data is stored in the AppsFlyerLibCore instance's \u0445 field.]",
+        "Action": "Stored"
+      },
+      {
+        "Step": "AFEvent context() is called.",
+        "Source Method": "Lcom/appsflyer/AFEvent;->context:()Landroid/content/Context;",
+        "Reasoning": "[This method originates user personal data from the context and a WeakReference. The data is stored in register v0 and propagated through method invocations.]",
+        "Action": "Logged"
+      },
+      {
+        "Step": "EventDataCollector get() is called with SharedPreferences.",
+        "Source Method": "Lcom/appsflyer/internal/EventDataCollector;->get:(Ljava/lang/String;)J",
+        "Reasoning": "[The method originates user personal data by calling SharedPreferences.get() with a sensitive key (v4). The data is stored in register v0. The data is then propagated to the AppsFlyerLibCore.getSharedPreferences() method via method invocation and eventually passed back to this method.]",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/internal/v;->\u01c3:(Landroid/content/Context;)Lcom/appsflyer/internal/v$c;",
+      "Lcom/appsflyer/AFEvent;->context:()Landroid/content/Context;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "AppsFlyerLibCore getInstance() --> AppsFlyerProperties getInstance() --> AFEvent context() --> EventDataCollector get()",
+        "Reasoning": "The data flows from AppsFlyerLibCore to AppsFlyerProperties, then to AFEvent and finally to EventDataCollector."
+      },
+      {
+        "dataflow 2": "AppsFlyerLibCore getSharedPreferences() --> EventDataCollector get()",
+        "Reasoning": "The data flows from AppsFlyerLibCore's SharedPreferences to EventDataCollector."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Invoke getLatitude() on Location instance",
+        "Source Method": "Lf/d/a/j/m/d/a;->f:(Landroid/location/Location;)Lcom/covalent/kippo/domain/entities/LatLong;",
+        "Reasoning": "Extracts user's latitude from location data",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "Invoke getLongitude() on Location instance",
+        "Source Method": "Lf/d/a/j/m/d/a;->f:(Landroid/location/Location;)Lcom/covalent/kippo/domain/entities/LatLong;",
+        "Reasoning": "Extracts user's longitude from location data",
+        "Action": "Stored in register v3"
+      },
+      {
+        "Step": "Pass LatLong instance to new object",
+        "Source Method": "Lf/d/a/j/m/d/a;->f:(Landroid/location/Location;)Lcom/covalent/kippo/domain/entities/LatLong;",
+        "Reasoning": "Transfers extracted location data to a new LatLong object",
+        "Action": "Passed via constructor"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lf/d/a/j/m/d/a;->f:(Landroid/location/Location;)Lcom/covalent/kippo/domain/entities/LatLong; --> (extracted latitude and longitude) --> [no sink found]",
+        "Reasoning": "The extracted location data is stored in registers v1 and v3, but no sinks were identified."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "com.covalent.kippo.domain.entities.LatLong"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get latitude and longitude from Location object",
+        "Source Method": "Lf/d/a/j/m/d/b;->c:(Landroid/location/Location;)Lcom/covalent/kippo/domain/entities/LatLong;",
+        "Reasoning": "The method originates user personal data from the `getLatitude()` and `getLongitude()` methods of the `Location` class.",
+        "Action": "Stored in registers v1 and v3"
+      },
+      {
+        "Step": "Create new instance of LatLong with latitude and longitude",
+        "Source Method": "Lf/d/a/j/m/d/b;->c:(Landroid/location/Location;)Lcom/covalent/kippo/domain/entities/LatLong;",
+        "Reasoning": "The data is then passed to a new instance of `LatLong` using its constructor, which takes four parameters including the latitude and longitude.",
+        "Action": "Stored in LatLong object"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lf/d/a/j/m/d/b;->c:(Landroid/location/Location;)Lcom/covalent/kippo/domain/entities/LatLong; --> Stored in registers v1 and v3 --> Stored in LatLong object",
+        "Reasoning": "The data is stored in registers v1 and v3, then passed to a new instance of `LatLong` using its constructor."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Landroid/location/Location",
+      "Ljava/util/Locale;",
+      "I"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "The method originates user personal data by using the sensitive API 'Landroid/location/Location' to get latitude and longitude.",
+        "Source Method": "Lf/l/a/w;->r:(Ljava/util/Locale; Landroid/location/Location; I)Ljava/util/List;",
+        "Reasoning": "Data is stored in registers (v1, v3) and variables (v0).",
+        "Action": "Stored"
+      },
+      {
+        "Step": "The method originates user personal data through the use of sensitive API calls to get the device's locale.",
+        "Source Method": "Lf/l/a/w;->q:(Ljava/util/Locale;)Landroid/location/Geocoder;",
+        "Reasoning": "Data is stored in registers and variables within the method, specifically in v0 and v3.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "The data propagates through method invocations to other methods within the same class.",
+        "Source Method": null,
+        "Reasoning": "Method invocations propagate sensitive data to other methods.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "The data reaches a sink point as it is returned from the method.",
+        "Source Method": "Lf/l/a/w;->r:(Ljava/util/Locale; Landroid/location/Location; I)Ljava/util/List;",
+        "Reasoning": "Data is propagated to other methods via return statements.",
+        "Action": "Returned"
+      },
+      {
+        "Step": "The data reaches a sink point through the use of return-object v0 and return-object v3.",
+        "Source Method": "Lf/l/a/w;->q:(Ljava/util/Locale;)Landroid/location/Geocoder;",
+        "Reasoning": "Data is propagated to other methods via return statements.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lf/l/a/w;->r:(Ljava/util/Locale; Landroid/location/Location; I)Ljava/util/List;",
+      "Lf/l/a/w;->q:(Ljava/util/Locale;)Landroid/location/Geocoder;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lf/l/a/w;->r:(Ljava/util/Locale; Landroid/location/Location; I)Ljava/util/List;(--> data stored in v1, v3, and v0) --> Lf/l/a/w;->q:(Ljava/util/Locale;)Landroid/location/Geocoder;(--> data transmitted to other methods via method invocations) --> Lf/l/a/w;->r:(Ljava/util/Locale; Landroid/location/Location; I)Ljava/util/List;",
+        "Reasoning": "Data is propagated and transformed through method invocations, return statements, and storage in registers and variables."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

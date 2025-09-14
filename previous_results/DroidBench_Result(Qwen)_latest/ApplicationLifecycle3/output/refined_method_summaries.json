@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved from TelephonyManager",
+                "Source Method": "Lde/ecspride/ContentProvider;->onCreate:()Z",
+                "Reasoning": "The method explicitly retrieves the device ID via TelephonyManager",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Stored IMEI is transmitted via SMS",
+                "Source Method": "Lde/ecspride/ApplicationLifecyle3;->onCreate:()V",
+                "Reasoning": "The method uses the stored IMEI from the static field 'imei'",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ApplicationLifecyle3;->onCreate:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/ContentProvider;->onCreate:()Z --> Lde/ecspride/ApplicationLifecyle3;->onCreate:()V",
+                "Reasoning": "Device ID is stored in static field 'imei' by ContentProvider.onCreate(), then read and transmitted via SmsManager.sendTextMessage() in ApplicationLifecyle3.onCreate()"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

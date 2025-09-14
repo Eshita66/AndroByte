@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\ReflectionDynamic
+Using methods file: D:\UBCBAPK_Methods\ReflectionDynamic\ReflectionDynamic_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive user personal data (device ID) is originated from the device ID obtained using the getDeviceId() method of TelephonyManager. This data is stored in register v1 and later used to create an array. The potential sink for this data is the leak([Ljava/lang/Class;)Ljava/lang/reflect/Method; method.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ReflectionDynamic\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ReflectionDynamic\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ReflectionDynamic\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtained device ID using getDeviceId() method of TelephonyManager",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId:()Ljava/lang/String;",
+                "Reasoning": "Sensitive user personal data (device ID) is originated from the device ID obtained using the getDeviceId() method of TelephonyManager.",
+                "Action": "Stored in register v1"
+            },
+            {
+                "Step": "Created an array with the stored device ID",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The potential sink for this data is the leak([Ljava/lang/Class;)Ljava/lang/reflect/Method; method.",
+                "Action": "Used to create an array"
+            }
+        ],
+        "All Sinks": [
+            "Ljunbin/ubc/MainActivity;->leak:([Ljava/lang/Class;)Ljava/lang/reflect/Method;"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Landroid/telephony/TelephonyManager;->getDeviceId:()Ljava/lang/String; --> Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljunbin/ubc/MainActivity;->leak:([Ljava/lang/Class;)Ljava/lang/reflect/Method;",
+                "Reasoning": "Obtained device ID using getDeviceId() method of TelephonyManager, stored in register v1 and used to create an array. The potential sink for this data is the leak([Ljava/lang/Class;)Ljava/lang/reflect/Method; method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ReflectionDynamic\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ReflectionDynamic\output\sensitive_only.json
+Total summary time: 30.16853094100952 seconds

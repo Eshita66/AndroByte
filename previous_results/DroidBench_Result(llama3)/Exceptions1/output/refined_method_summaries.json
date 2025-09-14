@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "onCreate() originates sensitive data by calling getDeviceId()",
+                "Source Method": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "getDeviceId() method from TelephonyManager is called and the device ID is stored in register v3",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Pass device ID to SmsManager's sendTextMessage method",
+                "Source Method": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is passed as an argument to the sendTextMessage method of SmsManager, which is a sink for this sensitive data.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V --> getDeviceId() method from TelephonyManager --> SmsManager's sendTextMessage method",
+                "Reasoning": "The device ID is obtained in the onCreate() method and passed to the SmsManager's sendTextMessage method, which is a sink for this sensitive data."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

@@ -1,0 +1,59 @@
+[
+  {
+    "Data Types Collected": [
+      "SMS messages",
+      "Android version",
+      "String from bundle"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates sensitive user personal data from SMS messages.",
+        "Source Method": "Lc/l/a/b;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "[This method originates sensitive user personal data from SMS messages.]",
+        "Action": "Stored in v1 and v2 registers"
+      },
+      {
+        "Step": "Originates sensitive user personal data through the use of the `sget` instruction to retrieve the Android version.",
+        "Source Method": "Lc/l/a/b;->a:(Ljava/lang/Object; Landroid/os/Bundle;)Landroid/telephony/SmsMessage;",
+        "Reasoning": "[The method originates sensitive user personal data through the use of the `sget` instruction to retrieve the Android version, and then uses this information to determine if the SDK is less than 23.]",
+        "Action": "Stored in registers v0 and v4"
+      },
+      {
+        "Step": "Propagates sensitive user personal data to other methods via method invocations.",
+        "Source Method": "Lc/l/a/b;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "[The data is stored in the `v1` and `v2` registers. It propagates this data to other methods via method invocations, specifically to `a(Ljava/lang/Object; Landroid/os/Bundle;)Landroid/telephony/SmsMessage;` and `onSmsCatch(Ljava/lang/String;)V`.]",
+        "Action": "Passed between methods via method invocations"
+      },
+      {
+        "Step": "Reaches a sink point when it is logged in case of an exception.",
+        "Source Method": "Lc/l/a/b;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+        "Reasoning": "[The data reaches a sink point when it is logged in case of an exception.]",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Reaches a sink point through the use of the `createFromPdu` method, which creates an SmsMessage object from a PDU.",
+        "Source Method": "Lc/l/a/b;->a:(Ljava/lang/Object; Landroid/os/Bundle;)Landroid/telephony/SmsMessage;",
+        "Reasoning": "[The data reaches a sink point through the use of the `createFromPdu` method, which creates an SmsMessage object from a PDU.]",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lc/l/a/b;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+      "Lc/l/a/b;->a:(Ljava/lang/Object; Landroid/os/Bundle;)Landroid/telephony/SmsMessage;",
+      "java.util.logging.Logger;->severe(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lc/l/a/b;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V --> Lc/l/a/b;->a:(Ljava/lang/Object; Landroid/os/Bundle;)Landroid/telephony/SmsMessage; --> java.util.logging.Logger;->severe(Ljava/lang/String;)V]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      },
+      {
+        "dataflow 2": "[Lc/l/a/b;->a:(Ljava/lang/Object; Landroid/os/Bundle;)Landroid/telephony/SmsMessage; --> java.util.logging.Logger;->severe(Ljava/lang/String;)V]",
+        "Reasoning": "[Stepwise explanation of how data is propagated and transformed]"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

@@ -1,0 +1,124 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "API call detected",
+        "Source Method": "Le/c/a/g;->g:(Ljava/lang/String; Lorg/json/JSONObject; Lorg/json/JSONObject; Lorg/json/JSONObject; Lorg/json/JSONObject; Lorg/json/JSONObject; J Z)J",
+        "Reasoning": "Sensitive API detected in method signature",
+        "Action": "Collected"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Le/c/a/g;->g(...) --> Collected",
+        "Reasoning": "Sensitive API call collects user data"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve last known GPS location",
+        "Source Method": "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "Method uses getLastKnownLocation() to retrieve location",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Log warning if location is older than threshold",
+        "Source Method": "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "Location is older than threshold",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Use location in further processing",
+        "Source Method": "Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "Location is used in further processing",
+        "Action": "Used"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I",
+      "Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lbo/app/h1;->a:(Landroid/location/LocationManager;)Landroid/location/Location; --> Lcom/appboy/support/AppboyLogger;->v:(Ljava/lang/String; Ljava/lang/String;)I --> Lcom/appboy/support/AppboyLogger;->d:(Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "Location is collected, logged, and used in further processing"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Android ID",
+      "Unique Device ID",
+      "Device Information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user information",
+        "Source Method": "Le/i/a/f;->i:(Landroid/content/Context; Z)V",
+        "Reasoning": "Method collects user's Android ID, unique device ID, and device information.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Le/i/a/f;->i:(Landroid/content/Context; Z)V --> [Storage]",
+        "Reasoning": "User information is stored in a map."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Sensitive user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Origination",
+        "Source Method": "Lo1/b/c/m$g;->c:()I",
+        "Reasoning": "`invoke-static` with `System.currentTimeMillis()`",
+        "Action": "Originated"
+      },
+      {
+        "Step": "Transformation",
+        "Source Method": "Lo1/b/c/m$g;->c:()I",
+        "Reasoning": "Passed through various methods",
+        "Action": "Transformed"
+      },
+      {
+        "Step": "Storage",
+        "Source Method": "Lo1/b/c/m$g;->c:()I",
+        "Reasoning": "Stored in `b` field of `u` object",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lo1/b/c/m$g;->c:()I --> ... --> null",
+        "Reasoning": "Sensitive data is stored but not sent anywhere"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {}
+]

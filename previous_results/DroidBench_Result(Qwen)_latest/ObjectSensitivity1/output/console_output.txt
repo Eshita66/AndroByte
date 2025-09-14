@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\ObjectSensitivity1
+Using methods file: D:\UBCBAPK_Methods\ObjectSensitivity1\ObjectSensitivity1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method originates user personal data via getSystemService(\"phone\") to retrieve TelephonyManager, then calls getSimSerialNumber() to obtain the SIM serial number (stored in v1). It also adds the string \"123\" to a LinkedList and uses the phone number \"+49 1234\". The sensitive data (SIM serial number and phone number) is passed to SmsManager.sendTextMessage(), which is a network transmission sink. The data is sent via SMS, constituting a data leak.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\ObjectSensitivity1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\ObjectSensitivity1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\ObjectSensitivity1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve sensitive data via TelephonyManager",
+                "Source Method": "Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "getSimSerialNumber() is called to obtain SIM serial number from TelephonyManager",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Transmit sensitive data via SMS",
+                "Source Method": "Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "SIM serial number is passed to SmsManager.sendTextMessage() as network transmission sink",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/SmsManager$PendingIntent;I)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)V --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/SmsManager$PendingIntent;I)V ",
+                "Reasoning": "SIM serial number (tainted) from getSimSerialNumber() is passed to SmsManager.sendTextMessage() as SMS transmission sink"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\ObjectSensitivity1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\ObjectSensitivity1\output\sensitive_only.json
+Total summary time: 1329.9307816028595 seconds

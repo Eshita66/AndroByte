@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "IMEI is stored in a field by onLowMemory",
+                "Source Method": "Lde/ecspride/MyApplication$1;->onLowMemory:()V",
+                "Reasoning": "The summary explicitly states IMEI is stored in a field",
+                "Action": "Stored"
+            },
+            {
+                "Step": "IMEI is read by onConfigurationChanged",
+                "Source Method": "Lde/ecspride/MyApplication$1;->onLowMemory:()V",
+                "Reasoning": "Summary indicates IMEI is accessed by onConfigurationChanged",
+                "Action": "Read"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MyApplication$1;->onConfigurationChanged:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MyApplication$1;->onLowMemory:()V --> Lde/ecspride/MyApplication$1;->onConfigurationChanged:()V",
+                "Reasoning": "IMEI is stored in onLowMemory and subsequently accessed by onConfigurationChanged without being overwritten by a safe constant"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

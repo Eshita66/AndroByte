@@ -1,0 +1,71 @@
+
+Processing folder: D:\UBCBAPK_Methods\CallbacksInFragment
+Using methods file: D:\UBCBAPK_Methods\CallbacksInFragment\CallbacksInFragment_bytecode_instructions.json
+Source methods with sensitive calls: ['Ljunbin/ubc/MyFragment;->onClick:(Landroid/view/View;)V', 'Ljunbin/ubc/MyFragment;->onCreateView:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View;']
+[SUMMARY] Ljunbin/ubc/MyFragment;->onClick:(Landroid/view/View;)V => The method retrieves the device ID from the TelephonyManager associated with the activity and logs it using Log.v, which is considered a real sink if it logs sensitive information.
+[SUMMARY] Ljunbin/ubc/MyFragment;->onCreateView:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View; => The method originates and stores user personal data in the form of the device ID obtained from TelephonyManager, which is then logged using Log.v(...).
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve device ID from TelephonyManager",
+            "Source Method": "Ljunbin/ubc/MyFragment;->getActivity()Landroid/app/Activity;",
+            "Reasoning": "The activity context is used to access the TelephonyManager, which provides access to the device ID.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Log device ID using Log.v",
+            "Source Method": "Ljunbin/ubc/MyFragment;->onClick:(Landroid/view/View;)V",
+            "Reasoning": "The retrieved device ID is logged, which can be considered a real sink if it logs sensitive information.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ljunbin/ubc/MyFragment;->onClick:(Landroid/view/View;)V",
+        "Ljunbin/ubc/MyFragment;->getActivity()Landroid/app/Activity;"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Ljunbin/ubc/MyFragment;->getActivity()Landroid/app/Activity;) --> TelephonyManager (device ID) --> Log.v]",
+            "Reasoning": "The device ID is obtained from the context of the activity, passed to TelephonyManager, and finally logged using Log.v."
+        }
+    ],
+    "Label": "leak"
+}
+
+[REFINED SUBGRAPH #2]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "User personal data (device ID) is obtained from TelephonyManager and stored.",
+            "Source Method": "Ljunbin/ubc/MyFragment;->onCreateView:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View;",
+            "Reasoning": "The method collects device ID which is considered personal data from TelephonyManager.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+        "Ljunbin/ubc/MyFragment;->onCreateView:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method(Ljunbin/ubc/MyFragment;->onCreateView:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View) --> ... --> Sink Method(Ljunbin/ubc/MyFragment;->onCreateView:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View)]",
+            "Reasoning": "The device ID obtained is stored and then logged using Log.v(...) which is considered a sink."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\CallbacksInFragment\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\CallbacksInFragment\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\CallbacksInFragment\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\CallbacksInFragment\output\visited_graph
+Saved 2 'leak' subgraphs to: D:\UBCBAPK_Methods\CallbacksInFragment\output\sensitive_only.json
+Total time for folder: 20.77 seconds

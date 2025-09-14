@@ -1,0 +1,121 @@
+[
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/util/TimeZone",
+      "J (long)",
+      "D (double)"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from location and time zone.",
+        "Source Method": "Liky;->a:(Landroid/location/Location; Ljava/util/TimeZone;)F",
+        "Reasoning": "Summary of method",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Originates user personal data by using the sensitive API `java.util/TimeZone.getTimeZone(Ljava/lang/String;)` to get the time zone.",
+        "Source Method": "Likt;->c:(J Ljava/util/TimeZone;)Liku;",
+        "Reasoning": "Summary of method",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Originates sensitive user personal data by using the `android.icu.util.Calendar` API to manipulate dates.",
+        "Source Method": "Likt;->b:(J J J)Liku;",
+        "Reasoning": "Summary of method",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Originates user personal data from the 'const-wide' instruction, which loads a sensitive value.",
+        "Source Method": "Likt;->a:(D)J",
+        "Reasoning": "Summary of method",
+        "Action": "Stored in register v2"
+      },
+      {
+        "Step": "Passes data to other methods via method invocations.",
+        "Source Method": "Likt;->c:(J Ljava/util/TimeZone;)Liku;",
+        "Reasoning": "Summary of method",
+        "Action": "Passed to `Likt;->b(J J J)Liku;` and `Lwxn;->p(Ljava/lang/String; Ljava/lang/String; I Ljava/lang/String;)Lwyi;`"
+      },
+      {
+        "Step": "Reaches a sink point in the form of logging through the `Lwxn;->D(Ljava/lang/String; J)V` method.",
+        "Source Method": "Likt;->c:(J Ljava/util/TimeZone;)Liku;",
+        "Reasoning": "Summary of method",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Reaches a sink point through an instance creation of `Liku;-><init>(J J)V`, which suggests that the data is being used for logging or storage.",
+        "Source Method": "Likt;->b:(J J J)Liku;",
+        "Reasoning": "Summary of method",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lwxn;->D(Ljava/lang/String; J)V",
+      "Liku;-><init>(J J)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Liky;->a:(Landroid/location/Location; Ljava/util/TimeZone;)F --> Likt;->c:(J Ljava/util/TimeZone;)Liku; --> Lwxn;->D(Ljava/lang/String; J)V ",
+        "Reasoning": "Originates user personal data from location and time zone, passes to `Likt;->c`, then logged through `Lwxn;->D`"
+      },
+      {
+        "dataflow 2": " Likt;->c:(J Ljava/util/TimeZone;)Liku; --> Likt;->b(J J J)Liku; --> Liku;-><init>(J J)V ",
+        "Reasoning": "Originates user personal data by using the sensitive API `java.util/TimeZone.getTimeZone(Ljava/lang/String;)`, passes to `Likt;->b`, then stored through instance creation of `Liku`"
+      },
+      {
+        "dataflow 3": " Likt;->a:(D)J --> no sink found ",
+        "Reasoning": "Originates user personal data from the 'const-wide' instruction, but does not reach any sink points like logging or transmission."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "android/content/Context",
+      "android/app/UIModeManager",
+      "android/os/PowerManager"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from sensitive API calls to get the application context and power manager.",
+        "Source Method": "Lso;-><init>:(Lsw; Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to get the application context and power manager.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data from the 'c' field of an object of type 'Lsw;' and stores it in register 'v0'.",
+        "Source Method": "Lsq;-><init>:(Lsw;)V",
+        "Reasoning": "The method originates user personal data from the 'c' field of an object of type 'Lsw;' and stores it in register 'v0'.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data through the 'new-instance' instruction creating an instance of 'Ltk', which is then stored in a field.",
+        "Source Method": "Ltl;-><init>:(Landroid/content/Context; Landroid/location/LocationManager;)V",
+        "Reasoning": "The method originates user personal data through the 'new-instance' instruction creating an instance of 'Ltk', which is then stored in a field.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data from sensitive API calls to get the b and a fields of class sr. The data is stored in registers v0 and v1.",
+        "Source Method": "Lsr;-><init>:(Lsw; Ltl;)V",
+        "Reasoning": "The current method originates user personal data from sensitive API calls to get the b and a fields of class sr.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lso;->displaySystemServices()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lso;<init>(...) --> displaySystemServices(...) --> Sink Method(...)",
+        "Reasoning": "The data reaches a sink point, which is the display of system services."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

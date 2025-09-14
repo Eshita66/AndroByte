@@ -1,0 +1,61 @@
+
+ Processing folder: D:\UBCBAPK_Methods\Button3
+ Using methods file: D:\UBCBAPK_Methods\Button3\Button3_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V']
+[SUMMARY] Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V => {
+    "Summary": [
+        "Method invokes getSystemService to retrieve TelephonyManager, then uses its getDeviceId method to fetch the device ID and assigns it to a field in MainActivity."
+    ],
+    "Next Methods": [
+        "Lde/ecspride/Button2Listener;->onClick:(Landroid/view/View;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/Button2Listener;->onClick:(Landroid/view/View;)V => {
+    "Summary": [
+        "Method invokes getSystemService to retrieve TelephonyManager, then uses its getDeviceId method to fetch the device ID and assigns it to a field in MainActivity."
+    ],
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\Button3\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\Button3\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\Button3\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "getSystemService retrieves TelephonyManager",
+                "Source Method": "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "The method invokes getSystemService to retrieve TelephonyManager, which is a standard way to access system services in Android.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "getDeviceId fetches the device ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "The getDeviceId method is used to fetch the unique device identifier, which is sensitive data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Device ID assigned to a field in MainActivity",
+                "Source Method": "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V",
+                "Reasoning": "The retrieved device ID is assigned to a field in the MainActivity, which could potentially lead to data leakage if not handled securely.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": null,
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V --> getSystemService retrieves TelephonyManager --> getDeviceId fetches the device ID --> Device ID assigned to a field in MainActivity",
+                "Reasoning": "The data flows step-by-step from the method that invokes getSystemService to retrieve TelephonyManager, through getDeviceId to fetch the device ID, and finally to assign it to a field in MainActivity."
+            }
+        ],
+        "Label": "no leak"
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\Button3\output\refined_method_summaries.json
+Saved 0 'leak' subgraphs to D:\UBCBAPK_Methods\Button3\output\sensitive_only.json
+Total time for folder: 164.37 seconds

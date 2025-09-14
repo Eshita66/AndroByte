@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive personal data is originated through retrieval of device ID",
+                "Source Method": "Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+                "Reasoning": "Data is tainted from a sensitive source.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage:(Ljava/lang/String; Ljava/lang/String; Landroid/content/Intent;, Landroid/app/PendingResult;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V --> Lde/ecspride/TestReceiver;->sendTextMessage:(Ljava/lang/String; Ljava/lang/String; Landroid/content/Intent;, Landroid/app/PendingResult;)V",
+                "Reasoning": "Data is tainted from a sensitive source and passed to sendTextMessage method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

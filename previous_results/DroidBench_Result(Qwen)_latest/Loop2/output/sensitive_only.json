@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved from TelephonyManager",
+                "Source Method": "Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly calls TelephonyManager.getDeviceId() to obtain the device ID",
+                "Action": "Retrieved"
+            },
+            {
+                "Step": "Device ID is transformed into a string with underscores",
+                "Source Method": "Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The summary states the device ID is processed into a string with underscores",
+                "Action": "Transformed"
+            },
+            {
+                "Step": "Transformed device ID is sent via SMS",
+                "Source Method": "Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method uses SmsManager.sendTextMessage to transmit the processed device ID",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V --> TelephonyManager.getDeviceId() --> String processing --> SmsManager.sendTextMessage() ",
+                "Reasoning": "The device ID is retrieved from TelephonyManager, transformed into a string with underscores, and then passed to SmsManager.sendTextMessage as the SMS payload"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

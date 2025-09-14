@@ -1,0 +1,45 @@
+[
+    {
+        "Data Types Collected": [
+            "Datacontainer",
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Creation of Datacontainer object and setting its description to 'abc'",
+                "Source Method": "Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method creates a Datacontainer object and sets its description to 'abc'.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Retrieving SIM serial number from TelephonyManager service for setting the secret in Datacontainer",
+                "Source Method": "Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the SIM serial number which is considered sensitive information.",
+                "Action": "Retrieved"
+            },
+            {
+                "Step": "Setting the secret in Datacontainer using the retrieved SIM serial number",
+                "Source Method": "Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method uses the sensitive information (SIM serial number) to set a secret in Datacontainer.",
+                "Action": "Used"
+            },
+            {
+                "Step": "Sending an SMS message with the description as content",
+                "Source Method": "Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method sends an SMS message which contains sensitive information (description).",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Datacontainer;->setSecret(Ljava/lang/String;)V",
+            "Log.i(...)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Datacontainer;->setDescription('abc') --> Lde/ecspride/Datacontainer;->setSecret(SIM serial number) --> Log.i(...)]",
+                "Reasoning": "The SIM serial number is retrieved from the TelephonyManager service and used to set the secret in Datacontainer, which is then logged via Log.i(...) which is a real sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]

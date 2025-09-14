@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\CastingForward
+Using methods file: D:\UBCBAPK_Methods\CastingForward\CastingForward_bytecode_instructions.json
+Sensitive method found: Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive data originated from the device ID, stored in register v0, and passed to the setHint() method of a TextView object. The sensitive data reached a sink (the Log.v() method).",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\CastingForward\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\CastingForward\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\CastingForward\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from device ID",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The sensitive data was passed to the setHint() method of a TextView object.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sensitive data reached a sink (the Log.v() method)",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The sensitive data was passed as an argument to the Log.v() method.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> setHint() method of a TextView object --> Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I ",
+                "Reasoning": "The sensitive data originated from the device ID, was passed to the setHint() method of a TextView object, and then reached a sink (the Log.v() method)."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\CastingForward\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\CastingForward\output\sensitive_only.json
+Total summary time: 13.828255891799927 seconds

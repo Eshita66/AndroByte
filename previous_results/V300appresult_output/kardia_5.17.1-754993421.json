@@ -1,0 +1,202 @@
+[
+  {
+    "Data Types Collected": [
+      "AccountManager.get()",
+      "Landroid/accounts/Account;",
+      "Landroid/os/Bundle;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user account data from AccountManager.",
+        "Source Method": "Lcom/alivecor/aliveecg/presenter/onboard/OnboardActivity$j;->onActivityCreated:(Landroid/os/Bundle;)V",
+        "Reasoning": "The method originates user personal data from AccountManager.get()",
+        "Action": "Stored in variables"
+      },
+      {
+        "Step": "Pass the account data to other methods for further processing.",
+        "Source Method": "Lcom/alivecor/aliveecg/presenter/onboard/OnboardActivity$j;->onActivityCreated:(Landroid/os/Bundle;)V",
+        "Reasoning": "The data is then passed to other methods for further processing.",
+        "Action": "Passed to other methods"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "account",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get account information from AccountsManager",
+        "Source Method": "Lcom/alivecor/sync/AliveAccountActivity;->onCreate:(Landroid/os/Bundle;)V",
+        "Reasoning": "The method calls getAccounts() to retrieve user's accounts.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get phone number from Intent extras",
+        "Source Method": "Lcom/alivecor/sync/AliveAccountActivity;->onCreate:(Landroid/os/Bundle;)V",
+        "Reasoning": "The method calls getIntent().getStringExtra() to retrieve user's phone number.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/alivecor/sync/AliveAccountActivity;->setTextViewOnClickListener(Landroid/view/View$OnClickListener;)V",
+      "Lcom/alivecor/sync/AliveAccountActivity;->requestFocus()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/alivecor/sync/AliveAccountActivity;->onCreate:(Landroid/os/Bundle;)V --> Lcom/alivecor/sync/AliveAccountActivity;->setTextViewOnClickListener(Landroid/view/View$OnClickListener;)V ",
+        "Reasoning": "The method onCreate() stores user's account information and phone number. The TextView's OnClickListener is set, which logs the data."
+      },
+      {
+        "dataflow 2": " Lcom/alivecor/sync/AliveAccountActivity;->onCreate:(Landroid/os/Bundle;)V --> Lcom/alivecor/sync/AliveAccountActivity;->requestFocus()V ",
+        "Reasoning": "The method onCreate() stores user's account information and phone number. The EditText requests focus, which implies the data is stored."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "MacAddress",
+      "Context object's getApplicationContext() and getSystemService() methods"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from Context object",
+        "Source Method": "Lk/a/a/a/a/b0;->B:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data through the getApplicationContext() and getSystemService() methods of the provided Context.",
+        "Action": "Stored in registers (v0, v3) and variables (v1)"
+      },
+      {
+        "Step": "Propagates data to other methods",
+        "Source Method": "Lk/a/a/a/a/b0;->B:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method propagates the data to other methods via method invocations such as i(Landroid/content/Context; Ljava/lang/String;)Z and getConnectionInfo().",
+        "Action": "Passed through method invocations"
+      },
+      {
+        "Step": "Data reaches a sink point through return statement",
+        "Source Method": "Lk/a/a/a/a/b0;->B:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point through the return statement, which returns the MacAddress.",
+        "Action": "Returned as result"
+      },
+      {
+        "Step": "Originates user personal data through checkCallingOrSelfPermission API call",
+        "Source Method": "Lk/a/a/a/a/a0;->i:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The method originates user personal data through the `checkCallingOrSelfPermission` API call in the provided Context.",
+        "Action": "Stored in register v3"
+      },
+      {
+        "Step": "Sensitive data originates from 'sget-boolean' instruction",
+        "Source Method": "Lk/a/a/a/a/h/a;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V",
+        "Reasoning": "Sensitive data originates from the 'sget-boolean' instruction.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Data is propagated through registers",
+        "Source Method": "Lk/a/a/a/a/h/a;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V",
+        "Reasoning": "The data is propagated through registers v1, v3, and v4.",
+        "Action": "Passed through registers"
+      },
+      {
+        "Step": "Sensitive user personal data reaches a sink point at Log.e() or Log.w() or Log.i()",
+        "Source Method": "Lk/a/a/a/a/h/a;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V",
+        "Reasoning": "Sensitive user personal data reaches a sink point at Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I, Landroid/util/Log;->w(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I, and Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lk/a/a/a/a/h/a;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V",
+      "Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I",
+      "Landroid/util/Log;->w(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I",
+      "Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lk/a/a/a/a/b0;->B:(Landroid/content/Context;)Ljava/lang/String() --> Lk/a/a/a/a/a0;->i:(Landroid/content/Context; Ljava/lang/String;)Z --> Lk/a/a/a/a/h/a;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V",
+        "Reasoning": "The data flows from the method that originates user personal data through the getApplicationContext() and getSystemService() methods of the provided Context, to the method that propagates this data through method invocations, and finally reaches a sink point at one of the Log.e(), Log.w(), or Log.i() methods."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "java.lang.Throwable"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user location from Location object",
+        "Source Method": "Lk/a/a/a/a/c0;->v:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "The current method originates user personal data from the 'Location' object.",
+        "Action": "Stored in StringBuilder"
+      },
+      {
+        "Step": "Propagate exception to logging",
+        "Source Method": "Lk/a/a/a/a/h/a;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V",
+        "Reasoning": "Sensitive user personal data originates from the method's parameters (Lk/a/a/a/a/h/a;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V), specifically the Ljava/lang/Throwable; parameter.",
+        "Action": "Logged using Log methods"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/Object;)I",
+      "Lk/a/a/a/a/h/a;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lk/a/a/a/a/c0;->v:(Landroid/location/Location;)Lorg/json/JSONObject; --> Stored in StringBuilder --> Lorg/json/JSONObject;",
+        "Reasoning": "The current method originates user personal data from the 'Location' object. The data is stored in a 'StringBuilder' and then passed to an instance of 'JSONObject'. If any exception occurs, it will be logged using the 'b' method."
+      },
+      {
+        "dataflow 2": "Lk/a/a/a/a/h/a;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V --> Stored in registers v3 and v4 --> Logged using Log methods",
+        "Reasoning": "Sensitive user personal data originates from the method's parameters (Lk/a/a/a/a/h/a;->b:(Ljava/lang/Class; I Ljava/lang/Throwable;)V), specifically the Ljava/lang/Throwable; parameter. The data is stored in registers v3 and v4, and propagated through method invocations to Landroid/util/Log; methods for logging purposes."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data",
+        "Source Method": "Lk/a/a/a/a/c0;->x:(I Lk/a/a/a/a/e;)V",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass data to other methods",
+        "Source Method": "Lk/a/a/a/a/c0;->x:(I Lk/a/a/a/a/e;)V",
+        "Reasoning": "The data is passed to other methods via method invocations.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lk/a/a/a/a/c0;->y:(Lk/a/a/a/a/c0;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lk/a/a/a/a/c0;->x:(I Lk/a/a/a/a/e;)V --> Lk/a/a/a/a/c0;->y:(Lk/a/a/a/a/c0;)V",
+        "Reasoning": "The data is originated in method x, then passed to method y where it is likely logged or transmitted."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

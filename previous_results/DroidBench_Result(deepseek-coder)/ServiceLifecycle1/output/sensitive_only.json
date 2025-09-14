@@ -1,0 +1,32 @@
+[
+    {
+        "Data Types Collected": [
+            "SIM serial number"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieval of SIM serial number",
+                "Source Method": "Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)I",
+                "Reasoning": "SIM serial number is retrieved and stored as 'secret' in the MainService instance.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sending of personal data via SMS",
+                "Source Method": "Lde/ecspride/MainService;->onLowMemory:()V",
+                "Reasoning": "Sensitive information (SIM serial number) is sent to a hardcoded phone number.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainService;->onLowMemory:()V",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)I) --> Stored as 'secret' in MainService instance --> Source Method(Lde/ecspride/MainService;->onLowMemory:()V) --> Transmitted via SMS]",
+                "Reasoning": "The SIM serial number is first retrieved and stored within the service, then used to send an SMS message containing personal data."
+            }
+        ],
+        "Label": "leak"
+    }
+]

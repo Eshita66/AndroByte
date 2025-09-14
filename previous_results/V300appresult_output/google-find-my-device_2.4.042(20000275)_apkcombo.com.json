@@ -1,0 +1,122 @@
+[
+  {
+    "Data Types Collected": [
+      "location",
+      "accuracy"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from sensitive API calls",
+        "Source Method": "Lazo;->run:()V",
+        "Reasoning": "Get location, accuracy, and other information.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Propagate through method invocations",
+        "Source Method": "Lakt;->z:(Ldfm; Laoh; Laog;)Z",
+        "Reasoning": "Data stored in registers v0 and v1.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Use sensitive API 'f(Laog;)Z' to originate user personal data",
+        "Source Method": "Lakt;->n:(Laoh; Laof; Laog;)V",
+        "Reasoning": "Data stored in register v0.",
+        "Action": "Propagated through registers and variables"
+      },
+      {
+        "Step": "Compare user personal data with constants",
+        "Source Method": "Lakt;->w:(Ldfm;)Z",
+        "Reasoning": "Data propagated through registers (v1, v3) and variables (v5).",
+        "Action": "No sinks identified"
+      },
+      {
+        "Step": "Originate data using sensitive API calls to iget-wide instructions",
+        "Source Method": "Lakt;->A:(Ldfm; Ldfm;)Z",
+        "Reasoning": "Data stored in registers v2 and v5.",
+        "Action": "Propagated through method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lazo;->run:()V",
+      null,
+      "Lakt;->n:(Laoh; Laof; Laog;)V",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lazo;->run:()V --> Lakt;->z:(Ldfm; Laoh; Laog;)Z --> Lakt;->n:(Laoh; Laof; Laog;)V",
+        "Reasoning": "Location and accuracy data from run() method is propagated through z() method to n() method, where it reaches a sink point via logging."
+      },
+      {
+        "dataflow 2": "Lakt;->A:(Ldfm; Ldfm;)Z --> return statements",
+        "Reasoning": "Data originating from A() method reaches a sink point via return statements."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract latitude and longitude from location object",
+        "Source Method": "Lals;->j:()V",
+        "Reasoning": "Accessed 'm' field of class 'als'",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "Pass data to method n(D D F) of class 'amd'",
+        "Source Method": "Lals;->j:()V",
+        "Reasoning": "Data is passed through register operations",
+        "Action": "Passed as arguments"
+      },
+      {
+        "Step": "Store boolean value in field k of object aom",
+        "Source Method": "Lajh;->k:()V",
+        "Reasoning": "Data stored in registers and variables within the method",
+        "Action": "Stored in fields"
+      }
+    ],
+    "All Sinks": [
+      "Lajh;->k:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lals;->j:()V --> Lals;->j:()V --> Lajh;->k:()V",
+        "Reasoning": "The method originates sensitive user personal data by invoking the 'k()' method of class 'ajh' and accessing the 'm' field of class 'als', which is an instance of 'android/location/Location'. The latitude and longitude are extracted from this location object. The data is then passed to the 'n(D D F)' method of class 'amd' through a series of register operations. Finally, a boolean value is stored in the 'k' field of an object of type 'aom'."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user location information",
+        "Source Method": "Ljm;->r:(Landroid/content/Context; I)I",
+        "Reasoning": "The current method r in class Ljm; appears to be handling night mode settings and location services.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass user personal data to other methods",
+        "Source Method": "Ljx;->a:(J D D)V",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data.",
+        "Action": "Passed via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Ljm;->r:(Landroid/content/Context; I)I --> Ljx;->a:(J D D)V",
+        "Reasoning": "Location information is originated in Ljm;->r and then passed to Ljx;->a where it may be logged, transmitted or stored."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

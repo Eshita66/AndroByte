@@ -1,0 +1,59 @@
+[
+  {
+    "Data Types Collected": [
+      "device's location",
+      "power save mode"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data from device's location and power save mode",
+        "Source Method": "Ljt;->F:(Landroid/content/Context; I)I",
+        "Reasoning": "The method originates user personal data by using the device's location and power save mode.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates sensitive user personal data by using getSystemService API to get LocationManager",
+        "Source Method": "Ljt;->T:(Landroid/content/Context;)Ljo;",
+        "Reasoning": "The current method originates sensitive user personal data by using the getSystemService API to get the LocationManager.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Sensitive user personal data originates from 'Landroid/content/Context;' object",
+        "Source Method": "Ljt;->U:(Landroid/content/Context;)Ljo;",
+        "Reasoning": "Sensitive user personal data originates from the 'Landroid/content/Context;' object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data using sensitive API calls to `Landroid/*`",
+        "Source Method": "Ljp;-><init>:(Ljt; Ljz;)V",
+        "Reasoning": "The method originates user personal data using sensitive API calls to `Landroid/*`.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data through the use of the sensitive API `getSystemService` to retrieve a PowerManager instance",
+        "Source Method": "Ljm;-><init>:(Ljt; Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data through the use of the sensitive API `getSystemService` to retrieve a PowerManager instance.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data by calling the sensitive API 'Landroid/content/Context;->getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;' indirectly",
+        "Source Method": "Ljo;-><init>:(Ljt;)V",
+        "Reasoning": "The method originates user personal data by calling the sensitive API 'Landroid/content/Context;->getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;' indirectly.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Ljt;->F:(Landroid/content/Context; I)I",
+      "Ljo;-><init>:(Ljt;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Ljt;->F:(Landroid/content/Context; I)I --> Ljt;->T:(Landroid/content/Context;)Ljo --> Ljp;-><init>:(Ljt; Ljz;)V --> Ljm;-><init>:(Ljt; Landroid/content/Context;)V --> Ljo;-><init>:(Ljt;)V",
+        "Reasoning": "The data flow starts from method F of class jt, where user personal data is originated. This data is then propagated to method T of class jt, which stores it. The data is further passed to method <init> of class jp and then to method <init> of class jm. Finally, the data reaches method <init> of class jo."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

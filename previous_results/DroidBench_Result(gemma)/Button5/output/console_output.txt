@@ -1,0 +1,52 @@
+
+ Processing folder: D:\UBCBAPK_Methods\Button5
+ Using methods file: D:\UBCBAPK_Methods\Button5\Button5_bytecode_instructions.json
+Sensitive root methods: ['Ledu/mit/button_object_allocation/Button1;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/button_object_allocation/Button1;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "The `onCreate` method initializes the activity by calling the superclass's `onCreate` method, sets the content view, retrieves the device ID using TelephonyManager, and stores it in a field named `imei`.",
+    "Next Methods": [
+        "Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V"
+    ]
+}
+[SUMMARY] Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V => {
+    "Summary": "The `sendMessage` method sets the hint of the button to the string \"DroidBench\" using Log.i. This likely involves displaying a placeholder text or a debug message.",
+    "Next Methods": [
+        "Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\Button5\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\Button5\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\Button5\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "android.view.View"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Ledu/mit/button_object_allocation/Button1;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The `onCreate` method retrieves the device ID using TelephonyManager and stores it in the `imei` field.",
+                "Action": "Store Device ID"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/button_object_allocation/Button1;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The `onCreate` method retrieves the `DeviceId` and passes it to the `sendMessage` method as an argument. The `sendMessage` method uses this `DeviceId` to set the button's hint to 'DroidBench'. "
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\Button5\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\Button5\output\sensitive_only.json
+Total time for folder: 18.43 seconds

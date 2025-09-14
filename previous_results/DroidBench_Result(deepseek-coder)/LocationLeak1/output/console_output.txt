@@ -1,0 +1,46 @@
+
+Processing folder: D:\UBCBAPK_Methods\LocationLeak1
+Using methods file: D:\UBCBAPK_Methods\LocationLeak1\LocationLeak1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/LocationLeak1$MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V']
+[SUMMARY] Lde/ecspride/LocationLeak1$MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V => The method retrieves the latitude and longitude from a Landroid/location/Location object, converts them to strings, and then passes these string representations of the location data to another method in the same class for storage.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Latitude (double)",
+        "Longitude (double)"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve latitude and longitude from Location object",
+            "Source Method": "Lde/ecspride/LocationLeak1$MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V",
+            "Reasoning": "The method retrieves the latitude and longitude which are crucial personal data.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Convert latitude and longitude to strings",
+            "Source Method": "Ljava/lang/Double;->toString(D)Ljava/lang/String;",
+            "Reasoning": "Conversion of double values to string format for potential storage or logging.",
+            "Action": "Stored"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/LocationLeak1;->access$0(Lde/ecspride/LocationLeak1; Ljava/lang/String;)V",
+        "Lde/ecspride/LocationLeak1;->access$1(Lde/ecspride/LocationLeak1; Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method: Lde/ecspride/LocationLeak1$MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V --> Conversion to string --> Stored in access$0 and access$1]",
+            "Reasoning": "The latitude and longitude are first retrieved from the Location object, then converted to strings, which are eventually stored in class variables."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\LocationLeak1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\LocationLeak1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\LocationLeak1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\LocationLeak1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\LocationLeak1\output\sensitive_only.json
+Total time for folder: 210.82 seconds

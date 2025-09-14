@@ -1,0 +1,85 @@
+[
+  {
+    "Data Types Collected": [
+      "AccountManager",
+      "form fields"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "AccountManager provides sensitive user data",
+        "Source Method": "Lcom/bitstrips/imoji/ui/fragments/SignUpFormFragment;->onCreateView:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View;",
+        "Reasoning": "AccountManager is a source of sensitive user data",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/bitstrips/imoji/ui/fragments/SignUpFormFragment;->onCreateView:(Landroid/view/LayoutInflater; Landroid/view/ViewGroup; Landroid/os/Bundle;)Landroid/view/View; --> Stored",
+        "Reasoning": "Sensitive data is stored in form fields"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location is collected using getLastKnownLocation() method.",
+        "Source Method": "Ldw;->a:()Z",
+        "Reasoning": "Sensitive user personal data is originated from the getLastKnownLocation() method.",
+        "Action": "Stored in d field of dw object"
+      },
+      {
+        "Step": "Location is passed to a() method.",
+        "Source Method": "Ldw;->a:()Z",
+        "Reasoning": "Sensitive user personal data is passed to the a() method.",
+        "Action": "Used to determine sunrise or sunset time"
+      },
+      {
+        "Step": "Sunrise or sunset time is stored in a field of dw object.",
+        "Source Method": "Ldw;->a:()Z",
+        "Reasoning": "Sunrise or sunset time is stored in the a field of the dw object.",
+        "Action": "Stored in a field of dw object"
+      }
+    ],
+    "All Sinks": [
+      "None"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Ldw;->a:()Z --> None",
+        "Reasoning": "Sensitive user personal data is collected but not sent anywhere."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User and device information"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user and device information",
+        "Source Method": "Lcom/instabug/library/internal/a/b;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "Sensitive API calls are used to retrieve user and device information.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Logging"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/instabug/library/internal/a/b;-><init>:(Landroid/content/Context;)V --> Logging",
+        "Reasoning": "Sensitive user and device information is logged."
+      }
+    ],
+    "Label": "leak"
+  }
+]

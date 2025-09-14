@@ -1,0 +1,53 @@
+Processing folder: D:\UBCBAPK_Methods\Parcel1
+Using methods file: D:\UBCBAPK_Methods\Parcel1\Parcel1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves the device ID via TelephonyManager.getDeviceId(), stores it in register v1, and passes it to the writeParcel method. No sinks were identified in this method.",
+    "Next Methods": [
+        "Ledu/mit/parcel/MainActivity;->writeParcel(Ljava/lang/String;)V"
+    ]
+}
+Processed summary for Ledu/mit/parcel/MainActivity;->writeParcel:(Ljava/lang/String;)V: {
+    "Summary": "The method receives a String parameter (likely the device ID from the previous method) and stores it in a Foo object. This data is then used in an SMS send operation via SmsManager.sendTextMessage, which constitutes a network transmission sink. The device ID is transmitted as the destination address in an SMS.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\Parcel1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Parcel1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Parcel1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieved from TelephonyManager",
+                "Source Method": "Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Method directly calls TelephonyManager.getDeviceId() to obtain device ID",
+                "Action": "Stored in register v1"
+            },
+            {
+                "Step": "Device ID passed to SMS sending",
+                "Source Method": "Ledu/mit/parcel/MainActivity;->writeParcel:(Ljava/lang/String;)V",
+                "Reasoning": "Receives String parameter from onCreate() and uses it as destination address in SMS",
+                "Action": "Transmitted via SmsManager.sendTextMessage"
+            }
+        ],
+        "All Sinks": [
+            "Ledu/mit/parcel/MainActivity;->writeParcel:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/parcel/MainActivity;->writeParcel:(Ljava/lang/String;)V",
+                "Reasoning": "Device ID is passed from onCreate() to writeParcel() as String parameter, then used as destination address in SMS send operation"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Parcel1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Parcel1\output\sensitive_only.json
+Total summary time: 1400.3662497997284 seconds

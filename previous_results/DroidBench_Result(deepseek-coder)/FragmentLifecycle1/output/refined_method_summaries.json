@@ -1,0 +1,47 @@
+[
+    {
+        "Data Types Collected": [
+            "Device ID (TelephonyManager)",
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID from TelephonyManager",
+                "Source Method": "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The method retrieves the TelephonyManager service and uses it to get the device ID.",
+                "Action": "Stored in a static field"
+            },
+            {
+                "Step": "Pass device ID from MainActivity to ExampleFragment",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the stored device ID and passes it as a bundle to ExampleFragment.",
+                "Action": "Stored in static field, passed"
+            },
+            {
+                "Step": "Retrieve IMEI from ExampleFragment",
+                "Source Method": "Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V",
+                "Reasoning": "The method onAttach retrieves the MainActivity and accesses its stored IMEI.",
+                "Action": "Stored in ExampleFragment"
+            },
+            {
+                "Step": "Send SMS with IMEI to a predefined number",
+                "Source Method": "Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method onActivityCreated uses the stored IMEI to send an SMS.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V",
+            null,
+            null,
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;) --> ... --> Sink Method(Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V)]",
+                "Reasoning": "The device ID is retrieved from TelephonyManager in onCreate, stored statically, and then accessed by ExampleFragment onAttach. Finally, the IMEI is used to send an SMS in onActivityCreated."
+            }
+        ],
+        "Label": "leak"
+    }
+]

@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\Exceptions4
+Using methods file: D:\UBCBAPK_Methods\Exceptions4\Exceptions4_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method originates device ID (sensitive data) through getDeviceId() API. The sensitive data is then propagated to and reaches a sink point in sendTextMessage() for network transmission.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\Exceptions4\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Exceptions4\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Exceptions4\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Get device ID",
+                "Source Method": "Lde/ecspride/Exceptions4;->getDeviceId:()Ljava/lang/String;",
+                "Reasoning": "The method originates device ID (sensitive data) through getDeviceId() API.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Propagate to sink",
+                "Source Method": "Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The sensitive data is then propagated to and reaches a sink point in sendTextMessage() for network transmission.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Exceptions4;->sendTextMessage:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/Exceptions4;->getDeviceId:()Ljava/lang/String; --> Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Exceptions4;->sendTextMessage:(Ljava/lang/String;)V",
+                "Reasoning": "The device ID is obtained through getDeviceId(), then propagated to onCreate() where it's used in sendTextMessage() for network transmission."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Exceptions4\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Exceptions4\output\sensitive_only.json
+Total summary time: 54.99702167510986 seconds

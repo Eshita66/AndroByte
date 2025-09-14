@@ -1,0 +1,155 @@
+[
+  {
+    "Data Types Collected": [
+      "KeyStore aliases",
+      "Private key",
+      "Battery level"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data",
+        "Source Method": "Lcom/appsflyer/AFKeystoreWrapper;->b(Ljava/lang/String;)V",
+        "Reasoning": "Sensitive user personal data is originated in this method and stored in the `alias` variable.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass data to logging method",
+        "Source Method": "Lcom/appsflyer/AFKeystoreWrapper;->b(Ljava/lang/String;)V",
+        "Reasoning": "The `alias` variable containing sensitive user personal data is passed to the `AFLogger.b()` method.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Retrieve battery level",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLib;->g:(Landroid/content/Context;)F",
+        "Reasoning": "The battery level is retrieved using the `g()` method.",
+        "Action": "Retrieved"
+      },
+      {
+        "Step": "Calculate battery percentage",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLib;->g:(Landroid/content/Context;)F",
+        "Reasoning": "The battery level is calculated based on the retrieved level and scale values.",
+        "Action": "Calculated"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AFLogger.b(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/AFKeystoreWrapper;->b(Ljava/lang/String;)V --> Lcom/appsflyer/AFLogger.b(Ljava/lang/String;)V",
+        "Reasoning": "Sensitive user personal data is originated in `b()` and passed to `AFLogger.b()` for logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is collected from the `Location` object.",
+        "Source Method": "Lcom/urbanairship/analytics/LocationEvent;-><init>:(Landroid/location/Location; I I I Z)V",
+        "Reasoning": "Constructor arguments",
+        "Action": "Stored in registers v3, v5, and v8"
+      },
+      {
+        "Step": "Location data is used to create fields in the `Event` object.",
+        "Source Method": "Lcom/urbanairship/analytics/LocationEvent;-><init>:(Landroid/location/Location; I I I Z)V",
+        "Reasoning": "Constructor arguments",
+        "Action": "Stored in fields d, e, c, f, g, and h"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/urbanairship/analytics/LocationEvent;-><init>:(Landroid/location/Location; I I I Z)V --> Event object",
+        "Reasoning": "Location data is used to create fields in the Event object."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve WiFi SSID",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "Method returns the WiFi SSID as a string.",
+        "Action": "Retrieved"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> Retrieved",
+        "Reasoning": "The WiFi SSID is retrieved from the `WifiManagerDelegate` method and stored in the `Data Types Collected` field."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Google account access token"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user's Google account access token",
+        "Source Method": "Lyounow/live/ui/screens/miniprofile/MiniProfileScreenBaseFragment$37;->a:([Ljava/lang/Void;)Ljava/lang/Void;",
+        "Reasoning": "Method summary explicitly mentions accessing the token",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Log the token",
+        "Source Method": "Lyounow/live/ui/screens/miniprofile/MiniProfileScreenBaseFragment$37;->a:([Ljava/lang/Void;)Ljava/lang/Void;",
+        "Reasoning": "Method summary mentions logging the token",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lyounow/live/ui/screens/miniprofile/MiniProfileScreenBaseFragment$37;->a:([Ljava/lang/Void;)Ljava/lang/Void;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lyounow/live/ui/screens/miniprofile/MiniProfileScreenBaseFragment$37;->a:([Ljava/lang/Void;)Ljava/lang/Void; --> Lyounow/live/ui/screens/miniprofile/MiniProfileScreenBaseFragment$37;->a:([Ljava/lang/Void;)Ljava/lang/Void;",
+        "Reasoning": "Token is retrieved and logged within the same method"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user personal data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Google+ API calls",
+        "Source Method": "Lyounow/live/domain/login/MultiLoginManager;->g:()V",
+        "Reasoning": "Sensitive user personal data is originated from Google+ API calls",
+        "Action": "Stored in n, o, and p fields"
+      },
+      {
+        "Step": "AsyncTask",
+        "Source Method": "Lyounow/live/domain/login/MultiLoginManager$6",
+        "Reasoning": "Data is passed to AsyncTask",
+        "Action": "Passed to LoginListener"
+      }
+    ],
+    "All Sinks": [
+      "Lyounow/live/domain/login/LoginListener"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lyounow/live/domain/login/MultiLoginManager;->g:()V --> Lyounow/live/domain/login/MultiLoginManager$6 --> Lyounow/live/domain/login/LoginListener",
+        "Reasoning": "Sensitive user personal data is collected from Google+ API calls, passed to AsyncTask, and finally to LoginListener"
+      }
+    ],
+    "Label": "leak"
+  }
+]

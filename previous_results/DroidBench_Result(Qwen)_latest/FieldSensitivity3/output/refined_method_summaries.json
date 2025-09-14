@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "User personal data (SIM serial number)"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Source data retrieval",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getSimSerialNumber()Ljava/lang/String;",
+                "Reasoning": "SIM serial number is directly obtained from TelephonyManager",
+                "Action": "Originated"
+            },
+            {
+                "Step": "Data storage",
+                "Source Method": "Lde/ecspride/Datacontainer;->setSecret(Ljava/lang/String;)V",
+                "Reasoning": "SIM serial number is stored in Datacontainer",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Data transmission",
+                "Source Method": "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V",
+                "Reasoning": "Stored SIM serial number is transmitted via SMS",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Landroid/telephony/TelephonyManager;->getSimSerialNumber()Ljava/lang/String; --> Lde/ecspride/Datacontainer;->setSecret(Ljava/lang/String;)V --> Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V ",
+                "Reasoning": "SIM serial number is first obtained from TelephonyManager, stored in Datacontainer, then transmitted via SmsManager's sendTextMessage method"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

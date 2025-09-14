@@ -1,0 +1,206 @@
+[
+  {
+    "Data Types Collected": [
+      "android.net.wifi.WifiInfo",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieves WiFi connection info from WifiManager",
+        "Source Method": "Lcom/netflix/mediaclient/util/ConnectivityUtils;->b:(Landroid/net/wifi/WifiManager;)Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The method calls the getConnectionInfo() API of WifiManager to retrieve WiFi connection info.",
+        "Action": "Stored in register v2"
+      },
+      {
+        "Step": "Logs exception message with Lo/yD;->c()",
+        "Source Method": "Lo/yD;->c:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I",
+        "Reasoning": "The method logs a message with the exception using Lo/yD;->c().",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Returns WiFi connection info as string",
+        "Source Method": "Lcom/netflix/mediaclient/util/ConnectivityUtils;->e:(Landroid/net/wifi/WifiManager;)Ljava/lang/String;",
+        "Reasoning": "The method returns the WiFi connection info as a string.",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      "Lo/yD;->c:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)I",
+      "Lcom/netflix/mediaclient/util/ConnectivityUtils;->e:(Landroid/net/wifi/WifiManager;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/netflix/mediaclient/util/ConnectivityUtils;->b(Landroid/net/wifi/WifiManager;) --> Lo/yD;->c(...) --> null",
+        "Reasoning": "The WiFi connection info is retrieved by ConnectivityUtils, then logged by Lo/yD;->c()."
+      },
+      {
+        "dataflow 2": " Lcom/netflix/mediaclient/util/ConnectivityUtils;->e(Landroid/net/wifi/WifiManager;) --> null",
+        "Reasoning": "The WiFi connection info is returned as a string by ConnectivityUtils."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "network information",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data by calling sensitive APIs to get network information.",
+        "Source Method": "Lo/aiE;->I:()V",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to get network information.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "Originate user personal data from a sensitive API call to `Lo/aiE;->B Lo/aiV`.",
+        "Source Method": "Lo/aiE;->j:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data from a sensitive API call to `Lo/aiE;->B Lo/aiV`.",
+        "Action": "Stored in register `v0` and propagated through the method."
+      },
+      {
+        "Step": "Originate user personal data by calling sensitive API `getApplicationContext()` and `getSystemService()`.",
+        "Source Method": "Lcom/netflix/mediaclient/util/ConnectivityUtils;->h:(Landroid/content/Context;)Landroid/net/wifi/WifiManager;",
+        "Reasoning": "The current method originates user personal data by calling sensitive API `getApplicationContext()` and `getSystemService()`.",
+        "Action": "Stored in register `v1` and passed to other methods via method invocations."
+      },
+      {
+        "Step": "Originate user personal data by calling the getSystemService API to retrieve a ConnectivityManager instance.",
+        "Source Method": "Lcom/netflix/mediaclient/util/ConnectivityUtils;->c:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "This method originates user personal data by calling the getSystemService API to retrieve a ConnectivityManager instance.",
+        "Action": "Stored in registers and variables within the method, specifically in v1 (ConnectivityManager) and v0 (NetworkInfo)."
+      },
+      {
+        "Step": "Originate user personal data via the getSystemService call, stores it in register v2, and passes it to other methods.",
+        "Source Method": "Lcom/netflix/mediaclient/util/ConnectivityUtils;->d:(Landroid/content/Context;)Landroid/net/NetworkInfo;",
+        "Reasoning": "[This method originates user personal data via the getSystemService call, stores it in register v2, and passes it to other methods.",
+        "Action": "Passed to ConnectivityUtils.d, which returns a NetworkInfo object."
+      },
+      {
+        "Step": "Originate user personal data by calling the `getActiveNetworkInfo()` method of the `ConnectivityManager` API.",
+        "Source Method": "Lcom/netflix/mediaclient/util/ConnectivityUtils;->d:(Landroid/net/ConnectivityManager;)Landroid/net/NetworkInfo;",
+        "Reasoning": "The method originates user personal data by calling the `getActiveNetworkInfo()` method of the `ConnectivityManager` API.",
+        "Action": "Stored in register `v2` and propagated through registers."
+      },
+      {
+        "Step": "Originate user personal data by calling the sensitive API j() which retrieves network interfaces.",
+        "Source Method": "Lcom/netflix/mediaclient/util/ConnectivityUtils;->g:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method ConnectivityUtils.g() originates user personal data by calling the sensitive API j() which retrieves network interfaces.",
+        "Action": "Stored in registers and variables, such as v7, v2, and v3."
+      },
+      {
+        "Step": "Originate user personal data by calling sensitive API `Lcom/netflix/mediaclient/util/ConnectivityUtils;->h(Landroid/content/Context;)Landroid/net/wifi/WifiManager;` and `Lcom/netflix/mediaclient/util/ConnectivityUtils;->b(Landroid/net/wifi/WifiManager;)Landroid/net/wifi/WifiInfo;`.",
+        "Source Method": "Lcom/netflix/mediaclient/util/ConnectivityUtils;->j:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling sensitive API `Lcom/netflix/mediaclient/util/ConnectivityUtils;->h(Landroid/content/Context;)Landroid/net/wifi/WifiManager;` and `Lcom/netflix/mediaclient/util/ConnectivityUtils;->b(Landroid/net/wifi/WifiManager;)Landroid/net/wifi/WifiInfo;`.",
+        "Action": "Stored in register v1."
+      },
+      {
+        "Step": "Originate user personal data by calling the WifiManager.getConnectionInfo() API.",
+        "Source Method": "Lcom/netflix/mediaclient/util/ConnectivityUtils;->b:(Landroid/net/wifi/WifiManager;)Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The current method originates user personal data by calling the WifiManager.getConnectionInfo() API.",
+        "Action": "Stored in register v2 and propagated to other methods via return statements."
+      }
+    ],
+    "All Sinks": [
+      "Lo/aiE;->I:()V",
+      "Lo/aiE;->j:()Ljava/lang/String;",
+      "Lcom/netflix/mediaclient/util/ConnectivityUtils;->h:(Landroid/content/Context;)Landroid/net/wifi/WifiManager;",
+      "Lcom/netflix/mediaclient/util/ConnectivityUtils;->c:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/netflix/mediaclient/util/ConnectivityUtils;->d:(Landroid/content/Context;)Landroid/net/NetworkInfo;",
+      "Lcom/netflix/mediaclient/util/ConnectivityUtils;->d:(Landroid/net/ConnectivityManager;)Landroid/net/NetworkInfo;",
+      "Lcom/netflix/mediaclient/util/ConnectivityUtils;->g:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/netflix/mediaclient/util/ConnectivityUtils;->j:(Landroid/content/Context;)Ljava/lang/String;",
+      "Lcom/netflix/mediaclient/util/ConnectivityUtils;->b:(Landroid/net/wifi/WifiManager;)Landroid/net/wifi/WifiInfo;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lo/aiE;->I:()V --> Lo/aiE;->j:()Ljava/lang/String --> Lo/yD;c",
+        "Reasoning": "The data flows from the method `Lo/aiE;->I:()V` to `Lo/aiE;->j:()Ljava/lang/String`, which logs or displays the data."
+      },
+      {
+        "dataflow 2": "Lcom/netflix/mediaclient/util/ConnectivityUtils;->h:(Landroid/content/Context;)Landroid/net/wifi/WifiManager --> Lcom/netflix/mediaclient/util/ConnectivityUtils;->j:(Landroid/content/Context;)Ljava/lang/String",
+        "Reasoning": "The data flows from the method `Lcom/netflix/mediaclient/util/ConnectivityUtils;->h:(Landroid/content/Context;)Landroid/net/wifi/WifiManager` to `Lcom/netflix/mediaclient/util/ConnectivityUtils;->j:(Landroid/content/Context;)Ljava/lang/String`, which returns the IP address."
+      },
+      {
+        "dataflow 3": "Lcom/netflix/mediaclient/util/ConnectivityUtils;->c:(Landroid/content/Context;)Ljava/lang/String --> Lo/yD;c",
+        "Reasoning": "The data flows from the method `Lcom/netflix/mediaclient/util/ConnectivityUtils;->c:(Landroid/content/Context;)Ljava/lang/String` to `Lo/yD;c`, which logs or displays the data."
+      },
+      {
+        "dataflow 4": "Lcom/netflix/mediaclient/util/ConnectivityUtils;->g:(Landroid/content/Context;)Ljava/lang/String --> Lo/yD;c",
+        "Reasoning": "The data flows from the method `Lcom/netflix/mediaclient/util/ConnectivityUtils;->g:(Landroid/content/Context;)Ljava/lang/String` to `Lo/yD;c`, which logs or displays the data."
+      },
+      {
+        "dataflow 5": "Lcom/netflix/mediaclient/util/ConnectivityUtils;->b:(Landroid/net/wifi/WifiManager;)Landroid/net/wifi/WifiInfo --> null",
+        "Reasoning": "The data flows from the method `Lcom/netflix/mediaclient/util/ConnectivityUtils;->b:(Landroid/net/wifi/WifiManager;)Landroid/net/wifi/WifiInfo` but there are no sink points like logging or transmission."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "WiFi information",
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WiFi information from API call",
+        "Source Method": "Lorg/chromium/net/NetworkChangeNotifierAutoDetect$WifiManagerDelegate;->getWifiInfoLocked:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The method originates user personal data through the getConnectionInfo() API call.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Check for WiFi permission",
+        "Source Method": "Lorg/chromium/net/NetworkChangeNotifierAutoDetect$WifiManagerDelegate;->hasPermissionLocked:()Z",
+        "Reasoning": "This method originates user personal data by checking for the 'android.permission.ACCESS_WIFI_STATE' permission.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Get application context",
+        "Source Method": "Lorg/chromium/base/ContextUtils;->getApplicationContext:()Landroid/content/Context;",
+        "Reasoning": "The method originates user personal data by accessing the application context using a static get method.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Check for permission",
+        "Source Method": "Lorg/chromium/base/ApiCompatibilityUtils;->checkPermission:(Landroid/content/Context; Ljava/lang/String; I I)I",
+        "Reasoning": "The current method originates user personal data by calling the checkPermission() method from Context.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get WiFi SSID",
+        "Source Method": "Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The current method originates sensitive user personal data by invoking the getWifiSSID method.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Check if app has access to WiFi state",
+        "Source Method": "Lorg/chromium/net/AndroidNetworkLibrary;->haveAccessWifiState:()Z",
+        "Reasoning": "This method checks if the app has access to WiFi state. It uses a static variable sHaveAccessWifiState to store the result of the check.",
+        "Action": "Stored in a static variable (sHaveAccessWifiState)"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/chromium/net/NetworkChangeNotifierAutoDetect$WifiManagerDelegate;->getWifiSsid:()Ljava/lang/String;",
+      "Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID:()Ljava/lang/String;",
+      "Lorg/chromium/base/ContextUtils;->getApplicationContext:()Landroid/content/Context;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/chromium/net/NetworkChangeNotifierAutoDetect$WifiManagerDelegate;->getWifiInfoLocked(...) --> Lorg/chromium/net/AndroidNetworkLibrary;->getWifiSSID(...) --> Lorg/chromium/net/NetworkChangeNotifierAutoDetect$WifiManagerDelegate;->getWifiSsid(...) ",
+        "Reasoning": "The data is propagated from getWifiInfoLocked() to getWifiSSID(), and then to getWifiSsid()."
+      },
+      {
+        "dataflow 2": " Lorg/chromium/base/ContextUtils;->getApplicationContext(...) --> Lorg/chromium/net/AndroidNetworkLibrary;->haveAccessWifiState(...) ",
+        "Reasoning": "The application context is accessed, which leads to the check for WiFi permission and ultimately the haveAccessWifiState() method."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

@@ -1,0 +1,54 @@
+Processing folder: D:\withoutcallgraphResult\TestAcessess\Exceptions2
+Using methods file: D:\withoutcallgraphResult\TestAcessess\Exceptions2\Exceptions2_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method `Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V` first calls `invoke-super`, which is a standard activity lifecycle method and doesn't involve sensitive data. Then, it calls `setContentView` with an integer constant. Next, it calls `getSystemService` with the string \"phone\", retrieving a `TelephonyManager` instance. Crucially, it then calls `getDeviceId()`, which returns a string representing the device ID. This string is then used as an argument to `SmsManager.sendTextMessage`, passing the device ID as the message body.  This constitutes a leak because the device ID, a sensitive piece of information, is explicitly passed to a sink function (`sendTextMessage`). The `SmsManager.sendTextMessage` call is the sink.",
+    "Next Methods": [
+        "[]"
+    ]
+}
+Method summaries saved to D:\withoutcallgraphResult\TestAcessess\Exceptions2\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\TestAcessess\Exceptions2\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\TestAcessess\Exceptions2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "device_id",
+            "phone"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Activity lifecycle initialization",
+                "Source Method": "Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Standard activity lifecycle method, no sensitive data involved.",
+                "Action": "Initialization"
+            },
+            {
+                "Step": "Obtain TelephonyManager",
+                "Source Method": "Lde/ecspride/Exceptions2;->getSystemService:(Ljava/lang/String;)Landroid/os/Service;",
+                "Reasoning": "Calls `getSystemService` with the string \"phone\", retrieving a `TelephonyManager` instance.",
+                "Action": "Retrieve"
+            },
+            {
+                "Step": "Extract Device ID",
+                "Source Method": "Lde/ecspride/Exceptions2;->getDeviceId()()Ljava/lang/String;",
+                "Reasoning": "Calls `getDeviceId()`, which returns a string representing the device ID.",
+                "Action": "Extract"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Exceptions2;->sendTextMessage:(Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Exceptions2;->getSystemService:(Ljava/lang/String;)Landroid/os/Service; --> Lde/ecspride/Exceptions2;->getDeviceId()()Ljava/lang/String; --> Lde/ecspride/Exceptions2;->sendTextMessage:(Ljava/lang/String;)V",
+                "Reasoning": "The activity's `onCreate` method initiates the flow. It calls `getSystemService` to obtain the `TelephonyManager`.  The `getDeviceId()` method then extracts the device ID. This device ID is subsequently used as the message body in `sendTextMessage`, representing a direct leak of sensitive data."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\TestAcessess\Exceptions2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\TestAcessess\Exceptions2\output\sensitive_only.json
+Total summary time: 27.136608839035034 seconds

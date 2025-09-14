@@ -1,0 +1,39 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from device ID",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId()",
+                "Reasoning": "The sensitive data is obtained using getDeviceId method.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Data stored in listData field",
+                "Source Method": "onCreate(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is stored in the listData field.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Data passed to sink method Landroid/telephony/SmsManager;->sendTextMessage(...)",
+                "Source Method": "onCreate(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is passed to the sendTextMessage method.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Landroid/telephony/TelephonyManager;->getDeviceId() --> onCreate(Landroid/os/Bundle;)V --> listData field --> Landroid/telephony/SmsManager;->sendTextMessage(...) ",
+                "Reasoning": "The device ID is obtained using getDeviceId method, stored in the listData field and then passed to the sendTextMessage method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

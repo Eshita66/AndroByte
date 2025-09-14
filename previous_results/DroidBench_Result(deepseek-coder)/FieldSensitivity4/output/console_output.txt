@@ -1,0 +1,50 @@
+
+Processing folder: D:\UBCBAPK_Methods\FieldSensitivity4
+Using methods file: D:\UBCBAPK_Methods\FieldSensitivity4\FieldSensitivity4_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V => The method Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V involves obtaining the device ID from the TelephonyManager, storing it in an instance of Lde/ecspride/FieldSensitivity4$Datacontainer, and then using this device ID to send a text message. The device ID is obtained directly from the TelephonyManager without any sanitization or encryption.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Obtain device ID from TelephonyManager",
+            "Source Method": "Lde/ecspride/FieldSensitivity4;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The method getSystemService is used to obtain the TelephonyManager service, which provides access to device-specific information including the ID.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Store device ID in instance variable",
+            "Source Method": "Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The device ID is stored in an instance of Lde/ecspride/FieldSensitivity4$Datacontainer for later use.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Use device ID to send a text message",
+            "Source Method": "Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The device ID is used directly for sending a text message without any sanitization or encryption, which could potentially expose sensitive information.",
+            "Action": "Transmitted"
+        }
+    ],
+    "All Sinks": [
+       "Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V",
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Lde/ecspride/FieldSensitivity4;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V --> Use of device ID to send a text message]",
+            "Reasoning": "The TelephonyManager service is accessed in onCreate, and the obtained device ID is used directly for sending a text message without any sanitization or encryption."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\FieldSensitivity4\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\FieldSensitivity4\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\FieldSensitivity4\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\FieldSensitivity4\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\FieldSensitivity4\output\sensitive_only.json
+Total time for folder: 389.75 seconds

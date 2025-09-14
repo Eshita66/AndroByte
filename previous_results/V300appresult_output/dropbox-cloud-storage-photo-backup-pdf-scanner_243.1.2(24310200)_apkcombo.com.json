@@ -1,0 +1,276 @@
+[
+  {
+    "Data Types Collected": [
+      "mac address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Load mac address from 'wlan0', 'eth0' and 'wifi'",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling sensitive API to load mac address.",
+        "Action": "Stored in registers or variables within the method"
+      },
+      {
+        "Step": "Read MAC address from a file in /sys/class/net/",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by reading the MAC address from a file.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Return mac address",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated through registers and passed to other methods via method invocations.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated through registers and passed to other methods via method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "account information",
+      "class name",
+      "stack trace"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data by using AccountManager.get() API",
+        "Source Method": "Ldbxyzptlk/D8/a;->b:(Landroid/content/Context;)Ljava/util/List;",
+        "Reasoning": "The method uses the AccountManager.get() API to retrieve account information.",
+        "Action": "Stored in register v6 and variables v0, v3"
+      },
+      {
+        "Step": "Originates user personal data by invoking a sensitive API",
+        "Source Method": "Ldbxyzptlk/lq/j;->i:(Ljava/lang/Throwable;)Ljava/lang/Throwable;",
+        "Reasoning": "The method invokes a sensitive API to get the class name.",
+        "Action": "Stored in register v0 and then passed to another method via method invocation"
+      },
+      {
+        "Step": "Originates user personal data by calling getStackTrace() method",
+        "Source Method": "Ldbxyzptlk/lq/j;->j:(Ljava/lang/Throwable; Ljava/lang/String;)Ljava/lang/Throwable;",
+        "Reasoning": "The method calls the `getStackTrace()` method on a `Throwable` object.",
+        "Action": "Stored in an array and propagated to other methods via method invocations"
+      },
+      {
+        "Step": "Originates user personal data from two string parameters",
+        "Source Method": "Ldbxyzptlk/W2/a;->j0:(Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data from two string parameters passed to it.",
+        "Action": "Stored in a StringBuilder instance and then converted to a String"
+      }
+    ],
+    "All Sinks": [
+      "Ldbxyzptlk/lq/j;->d()",
+      "Ldbxyzptlk/lq/j;->j()",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Ldbxyzptlk/D8/a;->b(...) --> Ldbxyzptlk/lq/j;->d(...) ",
+        "Reasoning": "The data is propagated from method b in D8/a to method d in lq/j via method invocation."
+      },
+      {
+        "dataflow 2": " Ldbxyzptlk/lq/j;->i(...) --> Ldbxyzptlk/lq/j;->j(...) ",
+        "Reasoning": "The data is propagated from method i in lq/j to method j in lq/j via method invocation."
+      },
+      {
+        "dataflow 3": " Ldbxyzptlk/W2/a;->j0(...) --> Ldbxyzptlk/lq/j;->d(...) ",
+        "Reasoning": "The data is propagated from method j0 in W2/a to method d in lq/j via method invocation."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates last known location",
+        "Source Method": "Ldbxyzptlk/D0/i$i;->c:()I",
+        "Reasoning": "The method originates user personal data through sensitive API calls to get the last known location.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Propagates location through method invocations",
+        "Source Method": "Ldbxyzptlk/D0/i$i;->c:()I",
+        "Reasoning": "The data is then passed to other methods via method invocations.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Reaches logging sink point when cannot get location",
+        "Source Method": "Ldbxyzptlk/D0/i$i;->c:()I",
+        "Reasoning": "The data reaches a sink point, which is logging, when it cannot get the last known location.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls",
+        "Source Method": "Ldbxyzptlk/D0/r;->a:(J D D)V",
+        "Reasoning": "The method uses sensitive API calls to originate user personal data.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Reaches logging sink point",
+        "Source Method": "Ldbxyzptlk/D0/r;->a:(J D D)V",
+        "Reasoning": "It reaches sink points like logging and storage.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Originates sensitive user personal data by calling getLastKnownLocation API",
+        "Source Method": "Ldbxyzptlk/D0/s;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "This method originates sensitive user personal data by calling the getLastKnownLocation API.",
+        "Action": "Stored in register v3"
+      },
+      {
+        "Step": "Reaches logging sink point",
+        "Source Method": "Ldbxyzptlk/D0/s;->a:(Ljava/lang/String;)Landroid/location/Location;",
+        "Reasoning": "The data reaches a sink point through logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Ldbxyzptlk/D0/i$i;->c:()I",
+      "Ldbxyzptlk/D0/r;->a:(J D D)V",
+      "Ldbxyzptlk/D0/s;->a:(Ljava/lang/String;)Landroid/location/Location;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Ldbxyzptlk/D0/i$i;->c:()I --> Ldbxyzptlk/D0/r;->a:(J D D)V --> Ldbxyzptlk/D0/s;->a:(Ljava/lang/String;)Landroid/location/Location;]",
+        "Reasoning": "The last known location is originated in Ldbxyzptlk/D0/i$i;->c:()I, propagated through method invocations to Ldbxyzptlk/D0/r;->a:(J D D)V and then stored in register v3 of Ldbxyzptlk/D0/s;->a:(Ljava/lang/String;)Landroid/location/Location;, finally reaching the logging sink point."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "device manufacturer",
+      "Wi-Fi MAC address",
+      "phone number",
+      "model",
+      "release version",
+      "network operator name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data through sensitive API calls to get device information.",
+        "Source Method": "Ldbxyzptlk/Fa/e;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data by using the `sget-object` instruction to retrieve the device manufacturer from the Android API.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates sensitive user personal data by calling a sensitive API (Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;) to get the 'context' object.",
+        "Source Method": "Ldbxyzptlk/x7/f;->X1:(Ljava/lang/Object;)Ljava/lang/Object;",
+        "Reasoning": "The data is stored in register v0 and passed to the 'new-instance' instruction, which creates a NullPointerException with a message indicating that an object must not be null.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data from sensitive API calls to dbxyzptlk/V7/l's methods.",
+        "Source Method": "Ldbxyzptlk/V7/l;->c:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "Data is stored in registers and variables within the method, then propagated through static method invocations.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Originates sensitive user personal data by invoking the static method e() of class dbxyzptlk/lq/j with a String parameter.",
+        "Source Method": "Ldbxyzptlk/T7/a;->h:(Ljava/lang/String; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in registers and variables within the method. It propagates the data to other methods via method invocations, specifically the invoke-virtual instruction that calls the i() method of class dbxyzptlk/T7/a$a.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Originates user personal data from the input parameter of type java.lang.String.",
+        "Source Method": "Ldbxyzptlk/x7/f;->T1:(Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in register v1 and is propagated to other methods via method invocations. The data reaches a sink point through throwing an exception with a message that includes sensitive user information.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Originates sensitive user personal data by calling the 'h' method from its own class, which likely retrieves a string.",
+        "Source Method": "Ldbxyzptlk/lq/j;->e:(Ljava/lang/Object; Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in registers and variables within the method. It then passes this data to other methods via method invocations.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to `Ldbxyzptlk/T7/b`.",
+        "Source Method": "Ldbxyzptlk/T7/a$a;->i:(Ldbxyzptlk/T7/b; Ldbxyzptlk/T7/c; Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "The data is stored in registers. The data reaches a sink point at `Lcom/dropbox/base/oxygen/InvalidLogException`.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Originates user personal data by calling `getStackTrace()` and extracting the class name and method name from it.",
+        "Source Method": "Ldbxyzptlk/lq/j;->h:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The data is stored in registers (v1, v0) and passed to the `P0` method via a string builder. The sink point is the return statement, which logs the error message.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Originates user personal data through sensitive API calls to the methods `P0` which takes five string parameters.",
+        "Source Method": "Ldbxyzptlk/W2/a;->P0:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)Ljava/lang/StringBuilder;",
+        "Reasoning": "The data is stored in register v0 of type StringBuilder and propagated by appending strings to it using virtual instructions. The data reaches a sink point as it is returned as a StringBuilder object.",
+        "Action": "Propagated"
+      }
+    ],
+    "All Sinks": [
+      "Ldbxyzptlk/T7/a;->h(Ljava/lang/String; Ljava/lang/String;)V",
+      "Lcom/dropbox/base/oxygen/InvalidLogException"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Ldbxyzptlk/Fa/e;<init>(Landroid/content/Context;)V --> Ldbxyzptlk/V7/l;c(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String; --> Lcom/dropbox/base/oxygen/InvalidLogException",
+        "Reasoning": "The data originates from the constructor of dbxyzptlk/Fa/e, then propagated through method invocations to Ldbxyzptlk/V7/l's methods and finally reaches a sink point at Lcom/dropbox/base/oxygen/InvalidLogException."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data by calling sensitive APIs to get the process ID and UID.",
+        "Source Method": "Ldbxyzptlk/b1/a;->a:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The method originates user personal data by calling sensitive APIs to get the process ID and UID. The data is stored in registers (v0, v1) and variables (v3). It propagates through method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Passing of user personal data from one method to another via method invocation.",
+        "Source Method": "Lcom/dropbox/common/purchase_journey/ui/view/googleplay/GooglePlayProcessFragment;->j:()Ldbxyzptlk/N9/c;",
+        "Reasoning": "The current method is using sensitive API calls to originate user personal data. The data is stored in registers and variables within the method. It is then passed to other methods via method invocations.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Logging of user personal data.",
+        "Source Method": "Lcom/dropbox/common/purchase_journey/ui/view/googleplay/GooglePlayProcessFragment;->j:()Ldbxyzptlk/N9/c;",
+        "Reasoning": "The current method is using sensitive API calls to originate user personal data. The data is stored in registers and variables within the method. It is then passed to other methods via method invocations. The data reaches a sink point, which is logging.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/dropbox/common/purchase_journey/ui/view/googleplay/GooglePlayProcessFragment;->j:()Ldbxyzptlk/N9/c;",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Ldbxyzptlk/b1/a;->a:(Landroid/content/Context; Ljava/lang/String;)I --> Lcom/dropbox/common/purchase_journey/ui/view/googleplay/GooglePlayProcessFragment;->j:()Ldbxyzptlk/N9/c;",
+        "Reasoning": "The data flows from the method Ldbxyzptlk/b1/a;->a:(Landroid/content/Context; Ljava/lang/String;)I to Lcom/dropbox/common/purchase_journey/ui/view/googleplay/GooglePlayProcessFragment;->j:()Ldbxyzptlk/N9/c;"
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

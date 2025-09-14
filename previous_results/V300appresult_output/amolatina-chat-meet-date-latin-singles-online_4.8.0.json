@@ -1,0 +1,149 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Search Text"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User provides location and search text.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "Data is passed as arguments to the GraphRequest constructor.",
+        "Action": "Stored in a bundle."
+      },
+      {
+        "Step": "GraphRequest object is created.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...)",
+        "Reasoning": "GraphRequest constructor receives the bundle.",
+        "Action": "Passed to GraphJSONArrayCallback."
+      },
+      {
+        "Step": "GraphJSONArrayCallback executes.",
+        "Source Method": "Lcom/facebook/GraphRequest$GraphJSONArrayCallback",
+        "Reasoning": "GraphJSONArrayCallback receives the GraphResponse object.",
+        "Action": "Data is processed and potentially sent to other services."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest$GraphJSONArrayCallback"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/facebook/GraphRequest;->newPlacesSearchRequest(...) --> Lcom/facebook/GraphRequest$GraphJSONArrayCallback",
+        "Reasoning": "GraphRequest object is created with data from user input and passed to GraphJSONArrayCallback."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "AFEvent"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Sensitive API call detected",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "Data is originated, propagated, and passed between methods within the method.",
+        "Action": "Passed between methods"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/AppsFlyerLibCore;->valueOf:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; --> null",
+        "Reasoning": "Sensitive API call detected. Data is originated, propagated, and passed between methods within the method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "TelephonyManager",
+      "WifiManager"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Data origination",
+        "Source Method": "getTelephonyManager()",
+        "Reasoning": "TelephonyManager object is retrieved.",
+        "Action": "Stored in mTelephonyManager field"
+      },
+      {
+        "Step": "Data origination",
+        "Source Method": "getWifiManager()",
+        "Reasoning": "WifiManager object is retrieved.",
+        "Action": "Stored in mWifiManager field"
+      },
+      {
+        "Step": "Data transformation",
+        "Source Method": "createDetailsMap()",
+        "Reasoning": "TelephonyManager and WifiManager objects are combined into a WritableMap.",
+        "Action": "Created a new WritableMap object"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " getTelephonyManager() --> createDetailsMap() --> null",
+        "Reasoning": "TelephonyManager and WifiManager objects are transformed into a WritableMap, but no sink method is identified."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve user location",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData(...)V",
+        "Reasoning": "Method signature and summary mention collecting user location data",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass location data to callback function",
+        "Source Method": "Lcom/reactnativecommunity/geolocation/GeolocationModule;->invoke(...)V",
+        "Reasoning": "Method signature and summary mention passing data to callback function",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/react/bridge/Callback;->invoke(...)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/reactnativecommunity/geolocation/GeolocationModule;->getCurrentLocationData(...)V --> Lcom/facebook/react/bridge/Callback;->invoke(...)V",
+        "Reasoning": "Data flows from source method to callback function"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Wi-Fi SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Wi-Fi SSID",
+        "Source Method": "Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String;",
+        "Reasoning": "The `getWifiSSID()` method retrieves the Wi-Fi SSID from the `WifiInfo` object.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/webrtc/NetworkMonitorAutoDetect$WifiManagerDelegate;->getWifiSSID:()Ljava/lang/String; --> null",
+        "Reasoning": "The Wi-Fi SSID is retrieved but not further processed or sent to any sink points."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

@@ -1,0 +1,44 @@
+[
+    {
+        "Data Types Collected": [
+            "IMEI"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve IMEI from TelephonyManager",
+                "Source Method": "Lde/ecspride/Button4;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+                "Reasoning": "The method retrieves the TelephonyManager service using 'phone' as the system service name, which is a standard way to access telephony services in Android.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Obtain IMEI from TelephonyManager",
+                "Source Method": "Lde/ecspride/Button4;->getDeviceId()Ljava/lang/String;",
+                "Reasoning": "The method getDeviceId() is called on the retrieved TelephonyManager service, which returns the device's IMEI number.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Store IMEI in static field",
+                "Source Method": "Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The IMEI number is stored in a static field named 'imei' within the same class.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Send SMS with IMEI as content",
+                "Source Method": "Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V",
+                "Reasoning": "The method sends an SMS message which includes the stored IMEI number, considered sensitive information.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V",
+            null
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[Source Method(Lde/ecspride/Button4;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;) --> ... --> Sink Method(Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V)]",
+                "Reasoning": "The IMEI number is retrieved from the TelephonyManager service and stored in a static field during the onCreate method. This tainted data is then used to send an SMS message, which acts as a sink for sensitive information."
+            }
+        ],
+        "Label": "leak"
+    }
+]

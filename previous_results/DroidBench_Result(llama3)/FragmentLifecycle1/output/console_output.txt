@@ -1,0 +1,45 @@
+
+ Processing folder: D:\UBCBAPK_Methods\FragmentLifecycle1
+ Using methods file: D:\UBCBAPK_Methods\FragmentLifecycle1\FragmentLifecycle1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": "Method Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V has potential field-based reader leak to Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V",
+    "Next Methods": [
+        "Lcom/example/MyClass;->someMethod(...)"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\FragmentLifecycle1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\FragmentLifecycle1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\FragmentLifecycle1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "onCreate() method has potential field-based reader leak",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The onCreate() method has a potential field-based reader leak to Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Stored DeviceId in MainActivity field --> Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V",
+                "Reasoning": "The onCreate() method has a potential field-based reader leak to onAttach() method of ExampleFragment. The DeviceId is stored in the MainActivity field and then passed to the onAttach() method."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\FragmentLifecycle1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\FragmentLifecycle1\output\sensitive_only.json
+Total time for folder: 9.03 seconds

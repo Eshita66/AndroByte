@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\Merge1
+Using methods file: D:\UBCBAPK_Methods\Merge1\Merge1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->aliasFlowTest:()V
+Processed summary for Lde/ecspride/MainActivity;->aliasFlowTest:()V: {
+    "Summary": "Sensitive data originated from retrieving device ID through TelephonyManager instance. Device ID stored in register v8. Used in text message sent using SmsManager.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\Merge1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\Merge1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\Merge1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from retrieving device ID through TelephonyManager instance.",
+                "Source Method": "Lde/ecspride/MainActivity;->getDeviceId():()V",
+                "Reasoning": "The method getDeviceId() retrieves the device ID, which is a sensitive value.",
+                "Action": "Stored in register v8"
+            },
+            {
+                "Step": "Used in text message sent using SmsManager.",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "The method aliasFlowTest() uses the device ID to send a text message, which is a sink operation.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->getDeviceId():()V --> Stored in register v8 --> Lde/ecspride/MainActivity;->aliasFlowTest:()V --> Transmitted using SmsManager",
+                "Reasoning": "The device ID is retrieved from the TelephonyManager instance, stored in a register, and then used to send a text message using the SmsManager."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\Merge1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\Merge1\output\sensitive_only.json
+Total summary time: 14.540461301803589 seconds

@@ -1,0 +1,60 @@
+
+ Processing folder: D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2
+ Using methods file: D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2\BroadcastReceiverLifecycle2_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": [
+        "The onCreate method initializes the activity, sets the content view, retrieves the device ID, registers a broadcast receiver, and sends a broadcast with the device ID."
+    ],
+    "Next Methods": [
+        "Landroid/app/Activity;->onCreate(Landroid/os/Bundle;)V",
+        "Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+        "Landroid/content/Context;->getApplicationContext()Landroid/content/Context;",
+        "Landroid/content/IntentFilter;->addAction(Ljava/lang/String;)V",
+        "Landroid/content/Context;->registerReceiver(Landroid/content/BroadcastReceiver; Landroid/content/IntentFilter;)Landroid/content/Intent;",
+        "Landroid/content/Intent;->setAction(Ljava/lang/String;)Landroid/content/Intent;",
+        "Landroid/content/Context;->sendBroadcast(Landroid/content/Intent;)V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Initialization and data retrieval",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The onCreate method retrieves the device ID as a sensitive source.",
+                "Action": "Retrieved"
+            },
+            {
+                "Step": "Data transmission",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is sent via a broadcast, which is a potential sink.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/content/Context;->sendBroadcast:(Landroid/content/Intent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/content/Context;->sendBroadcast:(Landroid/content/Intent;)V ",
+                "Reasoning": "The device ID is retrieved by the onCreate method and directly passed to sendBroadcast without being overwritten, maintaining taint."
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2\output\refined_method_summaries.json
+Saved 0 'leak' subgraphs to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle2\output\sensitive_only.json
+Total time for folder: 61.04 seconds

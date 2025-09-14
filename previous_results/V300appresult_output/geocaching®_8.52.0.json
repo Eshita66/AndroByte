@@ -1,0 +1,383 @@
+[
+  {
+    "Data Types Collected": [
+      "Landroid/location/Location;",
+      "D",
+      "Lcom/google/android/gms/maps/model/LatLng;",
+      "I"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location coordinates from LegacyGeocache object",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/types/LegacyGeocache;->b:()Lcom/google/android/gms/maps/model/LatLng;",
+        "Reasoning": "The method originates user personal data from the 'latitude' and 'longitude' fields of the LegacyGeocache object.",
+        "Action": "Stored in registers v1 and v3"
+      },
+      {
+        "Step": "Get location coordinates through static methods",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/activities/EditWaypointActivity;->s3:(D D)V",
+        "Reasoning": "The method originates user personal data by invoking static methods that return sensitive information (latitude and longitude coordinates).",
+        "Action": "Stored in EditText objects and ToggleButtons"
+      },
+      {
+        "Step": "Convert double to int using instruction",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/util/h;->f:(D)Landroid/util/Pair;",
+        "Reasoning": "The method originates user personal data by using the `double-to-int` instruction to convert a double value to an integer.",
+        "Action": "Passed through registers and variables within the method"
+      },
+      {
+        "Step": "Get location coordinates from View object",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/activities/EditWaypointActivity$a;->onClick:(Landroid/view/View;)V",
+        "Reasoning": "The data is stored in registers (v6) and variables (g, u). It propagates the data to methods like `d3(Lcom/groundspeak/geocaching/intro/activities/EditWaypointActivity; D D)V` through method invocations.",
+        "Action": "Stored in registers and variables"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/groundspeak/geocaching/intro/util/h;->f:(D)Landroid/util/Pair;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/groundspeak/geocaching/intro/types/LegacyGeocache;->b:()Lcom/google/android/gms/maps/model/LatLng; --> Lcom/groundspeak/geocaching/intro/util/h;->f:(D)Landroid/util/Pair; ",
+        "Reasoning": "The data is used to construct an instance of `android.util.Pair` in the method `h.f(D)Landroid/util/Pair;`."
+      },
+      {
+        "dataflow 2": " Lcom/groundspeak/geocaching/intro/activities/EditWaypointActivity$a;->onClick:(Landroid/view/View;)V --> Lcom/groundspeak/geocaching/intro/activities/EditWaypointActivity;->d3:(Lcom/groundspeak/geocaching/intro/activities/EditWaypointActivity; D D)V ",
+        "Reasoning": "The data is propagated to methods like `d3(Lcom/groundspeak/geocaching/intro/activities/EditWaypointActivity; D D)V` through method invocations."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude",
+      "altitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location's latitude, longitude, and altitude",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/location/g;->a:(F Landroid/location/Location;)F",
+        "Reasoning": "The method calls sensitive APIs to get the location's details.",
+        "Action": "Stored in registers v0, v1, and v2"
+      },
+      {
+        "Step": "Pass data through a GeomagneticField object",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/location/g;->a:(F Landroid/location/Location;)F",
+        "Reasoning": "The location's details are passed to another method through a GeomagneticField object.",
+        "Action": "Passed as an argument"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/groundspeak/geocaching/intro/location/g;->a:(F Landroid/location/Location;)F --> ... --> no sink found",
+        "Reasoning": "The data is passed through a GeomagneticField object but no explicit sinks like logging or transmission are identified."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location from API",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/util/h;->a:(F Landroid/location/Location;)F",
+        "Reasoning": "The method originates user personal data by using the sensitive API call to getLatitude(), getLongitude(), and getAltitude() from Location.",
+        "Action": "Stored in registers (v0, v1, v2, v3)"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/groundspeak/geocaching/intro/util/h;->a:(F Landroid/location/Location;)F --> Stored in registers (v0, v1, v2, v3) --> No identified sink points",
+        "Reasoning": "The data is stored in registers before being passed to another method. However, no sink points like logging, network transmission, or storage are identified."
+      }
+    ],
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Accessing location data from Android Location object",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/location/a$b$b;->toString:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by accessing the latitude and longitude.",
+        "Action": "Stored in StringBuilder instance"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": null,
+    "Label": [
+      "no leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location from Location API",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/presenters/LocationSearchPresenter$b;->e:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates sensitive user personal data by calling the Location API to get latitude and longitude.",
+        "Action": "Stored in LatLng object"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": null,
+    "Label": [
+      "not_sensitive "
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location",
+      "Context",
+      "SharedPreferences",
+      "Device locale"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get location data from Location object",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/activities/CompassActivity;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data by calling the getLatitude() and getLongitude() methods on a Location object.",
+        "Action": "Stored in registers v0 and v2"
+      },
+      {
+        "Step": "Get context from Context object",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/i/n;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "The method originates user personal data from the Context object using getApplicationContext().",
+        "Action": "Stored in register v1"
+      },
+      {
+        "Step": "Get SharedPreferences from Context object",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/i/n;->b:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The method originates user personal data from a sensitive API call to getSharedPreferences.",
+        "Action": "Stored in register v2"
+      },
+      {
+        "Step": "Get device locale",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/i/n;->d:()Z",
+        "Reasoning": "This method originates user personal data by accessing the device's locale and context.",
+        "Action": "Stored in registers v0, v1"
+      },
+      {
+        "Step": "Get resource ID from Context object",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/util/h;->i:(Landroid/content/Context; D Z)Ljava/lang/String;",
+        "Reasoning": "This method originates user personal data by calling the `getString` method of the `Context` object with a resource ID.",
+        "Action": "Stored in a string variable"
+      },
+      {
+        "Step": "Get string array from Context object",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/util/h;->c:(Landroid/content/Context; D D)[Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data through the invocation of sensitive API calls to Context.getResources() and getStringArray().",
+        "Action": "Stored in registers v10, v2"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/groundspeak/geocaching/intro/util/h;->f:(D)Landroid/util/Pair;",
+      "Lcom/groundspeak/geocaching/intro/i/n;->b:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+      "Lcom/groundspeak/geocaching/intro/activities/CompassActivity;->onLocationChanged:(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/groundspeak/geocaching/intro/i/n;->d:()Z --> Lcom/groundspeak/geocaching/intro/i/n;->b:(Landroid/content/Context;)Landroid/content/SharedPreferences --> Lcom/groundspeak/geocaching/intro/util/h;->c:(Landroid/content/Context; D D)[Ljava/lang/String;",
+        "Reasoning": "The device locale is accessed and used to get SharedPreferences, which are then used in the method that gets a string array from Context."
+      },
+      {
+        "dataflow 2": "Lcom/groundspeak/geocaching/intro/util/h;->i:(Landroid/content/Context; D Z)Ljava/lang/String --> Lcom/groundspeak/geocaching/intro/activities/CompassActivity;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The resource ID is used to get a string, which is then passed to the method that gets location data from Location object."
+      },
+      {
+        "dataflow 3": "Lcom/groundspeak/geocaching/intro/util/h;->c:(Landroid/content/Context; D D)[Ljava/lang/String --> Lcom/groundspeak/geocaching/intro/i/n;->b:(Landroid/content/Context;)Landroid/content/SharedPreferences",
+        "Reasoning": "The string array is used to get SharedPreferences, which are then passed to the method that gets device locale."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is retrieved from a static field.",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/location/LocationMonitor;->g:()Landroid/location/Location;",
+        "Reasoning": "The method LocationMonitor.g() originates user personal data by retrieving a location object from a static field.",
+        "Action": "Stored in register v0 and passed back to the caller without modification."
+      },
+      {
+        "Step": "User personal data is stored in registers and variables within the method.",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/util/h;->c:(Landroid/content/Context; D D)[Ljava/lang/String;",
+        "Reasoning": "Sensitive user personal data originates from the `getResources()` method call and its subsequent string array retrieval.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "User personal data is propagated through method invocations to other methods, including those that handle location monitoring, geocaching code fetching, and waypoint editing.",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/activities/EditWaypointActivity;->onCreate:(Landroid/os/Bundle;)V",
+        "Reasoning": "The method originates user personal data from the intent's extras. The data is stored in various variables and registers within the method.",
+        "Action": "Propagated through method invocations."
+      },
+      {
+        "Step": "User personal data is propagated to other methods via method invocations, specifically to the `f(D)Landroid/util/Pair;` method.",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/util/h;->c:(Landroid/content/Context; D D)[Ljava/lang/String;",
+        "Reasoning": "The data is then propagated to other methods via method invocations, specifically to the `f(D)Landroid/util/Pair;` method.",
+        "Action": "Propagated through method invocations."
+      },
+      {
+        "Step": "User personal data reaches a sink point through explicit calls to logging or network transmission.",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/util/h;->c:(Landroid/content/Context; D D)[Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point through explicit calls to logging or network transmission.",
+        "Action": "Logged or transmitted."
+      },
+      {
+        "Step": "User personal data is stored in registers and variables within the method, then propagated through method invocations.",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/model/Fetcher;->c:(Ljava/lang/String;)Lrx/d;",
+        "Reasoning": "The method originates user personal data from the string parameter passed to method 'b' of class Fetcher.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "User personal data is stored in registers and variables within the method, then propagated through method invocations.",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/util/h;->f:(D)Landroid/util/Pair;",
+        "Reasoning": "The method originates user personal data from the 'v4' register through a sensitive API call to `double-to-int` and `int-to-double`.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "User personal data is propagated to other methods via method invocations, specifically to `invoke-static v1, Ljava/lang/Math;->abs(I)I` and `invoke-static v4, 5, Ljava/lang/Math;->abs(D)D`.",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/util/h;->f:(D)Landroid/util/Pair;",
+        "Reasoning": "The data is then propagated to other methods via method invocations, specifically to `invoke-static v1, Ljava/lang/Math;->abs(I)I` and `invoke-static v4, 5, Ljava/lang/Math;->abs(D)D`.",
+        "Action": "Propagated through method invocations."
+      },
+      {
+        "Step": "User personal data reaches a sink point through the creation of an `android/util/Pair` instance.",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/util/h;->f:(D)Landroid/util/Pair;",
+        "Reasoning": "The data reaches a sink point through the creation of an `android/util/Pair` instance.",
+        "Action": "Logged or transmitted."
+      },
+      {
+        "Step": "User personal data is stored in registers and variables within the method, then propagated through method invocations.",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/model/Fetcher;->b:(Ljava/lang/String; I)Lrx/d;",
+        "Reasoning": "The method originates user personal data through the invocation of `f` and `e` methods which return sensitive data.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "User personal data is propagated to other methods via method invocations, specifically logging.",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/model/Fetcher;->b:(Ljava/lang/String; I)Lrx/d;",
+        "Reasoning": "The data reaches a sink point, specifically logging.",
+        "Action": "Logged."
+      },
+      {
+        "Step": "User personal data is stored in registers and variables within the method, then propagated through method invocations.",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/model/Fetcher;->f:(Ljava/lang/String;)Lrx/d;",
+        "Reasoning": "The method originates user personal data from the string parameter 'Ljava/lang/String;' and propagates it through registers.",
+        "Action": "Stored in registers and variables within the method."
+      },
+      {
+        "Step": "User personal data is propagated to several methods, including Lcom/groundspeak/geocaching/intro/model/Fetcher$g;-><init>(Lcom/groundspeak/geocaching/intro/model/Fetcher; Ljava/lang/String;)V",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/model/Fetcher;->f:(Ljava/lang/String;)Lrx/d;",
+        "Reasoning": "The data is passed to several methods, including Lcom/groundspeak/geocaching/intro/model/Fetcher$g;-><init>(Lcom/groundspeak/geocaching/intro/model/Fetcher; Ljava/lang/String;)V",
+        "Action": "Propagated through method invocations."
+      },
+      {
+        "Step": "User personal data is stored in registers v1 and v2 before being passed to the superclass constructor.",
+        "Source Method": "Lcom/groundspeak/geocaching/intro/model/Fetcher$g;-><init>:(Lcom/groundspeak/geocaching/intro/model/Fetcher; Ljava/lang/String;)V",
+        "Reasoning": "The method Fetcher$g's constructor originates user personal data through the 'h' and 'g' fields.",
+        "Action": "Stored in registers v1 and v2."
+      },
+      {
+        "Step": "User personal data is stored in register v0, then propagated through register v2.",
+        "Source Method": "Lrx/d;->V:(Lrx/m/g;)Lrx/d;",
+        "Reasoning": "The method originates user personal data through the invocation of sensitive API calls to `Lrx/internal/operators/l;<init>(Lrx/d; Lrx/m/g;)V` and stores it in register v0.",
+        "Action": "Stored in registers."
+      },
+      {
+        "Step": "User personal data is stored in register v0, then propagated through method invocations.",
+        "Source Method": "Lrx/d;->E:(Lrx/m/g;)Lrx/d;",
+        "Reasoning": "The method originates user personal data using the sensitive API call to `Lrx/internal/operators/h;<init>(Lrx/d; Lrx/m/g;)V` and stores it in register v0.",
+        "Action": "Stored in registers."
+      },
+      {
+        "Step": "User personal data is stored in register v1, then propagated through method invocations. No sinks are identified.",
+        "Source Method": "Lrx/d;->s:(Lrx/m/f;)Lrx/d;",
+        "Reasoning": "The current method originates no sensitive user personal data.",
+        "Action": "Propagated through method invocations."
+      },
+      {
+        "Step": "User personal data is stored in register v1, then passed to the constructor of `Lrx/d;`. The data is propagated through registers and variables within the method.",
+        "Source Method": "Lrx/d;->H0:(Lrx/d$a;)Lrx/d;",
+        "Reasoning": "Sensitive user personal data is originated from the method invocation of `Lrx/p/c;->h(Lrx/d$a;)` which returns a sensitive object.",
+        "Action": "Stored in registers."
+      },
+      {
+        "Step": "User personal data is stored in field g of class Lrx/internal/operators/f. The data propagation analysis shows that no other methods are invoked within this method.",
+        "Source Method": "Lrx/internal/operators/f;-><init>:(Lrx/m/f;)V",
+        "Reasoning": "The method originates user personal data by using the sensitive API call in `Lrx/internal/operators/f;<init>:(Lrx/m/f;)V` to store it in register v1.",
+        "Action": "Stored in field g."
+      },
+      {
+        "Step": "User personal data is stored in the 'g' field of the current object and then returned without any sinks.",
+        "Source Method": "Lrx/d;-><init>:(Lrx/d$a;)V",
+        "Reasoning": "The method originates user personal data through the constructor of rx/d$a class.",
+        "Action": "Stored in field g."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/groundspeak/geocaching/intro/util/h;->c:(Landroid/content/Context; D D)[Ljava/lang/String;",
+      "Lcom/groundspeak/geocaching/intro/model/Fetcher;->b:(Ljava/lang/String; I)Lrx/d;",
+      "Lrx/d;->V:(Lrx/m/g;)Lrx/d;",
+      "Lrx/d;->E:(Lrx/m/g;)Lrx/d;",
+      "Lrx/d;->H0:(Lrx/d$a;)Lrx/d;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/groundspeak/geocaching/intro/location/LocationMonitor;->g:()Landroid/location/Location --> Lcom/groundspeak/geocaching/intro/activities/EditWaypointActivity;->onCreate:(Landroid/os/Bundle;)V --> Lcom/groundspeak/geocaching/intro/util/h;->c:(Landroid/content/Context; D D)[Ljava/lang/String;",
+        "Reasoning": "The location is retrieved from a static field and then propagated through method invocations to other methods, including those that handle location monitoring, geocaching code fetching, and waypoint editing."
+      },
+      {
+        "dataflow 2": " Lcom/groundspeak/geocaching/intro/util/h;->c:(Landroid/content/Context; D D)[Ljava/lang/String --> Lcom/groundspeak/geocaching/intro/model/Fetcher;->b:(Ljava/lang/String; I)Lrx/d;",
+        "Reasoning": "The data is propagated to other methods via method invocations, specifically to the `f(D)Landroid/util/Pair;` method."
+      },
+      {
+        "dataflow 3": " Lcom/groundspeak/geocaching/intro/model/Fetcher;->c:(Ljava/lang/String;)Lrx/d --> Lcom/groundspeak/geocaching/intro/model/Fetcher$g;-><init>(Lcom/groundspeak/geocaching/intro/model/Fetcher; Ljava/lang/String)V",
+        "Reasoning": "The data is passed to several methods, including Lcom/groundspeak/geocaching/intro/model/Fetcher$g;-><init>(Lcom/groundspeak/geocaching/intro/model/Fetcher; Ljava/lang/String;)V"
+      },
+      {
+        "dataflow 4": " Lrx/d;->V:(Lrx/m/g;)Lrx/d --> Lrx/internal/operators/f;<init>(Lrx/d; Lrx/m/g)V",
+        "Reasoning": "The data is stored in register v0, then propagated through register v2."
+      },
+      {
+        "dataflow 5": " Lrx/d;->E:(Lrx/m/g;)Lrx/d --> Lrx/internal/operators/h;<init>(Lrx/d; Lrx/m/g)V",
+        "Reasoning": "The data is stored in register v0, then propagated through method invocations."
+      },
+      {
+        "dataflow 6": " Lrx/d;->H0:(Lrx/d$a;)Lrx/d --> Lrx/p/c;->h(Lrx/d$a)",
+        "Reasoning": "The data is stored in register v1, then passed to the constructor of `Lrx/d;`."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

@@ -1,0 +1,191 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate MAC address from WLAN interface, Ethernet interface, or WiFi connection",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; originates user personal data from the MAC address of the device's WLAN interface, Ethernet interface, or WiFi connection.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Read MAC address from system file",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by reading the MAC address from a system file.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "Propagate to loadAddress(Ljava/lang/String;)Ljava/lang/String; via method invocation",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The data is propagated through method invocations to loadAddress(Ljava/lang/String;)Ljava/lang/String;. If no valid MAC address is found, it returns a default value.",
+        "Action": "Transmitted via network"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> network ",
+        "Reasoning": "The MAC address is originated from the device's WLAN interface, Ethernet interface, or WiFi connection and then propagated to loadAddress(Ljava/lang/String;)Ljava/lang/String;. Finally, it reaches a sink point, which is a network transmission."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "org/json/JSONObject"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract latitude, longitude, accuracy, and timestamp from Location object.",
+        "Source Method": "Le/d/a/a/c0;->b:(Landroid/location/Location;)Lorg/json/JSONObject;",
+        "Reasoning": "The method extracts user personal data from the input Location object.",
+        "Action": "Stored in JSONObject"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Le/d/a/a/c0;->b:(Landroid/location/Location;)Lorg/json/JSONObject; --> Stored in JSONObject",
+        "Reasoning": "The extracted data is stored in a JSONObject, which is then returned by the method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data using API calls.",
+        "Source Method": "Le/d/a/a/p;->y:()Le/d/a/a/c0;",
+        "Reasoning": "[Sensitive API calls used to originate user personal data.]",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Originate sensitive user personal data using the `Landroid/app/ActivityManager$TaskDescription;->setLabel(Ljava/lang/CharSequence;)V` API call.",
+        "Source Method": "Le/d/a/a/x;->o:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V",
+        "Reasoning": "[The current method originates sensitive user personal data using the `Landroid/app/ActivityManager$TaskDescription;->setLabel(Ljava/lang/CharSequence;)V` API call.]",
+        "Action": "Stored in registers and variables"
+      }
+    ],
+    "All Sinks": [
+      "Le/d/a/a/p;->y:()Le/d/a/a/c0;",
+      "Le/d/a/a/x;->o:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Le/d/a/a/p;->y:()Le/d/a/a/c0; --> (logged, stored) --> Le/d/a/a/p;->y:()Le/d/a/a/c0;]",
+        "Reasoning": "[Data is propagated through method invocations and sinks identified: logging, network transmission, and storage.]"
+      },
+      {
+        "dataflow 2": "[Le/d/a/a/x;->o:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V --> (stored) --> Le/d/a/a/x;->o:(Ljava/lang/String; Ljava/lang/String; Ljava/lang/Throwable;)V]",
+        "Reasoning": "[Data is stored in registers and variables within the method, and it propagates to other methods via method invocations.]"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Call getLastKnownLocation() function from LocationManager",
+        "Source Method": "Le/d/a/a/x;->a:(Landroid/location/LocationManager;)Landroid/location/Location;",
+        "Reasoning": "The method originates user personal data by calling the getLastKnownLocation() function from LocationManager, which returns a Location object.",
+        "Action": "Stored in register v0 and then passed to another method through return-object instruction"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Le/d/a/a/x;->a:(Landroid/location/LocationManager;)Landroid/location/Location; --> ... --> [No Sink Found]",
+        "Reasoning": "The data is stored in register v0 and then passed to another method through return-object instruction, but there are no sink points like logging or transmission."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Android location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "LocationResult object invocation",
+        "Source Method": "Lcom/boranuonline/datingapp/c/a$c;->b:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The method originates user personal data by invoking the `s()` method on a LocationResult object, which returns an Android location.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Android location to LatLng conversion",
+        "Source Method": "Lcom/boranuonline/datingapp/c/a$c;->b:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The data is then stored in a variable and used to create a LatLng object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data propagation via method invocation",
+        "Source Method": "Lcom/boranuonline/datingapp/c/a$c;->b:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The data is propagated to another method via method invocation.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/boranuonline/datingapp/c/a$c;->x(Lcom/google/android/gms/location/b;)Le/c/a/d/h/i;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/boranuonline/datingapp/c/a$c;->b:(Lcom/google/android/gms/location/LocationResult;)V --> ... --> Lcom/boranuonline/datingapp/c/a$c;->x(Lcom/google/android/gms/location/b;)Le/c/a/d/h/i;",
+        "Reasoning": "The Android location is originated from the LocationResult object, converted to LatLng and then propagated via method invocation until it's transmitted over the network."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get latitude and longitude from Location object",
+        "Source Method": "Lcom/boranuonline/datingapp/c/a$d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The method originates user personal data by getting the latitude and longitude from a Location object.",
+        "Action": "Stored in variables v2, v3, and v4"
+      },
+      {
+        "Step": "Pass data to interface c of class a$a",
+        "Source Method": "Lcom/boranuonline/datingapp/c/a$d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The data is then passed to an interface c of class a$a.",
+        "Action": "Transmitted"
+      },
+      {
+        "Step": "Propagate data to another method a of class a$a",
+        "Source Method": "Lcom/boranuonline/datingapp/c/a$d;->a:(Landroid/location/Location;)V",
+        "Reasoning": "The data is also propagated to another method a of class a$a.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/boranuonline/datingapp/c/a$d;->a:(Landroid/location/Location;)V --> Lcom/boranuonline/datingapp/c/a$a;->c(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V --> null",
+        "Reasoning": "The method originates user personal data by getting the latitude and longitude from a Location object, then passes it to interface c of class a$a, which propagates it to another method a of class a$a."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

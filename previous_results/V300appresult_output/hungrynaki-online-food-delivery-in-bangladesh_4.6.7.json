@@ -1,0 +1,292 @@
+[
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get last known location from LocationResult",
+        "Source Method": "Lcom/aisavent/hungrynaki/cart/CartFragment$onViewCreated$2;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The getLastLocation() method of LocationResult returns the last known location.",
+        "Action": "Extracted"
+      },
+      {
+        "Step": "Extract latitude and longitude from location",
+        "Source Method": "Lcom/aisavent/hungrynaki/cart/CartFragment$onViewCreated$2;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The latitude and longitude are extracted from the location.",
+        "Action": "Extracted"
+      },
+      {
+        "Step": "Store extracted string in StringBuilder",
+        "Source Method": "Lcom/aisavent/hungrynaki/cart/CartFragment$onViewCreated$2;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The resulting string is stored in a StringBuilder.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Log extracted string using Logger.i()",
+        "Source Method": "Lcom/aisavent/hungrynaki/cart/CartFragment$onViewCreated$2;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The resulting string is logged using Logger.i().",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/aisavent/hungrynaki/cart/CartFragment$onViewCreated$2;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/aisavent/hungrynaki/cart/CartFragment$onViewCreated$2;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V --> Extracted latitude and longitude from location --> Stored extracted string in StringBuilder --> Logged extracted string using Logger.i()",
+        "Reasoning": "The data flow starts with getting the last known location, then extracting the latitude and longitude, storing them in a StringBuilder, and finally logging them."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "location",
+      "device ID",
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location task result stored in registers",
+        "Source Method": "Lcom/aisavent/hungrynaki/customer/address/edit/EditAddressFragment$getCurrentLocation$1;->onComplete:(Lcom/google/android/gms/tasks/Task;)V",
+        "Reasoning": "The location data is retrieved from the task result and stored in registers.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Printer object retrieved through 'sget-object' instruction",
+        "Source Method": "Lcom/orhanobut/logger/Logger;->i:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The Printer object is retrieved from the class field using the 'sget-object' instruction.",
+        "Action": "Passed to method invocation"
+      },
+      {
+        "Step": "UserLatLng field set in EditAddressViewModel",
+        "Source Method": "Lcom/aisavent/hungrynaki/customer/address/edit/EditAddressViewModel;->setUserLatLng:(Lcom/google/android/gms/maps/model/LatLng;)V",
+        "Reasoning": "The userLatLng data is stored in a register and then assigned to the field.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/orhanobut/logger/Logger;->i:(Ljava/lang/String; [Ljava/lang/Object;)V",
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/aisavent/hungrynaki/customer/address/edit/EditAddressFragment$getCurrentLocation$1;->onComplete:(Lcom/google/android/gms/tasks/Task;)V --> ... --> Lcom/orhanobut/logger/Logger;->i:(Ljava/lang/String; [Ljava/lang/Object;)V",
+        "Reasoning": "The location data is retrieved from the task result, stored in registers, and then passed to the 'i' method of the Printer class through method invocation."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "latitude",
+      "longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract location from LocationResult object",
+        "Source Method": "Lcom/aisavent/hungrynaki/customer/address/edit/EditAddressFragment$onViewCreated$10;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The method originates user personal data from the last location in a LocationResult object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Append latitude and longitude to string builder",
+        "Source Method": "Lcom/aisavent/hungrynaki/customer/address/edit/EditAddressFragment$onViewCreated$10;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The latitude and longitude are extracted and appended to a string builder.",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Log the resulting string using Logger class",
+        "Source Method": "Lcom/aisavent/hungrynaki/customer/address/edit/EditAddressFragment$onViewCreated$10;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "The resulting string is then logged using the Logger class.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/aisavent/hungrynaki/customer/address/edit/EditAddressFragment$onViewCreated$10;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/aisavent/hungrynaki/customer/address/edit/EditAddressFragment$onViewCreated$10;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V --> Extract location from LocationResult object --> Append latitude and longitude to string builder --> Log the resulting string using Logger class",
+        "Reasoning": "The data is extracted from the LocationResult object, appended to a string builder, and then logged."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "java/lang/String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location and search text are collected by newPlacesSearchRequest method.",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data from the location and search text.",
+        "Action": "Stored in registers and variables within the method"
+      },
+      {
+        "Step": "String parameter is checked for null or empty by isNullOrEmpty method.",
+        "Source Method": "Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z",
+        "Reasoning": "The data is stored in register v0 and propagated through the method to determine if the string is null or empty.",
+        "Action": "Propagated through the method"
+      },
+      {
+        "Step": "Sensitive API calls are used by FacebookException constructor.",
+        "Source Method": "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+        "Reasoning": "The data is stored in registers v0, v1, and v2. The data propagation analysis reveals that the data is passed to other methods via method invocations such as invoke-static Lcom/facebook/FacebookSdk;->isInitialized()Z and Lcom/facebook/internal/FeatureManager;->checkFeature(Lcom/facebook/internal/FeatureManager$Feature; Lcom/facebook/internal/FeatureManager$Callback;)V.",
+        "Action": "Passed to other methods via method invocations"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+      "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> Lcom/facebook/FacebookException;-><init>:(Ljava/lang/String;)V",
+        "Reasoning": "The user location and search text are collected by newPlacesSearchRequest method, then passed to FacebookException constructor for logging or storage."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get current location from Task object",
+        "Source Method": "Lcom/aisavent/hungrynaki/selectlocation/MapsActivity$getCurrentLocation$1;->onComplete:(Lcom/google/android/gms/tasks/Task;)V",
+        "Reasoning": "The method originates user personal data by calling the `getResult()` method on a `Task` object.",
+        "Action": "Stored in register"
+      },
+      {
+        "Step": "Pass location to other methods via method invocations",
+        "Source Method": "Lcom/aisavent/hungrynaki/selectlocation/MapsActivity$getCurrentLocation$1;->onComplete:(Lcom/google/android/gms/tasks/Task;)V",
+        "Reasoning": "The data is then passed to other methods through method invocations.",
+        "Action": "Passed via method invocation"
+      },
+      {
+        "Step": "Log location using Logger.i() method",
+        "Source Method": "Lcom/aisavent/hungrynaki/selectlocation/MapsActivity$getCurrentLocation$1;->onComplete:(Lcom/google/android/gms/tasks/Task;)V",
+        "Reasoning": "The data reaches a sink point, specifically logging, through the use of the `Logger.i()` method.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/aisavent/hungrynaki/selectlocation/MapsActivity$getCurrentLocation$1;->onComplete:(Lcom/google/android/gms/tasks/Task;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/aisavent/hungrynaki/selectlocation/MapsActivity$getCurrentLocation$1;->onComplete:(Lcom/google/android/gms/tasks/Task;)V --> ... --> Lcom/aisavent/hungrynaki/selectlocation/MapsActivity$getCurrentLocation$1;->onComplete:(Lcom/google/android/gms/tasks/Task;)V",
+        "Reasoning": "The current location is obtained from the Task object, stored in a register, passed to other methods via method invocations, and finally logged using the Logger.i() method."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "getLastLocation() API called",
+        "Source Method": "Lcom/aisavent/hungrynaki/selectlocation/MapsActivity$onCreate$8;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "To retrieve the last known location",
+        "Action": "Stored in StringBuilder object"
+      },
+      {
+        "Step": "Latitude and longitude values appended to StringBuilder",
+        "Source Method": "Lcom/aisavent/hungrynaki/selectlocation/MapsActivity$onCreate$8;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "To create a string representation of the location",
+        "Action": "Appended to StringBuilder object"
+      },
+      {
+        "Step": "Data logged using Logger.i() function",
+        "Source Method": "Lcom/aisavent/hungrynaki/selectlocation/MapsActivity$onCreate$8;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V",
+        "Reasoning": "To log the location data for debugging purposes",
+        "Action": "Logged using Logger.i() function"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/aisavent/hungrynaki/selectlocation/MapsActivity$onCreate$8;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/aisavent/hungrynaki/selectlocation/MapsActivity$onCreate$8;->onLocationResult:(Lcom/google/android/gms/location/LocationResult;)V --> getLastLocation() API called --> Stored in StringBuilder object --> Latitude and longitude values appended to StringBuilder --> Data logged using Logger.i() function",
+        "Reasoning": "The location data is retrieved from the getLastLocation() API, stored in a StringBuilder object, and then logged using the Logger.i() function."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "android.location.Location",
+      "com.aisavent.data.location.model.UserLocation",
+      "double"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get current location",
+        "Source Method": "Lcom/aisavent/hungrynaki/splash/SplashActivity$getCurrentLocation$1;->onComplete:(Lcom/google/android/gms/tasks/Task;)V",
+        "Reasoning": "Originates user personal data by calling the `getResult()` method of a Task object, which returns an android.location.Location object.",
+        "Action": "Stored in SplashViewModel"
+      },
+      {
+        "Step": "Get location from repository",
+        "Source Method": "Lcom/aisavent/hungrynaki/splash/SplashViewModel;->updateUserLocation:(Lcom/aisavent/data/location/model/UserLocation;)V",
+        "Reasoning": "Originates user personal data from the `getUserLocation()` call to `locationRepository`.",
+        "Action": "Stored in locationRepository"
+      },
+      {
+        "Step": "Get longitude and latitude",
+        "Source Method": "Lcom/aisavent/data/location/model/UserLocation;->getLongitude:()D",
+        "Reasoning": "Originates user personal data by accessing the longitude field of UserLocation object.",
+        "Action": "Returned as a double-precision floating-point number"
+      },
+      {
+        "Step": "Get latitude and longitude",
+        "Source Method": "Lcom/aisavent/data/location/model/UserLocation;->getLatitude:()D",
+        "Reasoning": "Originates user personal data by calling a sensitive API to get the latitude of a UserLocation object.",
+        "Action": "Returned as a double-precision floating-point number"
+      },
+      {
+        "Step": "Get location flag and fetch flag",
+        "Source Method": "Lcom/aisavent/hungrynaki/splash/SplashViewModel;->getLocationFlag:()Z",
+        "Reasoning": "Originates user personal data by accessing the 'locationFlag' field of SplashViewModel.",
+        "Action": "Returned"
+      },
+      {
+        "Step": "Get fetch flag",
+        "Source Method": "Lcom/aisavent/hungrynaki/splash/SplashViewModel;->getFetchFlag:()Z",
+        "Reasoning": "Originates user personal data by accessing the fetchFlag field in SplashViewModel.",
+        "Action": "Returned"
+      },
+      {
+        "Step": "Invoke locationComplete method",
+        "Source Method": "Lcom/aisavent/hungrynaki/splash/SplashActivity;->locationComplete:()V",
+        "Reasoning": "Originates user personal data by invoking the getViewModel() method.",
+        "Action": "Stored in SplashViewModel"
+      },
+      {
+        "Step": "Invoke gotoMainActivity method",
+        "Source Method": "Lcom/aisavent/hungrynaki/splash/SplashActivity;->gotoMainActivity:()V",
+        "Reasoning": "Originates user personal data through the getViewModel() API call to obtain a SplashViewModel instance.",
+        "Action": "Stored in ViewModel"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "[Lcom/aisavent/hungrynaki/splash/SplashActivity$getCurrentLocation$1;->onComplete:(Lcom/google/android/gms/tasks/Task;)V --> Lcom/aisavent/hungrynaki/splash/SplashViewModel;->updateUserLocation:(Lcom/aisavent/data/location/model/UserLocation;)V --> Lcom/aisavent/hungrynaki/splash/SplashActivity;->gotoMainActivity:()V]",
+        "Reasoning": "The data flow starts from the `onComplete` method, where a Task object is used to get the current location. The location is then updated in the SplashViewModel using the `updateUserLocation` method. Finally, the `gotoMainActivity` method is called, which uses the location flag and fetch flag to determine the flow of control."
+      }
+    ],
+    "Label": "no leak"
+  }
+]

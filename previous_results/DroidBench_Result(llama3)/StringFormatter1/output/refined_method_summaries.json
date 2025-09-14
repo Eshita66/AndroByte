@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Sensitive data originated from device ID API call",
+                "Source Method": "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+                "Reasoning": "Data is tainted from a sensitive source",
+                "Action": "Logged via Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String; --> Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;) ",
+                "Reasoning": "Sensitive data is passed from getDeviceId to Log.i"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

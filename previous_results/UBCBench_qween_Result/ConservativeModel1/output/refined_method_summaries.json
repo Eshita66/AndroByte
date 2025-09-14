@@ -1,0 +1,28 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval and propagation",
+                "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the device ID via TelephonyManager.getDeviceId(), stores it in register v1, and passes it to Toast.makeText and Log.v sinks without overwriting.",
+                "Action": "Stored and passed to sinks"
+            }
+        ],
+        "All Sinks": [
+            "android.widget.Toast;->makeText:(Landroid/content/Context;Ljava/lang/CharSequence;)Landroid/widget/Toast;",
+            "android.util.Log;->v:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> android.widget.Toast;->makeText:(Landroid/content/Context;Ljava/lang/CharSequence;)Landroid/widget/Toast; and android.util.Log;->v:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The device ID (sensitive source) is directly passed to both Toast.makeText (UI display) and Log.v (logging) sinks without being overwritten by non-sensitive values."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]

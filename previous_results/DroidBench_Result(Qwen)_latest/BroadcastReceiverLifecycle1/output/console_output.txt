@@ -1,0 +1,44 @@
+
+Processing folder: D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1
+Using methods file: D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1\BroadcastReceiverLifecycle1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V']
+[SUMMARY] Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V => The method retrieves the device ID (IMEI/MEID) via TelephonyManager.getDeviceId() but does not use it. It attempts to send an SMS to a fixed number (+49 1234) with incomplete parameters, but the message content is not set. No sensitive data is definitively passed to a real sink.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID (IMEI/MEID)"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve device ID",
+            "Source Method": "Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+            "Reasoning": "The method calls TelephonyManager.getDeviceId() to obtain the device ID, which is a personal data type.",
+            "Action": "Retrieved but not used"
+        },
+        {
+            "Step": "Attempt to send SMS",
+            "Source Method": "Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V",
+            "Reasoning": "The method attempts to send an SMS to a fixed number but fails to set the message content, resulting in incomplete parameters.",
+            "Action": "Incomplete transmission"
+        }
+    ],
+    "All Sinks": [
+        "null"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)V --> TelephonyManager.getDeviceId() (retrieved device ID) --> SMS send attempt (incomplete parameters)",
+            "Reasoning": "The device ID is retrieved but not used, and the SMS send attempt lacks message content, so no sensitive data reaches a real sink."
+        }
+    ],
+    "Label": "no leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1\output\visited_graph
+Saved 0 'leak' subgraphs to: D:\UBCBAPK_Methods\BroadcastReceiverLifecycle1\output\sensitive_only.json
+Total time for folder: 33.65 seconds

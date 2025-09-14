@@ -1,0 +1,27 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Static field 'im' (DeviceId) is accessed before initialization in StaticInitClass1's <clinit>",
+                "Source Method": "Lde/ecspride/StaticInitClass1;-><clinit>()V",
+                "Reasoning": "The static field 'im' is a sensitive source (DeviceId) that is read before initialization, leading to potential exposure.",
+                "Action": "Exposed"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/StaticInitClass1;-><clinit>()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/StaticInitClass1;-><clinit>()V --> Lde/ecspride/StaticInitClass1;-><clinit>()V",
+                "Reasoning": "The static field 'im' (DeviceId) is accessed in the static initializer of StaticInitClass1 before it is initialized, resulting in data exposure."
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

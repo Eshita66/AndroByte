@@ -1,0 +1,375 @@
+[
+  {
+    "Data Types Collected": [
+      "Location",
+      "Session ID",
+      "User Agent"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location is collected",
+        "Source Method": "LocationCoordinator.getLastLocation()",
+        "Reasoning": "getLastLocation() method returns user location data",
+        "Action": "Stored in cache"
+      },
+      {
+        "Step": "Session ID is retrieved",
+        "Source Method": "ServiceSessionManager.getSessionId()",
+        "Reasoning": "getSessionId() method returns session ID",
+        "Action": "Returned as part of request headers"
+      },
+      {
+        "Step": "User agent is retrieved",
+        "Source Method": "HttpRequestBuilder.getDefaultUserAgent()",
+        "Reasoning": "getDefaultUserAgent() method returns user agent",
+        "Action": "Sent with request"
+      }
+    ],
+    "All Sinks": [
+      "HttpRequestConfig.sendHttpRequest()"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "LocationCoordinator.getLastLocation() --> LocationCache.getLastLocation() --> HttpRequestConfig.sendHttpRequest()",
+        "Reasoning": "User location is collected and sent with request headers"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location Data",
+      "Configuration Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is retrieved",
+        "Source Method": "Lcom/amazon/avod/http/PlaybackHttpRequestBuilder;->appendAtvHeaders:()V",
+        "Reasoning": "Location data is used to set HTTP headers",
+        "Action": "Stored"
+      },
+      {
+        "Step": "HTTP headers are set",
+        "Source Method": "Lcom/amazon/avod/http/PlaybackHttpRequestBuilder;->appendAtvHeaders:()V",
+        "Reasoning": "HTTP headers are set based on location data",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/avod/http/PlaybackHttpRequestBuilder;->appendAtvHeaders:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/amazon/avod/http/PlaybackHttpRequestBuilder;->appendAtvHeaders:()V --> Lcom/amazon/avod/http/PlaybackHttpRequestBuilder;->appendAtvHeaders:()V",
+        "Reasoning": "Location data is retrieved and then used to set HTTP headers"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location retrieved from Android Location API",
+        "Source Method": "Lcom/amazon/avod/location/LocationRetrievalCallback;->onLocationResult:(Landroid/location/Location;)V",
+        "Reasoning": "Method summary specifies data retrieval from Location API",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "Passed to handleLocationRetrieval$48e8163d() method",
+        "Source Method": "Lcom/amazon/avod/location/LocationRetrievalCallback;->onLocationResult:(Landroid/location/Location;)V",
+        "Reasoning": "Method call within onLocationResult() method",
+        "Action": "Passed as argument"
+      },
+      {
+        "Step": "Sent to QA logging system",
+        "Source Method": "Lcom/amazon/avod/location/LocationRetrievalCallback;->handleLocationRetrieval$48e8163d(Landroid/location/Location;)V",
+        "Reasoning": "Method summary specifies data logging",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/avod/location/LocationRetrievalCallback;->handleLocationRetrieval$48e8163d(Landroid/location/Location;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "LocationRetrievalCallback::onLocationResult() --> LocationRetrievalCallback::handleLocationRetrieval() --> QA Logging System",
+        "Reasoning": "Overall data flow summary"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve location information from device",
+        "Source Method": "Lcom/amazon/avod/debugsettings/controller/LocationCardController;->refreshCoordinatorInfo:()V",
+        "Reasoning": "Method description mentions retrieving location",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/avod/debugsettings/controller/LocationCardController;->refreshCoordinatorInfo:()V --> Stored",
+        "Reasoning": "Location is stored in memory"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "SSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Checking SSID",
+        "Source Method": "Lcom/amazon/avod/http/ServiceClient;->isConnectedToIlawNetwork:(Landroid/net/wifi/WifiManager;)Z",
+        "Reasoning": "The method compares the SSID of the connected network with the string \"ilaw\".",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/amazon/avod/http/ServiceClient;->isConnectedToIlawNetwork:(Landroid/net/wifi/WifiManager;)Z --> null",
+        "Reasoning": "The method does not have any sink points."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Network Name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extracting network name",
+        "Source Method": "Lcom/amazon/avod/media/framework/network/MultiNetworkHistoryManager;->getCurrentNetworkName:()Ljava/lang/String;",
+        "Reasoning": "Method signature matches the provided summary.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/avod/media/framework/network/MultiNetworkHistoryManager;->getCurrentNetworkName:()Ljava/lang/String; --> Stored",
+        "Reasoning": "Data is stored in the `Overall Data Flow` section."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Collecting MAC address from WifiManager",
+        "Source Method": "Lcom/amazon/device/ads/DeviceInfo;->setMacAddressIfNotFetched:()V",
+        "Reasoning": "Method signature and summary",
+        "Action": "Storing in sha1_mac field"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/DeviceInfo;->setMacAddressIfNotFetched:()V --> sha1_mac",
+        "Reasoning": "Data is stored in the sha1_mac field"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi MAC Address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WiFi MAC address",
+        "Source Method": "Lcom/amazon/device/ads/identity/DeviceInfo;->getMacSha1:()Ljava/lang/String;",
+        "Reasoning": "Method `getMacSha1()` explicitly retrieves the user's WiFi MAC address.",
+        "Action": "Stored in `sha1_mac` field"
+      },
+      {
+        "Step": "Return WiFi MAC address",
+        "Source Method": "Lcom/amazon/device/ads/identity/DeviceInfo;->getMacSha1:()Ljava/lang/String;",
+        "Reasoning": "Method `getMacSha1()` explicitly returns the user's WiFi MAC address.",
+        "Action": "Returned as result"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/identity/DeviceInfo;->getMacSha1:()Ljava/lang/String; --> sha1_mac",
+        "Reasoning": "WiFi MAC address is stored in the `sha1_mac` field."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve device ID",
+        "Source Method": "Lcom/amazon/identity/auth/device/ef;->getDeviceId:()Ljava/lang/String;",
+        "Reasoning": "Method documentation specifies retrieving device ID",
+        "Action": "Stored in `v0` register"
+      },
+      {
+        "Step": "Return device ID",
+        "Source Method": "Lcom/amazon/identity/auth/device/ef;->getDeviceId:()Ljava/lang/String;",
+        "Reasoning": "Return statement",
+        "Action": "Returned as result"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/amazon/identity/auth/device/ef;->getDeviceId:()Ljava/lang/String; --> Return",
+        "Reasoning": "Data is retrieved and returned as the result of the method"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve phone number",
+        "Source Method": "Lcom/amazon/identity/auth/device/ef;->getLine1Number:()Ljava/lang/String;",
+        "Reasoning": "Method `getLine1Number()` retrieves the user's phone number.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/auth/device/ef;->getLine1Number:()Ljava/lang/String; --> Stored",
+        "Reasoning": "Phone number is retrieved and stored."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC Address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Extract MAC address",
+        "Source Method": "Lcom/amazon/identity/auth/device/el;->eh:()Ljava/lang/String;",
+        "Reasoning": "Method description",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/auth/device/el;->eh:()Ljava/lang/String; --> Stored",
+        "Reasoning": "MAC address is extracted and stored"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve Phone Number",
+        "Source Method": "Lcom/amazon/identity/frc/FrcCookiesManager/c;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method `c()` in `FrcCookiesManager` uses `TelephonyManager` API to get phone number.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/amazon/identity/frc/FrcCookiesManager/c;->f:(Landroid/content/Context;)Ljava/lang/String; --> null",
+        "Reasoning": "Phone number is retrieved but not further processed or sent to any sink points."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "BSSID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve BSSID",
+        "Source Method": "Lcom/amazon/communication/wifi/WifiManagerWrapperImpl;->getBssid:()Ljava/lang/String;",
+        "Reasoning": "The method `getBssid()` retrieves the BSSID from the WiFi connection information.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/communication/wifi/WifiManagerWrapperImpl;->getBssid:()Ljava/lang/String; --> Stored",
+        "Reasoning": "The BSSID is stored in memory."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Device ID is retrieved from content resolver.",
+        "Source Method": "Lcom/visualon/OSMPUtils/voOSUniqID;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "getContentResolver() method is used to retrieve device ID.",
+        "Action": "Stored in uuid field"
+      },
+      {
+        "Step": "UUID is stored in shared preferences.",
+        "Source Method": "Lcom/visualon/OSMPUtils/voOSUniqID;-><init>:(Landroid/content/Context;)V",
+        "Reasoning": "commit() method is used to store uuid in shared preferences.",
+        "Action": "Stored in shared preferences"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/visualon/OSMPUtils/voOSUniqID;->commit:(Landroid/content/SharedPreferences;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/visualon/OSMPUtils/voOSUniqID;-><init>:(Landroid/content/Context;)V --> Lcom/visualon/OSMPUtils/voOSUniqID;->commit:(Landroid/content/SharedPreferences;)V",
+        "Reasoning": "Device ID is retrieved in constructor and stored in shared preferences in commit method."
+      }
+    ],
+    "Label": "leak"
+  }
+]

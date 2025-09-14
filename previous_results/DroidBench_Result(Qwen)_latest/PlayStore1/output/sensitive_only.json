@@ -1,0 +1,44 @@
+[
+    {
+        "Data Types Collected": [
+            "User personal data (device ID)"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Data originates from TelephonyManager.getDeviceId()",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Device ID is retrieved via TelephonyManager.getDeviceId() and stored in register v3",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Data transmitted to SmsManager.sendTextMessage",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Register v3 (containing device ID) is passed to SmsManager.sendTextMessage",
+                "Action": "Transmitted"
+            },
+            {
+                "Step": "Data logged via android.util.Log.v",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Register v3 (containing device ID) is passed to android.util.Log.v",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V",
+            "Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V ",
+                "Reasoning": "Device ID from TelephonyManager.getDeviceId() is passed to SmsManager.sendTextMessage without overwriting"
+            },
+            {
+                "dataflow 2": " Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)I ",
+                "Reasoning": "Device ID from TelephonyManager.getDeviceId() is passed to android.util.Log.v without overwriting"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

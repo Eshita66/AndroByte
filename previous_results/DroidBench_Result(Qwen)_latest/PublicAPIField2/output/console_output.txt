@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\PublicAPIField2
+Using methods file: D:\UBCBAPK_Methods\PublicAPIField2\PublicAPIField2_bytecode_instructions.json
+Sensitive method found: Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves the device ID via TelephonyManager.getDeviceId() and logs it using android.util.Log.i. The device ID is considered personal data and is directly sent to a logging sink.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\PublicAPIField2\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\PublicAPIField2\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\PublicAPIField2\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval and logging",
+                "Source Method": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method directly accesses TelephonyManager.getDeviceId() which is a sensitive source, then passes the value to android.util.Log.i without overwriting or modifying it.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)V ",
+                "Reasoning": "The device ID is retrieved from TelephonyManager.getDeviceId() and directly passed to android.util.Log.i without being overwritten or sanitized, maintaining its tainted state."
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\PublicAPIField2\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\PublicAPIField2\output\sensitive_only.json
+Total summary time: 1461.5755343437195 seconds

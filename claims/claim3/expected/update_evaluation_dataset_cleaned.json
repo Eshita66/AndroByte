@@ -1,0 +1,3233 @@
+{
+  "ActivityLifecycle1": {
+    "apk_name": "ActivityLifecycle1",
+    "ground_truth_summary": "The return value of source method is stored to a static variable in one callback method and sent to a sink in a different callback method. Source is getDeviceId() and sink is HttpURLConnection conn = (HttpURLConnection) url.openConnection() and sink method is connect() Data flow: onCreate: source -> imei -> URL; onResume: URL -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "DeviceId obtained from TelephonyManager.",
+          "Source Method": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method calls `TelephonyManager` to get the device ID.",
+          "Action": "Stored"
+        },
+        {
+          "Step": "DeviceId concatenated and used to update URL.",
+          "Source Method": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method concatenates the device ID with other values and updates the URL field.",
+          "Action": "Transmitted"
+        },
+        {
+          "Step": "URL with DeviceId used to establish HTTP connection.",
+          "Source Method": "Lde/ecspride/ActivityLifecycle1;->connect:()V",
+          "Reasoning": "The `connect` method uses the URL (containing the device ID) to establish an HTTP connection.",
+          "Action": "Transmitted"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/ActivityLifecycle1;->connect:()V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/ActivityLifecycle1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/ActivityLifecycle1;->connect:()V",
+          "Reasoning": "The `onCreate` method obtains the `DeviceId` from `TelephonyManager` and passes it to the `connect` method, which uses it to establish an HTTP connection."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "ActivityLifecycle2": {
+    "apk_name": "ActivityLifecycle2",
+    "ground_truth_summary": "The return value of source method is stored to a static variable in one callback method and sent to a sink in a different callback method. Source method is getDeviceId() and sink is  sms.sendTextMessage(\"+49 1234\", null, imei, null, null);  from onResume(). Data flow: onCreate: source -> imei; onResume: imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID retrieved",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `MainActivity`'s `onCreate` method retrieves the device ID using TelephonyManager.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> MainActivity.imei = DeviceId",
+          "Reasoning": "The `MainActivity`'s `onCreate` method retrieves the device ID and stores it in the `imei` field of `MainActivity`.  The DeviceId is not overwritten, and the `imei` field is a sink."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "ActivityLifecycle3": {
+    "apk_name": "ActivityLifecycle3",
+    "ground_truth_summary": "The return value of source method is stored to a static variable in one callback method and sent to a sink in a different callback method. Source is  getSubscriberId() and sink is  sms.sendTextMessage(\"+49 1234\", null, s, null, null) from the method  onRestoreInstanceState(Bundle outState) Data flow: onSaveInstanceState: source -> s; onRestoreInstanceState: s -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "TelephonyManager",
+        "SmsManager",
+        "Bundle"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method retrieves the subscriber ID from the TelephonyManager and stores it in the static field 's'.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V",
+          "Reasoning": "The DeviceId is initially retrieved and stored in the static field 's' in onSaveInstanceState. This value is then used as an argument to onRestoreInstanceState."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "ActivityLifecycle4": {
+    "apk_name": "ActivityLifecycle4",
+    "ground_truth_summary": "The return value of source method is stored to a static variable in one callback method and sent to a sink in a different callback method. Source is getDeviceId() and sink is sms.sendTextMessage(\"+49 1234\", null, imei, null, null) and sink method is onPause()  Data flow: onResume: source -> imei; onPause: imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "imei",
+        "+49 1234"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "getDeviceId() called",
+          "Source Method": "Lde/ecspride/MainActivity;->onResume:()V",
+          "Reasoning": "The method calls getDeviceId() to obtain the Device ID.",
+          "Action": "Stored"
+        },
+        {
+          "Step": "Device ID stored in imei field",
+          "Source Method": "Lde/ecspride/MainActivity;->onResume:()V",
+          "Reasoning": "The method stores the Device ID obtained from getDeviceId() in the imei field of MainActivity.",
+          "Action": "Stored"
+        },
+        {
+          "Step": "sendTextMessage called with Device ID",
+          "Source Method": "Lde/ecspride/MainActivity;->onPause:()V",
+          "Reasoning": "The method calls sendTextMessage with the Device ID (+49 1234) through the SmsManager.",
+          "Action": "Transmitted"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->onPause:()V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity;->onResume:()V --> Lde/ecspride/MainActivity;->onPause:()V",
+          "Reasoning": "The `onResume` method calls `getDeviceId()` which stores the Device ID in the `imei` field.  This value is then used as an argument in the `onPause` method's `sendTextMessage` call."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "ActivitySavedState1": {
+    "apk_name": "ActivitySavedState1",
+    "ground_truth_summary": "Test of saving Activity state in Bundle. Source is getDeviceId()  and sink is  Log.i(\"DroidBench\", value); from the method onCreate(Bundle savedInstanceState) Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Ledu/mit/activity_saved_state/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)",
+          "Reasoning": "The method summary indicates that the device ID is retrieved.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/activity_saved_state/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;); --> null",
+          "Reasoning": "The method summary shows that the device ID is retrieved and stored in the bundle.  Since there is no indication of overwrite or taint loss, this is not a leak."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "AnonymousClass1": {
+    "apk_name": "AnonymousClass1",
+    "ground_truth_summary": "Registers a callback handler for location updates in an anonymous inner class.  Register the listener with the Location Manager to receive location updates. The incoming location data from the source are stored in static fields which are leaked to the log. location.getLatitude(); and location.getLongitude(); is source and sink is Log.i(\"LOG\", \"Latitude: \" + latitude + \"Longtitude: \" + longitude);  and sink method is  onResume()  Data flow: onLocationChanged -> latitude, longitude -> Log. Number of leaks: 2.",
+    "model_summary": {
+      "Data Types Collected": [
+        "Location"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "onLocationChanged() invoked",
+          "Source Method": "Lde/ecspride/AnnonymousClass1$1;->onLocationChanged:(Landroid/location/Location;)V",
+          "Reasoning": "Invokes getLatitude() and getLongitude() methods of the Location class.",
+          "Action": "Stored in registers"
+        },
+        {
+          "Step": "access$0(D) called",
+          "Source Method": "Lde/ecspride/AnnonymousClass1;->onLocationChanged:(Landroid/location/Location;)V",
+          "Reasoning": "Passes location data to access$0(D)",
+          "Action": "Passed"
+        },
+        {
+          "Step": "access$1(D) called",
+          "Source Method": "Lde/ecspride/AnnonymousClass1;->onLocationChanged:(Landroid/location/Location;)V",
+          "Reasoning": "Passes location data to access$1(D)",
+          "Action": "Passed"
+        },
+        {
+          "Step": "access$0(D) called",
+          "Source Method": "Lde/ecspride/AnnonymousClass1;->access$1:(D)V",
+          "Reasoning": "Stores latitude location information in register v0 and passes it to access$0(D)",
+          "Action": "Stored and passed"
+        },
+        {
+          "Step": "access$1(D) called",
+          "Source Method": "Lde/ecspride/AnnonymousClass1;->access$1:(D)V",
+          "Reasoning": "Stores user personal location data in register v0 and passes it to access$1(D)",
+          "Action": "Stored and passed"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/AnnonymousClass1;->access$0:(D)V",
+        "Lde/ecspride/AnnonymousClass1;->access$1:(D)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": " Lde/ecspride/AnnonymousClass1$1;->onLocationChanged:(Landroid/location/Location;)V --> Lde/ecspride/AnnonymousClass1;->access$0:(D)V --> Lde/ecspride/AnnonymousClass1;->access$1:(D)V",
+          "Reasoning": "Data is passed from onLocationChanged() to access$0(D) and then to access$1(D)"
+        }
+      ],
+      "Label": [
+        "sensitive"
+      ]
+    }
+  },
+  "ApplicationLifecycle1": {
+    "apk_name": "ApplicationLifecycle1",
+    "ground_truth_summary": "A secret value is obtained when the application is launched and leaked when the main activity is resumed. Source is getDeviceId() and sink sms.sendTextMessage(\"+49 1234\", null, ApplicationLifecyle1.imei, null, null); from   onResume()   Data flow: source -> Application.onCreate() -> imei -> Activity.onResume() -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "abc"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Lde/ecspride/ApplicationLifecyle1;->onCreate:()V",
+          "Reasoning": "The onCreate method retrieves the DeviceId from TelephonyManager.",
+          "Action": "Stored"
+        },
+        {
+          "Step": "Send Text Message with Hardcoded String",
+          "Source Method": "Lde/ecspride/MainActivity;->onResume:()V",
+          "Reasoning": "The onResume method calls sendTextMessage with a hardcoded string, likely using the DeviceId.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->sendTextMessage:()V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/ApplicationLifecyle1;->onCreate:()V --> Lde/ecspride/MainActivity;->onResume:()V",
+          "Reasoning": "The DeviceId is initially retrieved from TelephonyManager in onCreate. This value is then passed as an argument to sendTextMessage in onResume."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "ApplicationLifecycle2": {
+    "apk_name": "ApplicationLifecycle2",
+    "ground_truth_summary": "A secret value is obtained on application start and leaked in the low memory callback. Source is getDeviceId() and sink is sms.sendTextMessage(\"+49 1234\", null, imei, null, null); from onLowMemory() Data flow: source -> onCreate() -> imei -> onLowMemory() -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "imei"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained from TelephonyManager.",
+          "Source Method": "Lde/ecspride/ApplicationLifecyle2;->onCreate:()V",
+          "Reasoning": "The summary explicitly states that the method initializes the IMEI field with the device ID obtained from the TelephonyManager using getDeviceId().",
+          "Action": "Store"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/ApplicationLifecyle2;->onLowMemory:()V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/ApplicationLifecyle2;->onCreate:()V --> DeviceId --> Lde/ecspride/ApplicationLifecyle2;->onLowMemory:()V",
+          "Reasoning": "The `onCreate` method obtains the DeviceId from the TelephonyManager and passes it as an argument to the `onLowMemory` method.  The `onLowMemory` method sends a text message using this DeviceId."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "ApplicationLifecycle3": {
+    "apk_name": "ApplicationLifecycle3",
+    "ground_truth_summary": "A secret value is obtained when a content provider is initialized and leaked when the application runs afterwards. Source is getDeviceId() and sink is sms.sendTextMessage(\"+49 1234\", null, imei, null, null)  from  onCreate() Data flow: source -> ContentProvider.onCreate() -> imei -> Application.onCreate() -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "SmsManager",
+        "TelephonyManager"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Lde/ecspride/ContentProvider;->onCreate:()Z",
+          "Reasoning": "The method retrieves the device ID from the TelephonyManager.",
+          "Action": "Stored"
+        },
+        {
+          "Step": "Send SMS with Device ID",
+          "Source Method": "Lde/ecspride/ApplicationLifecyle3;->onCreate:()V",
+          "Reasoning": "The method attempts to send a text message with the value \"+49 1234\" using the SmsManager, which utilizes the Device ID.",
+          "Action": "Transmitted"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/ApplicationLifecyle3;->onCreate:()"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/ContentProvider;->onCreate:()Z --> Lde/ecspride/ApplicationLifecyle3;->onCreate:()V",
+          "Reasoning": "The ContentProvider method retrieves the Device ID and stores it in the iMei field. This value is then used by the ApplicationLifecycle3 method to send a text message."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "ApplicationModeling1": {
+    "apk_name": "ApplicationModeling1",
+    "ground_truth_summary": "Test if modeling correctly instantiates a single application object from the manifest and passes the object correctly to calls of getApplication(), getDeviceId() is source,  sink is Log.i(\"DroidBench\", ((MyApplication)getApplication()). imei)and sink method onCreate(),Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device ID",
+        "imei"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain device ID from TelephonyManager",
+          "Source Method": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method calls `getSystemService` to retrieve a `TelephonyManager` object, and then calls `getDeviceId()` on this object to obtain the device ID.",
+          "Action": "Retrieve"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/application_modeling/MainActivity;->saveImei:(Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/application_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/application_modeling/MainActivity;->saveImei:(Ljava/lang/String;)V",
+          "Reasoning": "The `onCreate` method obtains the device ID from the `TelephonyManager` and stores it in the `imei` field of the `MyApplication` instance. This constitutes a direct flow of the device ID."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "ArrayAccess1": {
+    "apk_name": "ArrayAccess1",
+    "ground_truth_summary": "An array is created which is filled with untainted and tainted (deviceId source) data. The untainted data of a constant array position is retrieved and sent via sms. arrayData[2] is not tainted, 3rd argument of sendTextmessage() is not tainted Data flow: -. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained",
+          "Source Method": "Lde/ecspride/ArrayAccess1;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method obtains the device ID using `getDeviceId()` from `TelephonyManager` and stores it in `arrayData`.",
+          "Action": "DeviceId stored in `arrayData`"
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "ArrayAccess2": {
+    "apk_name": "ArrayAccess2",
+    "ground_truth_summary": "An array is created which is filled with untainted and tainted (deviceId source) data. The untainted data of a calculated array position is retrieved and sent via sms. Data flow: -. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained via TelephonyManager.getDeviceId()",
+          "Source Method": "Lde/ecspride/ArrayAccess2;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The summary explicitly states that the method obtains the device ID using TelephonyManager.getDeviceId().",
+          "Action": "Device ID stored in a string array and used to send a text message."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "ArrayCopy1": {
+    "apk_name": "ArrayCopy1",
+    "ground_truth_summary": "Testing System.arraycopy() getDeviceId() is source and sink is  Log.i(\"DroidBench\", arraycopy[0]) and sink method is onCreate(Bundle savedInstanceState) Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device ID"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Activity initialization via `invoke-super`.",
+          "Source Method": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "Standard Activity lifecycle method.",
+          "Action": "Initialization"
+        },
+        {
+          "Step": "Retrieval of device ID from TelephonyManager.",
+          "Source Method": "Ledu/mit/array_copy/MainActivity;->getDeviceId",
+          "Reasoning": "Direct call to `getDeviceId` from `TelephonyManager`.",
+          "Action": "Data Extraction"
+        },
+        {
+          "Step": "Copying device ID into an array.",
+          "Source Method": "Ledu/mit/array_copy/MainActivity;->arraycopy",
+          "Reasoning": "Using `arraycopy` to transfer the device ID.",
+          "Action": "Data Storage"
+        },
+        {
+          "Step": "Logging of the device ID.",
+          "Source Method": "Ledu/mit/array_copy/MainActivity;->Log.i",
+          "Reasoning": "The `Log.i` method is triggered by the device ID.",
+          "Action": "Data Transmission"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/array_copy/MainActivity;->Log.i"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/array_copy/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/array_copy/MainActivity;->getDeviceId --> Ledu/mit/array_copy/MainActivity;->arraycopy --> Ledu/mit/array_copy/MainActivity;->Log.i"
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "ArrayToString1": {
+    "apk_name": "ArrayToString1",
+    "ground_truth_summary": "Test underlying api calls to an objects toString() method. getDeviceId() is source and sink is  Log.i(\"DroidBench\", arrayToString) and sink method id onCreate(Bundle savedInstanceState). Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "deviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve device ID",
+          "Source Method": "Ledu/mit/to_string/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method calls `getSystemService` to obtain a `TelephonyManager` object, which then calls `getDeviceId()` to retrieve the device ID.",
+          "Action": "Store deviceId"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/to_string/MainActivity;->Log.i(Ljava/lang/String;Ljava/lang/String;Z)",
+        "Ledu/mit/to_string/MainActivity;->Log.i(Ljava/lang/String;Ljava/lang/String;Z)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/to_string/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/to_string/MainActivity;->getSystemService(Ljava/lang/String;)Ljava.lang.Object; --> Ledu/mit/to_string/MainActivity;->Arrays.toString(Ljava/lang/Object;)Ljava/util/Arrays; --> Ledu/mit/to_string/MainActivity;->Log.i(Ljava/lang/String;Ljava/lang/String;Z)",
+          "Reasoning": "The `onCreate` method first gets a `TelephonyManager` object. `getDeviceId()` retrieves the device ID, which is then converted to a string using `Arrays.toString()`. This tainted string is then logged using `Log.i` with the message \"DroidBench\"."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "AsynchronousEventOrdering1": {
+    "apk_name": "AsynchronousEventOrdering1",
+    "ground_truth_summary": "Account for the asynchronous event firing of onLowMemory. Source is getDeviceId() and sink is Log.i(\"DroidBench\", imei) from sink method   onStop() Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain Device ID",
+          "Source Method": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V",
+          "Reasoning": "The `onResume` method obtains the device ID from the TelephonyManager and stores it in the `imei` field.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onResume:()V --> Ledu/mit/activity_asynchronous_event_ordering/MainActivity;->onStop:()V",
+          "Reasoning": "The `onResume` method obtains the DeviceId and passes it to the `onStop` method. The `onStop` method logs a message. The DeviceId was not overwritten."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "BroadcastReceiverLifecycle1": {
+    "apk_name": "BroadcastReceiverLifecycle1",
+    "ground_truth_summary": "The return value of source method is stored to a variable and sent to a sink in a condition branch. Source is getDeviceId(0 and sink is sms.sendTextMessage(\"+49 1234\", null, imei, null, null) from onReceive(Context context, Intent intent) Data flow: source -> imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "SMS message with hardcoded phone number is created.",
+          "Source Method": "Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)",
+          "Reasoning": "The method summary states that the method attempts to send an SMS message with a hardcoded phone number.",
+          "Action": "Created"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/TestReceiver;->onReceive:(Landroid/content/Context; Landroid/content/Intent;);  -->  SMS message with hardcoded phone number (+49 1234) is sent.",
+          "Reasoning": "The method summary indicates that the `onReceive` method attempts to send an SMS message with a hardcoded phone number.  Since the phone number is a sensitive value and is not overwritten, this constitutes a data flow to a sink."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "BroadcastReceiverLifecycle2": {
+    "apk_name": "BroadcastReceiverLifecycle2",
+    "ground_truth_summary": "The sensitive data is read in onCreate() and sent out in a dynamically registered broadcast receiver. getDeviceid() is the source and sink is Log.d(\"DroidBench\", deviceId) from   onReceive(Context context, Intent intent) Data flow: source -> imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID retrieved using TelephonyManager.",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method retrieves the device ID using TelephonyManager, indicating a sensitive source.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> ... --> Sink Method(DeviceId)",
+          "Reasoning": "The `onCreate` method retrieves the device ID and passes it to a sink.  Since there is no indication of overwriting, this is a potential leak."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "Button1": {
+    "apk_name": "Button1",
+    "ground_truth_summary": "The sink is called after the user clicks a button. The button handler is defined via XML. getDeviceid(0 is source and sink is   sms.sendTextMessage(\"+49\", null, imei, null, null);  and sink method is  sendMessage(View view) Data flow: OnCreate: source -> imei; sendMessage: imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "android.os.Bundle"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method retrieves the device ID using TelephonyManager and stores it in the `imei` field.",
+          "Action": "Store"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/Button1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Button1;->sendMessage:(Landroid/view/View;)V",
+          "Reasoning": "The `onCreate` method retrieves the `DeviceId` (IMEI) and passes it to the `sendMessage` method."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "Button2": {
+    "apk_name": "Button2",
+    "ground_truth_summary": "Sources and sinks are called in button callbacks. There is only one data leak iff first button3 and then button1 is pressed! getDeviceId() is source and sink is  Log.i(\"TAG\", \"Button3: \" + imei), log.i(\"TAG\", \"sendIMEI: \" + imei), sm.sendTextMessage(number, null, imei, null, null) and sink method isbutton2.setOnClickListener(new View.OnClickListener() and another one onCreate()  Data flow: clickOnButton3: source -> imei; onClick (button1): imei -> sinks. Number of leaks: 3.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID retrieved via getDeviceId",
+          "Source Method": "Lde/ecspride/Button2;->clickOnButton3:(Landroid/view/View;)V",
+          "Reasoning": "The method summary explicitly states that the `getDeviceId()` method is called to retrieve the device ID (IMEI).",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "android.util.Log.i(\"TAG\", ...)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/Button2;->clickOnButton3:(Landroid/view/View;)V --> android.util.Log.i(\"TAG\", ...)",
+          "Reasoning": "The `clickOnButton3` method retrieves the device ID via `getDeviceId()` and then logs it using `android.util.Log.i`. The summary indicates that the device ID is not overwritten, so the taint persists."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "Button3": {
+    "apk_name": "Button3",
+    "ground_truth_summary": "A new callback is registered in another callback's handler. The second handler leaks the data obtained by the first handler. source is getDeviceId() and  sink is sms.sendTextMessage(\"+49\", null, act.imei, null, null) and sink method is void onClick(View arg0) Data flow: Button1Listener: source -> imei; Button2Listener: imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "deviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve device ID",
+          "Source Method": "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V",
+          "Reasoning": "The `onClick` method calls `getDeviceId` to retrieve the device ID.",
+          "Action": "Retrieval"
+        }
+      ],
+      "All Sinks": [
+        null
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/Button1Listener;->onClick:(Landroid/view/View;)V --> MainActivity.imei",
+          "Reasoning": "The `onClick` method of `Button1Listener` retrieves the device ID using `getDeviceId` from `TelephonyManager` via `MainActivity`. The `getDeviceId` call is stored into `MainActivity.imei`."
+        }
+      ],
+      "Label": [
+        "no leak"
+      ]
+    }
+  },
+  "Button4": {
+    "apk_name": "Button4",
+    "ground_truth_summary": "The sink is called after the user clicks a button. The button handler is defined via XML using an include directive. getDeviceId() is source and sink is  sms.sendTextMessage(\"+49\", null, imei, null, null);  and sink method is sendMessage(View view)  Data flow: OnCreate: source -> imei; sendMessage: imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "imei"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method retrieves the device ID using TelephonyManager and stores it in the `imei` field.",
+          "Action": "Store"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/Button4;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Button4;->sendMessage:(Landroid/view/View;)V",
+          "Reasoning": "The `onCreate` method retrieves the `DeviceId` (stored as `imei`) and passes it as an argument to `sendMessage`. The `sendMessage` method uses this `imei` to construct and send an SMS message."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "Button5": {
+    "apk_name": "Button5",
+    "ground_truth_summary": "Test correct modeling of button object maintained by the runtime and delivered to onClick events. handler is defined via XML. getDeviceId() is source and sink is Log.i(\"DroidBench\", ((Button)view).getHint().toString()) and sink method is v Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "android.view.View"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Ledu/mit/button_object_allocation/Button1;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method retrieves the device ID using TelephonyManager and stores it in the `imei` field.",
+          "Action": "Store Device ID"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/button_object_allocation/Button1;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/button_object_allocation/Button1;->sendMessage:(Landroid/view/View;)V",
+          "Reasoning": "The `onCreate` method retrieves the `DeviceId` and passes it to the `sendMessage` method as an argument. The `sendMessage` method uses this `DeviceId` to set the button's hint to 'DroidBench'. "
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "CallbacksInFragment": {
+    "apk_name": "CallbacksInFragment",
+    "ground_truth_summary": "This is a test case that a onClick() callback is registered inside a fragment's lifecycle. Source is getDeviceId() and  sink is Log.v(\"TAG\", \"\" + duration) and sink method is v and another method id onCreateView()  Data flow:  Expected sources: 2 Expected sinks: 2. Number of leaks: 2.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID retrieval and logging",
+          "Source Method": "Ljunbin/ubc/MyFragment;->onClick:(Landroid/view/View;)V",
+          "Reasoning": "The method directly accesses TelephonyManager.getDeviceId() (sensitive source) and passes it to android.util.Log.v (sink) without overwriting or taint removal.",
+          "Action": "Logged"
+        }
+      ],
+      "All Sinks": [
+        "Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ljunbin/ubc/MyFragment;->onClick:(Landroid/view/View;)V --> Landroid/util/Log;->v:(Ljava/lang/String;Ljava/lang/String;)I",
+          "Reasoning": "The device ID (sensitive source) is directly passed to the logging sink without being overwritten or sanitized."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "CastingForward": {
+    "apk_name": "CastingForward",
+    "ground_truth_summary": "This is a test case that combines with ViewCasting to show that FlowDroid only cannot propagate taints for casted variables in backward analysis, but works fine in forward analysis.source is getDeviceId() and sink method is onCreate(Bundle savedInstanceState) and sink  Log.v(\"TAG\", ((Button) tv).getHint().toString()) Data flow: Expected sources: 1 Expected sinks: 1. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method `onCreate` calls `TelephonyManager.getDeviceId()` to retrieve the device ID.",
+          "Action": "Retrieve"
+        }
+      ],
+      "All Sinks": [
+        "Ljunbin/ubc/MainActivity;->logV:(Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljunbin/ubc/MainActivity;->logV:(Ljava/lang/String;)V",
+          "Reasoning": "The device ID obtained from `getDeviceId()` is used as an argument to `logV`.  The summary indicates that this is a sink method.  The device ID is not overwritten."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "Clone1": {
+    "apk_name": "Clone1",
+    "ground_truth_summary": "Tesging LinkedList.clone  getDeviceId() is source and sink is  Log.i(\"DroidBench\", list2.get(0)); and sink method is onCreate(Bundle savedInstanceState) Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device_id"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID Retrieval",
+          "Source Method": "Ledu/mit/clone/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method calls `getDeviceId()` via `TelephonyManager` to obtain the device ID.",
+          "Action": "Device ID stored as a String."
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/clone/MainActivity;->Log.i:(Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/clone/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/clone/MainActivity;->getDeviceId()Landroid/telephony/TelephonyManager; --> Ledu/mit/clone/MainActivity;->Log.i:(Ljava/lang/String;)V",
+          "Reasoning": "The `onCreate` method retrieves the device ID using `getDeviceId()` from `TelephonyManager`. This device ID is then passed as an argument to the `Log.i` sink method."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "ConservativeModel1": {
+    "apk_name": "ConservativeModel1",
+    "ground_truth_summary": "This is a test case to prove that Amandroid use the conservative model to handle Toast.makeText(), leading to FPs. Source is getDeviceId() and  Log.v(\"TAG\", \"\" + duration); Data flow: Expected sources: 1 Expected sinks: 1. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained from TelephonyManager.",
+          "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method starts with calling TelephonyManager.getDeviceId() to obtain the DeviceId.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Toast message with DeviceId",
+          "Reasoning": "The DeviceId obtained from TelephonyManager is used to create a Toast message. The summary indicates that the DeviceId is not passed to any other methods, and does not reach any sinks. Therefore, the data flow ends here."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "ConservativeModel2": {
+    "apk_name": "ConservativeModel2",
+    "ground_truth_summary": "This is a test case to prove that FlowDroid use the conservative model to handle HttpPost.setEntity(), leading to FNs. getDeviceId() is source and sink is onCreate and sink method is onCreate(Bundle savedInstanceState) Data flow: Expected sources: 1 Expected sinks: 1. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID retrieved",
+          "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method `onCreate` calls `TelephonyManager.getDeviceId()` to obtain the Device ID.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "Ljunbin/ubc/MainActivity;->makeHttpPostRequest:(Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljunbin/ubc/MainActivity;->makeHttpPostRequest:(Ljava/lang/String;)V",
+          "Reasoning": "The Device ID obtained from `TelephonyManager.getDeviceId()` is passed as the content of an HTTP POST request in `makeHttpPostRequest`. The summary indicates this is a network transmission, which could be a sink."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "ConservativeModel3": {
+    "apk_name": "ConservativeModel3",
+    "ground_truth_summary": "This is a test case to prove that FlowDroid use the conservative model to handle Context.getString(), leading to FPs.getDeviceid() is source and sink is Log.v(\"TAG\", name) and sink method onCreate() Data flow: Expected sources: 1 Expected sinks: 1. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Get Device ID",
+          "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method calls getDeviceId() to obtain the DeviceId.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "null"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> MainActivity.imei",
+          "Reasoning": "The DeviceId obtained from getDeviceId() is stored in the `imei` instance field of the MainActivity object."
+        }
+      ],
+      "Label": [
+        "no leak"
+      ]
+    }
+  },
+  "ContentProvider1": {
+    "apk_name": "ContentProvider1",
+    "ground_truth_summary": "Sends the IMEI as an SMS message and writes it to the log file. Emulator detection is performed on the IMEI and the app is killed if the IMEI is a 00..00 pattern. Data flow: onCreate: imei -> SMS & Log. source is getDeviceId() and  Sink is sm.sendTextMessage(number, null, imei, null, null); and Log.v(\"DROIDBENCH\", imei); and sink method is onCreate(Bundle savedInstanceState)  Number of leaks: 2.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device_id"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain device ID",
+          "Source Method": "Lde/ecspride/MyContentProvider;->onCreate:()Z",
+          "Reasoning": "The `onCreate` method calls `getDeviceId()` to retrieve the device ID.",
+          "Action": "Store device ID in register v0"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MyContentProvider;->logMessage: (String)",
+        "Lde/ecspride/MyContentProvider;->makeNetworkCall: (String)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MyContentProvider;->onCreate:()Z --> Lde/ecspride/MyContentProvider;->logMessage: (String)",
+          "Reasoning": "The `onCreate` method calls `getDeviceId()` which stores the device ID in register v0. This device ID is then passed as an argument to the `logMessage` method, resulting in a log message containing the device ID."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "ContextSensitivity": {
+    "apk_name": "ContextSensitivity",
+    "ground_truth_summary": "This is a test case used to check whether the tool is context sensitive. If the tool is context sensitive, it should only report the flows mentioned in the below. Data flow: Expected sources: getDeviceId() && getSimSerialNumber() Expected sinks: line 48: Log.e(java.lang.String, java.lang.String) && line 54: Log.e(java.lang.String, java.lang.String) Flow Paths: Path1: line 47: String deviceId = tpm.getDeviceId() --> line 48: Log.e(\"ContextSensitivity1\", returnString(deviceId)) --> leak  Path2: line 53: String simNumber = tpm.getSimSerialNumber() --> line 54: Log.e(\"ContextSensitivity2\", returnString(simNumber)) --> leak. Number of leaks: 2.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V",
+          "Reasoning": "The method calls TelephonyManager.getDeviceId() to retrieve the DeviceId.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V --> Llina/ubc/contextsensitivity/ContextSensitivity;->fun1:()V",
+          "Reasoning": "The DeviceId is retrieved from TelephonyManager.getDeviceId() and passed to the returnString method, which logs the DeviceId using android.util.Log.e. This constitutes a sink."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "DirectLeak1": {
+    "apk_name": "DirectLeak1",
+    "ground_truth_summary": "Easy testcase: The value of a source is directly sent to a sink,  sms.sendTextMessage(\"+49 1234\", null, mgr.getDeviceId(), null, null); //source, sink, leak, And sink method name is onCreate(), Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device ID"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID Retrieval",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method calls `getDeviceId` via `TelephonyManager`.",
+          "Action": "Device ID stored in register `v6`."
+        },
+        {
+          "Step": "Message Construction",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The device ID (from `v6`) is used as the message body for `sendTextMessage`.",
+          "Action": "Message constructed with device ID."
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;[Ljava/lang/String;I)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->getDeviceId()Ljava/lang/String; --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;[Ljava/lang/String;I)V",
+          "Reasoning": "The `getDeviceId` method retrieves the device ID. This ID is then stored in register `v6`. Subsequently, this value is used as the `vText` argument to the `sendTextMessage` method."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "EventOrdering1_LC": {
+    "apk_name": "EventOrdering1_LC",
+    "ground_truth_summary": "Test case for considering all possible event orderings for event There is a leak when onLowMemory is called twice without a call to onContentChanged(). Source is getDeviceId() and  Log.i(\"DroidBench\", imei) from onLowMemory()  Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V",
+          "Reasoning": "The method retrieves the device's IMEI using `getDeviceId()` which is a sensitive API.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "android.util.Log.d(..., ...)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/event_ordering/MainActivity;->onLowMemory:()V --> android.util.Log.d(..., ...)",
+          "Reasoning": "The `onLowMemory` method retrieves the DeviceId from `getDeviceId()`. This value is then logged using `android.util.Log.d`. Since the DeviceId is not overwritten, this constitutes a potential leak."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "EventOrderingTest": {
+    "apk_name": "EventOrderingTest",
+    "ground_truth_summary": "This is a test case to explain that FlowDroid+IccTA, Amandroid, and DroidSafe can handle event ordering flows.  And FlowDroid+IccTA and Amandroid failed to detect the flow in EventOrdering1 test case in InterComponentCommunication from DroidBench due to other reasons, as explained below.  Taking this test case and our SharedPreference test cases (SharedPreference1, 2, 3) into consideration, the reason why FlowDroid+IccTA and Amandroid failed to detect the flow in EventOrdering1 (in ICC folder from DroidBench) is that those tools are not able to handle reading/writing data from/to SharedPreference. Data flow: Expected sources: line 56: getDeviceId() Expected sinks: line 49: Log.i(\"EventOrderingTest\", deviceId) && line 14 (in MainActivity): startActivity(new Intent(\"lina.ubc.eventorderingtest.ACTION\"))  Flow path: Launch ActivityWithFlow for the first time from MainActivity --> line 51: assignSensitivityInfo() --> line 56: deviceId = tpm.getDeviceId() --> Launch ActivityWithFlow for the second time from MainActivity --> line 49: Log.i(\"EventOrderingTest\", deviceId) --> leak. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained via `getSystemService`",
+          "Source Method": "Llina/ubc/eventorderingtest/ActivityWithFlow;->assignSensitivityInfo:()V",
+          "Reasoning": "The method `assignSensitivityInfo` calls `getSystemService` to get the device ID using `getDeviceId()`.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Llina/ubc/eventorderingtest/ActivityWithFlow;->assignSensitivityInfo:()V --> DeviceId is stored as a static field `deviceId` within the class.",
+          "Reasoning": "The summary indicates that the device ID obtained via `getSystemService` is stored as a static field `deviceId` within the `ActivityWithFlow` class.  No external transmission or storage is observed."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "Exceptions1": {
+    "apk_name": "Exceptions1",
+    "ground_truth_summary": "Tainted data is created and sent out in an exception handler. Source is getDeviceId() and sink is sm.sendTextMessage(\"+49 1234\", null, imei, null, null) aand sink method is onCreate(Bundle savedInstanceState) Data flow: source -> imei -> exception handler -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device ID"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Activity initialization via `invoke-super`.",
+          "Source Method": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "Standard Android Activity lifecycle method.",
+          "Action": "Initialization"
+        },
+        {
+          "Step": "Obtain device ID from TelephonyManager.",
+          "Source Method": "Lde/ecspride/Exceptions1;->getDeviceId()V",
+          "Reasoning": "The method explicitly retrieves the device ID using `TelephonyManager`.",
+          "Action": "Data Extraction"
+        },
+        {
+          "Step": "Send device ID as SMS message.",
+          "Source Method": "Lde/ecspride/Exceptions1;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+          "Reasoning": "The `sendTextMessage` method uses the device ID as the message body (`vDest`).",
+          "Action": "Transmission"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/Exceptions1;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/Exceptions1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Exceptions1;->getDeviceId()V --> Lde/ecspride/Exceptions1;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)",
+          "Reasoning": "The device ID is obtained from `TelephonyManager` and then directly passed as the `vDest` argument to the `sendTextMessage` method, resulting in a data leak."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "Exceptions2": {
+    "apk_name": "Exceptions2",
+    "ground_truth_summary": "Tainted data is created and sent out in an implicitly invoked exception handler.  Source is getDeviceId() and sink is sm.sendTextMessage(\"+49 1234\", null, imei, null, null) aand sink method is onCreate(Bundle savedInstanceState) Data flow: source -> imei -> exception handler -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device_id",
+        "phone"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Activity lifecycle initialization",
+          "Source Method": "Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "Standard activity lifecycle method, no sensitive data involved.",
+          "Action": "Initialization"
+        },
+        {
+          "Step": "Obtain TelephonyManager",
+          "Source Method": "Lde/ecspride/Exceptions2;->getSystemService:(Ljava/lang/String;)Landroid/os/Service;",
+          "Reasoning": "Calls `getSystemService` with the string \"phone\", retrieving a `TelephonyManager` instance.",
+          "Action": "Retrieve"
+        },
+        {
+          "Step": "Extract Device ID",
+          "Source Method": "Lde/ecspride/Exceptions2;->getDeviceId()()Ljava/lang/String;",
+          "Reasoning": "Calls `getDeviceId()`, which returns a string representing the device ID.",
+          "Action": "Extract"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/Exceptions2;->sendTextMessage:(Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/Exceptions2;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Exceptions2;->getSystemService:(Ljava/lang/String;)Landroid/os/Service; --> Lde/ecspride/Exceptions2;->getDeviceId()()Ljava/lang/String; --> Lde/ecspride/Exceptions2;->sendTextMessage:(Ljava/lang/String;)V",
+          "Reasoning": "The activity's `onCreate` method initiates the flow. It calls `getSystemService` to obtain the `TelephonyManager`.  The `getDeviceId()` method then extracts the device ID. This device ID is subsequently used as the message body in `sendTextMessage`, representing a direct leak of sensitive data."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "Exceptions3": {
+    "apk_name": "Exceptions3",
+    "ground_truth_summary": "Tainted data is created, but the exception handler which would send it out is never invoked Data flow: source -> imei -> /. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID retrieved from TelephonyManager.",
+          "Source Method": "Lde/ecspride/Exceptions3;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method retrieves the device ID using TelephonyManager, indicating a sensitive source.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/Exceptions3;->onCreate:(Landroid/os/Bundle;)V --> ... --> Sink Method(DeviceId)",
+          "Reasoning": "The `onCreate` method retrieves the device ID and passes it to a sink.  The summary indicates that the device ID retrieval is potentially problematic, suggesting a taint flow to the sink.  Since the summary doesn't state that the device ID was overwritten, it's considered a taint flow."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "Exceptions4": {
+    "apk_name": "Exceptions4",
+    "ground_truth_summary": "Tainted data is created, thrown as exception data and sent out in the exception handler. Source is getDeviceId() and sink is sm.sendTextMessage(\"+49 1234\", null, ex.getMessage(), null, null); and sink method is  onCreate(Bundle savedInstanceState) Data flow: source -> imei -> exception -> exception handler -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "phone number",
+        "device ID"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve device ID",
+          "Source Method": "Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The method calls `getSystemService` with the string \"phone\", which invokes `android.telephony.TelephonyManager->getDeviceId()`.",
+          "Action": "Store"
+        },
+        {
+          "Step": "Construct SMS message",
+          "Source Method": "Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The retrieved device ID is used to construct a `RuntimeException` and subsequently used in `SmsManager.sendTextMessage`.",
+          "Action": "Construct"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/Exceptions4;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/Exceptions4;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/Exceptions4;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;)"
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "FactoryMethods1": {
+    "apk_name": "FactoryMethods1",
+    "ground_truth_summary": "This example obtains a LocationManager from a factory method contained in the Android operating system, reads out the location, and leaks it. source is getLastKnownLocation and  Sink is Log.d(\"Latitude\", \"Latitude: \" + data.getLatitude()); and  Log.d(\"Longtitude\", \"Longtitude: \" + data.getLongitude());  and sink method is onCreate()  Data flow: onCreate: source -> data -> sink. Number of leaks: 2.",
+    "model_summary": {
+      "Data Types Collected": [
+        "Latitude",
+        "Longitude"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Latitude and Longitude",
+          "Source Method": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method obtains the last known location, including latitude and longitude.",
+          "Action": "Stored as variables"
+        }
+      ],
+      "All Sinks": [
+        "android/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;[Z)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/FactoryMethods1;->onCreate:(Landroid/os/Bundle;)V --> android/util/Log;->d:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;[Z)V",
+          "Reasoning": "The `onCreate` method retrieves latitude and longitude. The `arraycopy` instruction propagates the string \"Latitude\" and \"Longtitude\" to the `Log.d` calls.  The `Log.d` calls pass the strings \"Latitude\" and \"Longtitude\" as arguments."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "FieldSensitivity": {
+    "apk_name": "FieldSensitivity",
+    "ground_truth_summary": "This is a test case used to check whether the tool is field sensitive. If the tool is field sensitive, it should only report one flow as mentioned below. Data flow: Expected sources: line 39: getDeviceId() Expected sinks: line 42: Log.e(java.lang.String, java.lang.String) && line 43: Log.e(java.lang.String, java.lang.String)  Flow Path: line 39: a.info1 = tpm.getDeviceId() --> line 42: Log.e(\"FieldSensitivity1\", a.info1) --> leak. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained.",
+          "Source Method": "Llina/ubc/fieldsensitivity/FieldSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method `onCreate` obtains the device ID using `getDeviceId()`.",
+          "Action": "Retrieval"
+        }
+      ],
+      "All Sinks": [
+        "android.util.Log.e"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Llina/ubc/fieldsensitivity/FieldSensitivity;->onCreate:(Landroid/os/Bundle;)V --> android.util.Log.e",
+          "Reasoning": "The device ID, obtained from `getDeviceId()`, is logged via `android.util.Log.e`. This constitutes a sink."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "FieldSensitivity1": {
+    "apk_name": "FieldSensitivity1",
+    "ground_truth_summary": "An object has two fields, one of them gets a tainted value, the other one is sent to a sink. Data flow: -. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "SimSerialNumber"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "getSimSerialNumber() called",
+          "Source Method": "Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer;",
+          "Reasoning": "The method `setTaint` originates from `getSimSerialNumber()`, which accesses the device's SIM serial number.",
+          "Action": "SIM serial number obtained"
+        }
+      ],
+      "Complete Data Flow": "[\n            {\n                \"dataflow 1\": \" [Lde/ecspride/FieldSensitivity1;->setTaint:(Lde/ecspride/Datacontainer;)Lde/ecspride/Datacontainer; --> ... ]",
+      "Label": "no leak"
+    }
+  },
+  "FieldSensitivity2": {
+    "apk_name": "FieldSensitivity2",
+    "ground_truth_summary": "An object has two fields, one of them gets a tainted value, the other one is sent to a sink. This is an easier version of FieldSensitivity1. Data flow: -. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "SIM serial number"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Data is originated from getSystemService(getSimSerialNumber) in onCreate",
+          "Source Method": "Lde/ecspride/FieldSensitivity2;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "SIM serial number is retrieved and stored in Datacontainer's secret field",
+          "Action": "Stored in Datacontainer"
+        },
+        {
+          "Step": "Data is set in Datacontainer's secret field",
+          "Source Method": "Lde/ecspride/Datacontainer;->setSecret:(Ljava/lang/String;)V",
+          "Reasoning": "Secret field is populated with SIM serial number from previous step",
+          "Action": "Data retained in object"
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "FieldSensitivity3": {
+    "apk_name": "FieldSensitivity3",
+    "ground_truth_summary": "An object has two fields, the one that gets tainted is sent to a sink.  Source is getSimSerialNumber() and sink is sms.sendTextMessage(\"+49 1234\", null, d1.getSecret(), null, null) and sink method is onCreate(Bundle savedInstanceState)  Data flow: source -> d1.secret -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "SIM serial number",
+        "phone number"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve SIM serial number",
+          "Source Method": "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle)",
+          "Reasoning": "The `getSimSerialNumber` method is called, directly retrieving the device's SIM serial number.",
+          "Action": "Data retrieval"
+        },
+        {
+          "Step": "Send SMS with SIM serial number",
+          "Source Method": "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle)",
+          "Reasoning": "The retrieved SIM serial number is used as the destination phone number and message body in the `sendTextMessage` method.",
+          "Action": "Data transmission"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/FieldSensitivity3;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Landroid/app/SmsManager;)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/FieldSensitivity3;->onCreate:(Landroid/os/Bundle) --> Lde/ecspride/FieldSensitivity3;->getSimSerialNumber:( ) --> Lde/ecspride/FieldSensitivity3;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Landroid/app/SmsManager;)",
+          "Reasoning": "The SIM serial number is initially retrieved via `getSimSerialNumber`. This value is then directly used as the destination phone number and message body within the `sendTextMessage` method.  The `vText` argument in `sendTextMessage` is mapped to the SIM serial number."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "FieldSensitivity4": {
+    "apk_name": "FieldSensitivity4",
+    "ground_truth_summary": "An object is created. It has a field with a default value which is sent to a sink. Afterwards a tainted value is written to the field. Data flow: -. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "1. Obtain Device ID",
+          "Source Method": "Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method obtains the device ID using getDeviceId() from TelephonyManager.",
+          "Action": "DeviceId is obtained"
+        }
+      ],
+      "All Sinks": [
+        "null"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/FieldSensitivity4;->onCreate:(Landroid/os/Bundle;)V --> sends SMS with DeviceId (+49 1234)"
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "FlowSensitivity": {
+    "apk_name": "FlowSensitivity",
+    "ground_truth_summary": "This is a test case used to check whether the tool is flow sensitive. If the tool is flow sensitive, it should only report one flow as mentioned below. Data flow: Expected sources: line 36: getDeviceId() Expected sinks: line 37: Log.e(java.lang.String, java.lang.String) && line 40: Log.e(java.lang.String, java.lang.String)  Flow Path: line 36: String deviceId = tpm.getDeviceId() --> line 37: Log.e(\"FlowSensitivity1\", deviceId) --> leak. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained via getDeviceId",
+          "Source Method": "Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method calls `getDeviceId()` from a `TelephonyManager`, retrieving the Device ID.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "Llina/ubc/flowsensitivity/FlowSensitivity;->log:(Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Llina/ubc/flowsensitivity/FlowSensitivity;->onCreate:(Landroid/os/Bundle;)V --> Llina/ubc/flowsensitivity/FlowSensitivity;->log:(Ljava/lang/String;)V",
+          "Reasoning": "The Device ID obtained from `getDeviceId()` is logged twice using `Log.e` and `Log.e`."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "ForName": {
+    "apk_name": "ForName",
+    "ground_truth_summary": "This is a test case that combines with GetClass to show that DroidSafe can handle forName() in reflection. source is getDeviceId() and sink is Log.i(\"TAG\", imei) and sink method is onCreate. Data flow: Expected sources: 1 Expected sinks: 1. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "IMEI"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieving IMEI from TelephonyManager",
+          "Source Method": "Ljunbin/ubc/MainActivity;->getImei:()Ljava/lang/String;",
+          "Reasoning": "The method accesses user-specific information (IMEI) via a privileged API call.",
+          "Action": "Accessed"
+        }
+      ],
+      "All Sinks": [
+        "Ljunbin/ubc/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;"
+      ],
+      "Complete Data Flow": "[\n        {\n            \"dataflow 1\": \"[Source Method(...getImei:()Ljava/lang/String...) --> ... --> Sink Method(...)]",
+      "Label": "leak"
+    }
+  },
+  "FragmentLifecycle1": {
+    "apk_name": "FragmentLifecycle1",
+    "ground_truth_summary": "The imei gets stored in a static variable of an activity which is accessed by a fragment. The fragment sends the imei via SMS. Source is getDeviceId() and sink is sms.sendTextMessage(\"+49\", null, imei, null, null) from  onActivityCreated(Bundle savedInstanceState) Data flow: source -> Mainactivity.imei -> ExampleFragment.imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "imei"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "MainActivity initializes and retrieves DeviceId.",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method retrieves the device ID from the TelephonyManager.",
+          "Action": "Stored"
+        },
+        {
+          "Step": "ExampleFragment retrieves DeviceId from MainActivity.",
+          "Source Method": "Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V",
+          "Reasoning": "The `onAttach` method retrieves the device ID (imei) from the `MainActivity` and assigns it to the `ExampleFragment`'s `imei` field.",
+          "Action": "Stored"
+        },
+        {
+          "Step": "ExampleFragment attempts to send SMS with DeviceId.",
+          "Source Method": "Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onActivityCreated` method attempts to send a text message using the `SmsManager` with the `imei` field, indicating a potential data flow from a tainted source to a sink.",
+          "Action": "Transmitted"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V --> Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V",
+          "Reasoning": "The DeviceId is initially retrieved from the MainActivity's onCreate method and then passed to the ExampleFragment's onAttach method. Finally, the ExampleFragment's onActivityCreated method attempts to send an SMS using the DeviceId."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "FragmentLifecycle2": {
+    "apk_name": "FragmentLifecycle2",
+    "ground_truth_summary": "Testing alysis of Android Fragments and their associated Activity. Source is getDeviceId() and sink is Log.i(\"DroidBench\", value) from updateArticleView(int position, String value) Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Ledu/mit/fragments/HeadlinesFragment;->onListItemClick:(Landroid/widget/ListView; Landroid/view/View; I J)V",
+          "Reasoning": "The method summary states that the device ID is retrieved from the TelephonyManager.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/fragments/HeadlinesFragment;->onListItemClick:(Landroid/widget/ListView; Landroid/view/View; I J)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/fragments/HeadlinesFragment;->onListItemClick:(Landroid/widget/ListView; Landroid/view/View; I J)V --> DeviceId (from TelephonyManager) --> Ledu/mit/fragments/HeadlinesFragment;->onListItemClick:(Landroid/widget/ListView; Landroid/view/View; I J)V",
+          "Reasoning": "The method summary indicates that the device ID is retrieved from TelephonyManager and then passed as an argument to the same method.  The summary does not mention any overwriting of the DeviceId."
+        }
+      ],
+      "Label": [
+        "no leak"
+      ]
+    }
+  },
+  "GetClass": {
+    "apk_name": "GetClass",
+    "ground_truth_summary": "This is a test case using getClass() to retrieve a class in reflection. getDeviceId() is source and  Log.i(\"TAG\", imei) is sink and sink method is onCreate Data flow: Expected sources: 1 Expected sinks: 1. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "String"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Ljunbin/ubc/MainActivity;->getImei:()Ljava/lang/String;",
+          "Reasoning": "The `getImei` method retrieves the device ID using `getDeviceId()` on the TelephonyManager.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ljunbin/ubc/MainActivity;->getImei:()Ljava/lang/String; -->  ...",
+          "Reasoning": "The `getImei` method retrieves the device ID and returns it.  No further propagation is observed."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "GetConstructor": {
+    "apk_name": "GetConstructor",
+    "ground_truth_summary": "This is a test case, combined with test case Reflection1, can prove if a static taint analyzer can handle getConstructor(). getDeviceid() is source and sink is  Log.v(\"TAG\", manager.getDeviceId());  and sink method is  MyClass(Context context) Data flow: Expected sources: 1 Expected sinks: 1. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained from TelephonyManager.",
+          "Source Method": "Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V",
+          "Reasoning": "The method calls getDeviceId() to obtain the Device ID.",
+          "Action": "Data stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V --> android.util.Log.v(DeviceId)",
+          "Reasoning": "The DeviceId obtained from getDeviceId() is logged using android.util.Log.v(). The summary indicates that this is the final state of the data flow."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "HashMapAccess1": {
+    "apk_name": "HashMapAccess1",
+    "ground_truth_summary": "A hash map is filled with both tainted and untainted data. The untainted data is then read out and sent via SMS. getDeviceId() is source Data flow: -. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain Device ID",
+          "Source Method": "Lde/ecspride/HashMapAccess1;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method obtains the device ID using `getDeviceId()` from `TelephonyManager`.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/HashMapAccess1;->sendSMS:(Ljava/lang/String;Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/HashMapAccess1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/HashMapAccess1;->sendSMS:(+49 1234, \"untainted\")",
+          "Reasoning": "The device ID obtained from `getDeviceId()` is stored in a HashMap and then directly transmitted via `sendSMS`."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "IMEI1": {
+    "apk_name": "IMEI1",
+    "ground_truth_summary": "Sends the IMEI as an SMS message and writes it to the log file. Emulator detection is performed by cutting the secret message at an index computed on the IMEI which is known to always be 000..0 on an emulator. source is getDeviceId() and sink is sm.sendTextMessage(\"+49 123\", null, newImei, null, null); and Log.d(\"DROIDBENCH\", newImei); and sink method is onCreate(Bundle savedInstanceState)  Data flow: onCreate: imei -> SMS & Log. Number of leaks: 2.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device_id",
+        "phone_number"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Get Device ID",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method directly calls `getDeviceId()`, which retrieves the device ID.",
+          "Action": "Store device_id"
+        },
+        {
+          "Step": "Send Text Message",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The device ID obtained from `getDeviceId()` is used as an argument to `sendTextMessage` via `SmsManager.sendTextMessage`.",
+          "Action": "Transmit phone_number"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)",
+        "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)",
+          "Reasoning": "The `device_id` obtained from `getDeviceId()` is directly passed as the first argument to `sendTextMessage`. This constitutes a sensitive data flow."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "ImplicitFlow1": {
+    "apk_name": "ImplicitFlow1",
+    "ground_truth_summary": "A value from a source gets obfuscated by two different ways and is then written to the log. Source is getDeviceId() and sink is writeToLog(obfuscatedIMEI); from onCreate(Bundle savedInstanceState) and  Log.i(\"INFO\", message) from writeToLog Data flow: source -> userInputPassword -> if-condition -> sink. Number of leaks: 2.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "IMEI"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID retrieved and obfuscated.",
+          "Source Method": "Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method retrieves the device ID and calls `obfuscateIMEI`.",
+          "Action": "Obfuscation"
+        },
+        {
+          "Step": "Obfuscated IMEI written to log.",
+          "Source Method": "Lde/ecspride/ImplicitFlow1;->obfuscateIMEI(Ljava/lang/String;)Ljava/lang/String;",
+          "Reasoning": "The `obfuscateIMEI` method obfuscates the IMEI string.",
+          "Action": "Logging"
+        },
+        {
+          "Step": "Log entry containing obfuscated IMEI.",
+          "Source Method": "Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V",
+          "Reasoning": "The `writeToLog` method writes the obfuscated IMEI to the log.",
+          "Action": "Logging"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": " Lde/ecspride/ImplicitFlow1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/ImplicitFlow1;->obfuscateIMEI(Ljava/lang/String;)Ljava/lang/String; --> Lde/ecspride/ImplicitFlow1;->writeToLog(Ljava/lang/String;)V",
+          "Reasoning": "The `onCreate` method calls `obfuscateIMEI`, which then writes the obfuscated IMEI to the log. The `writeToLog` method is a sink. The IMEI was not overwritten."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "InheritedObjects1": {
+    "apk_name": "InheritedObjects1",
+    "ground_truth_summary": "Based on a condition a variable is initialized. It has a method which either returns a constant string or a tainted value. The return value is sent by sms. Source is getDeviceid() and sink is  sms.sendTextMessage(\"+49 1234\", null, g.getInfo(), null, null); and sink method is onCreate(Bundle savedInstanceState)  Data flow: VarA.getInfo(): source (gets returned) -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Lde/ecspride/VarA;->getInfo:()Ljava/lang/String;",
+          "Reasoning": "The summary indicates that the `getInfo` method retrieves the device ID from a `TelephonyManager` instance of type `de/ecspride/VarA` and returns it as a String.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/VarA;->getInfo:()Ljava/lang/String; --> DeviceId",
+          "Reasoning": "The `getInfo` method retrieves the DeviceId and returns it.  Since there is no indication of overwriting or taint loss, the DeviceId is still considered tainted."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "Library2": {
+    "apk_name": "Library2",
+    "ground_truth_summary": "The IMEI is read out inside a custom library and then leaked in the app. Sink is sms.sendTextMessage(\"+49\", null, imei, null, null) and sink method is  onCreate(Bundle savedInstanceState) Data flow: OnCreate: source -> imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String;",
+          "Reasoning": "The `getIMEI` method retrieves the device ID by calling `getDeviceId()` on a `TelephonyManager` instance.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Landroid/content/Intent;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/LibClass;->getIMEI:(Landroid/content/Context;)Ljava/lang/String; --> DeviceId",
+          "Reasoning": "The `getIMEI` method retrieves the device ID and returns it.  No overwrite or taint loss is indicated."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "ListAccess1": {
+    "apk_name": "ListAccess1",
+    "ground_truth_summary": "A list is created which is filled with untainted and tainted (deviceId source) data. The untainted data of a constant list position is retrieved and sent via sms. Data flow: -. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "phone number",
+        "neutral text"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Initialization of `listData` with \"phone\" and \"neutral text\".",
+          "Source Method": "Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method initializes a `LinkedList` named `listData` and populates it with the strings \"phone\" and \"neutral text\".",
+          "Action": "Storage"
+        },
+        {
+          "Step": "Obtaining `SmsManager` instance.",
+          "Source Method": "Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method uses `SmsManager.getDefault()` to obtain an instance of `SmsManager` via `getSystemService`.",
+          "Action": "Network Call"
+        },
+        {
+          "Step": "Sending SMS message with tainted phone number.",
+          "Source Method": "Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `SmsManager.sendTextMessage` method is called with the phone number \"+49 1234\" as the destination address (`destAddr`) and the content of `listData` (\"neutral text\") as the message body.",
+          "Action": "Network Call"
+        }
+      ],
+      "All Sinks": [
+        "android.telephony.SmsManager.sendTextMessage(String, String)",
+        "android.telephony.SmsManager.sendTextMessage(String, String)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/ListAccess1;->onCreate:(Landroid/os/Bundle;)V --> android.telephony.SmsManager.sendTextMessage(String, String)",
+          "Reasoning": "The `listData` object, initialized with \"phone\" and \"neutral text\", is used to populate the message body for `sendTextMessage`. The destination address is the phone number \"+49 1234\", which is derived from the initial content of `listData`."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "LocationFieldSensitivity": {
+    "apk_name": "LocationFieldSensitivity",
+    "ground_truth_summary": "This app is used to explain that there is a tangled reason of field sensitivity for all benchmarks that test location-related flows in AmanDroid. Data flow: Expected source: line 42: getLatitude() Expected sink: line 44: Log.d(java.lang.String, java.lang.String)  AmanDroid treats the whole location object \"loc\" as tainted, due to the sensitive source getLatitude() specified by users. Thus, it falsely reports the following flow as a leakage: line 42: double lat = loc.getLatitude() --> line 44: Log.d(\"data\", \"Location time: \" + loc.getTime()). Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "Location",
+        "latitude",
+        "location time"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Initial Location Data Retrieval",
+          "Source Method": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method retrieves location data using `LocationManager` and `Location` classes, obtaining the DeviceId.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Llina/ubc/locationfieldsensitivity/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> android.util.Log.d(deviceId, 'location time')",
+          "Reasoning": "The method retrieves the DeviceId from the LocationManager and logs the location time to logcat.  The summary indicates no sinks are explicitly identified in this method."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "LocationLeak1": {
+    "apk_name": "LocationLeak1",
+    "ground_truth_summary": "This example contains a location information leakage in the onResume() callback method. The data source is placed into the onLocationChanged() callback method, especially the parameter \"loc\". Data flow: onLocationChanged: source -> latitude, longtitude; onResume: latitude -> sink, longtitude -> sink. Number of leaks: 2.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "DeviceId obtained from getDeviceId.",
+          "Source Method": "Lde/ecspride/LocationLeak1$MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V",
+          "Reasoning": "The method summary states that it receives a Location object and converts its latitude and longitude into strings. It then calls two private methods, access$0 and access$1, of the LocationLeak1 class with these strings. This implies the `DeviceId` (latitude and longitude) is initially present in the Location object.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/LocationLeak1$MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V --> access$0 and access$1",
+          "Reasoning": "The method summary indicates that the latitude and longitude are converted to strings and passed to private methods, access$0 and access$1.  There is no information about the data being overwritten or a sink being called."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "LocationLeak2": {
+    "apk_name": "LocationLeak2",
+    "ground_truth_summary": "This example contains a location information leakage in the onResume() callback method. The data source is placed into the onLocationChanged() callback method, especially the parameter \"loc\". In contrast to LocationLeak1 the activity implements the Listener directly (no inner class). Data flow: onLocationChanged: source -> latitude, longtitude; onResume: latitude -> sink, longtitude -> sink. Number of leaks: 2.",
+    "model_summary": {
+      "Data Types Collected": [
+        "Location",
+        "String",
+        "android.location.Location"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Location object received from getDeviceId.",
+          "Source Method": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V",
+          "Reasoning": "The summary states that this method receives a Location object.",
+          "Action": "Stored"
+        },
+        {
+          "Step": "Latitude and longitude extracted and stored.",
+          "Source Method": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V",
+          "Reasoning": "The summary explicitly states that latitude and longitude are extracted and stored.",
+          "Action": "Stored"
+        },
+        {
+          "Step": "Latitude and longitude displayed as Toast messages.",
+          "Source Method": "Lde/ecspride/LocationLeak2;->onResume:()V",
+          "Reasoning": "The summary states that these values are displayed as Toast messages.",
+          "Action": "Logged"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/LocationLeak2;->onResume:()V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/LocationLeak2;->onLocationChanged:(Landroid/location/Location;)V --> Lde/ecspride/LocationLeak2;->onResume:()V",
+          "Reasoning": "The onLocationChanged method receives a Location object, extracts latitude and longitude, and stores them. The onResume method then receives the same Location object (potentially with the same latitude and longitude) and displays them as Toast messages."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "LocationLeak3": {
+    "apk_name": "LocationLeak3",
+    "ground_truth_summary": "This example contains a location information leakage in the onResume() callback method. The data source is placed into the onLocationChanged() callback method in a separate class which sets the data into a field of the activity. Activity and callback are decoupled using an interface. Log.d(\"Location\", \"Location: \" + data) is sink and sink method is onResume(0 Data flow: onLocationChanged: source -> data -> onResume -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "Location"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Read location data from Location object",
+          "Source Method": "Lde/ecspride/MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V",
+          "Reasoning": "The onLocationChanged method reads location data from the Location object.",
+          "Action": "Passed to IDataProvider instance through setData call"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MyLocationListener;->onLocationChanged:(Landroid/location/Location;)V (reads location data) --> IDataProvider instance (setData call) --> ?",
+          "Reasoning": "The onLocationChanged method reads location data from the Location object and passes it to an IDataProvider instance through a setData call. The sink method is unknown at this point."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "Loop1": {
+    "apk_name": "Loop1",
+    "ground_truth_summary": "Tainted data is created and sent to a sink after it was transformed in a loop. getDeviceId() is source and sink sm.sendTextMessage(\"+49 1234\", null, obfuscated, null, null) and sink method is onCreate(Bundle savedInstanceState) Data flow: source -> imei -> obfuscated -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "deviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain device ID",
+          "Source Method": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The method calls `getDeviceId` to retrieve the device ID.",
+          "Action": "Retrieve"
+        },
+        {
+          "Step": "Send SMS with device ID",
+          "Source Method": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The retrieved device ID is used as the message body in `sendTextMessage`.",
+          "Action": "Transmit"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/LoopExample1;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/LoopExample1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/LoopExample1;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)",
+          "Reasoning": "The `getDeviceId` method retrieves the device ID. This ID is then used as the message body (`vText`) in `sendTextMessage`. The `sendTextMessage` method is a sink."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "Loop2": {
+    "apk_name": "Loop2",
+    "ground_truth_summary": "Tainted data is created and sent to a sink after it was transformed in a loop. Source is getDeviceId() and sink is sm.sendTextMessage(\"+49 1234\", null, obfuscated, null, null); and sink method is  onCreate(Bundle savedInstanceState) Data flow: source -> imei -> obfuscated -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "deviceID"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain device ID",
+          "Source Method": "Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method starts with a call to `getSystemService` to get a `TelephonyManager` instance, which then calls `getDeviceId()` to retrieve the device ID.",
+          "Action": "Data Retrieval"
+        },
+        {
+          "Step": "Send SMS with device ID",
+          "Source Method": "Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The retrieved device ID is used as an argument to `sendTextMessage` via `SmsManager`.",
+          "Action": "Data Transmission"
+        }
+      ],
+      "All Sinks": [
+        "Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/LoopExample2;->onCreate:(Landroid/os/Bundle;)V --> Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String; Ljava/lang/String; Ljava/lang/String; Landroid/app/PendingIntent; Landroid/app/PendingIntent;)",
+          "Reasoning": "The `getDeviceId()` method returns the `deviceID` string. This string is then directly used as the first argument (`vText`) to the `sendTextMessage` method. This constitutes a direct data flow from the sensitive source to the sink."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "Merge1": {
+    "apk_name": "Merge1",
+    "ground_truth_summary": "Sensitive data is assigned to a heap object which is then shuffled around. Only constant data is leaked. Source  String deviceId = mgr.getDeviceId() Sink sms.sendTextMessage(\"+49 1234\", null, a.attr.b, null, null)Data flow: source -> no connection to sink. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "PhoneNumber"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain Device ID",
+          "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+          "Reasoning": "The `getDeviceId()` method is explicitly identified as a sensitive API.",
+          "Action": "Store Device ID"
+        },
+        {
+          "Step": "Instantiate Objects and Send SMS",
+          "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+          "Reasoning": "The Device ID is used to create objects and then used to send an SMS message.",
+          "Action": "Transmit SMS"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->sendTextMessage:()V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity;->aliasFlowTest:()V --> Lde/ecspride/MainActivity;->getDeviceId:()V --> Lde/ecspride/MainActivity;->sendTextMessage:()V",
+          "Reasoning": "The Device ID obtained from `getDeviceId()` is directly used as the message body in `sendTextMessage`. This constitutes a clear flow from a sensitive API to a sensitive sink."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "MethodOverride1": {
+    "apk_name": "MethodOverride1",
+    "ground_truth_summary": "This example contains a location information leakage in the attachBaseContext(Context base) callback method. Source is getDeviceId() and sink is Log.d(\"EX\", uid) and sink method is   attachBaseContext(Context base) Data flow: attachBaseContext: source -> uid -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "deviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Call to `attachBaseContext` invokes `getSystemService`.",
+          "Source Method": "Lde/ecspride/MethodOverride1;->attachBaseContext:(Landroid/content/Context;)V",
+          "Reasoning": "The `attachBaseContext` method initiates a call to `getSystemService`.",
+          "Action": "Call to `getSystemService`"
+        }
+      ],
+      "All Sinks": [
+        "android/content/ContextImpl/Log.d",
+        "android/content/ContextImpl/Log.d"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MethodOverride1;->attachBaseContext:(Landroid/content/Context;)V --> android/content/ContextImpl/Log.d",
+          "Reasoning": "The `attachBaseContext` method calls `getSystemService` which uses `getDeviceId`. The `getDeviceId` method is invoked, and the returned string is then passed as the first argument to `Log.d`. The `Log.d` sink is triggered."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "MultidimensionalArray1": {
+    "apk_name": "MultidimensionalArray1",
+    "ground_truth_summary": "Testing whether an element in a multidimensional array is tracked. getDeviceid(0 is source and sink is  Log.i(\"DroidBench\", slice[0]), and sink method is  onCreate(Bundle savedInstanceState). Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device_id"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method calls `getDeviceId` through `TelephonyManager`.",
+          "Action": "Data stored as `device_id`"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/array_slice/MainActivity;->Log.i:(Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/array_slice/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/array_slice/MainActivity;->getDeviceId:(Landroid/telephony/TelephonyManager;)Ljava/lang/String;",
+          "Reasoning": "The `onCreate` method initiates the flow by calling `getDeviceId` on the `TelephonyManager`. The result, `device_id`, is then passed as an argument to the `Log.i` method."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "MultiHandlers1": {
+    "apk_name": "MultiHandlers1",
+    "ground_truth_summary": "This example two activities that share the same callback class. However, none of them actually leaks the data Data flow: onLocationChanged: source -> data -> /. Number of leaks: 0. This example two activities that share the same callback class. However, none of them actually leaks the data Data flow: onLocationChanged: source -> /. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "android.location.Location",
+        "String"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Location data received.",
+          "Source Method": "Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V",
+          "Reasoning": "The `onLocationChanged` method receives an `android.location.Location` object.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V --> Lde/ecspride/MyLocationListener1;->onLocationChanged:(Landroid/location/Location;)V",
+          "Reasoning": "The `onLocationChanged` method receives an `android.location.Location` object and constructs a string representation of its longitude and latitude. This string is then passed to the `dataProvider` via the `setData` method."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "Obfuscation1": {
+    "apk_name": "Obfuscation1",
+    "ground_truth_summary": "This APK contains an own implementation of android.telephony.TelephonyManager. However, on a real device the preloaded OS implementation will always hide the custom one and you will always get a real IMEI. Testes on Galaxy Nexus 4, no guarantees for the emulator, though. getDeviceId() is source and sink sms.sendTextMessage(\"+49\", null, imei, null, null), sink method is  onCreate().Data flow: OnCreate: source -> imei; sendMessage: imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device_id",
+        "phone_number"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "onCreate method initializes device_id.",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method likely obtains device ID information.",
+          "Action": "device_id initialized"
+        }
+      ],
+      "All Sinks": [
+        null
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> device_id initialized",
+          "Reasoning": "The `onCreate` method initializes the `device_id` variable. No sinks are identified in this step."
+        }
+      ],
+      "Label": [
+        "no leak"
+      ]
+    }
+  },
+  "ObjectSensitivity": {
+    "apk_name": "ObjectSensitivity",
+    "ground_truth_summary": "This is a test case used to check whether the tool is object sensitive. If the tool is object sensitive, it should only report one flow as mentioned below. Data flow: Expected sources: line 43: getDeviceId() Expected sinks: line 46: Log.i(java.lang.String, java.lang.String) && line 47: Log.i(java.lang.String, java.lang.String)  Flow Path: line 43: list1.add(tpm.getDeviceId()) --> line 46: Log.i(\"ObjectSensitivity1\", list1.get(0)) --> leak. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID retrieval",
+          "Source Method": "Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method retrieves the device ID using `TelephonyManager.getDeviceId()`.",
+          "Action": "Retrieval"
+        }
+      ],
+      "All Sinks": [
+        "Llina/ubc/objectsensitivity/ObjectSensitivity;->log:(Ljava/lang/String;Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Llina/ubc/objectsensitivity/ObjectSensitivity;->onCreate:(Landroid/os/Bundle;)V --> Llina/ubc/objectsensitivity/ObjectSensitivity;->log:(Ljava/lang/String;Ljava/lang/String;)V",
+          "Reasoning": "The `onCreate` method retrieves the device ID ('123') via `TelephonyManager.getDeviceId()` and adds it to a LinkedList.  The method then logs 'ObjectSensitivity1' and 'ObjectSensitivity2' to the logcat. The device ID is passed as an argument to the `log` method, which is a sink."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "ObjectSensitivity1": {
+    "apk_name": "ObjectSensitivity1",
+    "ground_truth_summary": "Two lists are created, a tainted value is added to one of them while a constant string is added to the other one. The first element of the list with the untainted object is sent to a sink. Data flow: -. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "TelephonyManager",
+        "SIM serial number",
+        "LinkedList",
+        "SmsManager",
+        "sendTextMessage"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve SIM serial number",
+          "Source Method": "Lde/ecspride/ObjectSensitivity1;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method calls `getSimSerialNumber()` on a `TelephonyManager` instance, retrieving the SIM serial number.",
+          "Action": "SIM serial number is retrieved and stored in v1."
+        }
+      ],
+      "All Sinks": [
+        "sendTextMessage"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "SIM serial number",
+          "Reasoning": "The SIM serial number is used as the message body in `sendTextMessage`."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "ObjectSensitivity2": {
+    "apk_name": "ObjectSensitivity2",
+    "ground_truth_summary": "A tainted value from a source is written to a local variable and a field. Both are overwritten before they are passed to a sink Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "String",
+        "android.os.Bundle"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "getDeviceId called",
+          "Source Method": "Lde/ecspride/OverwiteValue;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method `onCreate` calls `getDeviceId` via `TelephonyManager.getDeviceId()`, resulting in a tainted `String` being stored in `DataStore.field`.",
+          "Action": "Tainted String created"
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "Ordering1": {
+    "apk_name": "Ordering1",
+    "ground_truth_summary": "This example leaks variable contents before the handler initializing them is even registered Data flow: onLocationChanged: source -> latitude, longtitude; onCreate: latitude -> sink, longtitude -> sink. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "latitude",
+        "longitude"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Extract latitude and longitude from Location object.",
+          "Source Method": "Lde/ecspride/MainActivity$1;->onLocationChanged:(Landroid/location/Location;)V",
+          "Reasoning": "The method summary explicitly states that latitude and longitude are extracted from the Location object.",
+          "Action": "Stored as fields in MainActivity object"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity$1;->onLocationChanged:(Landroid/location/Location;)V --> MainActivity object contains latitude and longitude.",
+          "Reasoning": "The method extracts latitude and longitude from the Location object and stores them in the MainActivity object.  No overwrite or taint loss is indicated."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "Parcel1": {
+    "apk_name": "Parcel1",
+    "ground_truth_summary": "Tests whether analysis has proper modeling of Parcel marshall and unmarshall, getDeviceId() is source and sinkmethod is writeParcel(String arg) and sink sms.sendTextMessage(\"+49 1234\", null, result.str, null, null), Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "String"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain device ID.",
+          "Source Method": "Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method calls `getSystemService` with the string \"phone\", which returns a `TelephonyManager` instance, subsequently invoking `getDeviceId()` to retrieve the device ID as a String.",
+          "Action": "String retrieval"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/parcel/MainActivity;->writeParcel:(Landroid/os/Parcel;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/parcel/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/parcel/MainActivity;->writeParcel:(Landroid/os/Parcel;)V",
+          "Reasoning": "The `getDeviceId()` method returns a String, which is then directly passed as an argument to the `writeParcel` method. This constitutes a sensitive data leak."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "PathSensitivity": {
+    "apk_name": "PathSensitivity",
+    "ground_truth_summary": "This is a test case used to check whether the tool is path sensitive. If the tool is path sensitive, it should not report flow in this case.  If path insensitive, the tool would report a flow from the source to the sink.  If path sensitive, the tool would be able to record the conditions for each flow, then there would not be a flow from the source to the sink in this case. Data flow: Expected sources: 47: getDeviceId() Expected sinks: 51: Log.i(java.lang.String, java.lang.String)  For tools that are path insensitive, they would report the following false positive flow: Flow Path: line 47: deviceId=tpm.getDeviceId() --> line 51: Log.i(\"PathSensitivity\", deviceId);. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained via TelephonyManager.",
+          "Source Method": "Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The summary explicitly states that this method originates user data by calling `TelephonyManager.getDeviceId()` and retrieving the device ID.",
+          "Action": "Retrieve"
+        }
+      ],
+      "All Sinks": [
+        "Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V --> android.util.Log.i",
+          "Reasoning": "The `onCreate` method retrieves the DeviceId via `TelephonyManager.getDeviceId()` and logs it using `android.util.Log.i`.  The summary indicates this is a sink."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "PlayStore1": {
+    "apk_name": "PlayStore1",
+    "ground_truth_summary": "Sends the IMEI as an SMS message and writes it to the log file. Emulator detection is performed by checking whether the Play Store app is installed on the system. Source is getDeviceId(0 and sink is \tsm.sendTextMessage(number, null, imei, null, null);  and Log.v(\"DROIDBENCH\", imei); and sink method is onCreate(Bundle savedInstanceState)   Data flow: onCreate: imei -> SMS & Log. Number of leaks: 2.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device_id",
+        "phone_number"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain Device ID",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle)",
+          "Reasoning": "The `onCreate` method calls `TelephonyManager.getDeviceId()` to retrieve the device ID.",
+          "Action": "Store"
+        },
+        {
+          "Step": "Send SMS with Device ID",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle)",
+          "Reasoning": "The retrieved device ID is used as the message body in an SMS transmission.",
+          "Action": "Transmit"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle) --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)",
+          "Reasoning": "The device ID obtained from `TelephonyManager.getDeviceId()` is directly used as the message body in `SmsManager.sendTextMessage`. This constitutes a clear data flow."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "PrivateDataLeak3": {
+    "apk_name": "PrivateDataLeak3",
+    "ground_truth_summary": "The IMEI is written into a file, read out again and then leaked.getDeviceId() is source and sink is FileOutputStream fos = openFileOutput('out.txt', Context.MODE_PRIVATE) from onCreate(Bundle savedInstanceState) and sendTextMessage(\"+49\", null, new String(buf).trim(), null, null) and sink method is onResume() Data flow: OnCreate: source -> imei -> file -> imei -> sink. Number of leaks: 2.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device ID"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve device ID",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method calls `getSystemService` with the string \"phone\", which retrieves a `TelephonyManager` object. The `getDeviceId()` method is then invoked on this `TelephonyManager` object.",
+          "Action": "Retrieval of device ID"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->openFileOutput:(Ljava/lang/String;Ljava/lang/String;Z)V",
+        "Lde/ecspride/MainActivity;->write:(Ljava/lang/String;I)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->openFileOutput:(Ljava/lang/String;Ljava/lang/String;Z)V",
+          "Reasoning": "The `onCreate` method calls `getSystemService` with the string \"phone\", which retrieves a `TelephonyManager` object. The `getDeviceId()` method is then invoked on this `TelephonyManager` object, which returns the device ID as a string. This string is then written to a file named \"out.txt\" using `openFileOutput` and `write` instructions."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "PublicAPIField1": {
+    "apk_name": "PublicAPIField1",
+    "ground_truth_summary": "Track flows through an API field setter and a direct field access, getDeviceId(0 is source and sink is Log.i(\"DroidBench\", \"IMEI: \" + point.x + \"\" + point.y) and sink method is  onCreate(Bundle savedInstanceState) Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device_id"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve device ID",
+          "Source Method": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `getDeviceId()` API call is explicitly identified as a sensitive API.",
+          "Action": "Store device ID"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/public_api_field/MainActivity;->Log.i(TAG, \"Device ID: \" + deviceId)",
+        "Ledu/mit/public_api_field/MainActivity;->Log.i(TAG, \"Device ID: \" + deviceId)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/public_api_field/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/public_api_field/MainActivity;->Log.i(TAG, \"Device ID: \" + deviceId)",
+          "Reasoning": "The `getDeviceId()` API call is invoked. The returned device ID is then used to construct a string, which is subsequently logged using `Log.i`. The device ID is directly passed as an argument to the logging sink."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "PublicAPIField2": {
+    "apk_name": "PublicAPIField2",
+    "ground_truth_summary": "Test if analysis links setter / getter of action field of Intent. getdeviceId(0 is source and sink is Log.i(\"DroidBench\", i.getAction()) and sink method is onCreate(Bundle savedInstanceState) Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device_id"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve device ID",
+          "Source Method": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `getDeviceId()` method call retrieves the device ID from the TelephonyManager.",
+          "Action": "Store device_id in register v1"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/icc_intent_class_modeling/MainActivity;->Log.i:(Ljava/lang/String;Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/icc_intent_class_modeling/MainActivity;->getDeviceId:(Landroid/telephony/TelephonyManager;)J --> Ledu/mit/icc_intent_class_modeling/MainActivity;->Log.i:(Ljava/lang/String;Ljava/lang/String;)V",
+          "Reasoning": "The `onCreate` method calls `getDeviceId()` on the `TelephonyManager`, which returns the device ID. This device ID is then stored in register v1, and subsequently passed as the first argument to `Log.i`.  The `Log.i` method then logs the device ID."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "ReflctionOverloaded": {
+    "apk_name": "ReflctionOverloaded",
+    "ground_truth_summary": "This is a test case with overloaded methods. getDeviceId() is source and sink method is void leak(String s) and sink is  Log.i(\"TAG\", s)  Data flow: Expected sources: 1 Expected sinks: 2. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain Device ID",
+          "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method obtains the device ID using `getDeviceId()` and stores it in the `v2` register.",
+          "Action": "Store"
+        }
+      ],
+      "All Sinks": [
+        "Ljunbin/ubc/MainActivity;->leak:(Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljunbin/ubc/MainActivity;->leak:(Ljava/lang/String;)V",
+          "Reasoning": "The `onCreate` method obtains the DeviceId and passes it as an argument to the `leak` method."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "Reflection1": {
+    "apk_name": "Reflection1",
+    "ground_truth_summary": "A class instance is created using reflection. Sensitive data is stored in a field of this class and directly read out again and leaked. getDeviceid(0 is source and sink is  sms.sendTextMessage(\"+49 1234\", null, bc.imei, null, null); and sink method is OnCreate(Bundle savedInstanceState0 Data flow: onCreate: source -> bc.imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "getDeviceId() retrieves DeviceId",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The summary states that this method obtains the device ID using `getDeviceId()` which originates from `TelephonyManager`.",
+          "Action": "Store DeviceId in `imei`"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": "[\n            {\n                \"dataflow 1\": \" [Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;)]",
+      "Label": "leak"
+    }
+  },
+  "Reflection2": {
+    "apk_name": "Reflection2",
+    "ground_truth_summary": "A class instance is created using reflection. Sensitive data is stored in a field of this class, read out again using a method implemented in the \"unknown\" class and leaked. getDeviceid(0 is source and sink is v and sink method is onCreate(0. Data flow: onCreate: source -> bc.imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "imei",
+        "android.telephony.TelephonyManager",
+        "SmsManager"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain Device ID",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method `onCreate` obtains the device ID using `getDeviceId()` from `TelephonyManager`.",
+          "Action": "Retrieve Device ID"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V"
+      ],
+      "Complete Data Flow": "[\n            {\n                \"dataflow 1\": \" [Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V]",
+      "Label": "leak"
+    }
+  },
+  "Reflection3": {
+    "apk_name": "Reflection3",
+    "ground_truth_summary": "A class instance is created using reflection. Sensitive data is stored using a setter in this class, read back using a getter and then leaked. No type information on the target class is used. getDeviceId() is source and sink is sms.sendTextMessage(\"+49 1234\", null, s, null, null); and sink method is onCreate(Bundle savedInstanceState) Data flow: onCreate: source -> o.setImei() -> o.getImei() -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "TelephonyManager"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "1",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method uses reflection to call `getDeviceId()` on a `TelephonyManager` instance, originating the `DeviceId` value.",
+          "Action": "Record `DeviceId` as a sensitive source."
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": "[\n            {\n                \"dataflow 1\": \" [Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->sendTextMessage:(Ljava/lang/String;)]",
+      "Label": "leak"
+    }
+  },
+  "Reflection4": {
+    "apk_name": "Reflection4",
+    "ground_truth_summary": "Sensitive data is read using a function in a reflective class and leaked using another function in the same reflective class. getDeviceId() is source and sink is sms.sendTextMessage(\"+49 1234\", null, s, null, null) and sink method is void bar(String s) Data flow: onCreate: source -> bc.foo() -> bc.bar() -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve device ID using TelephonyManager",
+          "Source Method": "Lde/ecspride/ConcreteClass;->foo:(Landroid/content/Context;)Ljava/lang/String;",
+          "Reasoning": "The method foo retrieves the device ID, which is a sensitive value.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/ConcreteClass;->foo:(Landroid/content/Context;)Ljava/lang/String; --> Stored (device ID)",
+          "Reasoning": "The device ID is retrieved and stored in the foo method."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "ReflectionDynamic": {
+    "apk_name": "ReflectionDynamic",
+    "ground_truth_summary": "This is a test case that dynamically constructs reflective calls. Source is getDeviceId() and sink is  Log.i(t, s) and sink method is leak(String t, String s) Data flow: Expected sources: 1 Expected sinks: 2. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID retrieved via TelephonyManager.getDeviceId().",
+          "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method summary explicitly states that the device ID is retrieved using `TelephonyManager.getDeviceId()`.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "Ljunbin/ubc/MainActivity;->leak:(Landroid/os/Bundle;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljunbin/ubc/MainActivity;->leak:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method retrieves the Device ID and passes it to the `leak` method via reflection."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "RegisterGlobal1": {
+    "apk_name": "RegisterGlobal1",
+    "ground_truth_summary": "Both source and sink are part of a global (application-level) lifecycle handler. getDeviceId() is source and sink is sms.sendTextMessage(\"+49\", null, imei, null, null); and sink method id onActivityPaused(Activity activity) Data flow: OnCreate: source -> imei; sendMessage: imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "TelephonyManager",
+        "SmsManager",
+        "android.app.Activity"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID retrieved via TelephonyManager.",
+          "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V",
+          "Reasoning": "The summary states this method retrieves the device ID using TelephonyManager.",
+          "Action": "Stored"
+        },
+        {
+          "Step": "Device ID used to construct SMS message.",
+          "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V",
+          "Reasoning": "The summary indicates the device ID is used to construct the SMS message.",
+          "Action": "Transmitted"
+        },
+        {
+          "Step": "Device ID used to construct SMS message.",
+          "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V",
+          "Reasoning": "The summary indicates the device ID is used to construct the SMS message.",
+          "Action": "Transmitted"
+        },
+        {
+          "Step": "Device ID used to construct SMS message.",
+          "Source Method": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityResumed:(Landroid/app/Activity;)V",
+          "Reasoning": "The summary indicates the device ID is used to construct the SMS message.",
+          "Action": "Transmitted"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V",
+        "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityResumed:(Landroid/app/Activity;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityStarted:(Landroid/app/Activity;)V --> Lde/ecspride/MyApplication$ApplicationCallbacks;->onActivityPaused:(Landroid/app/Activity;)V",
+          "Reasoning": "The device ID, initially retrieved from TelephonyManager, is used to construct the SMS message and is passed to onActivityPaused and onActivityResumed."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "RegisterGlobal2": {
+    "apk_name": "RegisterGlobal2",
+    "ground_truth_summary": "Both source and sink are part of a global (application-level) lifecycle handler.getDeviceId() is source and sink is   sms.sendTextMessage(\"+49\", null, imei, null, null); and sink method is onConfigurationChanged(Configuration newConfig) Data flow: OnCreate: source -> imei; sendMessage: imei -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "Configuration"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Lde/ecspride/MyApplication$1;->onLowMemory:()V",
+          "Reasoning": "The summary states that this method retrieves the device ID from TelephonyManager and stores it in `imei`.",
+          "Action": "Store"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MyApplication$1;->onLowMemory:()V --> DeviceId --> Lde/ecspride/MyApplication$1;->onConfigurationChanged:(Landroid/content/res/Configuration;)V",
+          "Reasoning": "The `onLowMemory` method retrieves the DeviceId and passes it to `onConfigurationChanged`. The DeviceId was not overwritten."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "ReturnConstructor": {
+    "apk_name": "ReturnConstructor",
+    "ground_truth_summary": "This is a test case, combined with test case GetContructor, can prove that DroidRA is not able to handle Construtor returned by methods. getDeviceId() is source and sink  Log.v(\"TAG\", manager.getDeviceId()) Data flow: Expected sources: 1 Expected sinks: 1. Number of leaks: 2.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained via getDeviceId.",
+          "Source Method": "Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V",
+          "Reasoning": "The method summary states that the method originates the DeviceId by calling TelephonyManager's getDeviceId() method.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "android.util.Log.v"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ljunbin/ubc/MyClass;-><init>:(Landroid/content/Context;)V --> android.util.Log.v",
+          "Reasoning": "The method summary explicitly states that the logging operation constitutes a sink for the sensitive data. The DeviceId is obtained via getDeviceId and then logged using android.util.Log.v."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "SendTextMessage": {
+    "apk_name": "SendTextMessage",
+    "ground_truth_summary": "This is a test case to show that Amandroid conservatively handles sendTextMessage(), leading to FPs. getDeviceId() is source and sink is sm.sendTextMessage(number, null, imei, null, null) and sink method onCreate()  Data flow: Expected sources: 1 Expected sinks: 2. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "SMS Message"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain Device ID",
+          "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method obtains the device ID using TelephonyManager's getDeviceId() method.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The device ID obtained from getDeviceId() is used to send an SMS message. This is a sink operation."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "Serialization1": {
+    "apk_name": "Serialization1",
+    "ground_truth_summary": "Test serialization end to end flow. getDeviceId(0 is source and sink is edu/mit/serialization/MainActivity;->Log.i(\"DroidBench\", s2.toString()) and sink method is  onCreate(Bundle savedInstanceState) Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "String"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain device ID",
+          "Source Method": "Ledu/mit/serialization/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `TelephonyManager` instance obtained via `System.getSystemService` is used to retrieve the device ID.",
+          "Action": "Retrieve"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/serialization/MainActivity;->Log.i:(Ljava/lang/String;Z)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/serialization/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/serialization/MainActivity;->System.getSystemService:(...) --> Ledu/mit/serialization/MainActivity;->TelephonyManager;->getDeviceId():String --> Ledu/mit/serialization/MainActivity;->Log.i:(String, true)"
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "ServiceLifecycle1": {
+    "apk_name": "ServiceLifecycle1",
+    "ground_truth_summary": "A source is called and stored to a variable in one callback method, the variable is passed to a sink in another callback method. Source is getSimSerialNumber(); and sink  sms.sendTextMessage(\"+49 1234\", null, secret, null, null) from onLowMemory() Data flow: onStartCommand: source -> secret; onLowMemory: secret -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "SIM serial number",
+        "SMS content"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve SIM serial number",
+          "Source Method": "Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I)",
+          "Reasoning": "The method retrieves the SIM serial number using TelephonyManager.",
+          "Action": "Stored in 'secret' field"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainService;->onLowMemory:()"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainService;->onStartCommand:(Landroid/content/Intent; I I) --> Lde/ecspride/MainService;->onLowMemory:()V",
+          "Reasoning": "The SIM serial number is retrieved from the TelephonyManager and passed to onLowMemory. The summary indicates that the SIM serial number is stored in 'secret' field, and the 'secret' field is used as an argument to the sink method."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "ServiceLifecycle2": {
+    "apk_name": "ServiceLifecycle2",
+    "ground_truth_summary": "Test accurate modeling of Service object allocation and lifecycle. Source is getDeviceid(0 and sink Log.i(\"DroidBench\", value) from onStartCommand(Intent intent, int flags, int startId). Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device ID"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained via TelephonyManager.",
+          "Source Method": "Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I",
+          "Reasoning": "The `onStartCommand` method uses `getDeviceId()` to retrieve a unique device ID from the `TelephonyManager`. This is a key step in collecting personal data.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I --> Ledu/mit/service_lifecycle/MyService;->onStartCommand:(Landroid/content/Intent; I I)I",
+          "Reasoning": "The `onStartCommand` method initiates the data flow. It calls `getDeviceId()` to obtain the device ID. This ID is then stored within the `value` field of the `MyService` instance.  Finally, the `Log.i` call logs this device ID to logcat, representing a real sink."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "SetContentView": {
+    "apk_name": "SetContentView",
+    "ground_truth_summary": "This is a test case that the parameter of setContentView() is not a integer at compile time. Source is getDeviceId() and sink method is junbin/ubc/MainActivity;->buttonClick:(Landroid/view/View;)V and sink is   Log.v(\"TAG\", imei) Data flow: Expected sources: 1 Expected sinks: 1. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained from TelephonyManager.",
+          "Source Method": "Ljunbin/ubc/MainActivity;->buttonClick:(Landroid/view/View;)V",
+          "Reasoning": "The method summary states that the method originates the device ID data by calling getDeviceId().",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "Ljunbin/ubc/MainActivity;->buttonClick:(Landroid/view/View;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ljunbin/ubc/MainActivity;->buttonClick:(Landroid/view/View;)V --> android.util.Log.v()",
+          "Reasoning": "The device ID obtained from TelephonyManager is directly logged using android.util.Log.v()."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "SetGetHint": {
+    "apk_name": "SetGetHint",
+    "ground_truth_summary": "This is a test case that combines with ViewCasting, to show that a tool can handle setHint()/getHint(). getDeviceId() is source and sink is Log.v('TAG', button.getHint().toString());  and sink method onCreate()Data flow: Expected sources: 1 Expected sinks: 1. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID retrieved via TelephonyManager.",
+          "Source Method": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The summary explicitly states that the device ID is retrieved using `TelephonyManager.getDeviceId()`, which is a sensitive API.",
+          "Action": "Stored"
+        }
+      ],
+      "All Sinks": [
+        "android.util.Log.v"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ljunbin/ubc/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> android.util.Log.v",
+          "Reasoning": "The `onCreate` method retrieves the `DeviceId` from `TelephonyManager` and logs it to `android.util.Log.v`. The `DeviceId` is still tainted at the time of logging."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "SharedPreference1": {
+    "apk_name": "SharedPreference1",
+    "ground_truth_summary": "This is a test case used to explain that Flowdroid+IccTA and Amandroid cannot handle flows related to SharedPreference. Data flow: Expected source: line 41: getDeviceId() Expected sink: line 50: lina/ubc/sharedpreference1/MainActivity;->  Flow path: line 41: String deviceId = tpm.getDeviceId() --> line 45: editor.putString(\"deviceId\", deviceId) --> line 49: String deviceIdFromSharedPreference = settings.getString(\"deviceId\", \"\") --> line 50: Log.i(\"SharedPreference\", deviceIdFromSharedPreference) --> leak. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained via TelephonyManager.getDeviceId().",
+          "Source Method": "Llina/ubc/sharedpreference1/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method summary explicitly states that the device ID is obtained by calling TelephonyManager.getDeviceId().",
+          "Action": "Obtained"
+        }
+      ],
+      "All Sinks": [
+        "Llina/ubc/sharedpreference1/MainActivity;->logI:(Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Llina/ubc/sharedpreference1/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Llina/ubc/sharedpreference1/MainActivity;->logI:(Ljava/lang/String;)V",
+          "Reasoning": "The device ID obtained from TelephonyManager.getDeviceId() is stored in SharedPreferences and then logged using Android.util.Log.i. This represents a direct flow of sensitive data to a sink."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "SharedPreference2": {
+    "apk_name": "SharedPreference2",
+    "ground_truth_summary": "This is a test case (SharedPreference2), combined with test case SharedPreference3 are used to help clarify that: for the /Lifecycle/SharedPreferenceChanged1/ test case in DroidBench:  (https://github.com/secure-software-engineering/DroidBench/tree/master/eclipse-project/Lifecycle/SharedPreferenceChanged1),  the reason why FD, IccTA, and AD failed to detect this flow is not about handling the lifecycle events of shared preferences. Those tools can successfully detect the changes in shared preferences, and call the callback listener OnSharedPreferenceChangeListener. The reason why the three tools failed to detect the flow is as described below:  FNs: Fails to model SharedPreference. Specifically, the tool fails to detect the value read/write from/to the shared preferences Data flow: Expected Source: line 54: getDeviceId() Expected Sink: line 68: Log.i(java.lang.String, java.lang.String)  Flow Path: line 54: String imei = mgr.getDeviceId() --> line 57: settings.registerOnSharedPreferenceChangeListener(prefsListener) --> line 60: editor.putString(\"imei\", imei) --> line 61: editor.apply() --> call --> SharedPreferences.OnSharedPreferenceChangeListener prefsListener --> line 67: String imei = sharedPreferences.getString(key, \"\") --> line 68: Log.i(\"DroidBench\", imei) --> leak. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain Device ID",
+          "Source Method": "Llina/ubc/sharedpreference2/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method obtains the device ID using TelephonyManager's getDeviceId() method.",
+          "Action": "Data Retrieval"
+        }
+      ],
+      "All Sinks": [
+        "Llina/ubc/sharedpreference2/MainActivity;->onCreate:(Landroid/os/Bundle;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Llina/ubc/sharedpreference2/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> SharedPreferences 'imei' storage",
+          "Reasoning": "The `onCreate` method retrieves the device ID (likely IMEI) and stores it in a SharedPreferences file named 'imei'. This is a direct flow from the sensitive source to the sink."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "SharedPreference3": {
+    "apk_name": "SharedPreference3",
+    "ground_truth_summary": "This is a test case (SharedPreference3), combined with test case SharedPreference2 are used to help clarify that: for the /Lifecycle/SharedPreferenceChanged1/ test case in DroidBench:  (https://github.com/secure-software-engineering/DroidBench/tree/master/eclipse-project/Lifecycle/SharedPreferenceChanged1),  the reason why FD, IccTA, and AD failed to detect this flow is not about handling the lifecycle events of shared preferences. Those tools can successfully detect the changes in shared preferences, and call the callback listener OnSharedPreferenceChangeListener. The reason why the three tools failed to detect the flow is as described below:  FNs: Fails to model SharedPreference. Specifically, the tool fails to detect the value read/write from/to the shared preferences Data flow: Expected Source: line 54: getDeviceId() Expected Sink: line 67: Log.i(java.lang.String, java.lang.String)  Flow Path: line 54: globalImei = mgr.getDeviceId() --> line 57: settings.registerOnSharedPreferenceChangeListener(prefsListener) --> line 60: editor.putString(\"string\", \"hello\") --> line 61: editor.apply() --> call --> SharedPreferences.OnSharedPreferenceChangeListener prefsListener --> line 67: Log.i(\"DroidBench: GlobalImei\", globalImei) --> leak. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Llina/ubc/sharedpreference3/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The method `onCreate` retrieves the device ID (IMEI) using `getDeviceId()` on `TelephonyManager`.",
+          "Action": "Data stored in `globalImei`"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Llina/ubc/sharedpreference3/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> null",
+          "Reasoning": "The `onCreate` method retrieves the device ID and stores it.  There are no sinks identified in the summary."
+        }
+      ],
+      "Label": "no leak"
+    }
+  },
+  "SharedPreferenceChanged1": {
+    "apk_name": "SharedPreferenceChanged1",
+    "ground_truth_summary": "Test that an event from the runtime is called with the appropriate context (argument). Source is getDeviceId() and sink is   Log.i(\"DroidBench\", imei) from  onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId",
+        "IMEI"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID and IMEI",
+          "Source Method": "Ledu/mit/event_context_shared_pref_listener/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method retrieves `DeviceId` and `IMEI`.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": "[\n            {\n                \"dataflow 1\": \"Ledu/mit/event_context_shared_pref_listener/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> [Sink Method(...)]",
+      "Label": "no leak"
+    }
+  },
+  "SourceCodeSpecific1": {
+    "apk_name": "SourceCodeSpecific1",
+    "ground_truth_summary": "Tainted data is created in a condition branch and afterwards sent to a sink in a loop. getDeviceId () is source and sink is sm.sendTextMessage(number, null, message, null, null); and sink method is de/ecspride/MainActivity;-> void sendSMS(Set<String> numbers, String message) Data flow: source -> message -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "deviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain device ID using TelephonyManager.",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method calls `getSystemService` to get a `TelephonyManager` instance, which then calls `getDeviceId()`.",
+          "Action": "Store device ID in a variable."
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->sendSMS:(Ljava/util/Set; Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->getDeviceId() --> Lde/ecspride/MainActivity;->sendSMS:(Ljava/util/Set; Ljava/lang/String;)V",
+          "Reasoning": "The `getDeviceId` instruction returns a string. This string is then passed as the second argument to the `sendSMS` method."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "StartProcessWithSecret1": {
+    "apk_name": "StartProcessWithSecret1",
+    "ground_truth_summary": "Flow to sink is through memory reachable from receiver, but not through argument, source is getDeviceId() and sink is processBuilder  pb.start();  and sink method is onCreate(Bundle savedInstanceState) Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device_id"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain device ID",
+          "Source Method": "Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method calls `getDeviceId()` to retrieve the device ID.",
+          "Action": "Store device ID"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/non_sink_argument_flow/MainActivity;->ProcessBuilder:(Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/non_sink_argument_flow/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/non_sink_argument_flow/MainActivity;->ProcessBuilder:(Ljava/lang/String;)V",
+          "Reasoning": "The `getDeviceId()` call in `onCreate` produces the `device_id`. This `device_id` is then passed as the argument to the `ProcessBuilder` instantiation. The `ProcessBuilder` instantiation and subsequent execution is a sink."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "StaticInitialization1": {
+    "apk_name": "StaticInitialization1",
+    "ground_truth_summary": "Tainted data is leaked to a sink during static initialization of a class. Source is getDeviceId() and sink is  sms.sendTextMessage(\"+49 1234\", null, im, null, null);  Data flow: source -> im -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "deviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve device ID",
+          "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `onCreate` method calls `getDeviceId()` on a `TelephonyManager` instance, retrieving the device ID.",
+          "Action": "deviceId retrieved"
+        }
+      ],
+      "All Sinks": [
+        "null"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> getDeviceId() --> deviceId",
+          "Reasoning": "The `onCreate` method initiates the flow by calling `getDeviceId()`. The returned device ID is then stored."
+        }
+      ],
+      "Label": [
+        "leak"
+      ]
+    }
+  },
+  "StaticInitialization2": {
+    "apk_name": "StaticInitialization2",
+    "ground_truth_summary": "Sensitive data is obtained during static initialization of a class and leaked in non-static code. Source is getDeviceId(0 and sink is sms.sendTextMessage(\"+49 1234\", null, im, null, null);  and sink method is onCreate(Bundle savedInstanceState) Data flow: source -> im -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Lde/ecspride/MainActivity$StaticInitClass1;.<clinit>:()V",
+          "Reasoning": "The `getDeviceId()` method is called, returning a String representing the device ID.",
+          "Action": "String returned"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/MainActivity;->sput-object:Type, v0"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity$StaticInitClass1;.<clinit>:()V --> getDeviceId() --> sget-object v0, Lde/ecspride/MainActivity;->c Landroid/content/Context; --> sput-object v0, Class;->f:Type",
+          "Reasoning": "The `getDeviceId()` method is called, returning a String representing the device ID. This String is then stored in the static field `MainActivity.im` via `sput-object`. The exact argument is passed to `sput-object`."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "StaticInitialization3": {
+    "apk_name": "StaticInitialization3",
+    "ground_truth_summary": "Clinit (static initializer test) source is getDeviceId() and sink is  edu/mit/clinit/MainActivity;-> Log.i(\"DroidBench\", s) and sink method is onCreate(Bundle savedInstancestate) Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device ID",
+        "DroidBench"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Device ID obtained via TelephonyManager.",
+          "Source Method": "Ledu/mit/clinit/Test;-><clinit>:()V",
+          "Reasoning": "The `Test` class's `<clinit>` method obtains the device ID using `getDeviceId()` from a `TelephonyManager` and stores it in the `s` member variable of `MainActivity`. This represents the origin of potentially sensitive data.",
+          "Action": "Stored"
+        },
+        {
+          "Step": "MainActivity initialized, `s` set to \"\", and `Test` instance created.",
+          "Source Method": "Ledu/mit/clinit/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `MainActivity`'s `onCreate` method initializes the object, setting the content view and creating an instance of `Test`.",
+          "Action": "Created"
+        },
+        {
+          "Step": "String 'DroidBench' logged.",
+          "Source Method": "Ledu/mit/clinit/MainActivity;->setContentView(I)V",
+          "Reasoning": "The `setContentView` method, after initializing the `MainActivity`, logs the string 'DroidBench'.",
+          "Action": "Logged"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/clinit/MainActivity;->Log.i(...)"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/clinit/Test;-><clinit>:()V --> Ledu/mit/clinit/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/clinit/MainActivity;->setContentView(I)V --> Ledu/mit/clinit/MainActivity;->Log.i(...)",
+          "Reasoning": "The device ID is initially obtained from the TelephonyManager and stored in `MainActivity`. The `onCreate` method then sets up the UI and creates an instance of `Test`. Finally, the `setContentView` method logs the string 'DroidBench', which is a direct sink for the potentially tainted device ID."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "StringFormatter1": {
+    "apk_name": "StringFormatter1",
+    "ground_truth_summary": "Test String Formatter. Source is getDeviceId() and sink is  Log.i(\"DroidBench\", s); and sink method onCreate(Bundle savedInstanceState) Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "deviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain device ID using TelephonyManager.getDeviceId()",
+          "Source Method": "Ledu/mit/string_formatter/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method calls `getSystemService` to obtain a `TelephonyManager` instance and then invokes `getDeviceId()`.",
+          "Action": "String"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/string_formatter/MainActivity;->Log.i:(Ljava/lang/String;Z)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/string_formatter/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/string_formatter/MainActivity;->Log.i:(Ljava/lang/String;Z)V",
+          "Reasoning": "The `getDeviceId()` method returns a String, which is then used to initialize a `StringBuffer` and subsequently used in a `Log.i` call. The `Log.i` call is the sink."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "StringPatternMatching1": {
+    "apk_name": "StringPatternMatching1",
+    "ground_truth_summary": "Test common usage of pattern and matcher in Java. Source is getDeviceid() and source method is edu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;) and sink is edu/mit/pattern_matcher/MainActivity;->Log.i(\"DroidBench\", match)  Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "deviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method calls `getSystemService` to obtain a `TelephonyManager` instance, which then calls `getDeviceId()` to retrieve the device ID as a String.",
+          "Action": "String retrieval"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/pattern_matcher/MainActivity;->Log.i:(Ljava/lang/String;Ljava/lang/String;)"
+        
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/pattern_matcher/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/pattern_matcher/MainActivity;->getSystemService:(String) --> Ledu/mit/pattern_matcher/MainActivity;->getDeviceId() --> Ledu/mit/pattern_matcher/MainActivity;->Log.i:(String, String)",
+          "Reasoning": "The `onCreate` method initiates the flow by obtaining the device ID.  The `getSystemService` call returns a `TelephonyManager` instance, which then calls `getDeviceId()`.  The returned device ID (String) is then used as an argument to the `Log.i` method, resulting in the logging of 'DroidBench' along with the device ID."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "StringToCharArray1": {
+    "apk_name": "StringToCharArray1",
+    "ground_truth_summary": "Test conversion of String to char[], source is getDeviceId() and sink is Log.i(\"DroidBench\", builtImei); Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device ID"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method calls `getSystemService` with `android.telephony.TelephonyManager` to obtain the device ID using `getDeviceId()`.",
+          "Action": "Retrieval of device ID"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/string_to_char/MainActivity;->Log.i:(Ljava/lang/String;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/string_to_char/MainActivity;->Log.i:(Ljava/lang/String;)",
+          "Reasoning": "The `getDeviceId()` method returns a string representing the device ID. This string is then used as an argument to the `Log.i` method, resulting in a log message containing the device ID. This creates a direct flow from the sensitive source to the sink."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "StringToOutputStream1": {
+    "apk_name": "StringToOutputStream1",
+    "ground_truth_summary": "Tainted value is written to an output stream and then read back as a string that is leaked. Source is getDeviceId() and sink is edu/mit/outputstream/MainActivity-> Log.i(\"DroidBench\", outString); and sink method is  onCreate(Bundle savedInstanceState) Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device_id"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Obtain device ID",
+          "Source Method": "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The `onCreate` method invokes `getDeviceId()` to retrieve the device ID.",
+          "Action": "Device ID retrieved"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/outputstream/MainActivity;->i(Ljava/lang/String; Ljava/lang/String;)I"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/outputstream/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/outputstream/MainActivity;->i(Ljava/lang/String; Ljava/lang/String;)I",
+          "Reasoning": "The `onCreate` method calls `getDeviceId()` which returns the device ID.  This device ID is then logged using `Log.i` with the string 'DroidBench'.  The device ID is directly passed as an argument to the logging sink."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "UnreachableCode": {
+    "apk_name": "UnreachableCode",
+    "ground_truth_summary": "A method that is never called contains a dataflow from source to sink. getDeviceId() is source and sink is Log.i(\"INFO\", deviceid);  Data flow: no. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "deviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Invoke `getBaseContext()`",
+          "Source Method": "Lde/ecspride/UnreachableCode;->unrechable:()V",
+          "Reasoning": "The `invoke-virtual` instruction to `getBaseContext()` is executed.",
+          "Action": "Obtain `Context` object"
+        },
+        {
+          "Step": "Attempt to retrieve device ID",
+          "Source Method": "Lde/ecspride/UnreachableCode;->unrechable:()V",
+          "Reasoning": "The method `unrechable` contains a call to `getDeviceId` which is never executed due to the unreachable code.",
+          "Action": "Attempt to obtain device ID"
+        }
+      ],
+      "All Sinks": [
+        null
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/UnreachableCode;->unrechable:()V --> Attempt to obtain device ID --> null",
+          "Reasoning": "The method `unrechable` contains a call to `getDeviceId` which is never executed due to the unreachable code. Therefore, no data flow or sink is present."
+        }
+      ],
+      "Label": [
+        "no leak"
+      ]
+    }
+  },
+  "Unregister1": {
+    "apk_name": "Unregister1",
+    "ground_truth_summary": "Registers and directly unregisters a callback before it can be invoked. The code in the callback can thus never leak any data. Data flow: onLocationChanged: source -> latitude, longtitude; onResume: latitude -> sink, longtitude -> sink. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device ID"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Get device ID using TelephonyManager",
+          "Source Method": "Lde/ecspride/MainActivity$1;->onClick:(Landroid/view/View;)V",
+          "Reasoning": "The method originates user personal data by getting the device ID.",
+          "Action": "logged"
+        },
+        {
+          "Step": "Pass device ID as string to SmsManager's getDefault() method",
+          "Source Method": "Lde/ecspride/MainActivity$1;->onClick:(Landroid/view/View;)V",
+          "Reasoning": "The data propagation involves passing the device ID as a string.",
+          "Action": "passed"
+        }
+      ],
+      "All Sinks": [
+        "null"
+      ],
+      "Label": [
+        "no leak"
+      ]
+    }
+  },
+  "VirtualDispatch1": {
+    "apk_name": "VirtualDispatch1",
+    "ground_truth_summary": "This example contains a leakage of the imei in the clickButton() callback. The data source is placed into the onCreate() callback method in this class. The data sink is placed in the logData() method of the DataLeak class. getDeviceid() is the source and sink is Log.i(\"LOG\", super.getData()) from logData() Data flow: onCreate: source -> data -> onClick -> DataLeak:logData -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "deviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve device ID",
+          "Source Method": "Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)",
+          "Reasoning": "The method calls `getSystemService` with the string \"phone\", triggering the `getDeviceId` method of the `TelephonyManager`.",
+          "Action": "Store"
+        }
+      ],
+      "All Sinks": [
+        "Lde/ecspride/VirtualDispatch1;->onSaveInstanceState:(Landroid/os/Bundle;)V"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/VirtualDispatch1;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/VirtualDispatch1;->onSaveInstanceState:(Landroid/os/Bundle;)V",
+          "Reasoning": "The `deviceId` obtained from `getDeviceId` is stored in the `imei` field of the `VirtualDispatch1` object. This is then saved during `onSaveInstanceState`."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "VirtualDispatch2": {
+    "apk_name": "VirtualDispatch2",
+    "ground_truth_summary": "Testing dispatching of overiding methods. getDeviceId() is source and source method Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String; and sink is smsmanager.sendTextMessage(\"+49 1234\", null, test1.method(b), null, null);  from method  onCreate(Bundle savedInstanceState) Data flow: source -> sink. Number of leaks: 1.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device_id"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve device ID",
+          "Source Method": "Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String;",
+          "Reasoning": "The method calls `getDeviceId()` via `TelephonyManager`.",
+          "Action": "Retrieval"
+        }
+      ],
+      "All Sinks": [
+        "Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String;"
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String; --> getDeviceId() --> Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String;",
+          "Reasoning": "The method `Ledu/mit/dynamic_dispatch/B;->f:()Ljava/lang/String;` initiates the flow by calling `getDeviceId()` on the `TelephonyManager` instance. This call is the sink, directly returning the device ID."
+        }
+      ],
+      "Label": "leak"
+    }
+  },
+  "VirtualDispatch3": {
+    "apk_name": "VirtualDispatch3",
+    "ground_truth_summary": "Two classes implement an interface, but only one of them returns sensitive data. The leak however happens on the other implementation that only returns constant data. Data flow: source -> no connection to sink. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "device ID"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Originate device ID",
+          "Source Method": "Lde/ecspride/MainActivity$A;->getString:()Ljava/lang/String;",
+          "Reasoning": "The current method uses the `getSystemService` API to originate sensitive user personal data (device ID) and stores it in register v1.",
+          "Action": "stored"
+        }
+      ],
+      "All Sinks": [
+        null
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": " Lde/ecspride/MainActivity$A;->getString:()Ljava/lang/String; --> stored in register v1",
+          "Reasoning": "The device ID is originated from the getSystemService API and stored in register v1."
+        }
+      ],
+      "Label": [
+        "no leak"
+      ]
+    }
+  },
+  "VirtualDispatch4": {
+    "apk_name": "VirtualDispatch4",
+    "ground_truth_summary": "Two classes implement an interface, but only one of them returns sensitive data. The leak however happens on the other implementation that only returns constant data. Data flow: source -> no connection to sink. Number of leaks: 0.",
+    "model_summary": {
+      "Data Types Collected": [
+        "DeviceId"
+      ],
+      "Overall Data Flow": [
+        {
+          "Step": "Retrieve Device ID",
+          "Source Method": "Lde/ecspride/MainActivity$A;->getString:()Ljava/lang/String;",
+          "Reasoning": "The method summary indicates that the DeviceId is retrieved from TelephonyManager.",
+          "Action": "Stored"
+        }
+      ],
+      "Complete Data Flow": [
+        {
+          "dataflow 1": "Lde/ecspride/MainActivity$A;->getString:()Ljava/lang/String; --> DeviceId is passed to sink",
+          "Reasoning": "The method summary indicates that the DeviceId is retrieved from TelephonyManager and passed to a sink.  Since the DeviceId was not overwritten, it's considered a taint."
+        }
+      ],
+      "Label": "no leak"
+    }
+  }
+}

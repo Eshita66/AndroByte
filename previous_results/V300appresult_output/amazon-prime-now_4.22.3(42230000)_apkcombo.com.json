@@ -1,0 +1,521 @@
+[
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude",
+      "Zip Code",
+      "Country Code",
+      "Country Name"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data is collected.",
+        "Source Method": "Lcom/amazon/now/location/GeolocationService;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The method receives location data from the `onLocationChanged()` method.",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Address is extracted.",
+        "Source Method": "Lcom/amazon/now/location/GeolocationService;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The method calls the `getAddress()` method to extract the address.",
+        "Action": "Processed"
+      },
+      {
+        "Step": "Data is broadcast as an intent.",
+        "Source Method": "Lcom/amazon/now/location/GeolocationService;->onLocationChanged:(Landroid/location/Location;)V",
+        "Reasoning": "The method broadcasts the location data as an intent.",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/now/location/GeolocationService;->onLocationChanged:(Landroid/location/Location;)V --> ... --> null",
+        "Reasoning": "The location data is collected in the `onLocationChanged()` method, processed in the `getAddress()` method, and then transmitted as an intent."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Latitude",
+      "Longitude",
+      "Address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Receive address list",
+        "Source Method": "Lcom/amazon/now/location/ReverseGeocodingAsyncTask;->onPostExecute:(Ljava/util/List;)V",
+        "Reasoning": "Method receives a list of addresses",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Iterate through addresses",
+        "Source Method": "Lcom/amazon/now/location/ReverseGeocodingAsyncTask;->onPostExecute:(Ljava/util/List;)V",
+        "Reasoning": "Iterates through each address in the list",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Extract latitude and longitude",
+        "Source Method": "Lcom/amazon/now/location/ReverseGeocodingAsyncTask;->onPostExecute:(Ljava/util/List;)V",
+        "Reasoning": "Extracts latitude and longitude from each address",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Log latitude and longitude",
+        "Source Method": "Lcom/amazon/now/location/ReverseGeocodingAsyncTask;->onPostExecute:(Ljava/util/List;)V",
+        "Reasoning": "Logs latitude and longitude to the console",
+        "Action": "Logged"
+      },
+      {
+        "Step": "Log empty address event",
+        "Source Method": "Lcom/amazon/now/location/ReverseGeocodingAsyncTask;->onPostExecute:(Ljava/util/List;)V",
+        "Reasoning": "Logs an event when the address is empty",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/now/location/ReverseGeocodingAsyncTask;->onPostExecute:(Ljava/util/List;)V --> Lcom/amazon/now/location/ReverseGeocodingAsyncTask;->onPostExecute:(Ljava/util/List;)V --> Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I",
+        "Reasoning": "The data flows from the source method to the sink method through logging."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location data is obtained from `Landroid/location/Location`.",
+        "Source Method": "Lcom/amazon/now/location/geocoder/GoogleGeocoder;->getAddresses:(Landroid/location/Location;)Ljava/util/List;",
+        "Reasoning": "Method signature matches the source method.",
+        "Action": "Stored in a List"
+      },
+      {
+        "Step": "List is checked for emptiness.",
+        "Source Method": "Lcom/amazon/now/location/geocoder/GoogleGeocoder;->getAddresses:(Landroid/location/Location;)Ljava/util/List;",
+        "Reasoning": "Method signature matches the source method.",
+        "Action": "N/A"
+      },
+      {
+        "Step": "Data is logged using `DCMManager` if not empty.",
+        "Source Method": "Lcom/amazon/now/location/geocoder/GoogleGeocoder;->getAddresses:(Landroid/location/Location;)Ljava/util/List;",
+        "Reasoning": "Logging is performed based on data availability.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/now/location/geocoder/DCMManager;->logEvent:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/amazon/now/location/geocoder/GoogleGeocoder;->getAddresses:(Landroid/location/Location;)Ljava/util/List; --> Lcom/amazon/now/location/geocoder/DCMManager;->logEvent:(Ljava/lang/String;)V",
+        "Reasoning": "Data flows from source method to sink method through logging action."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "LocationCoordinate"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location extracted from `currentLocation` field",
+        "Source Method": "Lcom/amazon/now/pickup/tracking/pup/PupUpdateEtaByLocationRequest;->getParameters:()Lorg/json/JSONObject;",
+        "Reasoning": "Method summary",
+        "Action": "Stored in `LocationCoordinate` object"
+      },
+      {
+        "Step": "`LocationCoordinate` object set in `UpdateSessionEtaByLocationRequest` object",
+        "Source Method": "Lcom/amazon/now/pickup/tracking/pup/PupUpdateEtaByLocationRequest;->getParameters:()Lorg/json/JSONObject;",
+        "Reasoning": "Method summary",
+        "Action": "Stored in `UpdateSessionEtaByLocationRequest` object"
+      },
+      {
+        "Step": "`UpdateSessionEtaByLocationRequest` object converted to `JSONObject` using Gson",
+        "Source Method": "Lcom/amazon/now/pickup/tracking/pup/PupUpdateEtaByLocationRequest;->getParameters:()Lorg/json/JSONObject;",
+        "Reasoning": "Method summary",
+        "Action": "Transmitted via network"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/now/pickup/tracking/pup/PupUpdateEtaByLocationRequest;->sendUpdateSessionEtaByLocationRequest:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/now/pickup/tracking/pup/PupUpdateEtaByLocationRequest;->getParameters:()Lorg/json/JSONObject; --> Lcom/amazon/now/pickup/tracking/pup/PupUpdateEtaByLocationRequest;->sendUpdateSessionEtaByLocationRequest:()V",
+        "Reasoning": "Overall data flow based on method summaries"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user location",
+        "Source Method": "Lcom/mapbox/mapboxsdk/amazon/StylesheetManager;->isInOfflineRegion:(Lcom/mapbox/mapboxsdk/offline/OfflineRegionInfo;)Z",
+        "Reasoning": "Method checks user location to determine offline region status",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Check location within offline region bounds",
+        "Source Method": "Lcom/mapbox/mapboxsdk/amazon/StylesheetManager;->isInOfflineRegion:(Lcom/mapbox/mapboxsdk/offline/OfflineRegionInfo;)Z",
+        "Reasoning": "Determines if user location is within offline region bounds",
+        "Action": "Calculated"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mapbox/mapboxsdk/amazon/StylesheetManager;->isInOfflineRegion:(Lcom/mapbox/mapboxsdk/offline/OfflineRegionInfo;)Z --> Calculated",
+        "Reasoning": "Location is calculated based on user location within offline region bounds"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location object creation",
+        "Source Method": "Lcom/mapbox/mapboxsdk/geometry/LatLng;-><init>:(Landroid/location/Location;)V",
+        "Reasoning": "The method receives a Location object as input.",
+        "Action": "Created"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Location object creation --> null",
+        "Reasoning": "The Location object is created but not used further."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain last known location",
+        "Source Method": "Lcom/mapbox/mapboxsdk/location/AmazonLocationEngineAndroid;->getLastLocation:()Landroid/location/Location;",
+        "Reasoning": "Method signature and summary match.",
+        "Action": "Stored in `v0` register"
+      },
+      {
+        "Step": "Return location",
+        "Source Method": "Lcom/mapbox/mapboxsdk/location/AmazonLocationEngineAndroid;->getLastLocation:()Landroid/location/Location;",
+        "Reasoning": "Method returns the location from the `v0` register.",
+        "Action": "Returned as result"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mapbox/mapboxsdk/location/AmazonLocationEngineAndroid;->getLastLocation:()Landroid/location/Location; --> Return",
+        "Reasoning": "Location is returned as the result of the method."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Location"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Location accuracy is used to calculate zoom level radius.",
+        "Source Method": "Lcom/mapbox/mapboxsdk/plugins/locationlayer/Utils;->calculateZoomLevelRadius:(Lcom/mapbox/mapboxsdk/maps/MapboxMap; Landroid/location/Location;)F",
+        "Reasoning": "Method calculates zoom level radius based on location accuracy.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/mapbox/mapboxsdk/plugins/locationlayer/Utils;->calculateZoomLevelRadius(...) --> null",
+        "Reasoning": "Location accuracy is used to calculate zoom level radius, but no sink points are identified in the provided data."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "geolocation"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve geolocation data",
+        "Source Method": "Lcom/amazon/device/ads/AAXParameter$GeoLocationParameter;->getDerivedValue:(Lcom/amazon/device/ads/AAXParameter$ParameterData;)Ljava/lang/String;",
+        "Reasoning": "Method description",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Construct location string",
+        "Source Method": "Lcom/amazon/device/ads/AAXParameter$GeoLocationParameter;->getDerivedValue:(Lcom/amazon/device/ads/AAXParameter$ParameterData;)Ljava/lang/String;",
+        "Reasoning": "Method description",
+        "Action": "Transmitted"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/AAXParameter$GeoLocationParameter;->getDerivedValue:(Lcom/amazon/device/ads/AAXParameter$ParameterData;)Ljava/lang/String; --> Lcom/amazon/device/ads/AAXParameter$GeoLocationParameter;->getDerivedValue:(Lcom/amazon/device/ads/AAXParameter$ParameterData;)Ljava/lang/String;",
+        "Reasoning": "Data is retrieved and transmitted as a location string"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "SHA-1 hash of WiFi MAC address",
+        "Source Method": "Lcom/amazon/device/ads/DeviceInfo;->setMacAddress:()V",
+        "Reasoning": "Method sets the `sha1_mac` field to the SHA-1 hash of the WiFi MAC address.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/device/ads/DeviceInfo;->setMacAddress:()V --> SHA-1 hash of WiFi MAC address",
+        "Reasoning": "The SHA-1 hash of the WiFi MAC address is stored in the `sha1_mac` field."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User provides MAC address",
+        "Source Method": "Lcom/amazon/device/ads/identity/DeviceInfo;->setMacAddress:()V",
+        "Reasoning": "Method `setMacAddress()` is invoked by user.",
+        "Action": "Stored in `sha1_mac` field"
+      },
+      {
+        "Step": "MAC address validation",
+        "Source Method": "Lcom/amazon/device/ads/identity/DeviceInfo;->setMacAddress:()V",
+        "Reasoning": "MAC address is checked for validity.",
+        "Action": "Encoded using SHA-1"
+      },
+      {
+        "Step": "Error logging",
+        "Source Method": "Lcom/amazon/device/ads/identity/DeviceInfo;->setMacAddress:()V",
+        "Reasoning": "Invalid MAC address triggers an error log.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazon/device/ads/identity/DeviceInfo;->setMacAddress:()V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/amazon/device/ads/identity/DeviceInfo;->setMacAddress:()V --> Lcom/amazon/device/ads/identity/DeviceInfo;->setMacAddress:()V",
+        "Reasoning": "MAC address is stored in `sha1_mac` field, then logged in case of invalidity."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Device ID",
+      "Marketplace ID",
+      "Country Code",
+      "Operating Area",
+      "Route ID",
+      "Sub-route ID",
+      "Transporter Type",
+      "Latitude",
+      "Longitude"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user data from MetricRecorder",
+        "Source Method": "Lcom/amazon/geo/mapsv2/internal/mapbox/MetricRecorder;->addCommonAttributes:(Lcom/amazonaws/mobileconnectors/amazonmobileanalytics/AnalyticsEvent;)V",
+        "Reasoning": "Method signature and summary provide the data types collected.",
+        "Action": "Stored in AnalyticsEvent object"
+      },
+      {
+        "Step": "Log the data",
+        "Source Method": "Lcom/amazonaws/mobileconnectors/amazonmobileanalytics/AnalyticsEvent;",
+        "Reasoning": "AnalyticsEvent is used to log data.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/amazonaws/mobileconnectors/amazonmobileanalytics/AnalyticsEvent;->logEvent:(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " MetricRecorder(...) --> AnalyticsEvent(...) --> logEvent(...)",
+        "Reasoning": "Steps in Overall Data Flow correspond to the data flow in Complete Data Flow."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "device_id"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve device ID",
+        "Source Method": "Lcom/amazon/identity/auth/device/ea;->getDeviceId()",
+        "Reasoning": "The method `getDeviceId()` explicitly retrieves the device ID.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/auth/device/ea;->getDeviceId() --> Stored",
+        "Reasoning": "The device ID is retrieved and stored in memory."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Method invocation",
+        "Source Method": "Lcom/amazon/identity/auth/device/ea;->getLine1Number:()Ljava/lang/String;",
+        "Reasoning": "getLine1Number() method retrieves the phone number.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/auth/device/ea;->getLine1Number:()Ljava/lang/String; --> Stored",
+        "Reasoning": "The phone number is retrieved and stored in memory."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Retrieve MAC address",
+        "Source Method": "Lcom/amazon/identity/auth/device/eg;->dN()",
+        "Reasoning": "Method `dN()` explicitly retrieves the MAC address.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/auth/device/eg;->dN() --> Stored",
+        "Reasoning": "The MAC address is retrieved and stored in memory."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Obtain user's phone number",
+        "Source Method": "Lcom/amazon/identity/frc/FrcCookiesManager/c;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "TelephonyManager.getLine1Number()",
+        "Action": "Collected"
+      },
+      {
+        "Step": "Return phone number as result",
+        "Source Method": "Lcom/amazon/identity/frc/FrcCookiesManager/c;->f:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "Method return value",
+        "Action": "Returned"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/amazon/identity/frc/FrcCookiesManager/c;->f:(Landroid/content/Context;)Ljava/lang/String; --> Return",
+        "Reasoning": "Method return value"
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "User Personal Data"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User provides personal data through the `save()` method.",
+        "Source Method": "Lorg/apache/cordova/contacts/ContactAccessorSdk5;->save:(Lorg/json/JSONObject;)Ljava/lang/String;",
+        "Reasoning": "The `save()` method receives user personal data as a JSON object.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Data is passed to the `createNewContact()` method.",
+        "Source Method": "Lorg/apache/cordova/contacts/ContactAccessorSdk5;->save:(Lorg/json/JSONObject;)Ljava/lang/String;",
+        "Reasoning": "The `save()` method calls the `createNewContact()` method.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Data is logged to the console.",
+        "Source Method": "Lorg/apache/cordova/contacts/ContactAccessorSdk5;->createNewContact:(Lorg/json/JSONObject;)Ljava/lang/String;",
+        "Reasoning": "The `createNewContact()` method logs the data using `System.out.println()`.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lorg/apache/cordova/contacts/ContactAccessorSdk5;->createNewContact:(Lorg/json/JSONObject;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lorg/apache/cordova/contacts/ContactAccessorSdk5;->save:(Lorg/json/JSONObject;)Ljava/lang/String; --> Lorg/apache/cordova/contacts/ContactAccessorSdk5;->createNewContact:(Lorg/json/JSONObject;)Ljava/lang/String; --> Lorg/apache/cordova/contacts/ContactAccessorSdk5;->createNewContact:(Lorg/json/JSONObject;)Ljava/lang/String;",
+        "Reasoning": "The user provides personal data through the `save()` method, which is passed to the `createNewContact()` method and then logged to the console."
+      }
+    ],
+    "Label": "leak"
+  }
+]

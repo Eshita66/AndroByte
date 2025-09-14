@@ -1,0 +1,103 @@
+[
+  {
+    "Data Types Collected": [
+      "MAC address"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Load MAC addresses from system services",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method invokes sensitive API calls to load MAC addresses from 'wlan0', 'eth0', and 'wifi' system services.",
+        "Action": "Stored in registers or variables"
+      },
+      {
+        "Step": "Read MAC address from file",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The method reads the MAC address from a file in the /sys/class/net directory.",
+        "Action": "Stored in registers and variables"
+      },
+      {
+        "Step": "Pass data to other methods",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String;",
+        "Reasoning": "The method invokes other methods via method invocations.",
+        "Action": "Passed to other methods"
+      },
+      {
+        "Step": "Network transmission",
+        "Source Method": "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;",
+        "Reasoning": "The data reaches a sink point, which is a network transmission.",
+        "Action": "Transmitted over the network"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; --> Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String; --> Network transmission",
+        "Reasoning": "The method Lcom/adjust/sdk/MacAddressUtil;->getRawMacAddress:(Landroid/content/Context;)Ljava/lang/String; loads MAC addresses from system services, passes the data to Lcom/adjust/sdk/MacAddressUtil;->loadAddress:(Ljava/lang/String;)Ljava/lang/String;, which reads the MAC address from a file and transmits it over the network."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  },
+  {
+    "Data Types Collected": [
+      "Location (last known location)",
+      "Device ID",
+      "Phone Number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originates user personal data by calling getLastKnownLocation method from LocationManager.",
+        "Source Method": "Lcom/pushio/manager/s0;->i:()Ljava/util/Map;",
+        "Reasoning": "The data is then stored in a HashMap and passed to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates sensitive user personal data through the 'sget-boolean' instruction to access boolean field 'b'.",
+        "Source Method": "Lcom/pushio/manager/t0;->a:(I [Ljava/lang/Object;)I",
+        "Reasoning": "The data is stored in register v0 and propagated through registers.",
+        "Action": "Propagated"
+      },
+      {
+        "Step": "Originates user personal data through the invocation of sensitive APIs (android.os.Process.myPid() and android.os.Process.myUid()).",
+        "Source Method": "Lb/e/e/a;->a:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The data is stored in registers v0 and v1.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originates user personal data through the 'invoke-static' instruction calling a sensitive API from the 'Lb/e/e/a;' class.",
+        "Source Method": "Lcom/pushio/manager/l;->a:(Landroid/content/Context; Ljava/lang/String;)Z",
+        "Reasoning": "The data is stored in register v0 and propagated to subsequent instructions.",
+        "Action": "Propagated"
+      }
+    ],
+    "All Sinks": [
+      "Landroid/util/Log;->println(I Ljava/lang/String; Ljava/lang/String;)I",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/pushio/manager/s0;->i:()Ljava/util/Map --> Lcom/pushio/manager/t0;->e:([Ljava/lang/Object;)I --> Landroid/util/Log;->println(I Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "The data is propagated from the LocationManager to a HashMap and then to the Log class for logging."
+      },
+      {
+        "dataflow 2": "Lcom/pushio/manager/t0;->a:(I [Ljava/lang/Object;)I --> Landroid/util/Log;->println(I Ljava/lang/String; Ljava/lang/String;)I",
+        "Reasoning": "The data is propagated from the 't0' class to the Log class for logging."
+      },
+      {
+        "dataflow 3": "Lb/e/e/a;->a:(Landroid/content/Context; Ljava/lang/String;)I --> Context.checkPermission()",
+        "Reasoning": "The data is propagated from the 'b/e/e/a' class to the Context class for permission checking."
+      },
+      {
+        "dataflow 4": "Lcom/pushio/manager/l;->a:(Landroid/content/Context; Ljava/lang/String;)Z --> Lb/e/e/a;->a:(Landroid/content/Context; Ljava/lang/String;)I",
+        "Reasoning": "The data is propagated from the 'l' class to the 'b/e/e/a' class."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]

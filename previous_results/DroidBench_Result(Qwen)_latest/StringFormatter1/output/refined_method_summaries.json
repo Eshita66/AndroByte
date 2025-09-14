@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve sensitive data",
+                "Source Method": "Ledu/mit/string_formatter/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method calls `Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;` to obtain the device ID, a sensitive source.",
+                "Action": "Stored in register v2"
+            },
+            {
+                "Step": "Format and log data",
+                "Source Method": "Ledu/mit/string_formatter/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The device ID is formatted into a string and passed to `Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I` for logging.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/string_formatter/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String; (DeviceId) --> Landroid/util/Log;->i(Ljava/lang/String; Ljava/lang/String;)I",
+                "Reasoning": "The device ID is retrieved from `getDeviceId()`, stored in register v2, formatted into a string, and passed to `Log.i()` as the second argument. No overwriting or taint removal is mentioned in the summary."
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

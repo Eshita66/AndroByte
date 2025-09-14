@@ -1,0 +1,50 @@
+
+Processing folder: D:\UBCBAPK_Methods\PublicAPIField2
+Using methods file: D:\UBCBAPK_Methods\PublicAPIField2\PublicAPIField2_bytecode_instructions.json
+Source methods with sensitive calls: ['Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method retrieves the device ID from the TelephonyManager and sets it as an action in an Intent, which is then logged using Log.i(). The device ID is considered sensitive information.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieve Device ID from TelephonyManager",
+            "Source Method": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The device ID is retrieved using TelephonyManager's getDeviceId method within the onCreate lifecycle method of MainActivity.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Set Intent Action with Device ID",
+            "Source Method": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "After retrieving the device ID, it is set as an action in an Intent which is used to start another activity or carry data between components.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Log Device ID using Log.i()",
+            "Source Method": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The device ID is logged using Log.i(), making it accessible through the app's logs.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Ledu/mit/icc_intent_class_modeling/MainActivity;->Log.i(Ljava/lang/String;Ljava/lang/String;)I"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Ledu/mit/icc_intent_class_modeling/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Ledu/mit/icc_intent_class_modeling/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Ledu/mit/icc_intent_class_modeling/MainActivity;->Log.i(Ljava/lang/String;Ljava/lang/String;)I",
+            "Reasoning": "The device ID is retrieved from TelephonyManager and set as an action in the Intent, which ultimately leads to logging via Log.i() using the sensitive information."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\PublicAPIField2\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\PublicAPIField2\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\PublicAPIField2\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\PublicAPIField2\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\PublicAPIField2\output\sensitive_only.json
+Total time for folder: 662.58 seconds

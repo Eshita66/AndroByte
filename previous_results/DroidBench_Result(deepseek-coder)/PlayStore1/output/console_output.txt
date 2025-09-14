@@ -1,0 +1,46 @@
+
+Processing folder: D:\UBCBAPK_Methods\PlayStore1
+Using methods file: D:\UBCBAPK_Methods\PlayStore1\PlayStore1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => This method initializes the user interface and performs some operations related to telephony services, including retrieving device ID and sending SMS messages. The method does not directly handle or process any personally identifiable information (PII) but involves actions that could potentially involve sensitive data such as phone numbers and device identifiers.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID",
+        "Phone Numbers"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Initialization and Retrieval of Device ID",
+            "Source Method": "Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+            "Reasoning": "The method retrieves device information from telephony services, which could include the device ID.",
+            "Action": "Stored"
+        },
+        {
+            "Step": "Logging Device ID",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The retrieved device ID is logged, potentially exposing it to the user or in a log file.",
+            "Action": "Logged"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+    
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "[Source Method Lde/ecspride/MainActivity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object; --> Log.i(...) --> Sink Method]",
+            "Reasoning": "The device ID is retrieved from the telephony service and then logged, making it a potential leak."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\PlayStore1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\PlayStore1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\PlayStore1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\PlayStore1\output\visited_graph
+Saved 1 'leak' subgraphs to: D:\UBCBAPK_Methods\PlayStore1\output\sensitive_only.json
+Total time for folder: 629.08 seconds

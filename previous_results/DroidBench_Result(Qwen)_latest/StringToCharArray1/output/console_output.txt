@@ -1,0 +1,47 @@
+Processing folder: D:\UBCBAPK_Methods\StringToCharArray1
+Using methods file: D:\UBCBAPK_Methods\StringToCharArray1\StringToCharArray1_bytecode_instructions.json
+Sensitive method found: Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves the device ID using TelephonyManager.getDeviceId(), stores it in register v3, processes it into a string via StringBuilder, and logs it using android.util.Log.i. The device ID (sensitive personal data) is passed to a logging sink (Log.i), fulfilling the data exfiltration path.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\StringToCharArray1\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\StringToCharArray1\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\StringToCharArray1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve device ID",
+                "Source Method": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Calls TelephonyManager.getDeviceId() to obtain sensitive device ID",
+                "Action": "Stored in register v3"
+            },
+            {
+                "Step": "Process and log device ID",
+                "Source Method": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "Converts device ID to string via StringBuilder and passes it to android.util.Log.i",
+                "Action": "Logged via Log.i"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Ledu/mit/string_to_char/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "Device ID is retrieved via TelephonyManager.getDeviceId(), stored in register v3, processed into a string via StringBuilder, and passed as argument to Log.i() sink"
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\StringToCharArray1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\StringToCharArray1\output\sensitive_only.json
+Total summary time: 33.718870639801025 seconds

@@ -1,0 +1,194 @@
+[
+  {
+    "Data Types Collected": [
+      "android/location/Location",
+      "com/facebook/AccessToken"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "newPlacesSearchRequest method is called with user personal data",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The method originates user personal data through the 'newPlacesSearchRequest' method",
+        "Action": "stored in registers and variables within the method"
+      },
+      {
+        "Step": "isNullOrEmpty method is invoked with string parameter",
+        "Source Method": "Lcom/facebook/internal/Utility;->isNullOrEmpty:(Ljava/lang/String;)Z",
+        "Reasoning": "The data is propagated to other methods via method invocations, specifically 'invoke-static v10, Lcom/facebook/internal/Utility;->isNullOrEmpty(Ljava/lang/String;)Z'",
+        "Action": "checked if the string is null or empty"
+      },
+      {
+        "Step": "return-object v7 statement returns an instance of 'Lcom/facebook/GraphRequest;' to the calling method",
+        "Source Method": "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;",
+        "Reasoning": "The data reaches a sink point through the 'return-object v7' statement",
+        "Action": "transmitted to Facebook"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest; --> invoke-static v10, Lcom/facebook/internal/Utility;->isNullOrEmpty(Ljava/lang/String;)Z --> Lcom/facebook/GraphRequest;->newPlacesSearchRequest:(Lcom/facebook/AccessToken; Landroid/location/Location; I I Ljava/lang/String; Lcom/facebook/GraphRequest$GraphJSONArrayCallback;)Lcom/facebook/GraphRequest;]",
+        "Reasoning": "The data is propagated and transformed through the 'newPlacesSearchRequest' method, 'isNullOrEmpty' method invocation, and finally transmitted to Facebook"
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "user email addresses",
+      "app's cache directory path"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Originate user personal data from sensitive API calls",
+        "Source Method": "Lcom/appsflyer/internal/af;->valueOf:(Lcom/appsflyer/internal/h;)Ljava/util/Map;",
+        "Reasoning": "The method originates user personal data from sensitive API calls, stores it in registers and variables, and passes it to other methods via method invocations.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by calling a sensitive API",
+        "Source Method": "Lcom/appsflyer/AppsFlyerProperties;->getInstance:()Lcom/appsflyer/AppsFlyerProperties;",
+        "Reasoning": "The method originates user personal data by calling a sensitive API (AppsFlyerProperties.valueOf) and stores it in register v0.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data through sensitive API calls to `getSharedPreferences`",
+        "Source Method": "Lcom/appsflyer/internal/af;->AFInAppEventType:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The method originates user personal data through sensitive API calls to `getSharedPreferences` and stores it in the `setUserEmails` field.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Originate user personal data by calling a sensitive API (getFilesDir)",
+        "Source Method": "Lcom/appsflyer/internal/ag;->valueOf:(Landroid/content/Context;)Ljava/io/File;",
+        "Reasoning": "This method originates user personal data by calling a sensitive API (getFilesDir) to retrieve the app's cache directory.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass the data to other methods via return statements",
+        "Source Method": "Lcom/appsflyer/internal/ag;->valueOf:(Landroid/content/Context;)Ljava/io/File;",
+        "Reasoning": "The data is passed to the next methods via return statements.",
+        "Action": "Passed"
+      },
+      {
+        "Step": "Reach a sink point, which is the storage of user email addresses in SharedPreferences",
+        "Source Method": "Lcom/appsflyer/internal/af;->AFInAppEventType:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+        "Reasoning": "The data reaches a sink point, which is the storage of user email addresses in SharedPreferences.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/internal/af;->AFInAppEventType:(Landroid/content/Context;)Landroid/content/SharedPreferences;",
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lcom/appsflyer/internal/ag;->valueOf(Landroid/content/Context)--> Lcom/appsflyer/AppsFlyerProperties;->getInstance()--> Lcom/appsflyer/internal/af;->AFInAppEventType(Landroid/content/Context) --> Stored in SharedPreferences ",
+        "Reasoning": "The data flows from the app's cache directory path to AppsFlyerProperties, then to AFInAppEventType, and finally stored in SharedPreferences."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "WiFi SSID",
+      "BSSID",
+      "RSSI",
+      "Frequency",
+      "IP address",
+      "Subnet mask",
+      "Cellular generation"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get WiFi and cellular network information",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createDetailsMap:(Ljava/lang/String;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "Method originates user personal data from WiFi and cellular network information.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Pass data to other methods",
+        "Source Method": "Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createDetailsMap:(Ljava/lang/String;)Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "Data is then passed to other methods via method invocations.",
+        "Action": "Passed"
+      }
+    ],
+    "All Sinks": [
+      "null"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/reactnativecommunity/netinfo/ConnectivityReceiver;->createDetailsMap:(Ljava/lang/String;)Lcom/facebook/react/bridge/WritableMap; --> Stored in registers and variables within the method --> Lcom/facebook/react/bridge/Arguments;->createMap:()Lcom/facebook/react/bridge/WritableMap;",
+        "Reasoning": "Data is stored in registers and variables, then passed to other methods via method invocations."
+      }
+    ],
+    "Label": "no leak"
+  },
+  {
+    "Data Types Collected": [
+      "Mac Address",
+      "Wifi Connection Info"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get Mac Address from getMacAddressSync() method",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The method originates user personal data by calling the getMacAddressSync() method.",
+        "Action": "Stored in register v0"
+      },
+      {
+        "Step": "Get Wifi Connection Info from getWifiInfo() method",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo;",
+        "Reasoning": "The method originates user personal data by invoking the getReactApplicationContext and getApplicationContext methods to obtain a Context object.",
+        "Action": "Retrieved from WifiManager instance"
+      },
+      {
+        "Step": "Pass Mac Address and Wifi Connection Info to return statement",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+        "Reasoning": "The data is stored in register v0 and passed to other methods via method invocations.",
+        "Action": "Passed to return statement"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String;",
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getMacAddressSync:()Ljava/lang/String; --> Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getWifiInfo:()Landroid/net/wifi/WifiInfo; --> return statement",
+        "Reasoning": "The Mac Address is obtained from getMacAddressSync() method and passed to getWifiInfo() method, which retrieves Wifi Connection Info. The data is then returned."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "phone number"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Check permissions",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The method checks if it has the necessary permissions to access the TelephonyManager.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get phone number",
+        "Source Method": "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->getPhoneNumberSync:()Ljava/lang/String;",
+        "Reasoning": "The method uses the TelephonyManager to get the phone number.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lcom/learnium/RNDeviceInfo/RNDeviceModule;->logError(Ljava/lang/String;)V"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "getPhoneNumberSync() --> logError()",
+        "Reasoning": "The phone number is checked for permissions, retrieved from the TelephonyManager, and then logged in case of an error."
+      }
+    ],
+    "Label": "leak"
+  }
+]

@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\PathSensitivity
+Using methods file: D:\UBCBAPK_Methods\PathSensitivity\PathSensitivity_bytecode_instructions.json
+Sensitive method found: Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "Sensitive data originated from device ID obtained through getSystemService and getDeviceId. Data was passed to Log method, which is a sink.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\PathSensitivity\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\PathSensitivity\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\PathSensitivity\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V: Tainted DeviceId passed to Log method",
+                "Source Method": "getSystemService and getDeviceId",
+                "Reasoning": "Sensitive data was passed to a sink without being overwritten",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "[DeviceId] --> ... --> Log method",
+                "Reasoning": "Sensitive data was passed to a sink without being overwritten"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\PathSensitivity\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\PathSensitivity\output\sensitive_only.json
+Total summary time: 21.014607667922974 seconds

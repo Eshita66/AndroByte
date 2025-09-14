@@ -1,0 +1,78 @@
+
+Processing folder: D:\UBCBAPK_Methods\ContentProvider1
+Using methods file: D:\UBCBAPK_Methods\ContentProvider1\ContentProvider1_bytecode_instructions.json
+Source methods with sensitive calls: ['Lde/ecspride/MyContentProvider;->onCreate:()Z', 'Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MyContentProvider;->onCreate:()Z => The method retrieves the device ID from the TelephonyManager using the getDeviceId() method, which can be used to uniquely identify a mobile device. This device ID is then checked for containment of '0000'. If it does contain '0000', a boolean flag (isEmulator) is set to true in the MyContentProvider class.
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method 'onCreate' in 'MainActivity' does not originate any user personal data directly from the parameters or local variables, but it retrieves and uses the device ID of the phone through the TelephonyManager for logging purposes. The device ID is obtained by invoking getDeviceId() on the TelephonyManager instance, which is a part of Android's telephony services.
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => The method 'onCreate' in 'MainActivity' does not originate or store user personal data directly. However, it retrieves the device ID from TelephonyManager and logs this information to Logcat using 'Log.v(...)'. The device ID is considered sensitive as it can be used to identify a specific device.
+
+Refined Subgraph Summaries:
+
+[REFINED SUBGRAPH #1]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval of device ID from TelephonyManager",
+            "Source Method": "Lde/ecspride/MyContentProvider;->onCreate:()Z",
+            "Reasoning": "The method retrieves the device ID which can be used to uniquely identify a mobile device.",
+            "Action": "Stored in non-public field 'isEmulator'"
+        },
+        {
+            "Step": "Check for containment of '0000' in device ID",
+            "Source Method": "Lde/ecspride/MyContentProvider;->onCreate:()Z",
+            "Reasoning": "The retrieved device ID is checked for the presence of '0000', which could be considered as a form of validation or authorization check.",
+            "Action": "Validation process"
+        },
+        {
+            "Step": "Setting boolean flag based on containment result",
+            "Source Method": "Lde/ecspride/MyContentProvider;->onCreate:()Z",
+            "Reasoning": "If the device ID contains '0000', a sensitive operation is performed by setting the non-public field 'isEmulator'.",
+            "Action": "Sensitive operation"
+        }
+    ],
+    "All Sinks": [
+        "Log.i(...)",
+        null
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/MyContentProvider;->onCreate:()Z --> Retrieves device ID --> Check for '0000' --> Set boolean flag",
+            "Reasoning": "The method retrieves the device ID from TelephonyManager, checks if it contains '0000', and potentially logs or stores this information which could be considered sensitive."
+        }
+    ],
+    "Label": "leak"
+}
+
+[REFINED SUBGRAPH #2]:
+{
+    "Data Types Collected": [
+        "Device ID"
+    ],
+    "Overall Data Flow": [
+        {
+            "Step": "Retrieval and Logging of Device ID",
+            "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+            "Reasoning": "The method retrieves the device ID from TelephonyManager and logs it using Log.v(...) for debugging purposes.",
+            "Action": "Stored, logged"
+        }
+    ],
+    "All Sinks": [
+        "Lde/ecspride/MainActivity;->Log.v:((Ljava/lang/String;)V)"
+    ],
+    "Complete Data Flow": [
+        {
+            "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Log.v(...)",
+            "Reasoning": "The device ID is directly retrieved and passed to the logging method without any intermediate transformations."
+        }
+    ],
+    "Label": "leak"
+}
+Saved method-level subgraphs to D:\UBCBAPK_Methods\ContentProvider1\output\method_summaries.json
+Saved refined subgraphs to D:\UBCBAPK_Methods\ContentProvider1\output\refined_method_summaries.json
+Saved sensitive calls to D:\UBCBAPK_Methods\ContentProvider1\output\sensitive_calls.json
+[INFO] Graph exported to D:\UBCBAPK_Methods\ContentProvider1\output\visited_graph
+Saved 2 'leak' subgraphs to: D:\UBCBAPK_Methods\ContentProvider1\output\sensitive_only.json
+Total time for folder: 50.80 seconds

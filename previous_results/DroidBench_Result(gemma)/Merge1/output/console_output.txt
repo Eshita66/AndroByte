@@ -1,0 +1,46 @@
+Processing folder: D:\withoutcallgraphResult\testagain\Merge1
+Using methods file: D:\withoutcallgraphResult\testagain\Merge1\Merge1_bytecode_instructions.json
+Sensitive method found: Lde/ecspride/MainActivity;->aliasFlowTest:()V
+Processed summary for Lde/ecspride/MainActivity;->aliasFlowTest:()V: {
+    "Summary": "The method `aliasFlowTest` from `MainActivity` first obtains the device ID using `getDeviceId()`, which is a sensitive API. This `DeviceId` is then used to instantiate a new object `B` and another object `A`.  Subsequently, `SmsManager.sendTextMessage` is invoked, passing the phone number \"+49 1234\" (the destination address) and the device ID (the message body). This constitutes a clear flow from a sensitive API (getDeviceId) to a sensitive sink (sendTextMessage). Therefore, `Next Methods = []`.",
+    "Next Methods": []
+}
+Method summaries saved to D:\withoutcallgraphResult\testagain\Merge1\output\method_summaries.json
+Sensitive call mapping saved to D:\withoutcallgraphResult\testagain\Merge1\output\sensitive_calls.json
+Graph exported to D:\withoutcallgraphResult\testagain\Merge1\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "PhoneNumber"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Obtain Device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "The `getDeviceId()` method is explicitly identified as a sensitive API.",
+                "Action": "Store Device ID"
+            },
+            {
+                "Step": "Instantiate Objects and Send SMS",
+                "Source Method": "Lde/ecspride/MainActivity;->aliasFlowTest:()V",
+                "Reasoning": "The Device ID is used to create objects and then used to send an SMS message.",
+                "Action": "Transmit SMS"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->sendTextMessage:()V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->aliasFlowTest:()V --> Lde/ecspride/MainActivity;->getDeviceId:()V --> Lde/ecspride/MainActivity;->sendTextMessage:()V",
+                "Reasoning": "The Device ID obtained from `getDeviceId()` is directly used as the message body in `sendTextMessage`. This constitutes a clear flow from a sensitive API to a sensitive sink."
+            }
+        ],
+        "Label": "leak"
+    }
+]
+Refined method summaries saved to D:\withoutcallgraphResult\testagain\Merge1\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\withoutcallgraphResult\testagain\Merge1\output\sensitive_only.json
+Total summary time: 8.053685903549194 seconds

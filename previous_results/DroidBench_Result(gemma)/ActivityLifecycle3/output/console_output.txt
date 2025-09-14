@@ -1,0 +1,54 @@
+
+ Processing folder: D:\UBCBAPK_Methods\ActivityLifecycle3
+ Using methods file: D:\UBCBAPK_Methods\ActivityLifecycle3\ActivityLifecycle3_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V => {
+    "Summary": "The method retrieves the subscriber ID from the TelephonyManager and stores it in the static field 's'.",
+    "Next Methods": [
+        "Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V => {
+    "Summary": "The method sends a text message with the content \"+49 1234\" using the default SmsManager.",
+    "Next Methods": [
+        "Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V"
+    ]
+}
+ Saved method summaries to D:\UBCBAPK_Methods\ActivityLifecycle3\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\ActivityLifecycle3\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\ActivityLifecycle3\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId",
+            "TelephonyManager",
+            "SmsManager",
+            "Bundle"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Retrieve Device ID",
+                "Source Method": "Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method retrieves the subscriber ID from the TelephonyManager and stores it in the static field 's'.",
+                "Action": "Stored"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onSaveInstanceState:(Landroid/os/Bundle;)V --> Lde/ecspride/MainActivity;->onRestoreInstanceState:(Landroid/os/Bundle;)V",
+                "Reasoning": "The DeviceId is initially retrieved and stored in the static field 's' in onSaveInstanceState. This value is then used as an argument to onRestoreInstanceState."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\ActivityLifecycle3\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\ActivityLifecycle3\output\sensitive_only.json
+Total time for folder: 20.58 seconds

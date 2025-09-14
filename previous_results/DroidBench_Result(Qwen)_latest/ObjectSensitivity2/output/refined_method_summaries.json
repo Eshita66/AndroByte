@@ -1,0 +1,33 @@
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID is retrieved from TelephonyManager and stored in DataStore",
+                "Source Method": "Lde/ecspride/OverwiteValue;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method explicitly calls TelephonyManager.getDeviceId() as the source of the sensitive data.",
+                "Action": "Stored"
+            },
+            {
+                "Step": "Sensitive data is transmitted via SMS",
+                "Source Method": "Lde/ecspride/OverwiteValue;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method calls SmsManager.sendTextMessage() with the device ID as the argument, which is a network transmission sink.",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": " Lde/ecspride/OverwiteValue;->onCreate:(Landroid/os/Bundle;)V --> Landroid/sms/SmsManager;->sendTextMessage:(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V ",
+                "Reasoning": "The device ID is retrieved via TelephonyManager.getDeviceId(), stored in DataStore, and then passed as an argument to SmsManager.sendTextMessage(), which is a network transmission sink."
+            }
+        ],
+        "Label": [
+            " leak "
+        ]
+    }
+]

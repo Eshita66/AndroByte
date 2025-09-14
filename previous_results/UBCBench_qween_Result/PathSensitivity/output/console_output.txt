@@ -1,0 +1,41 @@
+Processing folder: D:\UBCBAPK_Methods\PathSensitivity
+Using methods file: D:\UBCBAPK_Methods\PathSensitivity\PathSensitivity_bytecode_instructions.json
+Sensitive method found: Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V
+Processed summary for Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V: {
+    "Summary": "The method retrieves the device ID via TelephonyManager.getDeviceId() (stored in v2) and logs it using android.util.Log.i, which is a sink for data exfiltration. Sensitive data (device ID) is directly passed to a logging sink.",
+    "Next Methods": []
+}
+Method summaries saved to D:\UBCBAPK_Methods\PathSensitivity\output\method_summaries.json
+Sensitive call mapping saved to D:\UBCBAPK_Methods\PathSensitivity\output\sensitive_calls.json
+Graph exported to D:\UBCBAPK_Methods\PathSensitivity\output\visited_graph
+Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "Device ID retrieval and logging",
+                "Source Method": "Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "The method directly retrieves the device ID via TelephonyManager.getDeviceId() and passes it to android.util.Log.i without overwriting or taint removal.",
+                "Action": "Logged"
+            }
+        ],
+        "All Sinks": [
+            "Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Llina/ubc/pathsensitivity/PathSensitivity;->onCreate:(Landroid/os/Bundle;)V --> Landroid/util/Log;->i:(Ljava/lang/String;Ljava/lang/String;)I",
+                "Reasoning": "The device ID (tainted sensitive data) is directly passed from the source method to the logging sink without being overwritten or sanitized."
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+Refined method summaries saved to D:\UBCBAPK_Methods\PathSensitivity\output\refined_method_summaries.json
+Saved 1 'sensitive' subgraphs to: D:\UBCBAPK_Methods\PathSensitivity\output\sensitive_only.json
+Total summary time: 15.193675994873047 seconds

@@ -1,0 +1,82 @@
+[
+  {
+    "Data Types Collected": [
+      "android.content.Context",
+      "java.lang.String"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "Get user context and key",
+        "Source Method": "Lcom/appsflyer/AFEvent;->context:()Landroid/content/Context;",
+        "Reasoning": "Originate user personal data by calling sensitive API to get the context.",
+        "Action": "Stored in registers (v0) and variables within the method."
+      },
+      {
+        "Step": "Get key from AFEvent",
+        "Source Method": "Lcom/appsflyer/AFEvent;->key:()Ljava/lang/String;",
+        "Reasoning": "Originate user personal data by calling sensitive API 'key' from class AFEvent.",
+        "Action": "Stored in register v0 and then returned."
+      },
+      {
+        "Step": "Collect user personal data",
+        "Source Method": "Lcom/appsflyer/AppsFlyerLibCore;->\u01c3:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;",
+        "Reasoning": "The method collects user personal data and prepares it for transmission.",
+        "Action": "Stored in registers or variables within the method and passed to other methods via method invocations."
+      }
+    ],
+    "All Sinks": [
+      "Lcom/appsflyer/AppsFlyerLibCore;->\u01c3:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " [Lcom/appsflyer/AFEvent;->context:()Landroid/content/Context; --> Lcom/appsflyer/AppsFlyerLibCore;->\u01c3:(Lcom/appsflyer/AFEvent;)Ljava/util/Map; --> Lcom/appsflyer/AppsFlyerLibCore;->\u01c3:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;]",
+        "Reasoning": "The context is originated by AFEvent and then passed to AppsFlyerLibCore, which collects user personal data and prepares it for transmission."
+      },
+      {
+        "dataflow 2": " [Lcom/appsflyer/AFEvent;->key:()Ljava/lang/String; --> Lcom/appsflyer/AppsFlyerLibCore;->\u01c3:(Lcom/appsflyer/AFEvent;)Ljava/util/Map;]",
+        "Reasoning": "The key is originated by AFEvent and then passed to AppsFlyerLibCore, which collects user personal data and prepares it for transmission."
+      }
+    ],
+    "Label": "leak"
+  },
+  {
+    "Data Types Collected": [
+      "Landroid/location/Location;",
+      "D"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "API call to get location",
+        "Source Method": "Lru/kupibilet/g2/b/o;->h:(Lru/kupibilet/core/main/model/Coordinates;)Lg/c/l;",
+        "Reasoning": "[Data origin: Sensitive API call to android/location/Location. Data stored in registers and variables within the method. Data propagated through method invocations. No sinks identified]",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get longitude value",
+        "Source Method": "Lru/kupibilet/core/main/model/Coordinates;->getLng:()D",
+        "Reasoning": "The current method originates user personal data through the `Landroid/location/Location;` API call in the instruction `iget-wide v0, v2, Lru/kupibilet/core/main/model/Coordinates;->lng D`, which retrieves a longitude value. The data is stored in register v0 and passed to the return statement without any further processing or sinks.",
+        "Action": "Stored"
+      },
+      {
+        "Step": "Get latitude value",
+        "Source Method": "Lru/kupibilet/core/main/model/Coordinates;->getLat:()D",
+        "Reasoning": "The current method 'getLat' of class 'Coordinates' originates user personal data by accessing the 'lat' field. The data is stored in register v0 and propagated through it. No sinks are identified within this method.",
+        "Action": "Stored"
+      }
+    ],
+    "All Sinks": [
+      null
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": "Lru/kupibilet/g2/b/o;->h:(Lru/kupibilet/core/main/model/Coordinates;)Lg/c/l; --> Lru/kupibilet/core/main/model/Coordinates;->getLng:()D --> Stored in register v0",
+        "Reasoning": "Data is collected through API call, then stored in register v0"
+      },
+      {
+        "dataflow 2": "Lru/kupibilet/g2/b/o;->h:(Lru/kupibilet/core/main/model/Coordinates;)Lg/c/l; --> Lru/kupibilet/core/main/model/Coordinates;->getLat:()D --> Stored in register v0",
+        "Reasoning": "Data is collected through API call, then stored in register v0"
+      }
+    ],
+    "Label": "no leak"
+  }
+]

@@ -1,0 +1,74 @@
+
+ Processing folder: D:\UBCBAPK_Methods\FragmentLifecycle1
+ Using methods file: D:\UBCBAPK_Methods\FragmentLifecycle1\FragmentLifecycle1_bytecode_instructions.json
+Sensitive root methods: ['Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V']
+[SUMMARY] Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V => {
+    "Summary": [
+        "Initializes UI with setContentView, retrieves IMEI via TelephonyManager, stores it in a field, and adds ExampleFragment to the activity"
+    ],
+    "Next Methods": [
+        "Landroid/support/v4/app/FragmentActivity;->onCreate(Landroid/os/Bundle;)V",
+        "Lde/ecspride/MainActivity;->setContentView(I)V",
+        "Landroid/app/Activity;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;",
+        "Landroid/telephony/TelephonyManager;->getDeviceId()Ljava/lang/String;",
+        "Landroid/app/FragmentManager;->beginTransaction()Landroid/app/FragmentTransaction;",
+        "Landroid/app/FragmentTransaction;->add(I Landroid/app/Fragment;)Landroid/app/FragmentTransaction;",
+        "Landroid/app/FragmentTransaction;->commit()I",
+        "Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/ExampleFragment;->onAttach:(Landroid/app/Activity;)V => {
+    "Summary": [
+        "Stores IMEI in a field and adds ExampleFragment to the activity"
+    ],
+    "Next Methods": [
+        "Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V"
+    ]
+}
+[SUMMARY] Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V => {
+    "Summary": [
+        "The onActivityCreated method sends the stored IMEI via SMS using SmsManager's sendTextMessage, which may constitute a data leak if IMEI is considered sensitive."
+    ],
+    "Next Methods": []
+}
+ Saved method summaries to D:\UBCBAPK_Methods\FragmentLifecycle1\output\method_summaries.json
+ Saved sensitive calls to D:\UBCBAPK_Methods\FragmentLifecycle1\output\sensitive_calls.json
+ Graph exported to D:\UBCBAPK_Methods\FragmentLifecycle1\output\visited_graph
+
+ Refined Subgraph Summaries:
+[
+    {
+        "Data Types Collected": [
+            "DeviceId"
+        ],
+        "Overall Data Flow": [
+            {
+                "Step": "IMEI retrieval",
+                "Source Method": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V",
+                "Reasoning": "TelephonyManager is used to retrieve IMEI (sensitive DeviceId) in onCreate",
+                "Action": "Stored"
+            },
+            {
+                "Step": "IMEI transmission",
+                "Source Method": "Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V",
+                "Reasoning": "Stored IMEI is passed to SmsManager's sendTextMessage method",
+                "Action": "Transmitted"
+            }
+        ],
+        "All Sinks": [
+            "Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V"
+        ],
+        "Complete Data Flow": [
+            {
+                "dataflow 1": "Lde/ecspride/MainActivity;->onCreate:(Landroid/os/Bundle;)V --> Lde/ecspride/ExampleFragment;->onActivityCreated:(Landroid/os/Bundle;)V",
+                "Reasoning": "IMEI is stored in MainActivity and passed to ExampleFragment's onActivityCreated method for SMS transmission"
+            }
+        ],
+        "Label": [
+            "leak"
+        ]
+    }
+]
+ Refined subgraphs saved to D:\UBCBAPK_Methods\FragmentLifecycle1\output\refined_method_summaries.json
+Saved 1 'leak' subgraphs to D:\UBCBAPK_Methods\FragmentLifecycle1\output\sensitive_only.json
+Total time for folder: 132.83 seconds

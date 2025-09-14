@@ -1,0 +1,41 @@
+[
+  {
+    "Data Types Collected": [
+      "Landroid/location/Location;",
+      "Landroid/content/Context;"
+    ],
+    "Overall Data Flow": [
+      {
+        "Step": "User location data collected from ACCESS_FINE_LOCATION",
+        "Source Method": "Lkw;->s:(Landroid/content/Context; I)I",
+        "Reasoning": "Method originates user personal data from sensitive APIs such as ACCESS_COARSE_LOCATION and ACCESS_FINE_LOCATION.",
+        "Action": "Stored in registers"
+      },
+      {
+        "Step": "User location data propagated to other methods via method invocations",
+        "Source Method": "Lkw;->s:(Landroid/content/Context; I)I",
+        "Reasoning": "The data propagates to other methods via method invocations, specifically Lkw;->P(Landroid/content/Context;)Lkr; and Lkw;->Q(Landroid/content/Context;)Lkr;",
+        "Action": "Passed as argument"
+      },
+      {
+        "Step": "User location data reaches sink points such as logging",
+        "Source Method": "Lkw;->s:(Landroid/content/Context; I)I",
+        "Reasoning": "The data reaches sink points such as logging and network transmission.",
+        "Action": "Logged"
+      }
+    ],
+    "All Sinks": [
+      "Lkw;->P(Landroid/content/Context;)Lkr;",
+      "Lkw;->Q(Landroid/content/Context;)Lkr;"
+    ],
+    "Complete Data Flow": [
+      {
+        "dataflow 1": " Lkw;->s:(Landroid/content/Context; I)I --> Lkw;->P(Landroid/content/Context;)Lkr; --> Logging ",
+        "Reasoning": "User location data collected from ACCESS_FINE_LOCATION, propagated to other methods via method invocations and reaches sink points such as logging."
+      }
+    ],
+    "Label": [
+      "leak"
+    ]
+  }
+]
