@@ -9,7 +9,7 @@ Python 3.10–3.12
 Ollama for local LLMs (e.g., gemma3)
  ```
 ### Step1: Clone the Repository
-     git clone https://github.com/<anonymous-or-real-link>/AndroByte.git
+     git clone https://github.com/Eshita66/AndroByte.git
      cd AndroByte
 ### Step 2: Ollama Installation (Required)
 This artifact uses [Ollama](https://ollama.com/download) to run local LLMs. Please install Ollama for your platform before running AndroByte.
